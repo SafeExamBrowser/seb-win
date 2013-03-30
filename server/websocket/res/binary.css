@@ -1,0 +1,18 @@
+body {
+	margin-left: 15%;
+	margin-right: 20%;
+	margin-top: 5%;
+	font-family: courier, sans-serif, system;
+}
+
+.streamNoSignal {
+	background-image: url('red.png');
+	background-repeat: no-repeat;
+	background-size: 20px, 20px;
+}
+
+.streamDataSignal {
+	background-image: url('green.png');
+	background-repeat: no-repeat;
+	background-size: 20px, 20px;
+}

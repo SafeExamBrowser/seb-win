@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Screenshot Demo: Question 2</title>
+	<link rel="stylesheet" href="res/q.css" type="text/css"></link>
+	<script type="text/javascript" src="res/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="res/seb.js"></script>
+	<script type="text/javascript">
+		// important variables that MUST be generated dynamically by the exam system
+		// the screenshot will be saved in a serverside websocket data space like this: websocket/data/TEST_ID/USER_ID/{SEQUENCE_ID}_{QUESTION_ID}_TIMESTAMP.jpg|png
+		// in our demo case the test_id and the user_id is set on the start page and transfered in lower_cased hidden input fields. 
+		// var TEST_ID = 
+		// var USER_ID = 
+		var SEQUENCE_ID = "s2";
+		var QUESTION_ID = "q2";
+	</script>
+</head>
+<body>
+	<div class="question">
+		<div class="title">Question 2</div>
+		<div class="questiontext">Which band is covered by the picture?</div>
+		<div class="formular">
+			<form name="frmQuestion" id="frmQuestion" action="/demo/end.html" method="get">
+				<input type="hidden" value="" name="test_id" id="test_id" />
+				<input type="hidden" value="" name="user_id" id="user_id" />
+				<fieldset id="fset">
+					<div class="option"><input type="radio" name="rb" id="cb1" value="cb1" /><label for="cb1">The Who</label></div>
+					<div class="option"><input type="radio" name="rb" id="cb2" value="cb2"/><label for="cb2">Greatful Dead</label></div>
+					<div class="option"><input type="radio" name="rb" id="cb3" value="cb3"/><label for="cb3">Rolling Stones</label></div>
+					<div class="option"><input type="radio" name="rb" id="cb4" value="cb4"/><label for="cb4">The Beatles</label></div>
+					<div class="option"><input type="radio" name="rb" id="cb5" value="cb5"/><label for="cb5">Sweet</label></div>
+				</fieldset>
+				<input type="submit" class="submit" value="send"/>
+			</form>
+		</div>
+	</div>
+	<div class="media">
+		<img src="res/abbeyroad.jpg" width="500px" />
+	</div>
+</body>
+</html>

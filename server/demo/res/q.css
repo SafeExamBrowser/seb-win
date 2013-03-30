@@ -1,0 +1,47 @@
+body {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 5%;
+	font-family: courier, sans-serif, system;
+}
+
+.question {
+	float: left;
+}
+
+.title {
+	font-size: 18pt;
+	margin-bottom: 20pt;
+}
+
+.questiontext {
+	margin-bottom: 18pt;
+}
+
+label {
+	margin-left: 20pt;
+}
+
+#fset {
+	border-width: 0px;
+	line-height: 22pt;
+}
+
+.media {
+	float: right;
+}
+
+.submit {
+	margin-top: 18pt;
+	padding-left: 10pt;
+	padding-right: 10pt;
+	font-family: courier, sans-serif, system;
+	font-size: 14pt;
+}
+
+table {
+	padding: 20px;
+}
+td {
+	padding: 20px;
+}

@@ -1,0 +1,6 @@
+locale branding en-US jar:branding.jar!/locale/branding/
+locale branding de-DE jar:branding.jar!/locale/branding/
+locale branding fr-FR jar:branding.jar!/locale/branding/
+content branding jar:branding.jar!/branding/
+# locale branding en-US locale/branding/
+# content branding branding/

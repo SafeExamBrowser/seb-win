@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Screenshot Demo: Start Test</title>
+	<link rel="stylesheet" href="res/q.css" type="text/css"></link>
+	<script>
+	var test_id;
+	var user_id;
+	function getUrlVars() {
+		if (!window.location.search) {
+			return({});   // return empty object
+		}
+		var parms = {};
+		var temp;
+		var items = window.location.search.slice(1).split("&");   // remove leading ? and split
+		for (var i = 0; i < items.length; i++) {
+			temp = items[i].split("=");
+			if (temp[0]) {
+				if (temp.length < 2) {
+					temp.push("");
+				}
+				parms[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);        
+			}
+		}
+		return(parms);
+	}
+	function setLink() {
+		var params = getUrlVars();
+		test_id = params.test_id;
+		user_id = params.user_id;
+		var a = document.getElementById('datalink');
+		var dir = "/websocket/data/";
+		var href = (test_id) ? dir + test_id + "/" : dir;
+		href = (test_id && user_id) ? dir + test_id + "/" + user_id + "/" : href;
+		a.setAttribute("href",href);
+	}
+	</script>
+</head>
+<body onload="setLink();">
+	<p>
+	end of the test, get back to <a href="index.html" target="_self">start page</a> 
+	or take a look at your <a id="datalink" href="#" target="_blank">screenshots</a>. 
+	</p>
+	<p><a href="http://45hj4kjhf7t4jhgfirufhgg/shutdown" target="_self">Beenden</a></p>
+</body>
+</html>

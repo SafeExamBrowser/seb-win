@@ -1,0 +1,43 @@
+@import url(chrome://global/skin/)
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+#sebBackground {	
+	background-color : #3A6EA5;
+}
+
+#toolbar {
+	max-height: 38px;
+	min-height: 38px;
+}
+
+#sebWindow {
+	background-color : #3A6EA5;
+} 
+
+#sebErrPage {
+	background-color : #3A6EA5;
+}
+
+#sebLoadPage {
+	background-color : #3A6EA5;
+	background-image: url("chrome://seb/content/images/loader.gif");
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+#imgLoader {
+	list-style-image: url("chrome://seb/content/images/loader.gif");
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 10px;
+	max-width: 32px;
+	max-height: 32px;
+}
+
+#imgLoaderStop {
+	list-style-image: url("chrome://seb/content/images/loader_stop.gif");
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 10px;
+	max-width: 32px;
+	max-height: 32px;
+}

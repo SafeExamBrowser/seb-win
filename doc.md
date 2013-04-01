@@ -4,15 +4,15 @@ Documentation
 ## Getting Started ##
 Please check the **Requirement** section in the README.md first.
 Have a look at the seb config files: ``` seb/browser/apps/chrome/defaults/seb/config.PRESET.json ```
-and the startup scripts *.sh or *.bat: ``` seb/browser/ ```
+and the startup scripts *.sh or *.bat: ``` seb/browser/bin/OS/ ```
 
 * ``` -config "debug" ``` will load ``` seb/browser/apps/chrome/defaults/seb/config.debug.json ``` which enables a titlbar and disables the locking for the main seb window.
 * ``` -config "demo" ``` will load ``` seb/browser/apps/chrome/defaults/seb/config.demo.json ``` which enables a local websocket server and the screenshot controller.
-* leaving the ```-config``` param will load ``` seb/browser/apps/chrome/defaults/seb/config.json ```
+* omitting the ```-config``` param will load ``` seb/browser/apps/chrome/defaults/seb/config.json ```
 * ``` -configpath "PATH" ``` loads a config file from local filesystem or http|file urls (``` -config "PRESET" ``` will be ignored).
 
 ## Debugging ##
-The ``` _debug ``` startup script opens an additional debug window and loads debug preferences for xulrunner (see: ``` seb/browser/apps/chrome/defaults/seb/preferences/debug.js ```)
+The ``` *_debug ``` startup script opens an additional debug window and loads debug preferences for xulrunner (see: ``` seb/browser/apps/chrome/defaults/seb/preferences/debug.js ```)
 
 ## config.json ##
 
@@ -24,13 +24,13 @@ In the preferences section you can add any xulrunner preference (see http://kb.m
  },
 ```
 ILIAS or Moodle are still using a special user-agent key for access control. 
-! The "general.useragent.override" entry overrides the **whole** user-agent string in every request, so some web applications with browser detection might be confused (switch to a mobile version or display the wrong css rules).
+! The "general.useragent.override" entry overrides the **whole** user-agent string on every request, so some web applications with browser detection might be confused (switch to a mobile version or display the wrong css rules).
 The mechanism should be replaced by a custom request header (see next).
 
 ### request header / request value ###
 ```
 "seb.request.header"			: "X-SafeExamBrowser",
-"seb.request.value"			: "SEB",
+"seb.request.value"			: "SEB_REQUEST_KEY",
 ```
 The request header and value are sent on every request and can be used to customize the behavior of the web application. 
 A common application for this config is the assignment of SEB requests to standard user access and / or a special KIOSK mode.
@@ -72,11 +72,8 @@ On locked = true the quit button on the mainWindow title bar is deactivated. Unf
 ```offset``` = popups will be positioned with an offset (pixel) to previous popups (only popupWindows)
 
 If your exam needs two or more independant secure browser splitted on the screen take a look to some example start files:
-** Windows **:
-```win_demo.left.bat``` ```win_demo.right.bat``` and a ```win_demo.split.bat``` which starts the two *.bat files in one single command 
 
-** Linux ** :
-``` linux*_demo.left.sh ``` ``` linux*_demo.right.sh ``` and a ``` linux*_demo.split.sh ``` which starts the two *.sh files in one single command 
+```start_demo.left.*``` ```start_demo.right.*``` and a ```start_demo.split.*``` which starts the two files in one single command 
 
 The corresponding configs: 
 ``` seb/browser/apps/chrome/defaults/seb/config.demo.left.json ```
@@ -126,7 +123,7 @@ The default setting is a locked SEB. That means if you enable the main window ti
 ```
  "seb.unlock.enabled" : false,
 ```
-The default setting ist that you can not manually unlock SEB. If you enable the unlock function you can unlock a locked SEB with (customizable):
+If you enable the unlock function you can unlock a locked SEB:
 ```
  "seb.unlock.keycode" : "VK_F3",
  "seb.unlock.modifiers" : "control shift",
@@ -139,6 +136,12 @@ An unlocked SEB can be shutdown with:
  "seb.shutdown.modifiers" : "control shift",
 ```
 or if you enabled the titlebar of the main window you can shutdown SEB with the default window close control of the titlebar.
+
+With a shutdown url, seb can be forced to quit by calling a special embedded url, locking will be ignored. 
+```
+"seb.shutdown.url" : "http://seb/shutdown",
+"seb.shutdown.warning" : true,
+```
 
 ### loading alternative page ###
 ```

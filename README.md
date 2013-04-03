@@ -57,7 +57,6 @@ npm install fs-extra binaryjs express forever forever-monitor -g
 Switch to ``` seb/server/ ``` folder and type:
 ```
 server.sh (Linux) or server.bat (Windows)
-
-If you get an error message that node can not find the modules try to set an environment
-variable in ``` ~/.bashrc ``` or ``` ~/.profile ``` p.e.: ``` export NODE_PATH=/usr/lib/node_modules ```
+```
+If you get an error message that node can not find the modules try to set an environment variable in ``` ~/.bashrc ``` or ``` ~/.profile ``` p.e.: ``` export NODE_PATH=/usr/lib/node_modules ```
 

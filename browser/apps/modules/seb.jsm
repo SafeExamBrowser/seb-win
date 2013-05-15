@@ -421,6 +421,7 @@ var seb = (function() {
 		if (!x.getParam("seb.navigation.enabled")) {
 			loadFlag |= wnav.LOAD_FLAGS_BYPASS_HISTORY;
 		}
+		x.debug("loadFlag: " + loadFlag);
 	}
 	
 	// app lifecycle
@@ -499,7 +500,7 @@ var seb = (function() {
 		//
 		//var doc = (win) ? win.content.document : mainWin.content.document;
 		//doc.location.reload();
-		x.reload(win,loadFlag);
+		x.reload(win);
 	}
 	
 	function restart() { // only mainWin, experimental

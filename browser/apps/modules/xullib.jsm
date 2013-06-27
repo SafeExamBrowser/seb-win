@@ -736,15 +736,12 @@ var xullib = (function () {
 		win.XulLibBrowser.webNavigation.goBack();
 	}
 	
-	function reload(win,loadFlag) {
+	function reload(win) { // always bypass caches
 		if (!win.XulLibBrowser) {
 			_err("no xullib.browser in ChromeWindow!");
 			return false;
 		}
-		if (typeof(loadFlag) == "undefined") {
-    		loadFlag = wnav.LOAD_FLAGS_BYPASS_HISTORY | wnav.LOAD_FLAGS_BYPASS_CACHE;
-		}
-		win.XulLibBrowser.webNavigation.reload(loadFlag);
+		win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
 	}
 	
 	function goForward(win) {

@@ -6,8 +6,8 @@ Please check the **Requirement** section in the README.md first.
 Have a look at the seb config files: ``` seb/browser/apps/chrome/defaults/seb/config.PRESET.json ```
 and the startup scripts *.sh or *.bat: ``` seb/browser/bin/OS/ ```
 
-* ``` -config "debug" ``` will load ``` seb/browser/apps/chrome/defaults/seb/config.debug.json ``` which enables a titlbar and disables the locking for the main seb window.
-* ``` -config "demo" ``` will load ``` seb/browser/apps/chrome/defaults/seb/config.demo.json ``` which enables a local websocket server and the screenshot controller.
+* ``` -config "debug" ``` loads ``` seb/browser/apps/chrome/defaults/seb/config.debug.json ``` which enables a titlbar and disables the locking for the main seb window.
+* ``` -config "demo" ``` loads ``` seb/browser/apps/chrome/defaults/seb/config.demo.json ``` which enables a local websocket server and the screenshot controller.
 * omitting the ```-config``` param will load ``` seb/browser/apps/chrome/defaults/seb/config.json ```
 * ``` -configpath "PATH" ``` loads a config file from local filesystem or http|file urls (``` -config "PRESET" ``` will be ignored).
 

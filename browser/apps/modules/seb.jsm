@@ -64,6 +64,7 @@ var seb = (function() {
 			locked				=	true,
 			url				=	"",
 			reqHeader			=	null,
+			reqKey				=	null,
 			reqValue			=	null,
 			sendReqHeader			=	false,
 			loadFlag			=	0,
@@ -119,16 +120,19 @@ var seb = (function() {
 			httpRequestObserver = {
 				observe	: function(subject, topic, data) {
 					if (topic == "http-on-modify-request") {
+						subject.QueryInterface(Ci.nsIHttpChannel);
+						let url = subject.URI.spec;
 						if (!x.getParam("seb.trusted.content")) {
-							let url;
-							subject.QueryInterface(Ci.nsIHttpChannel);
-							url = subject.URI.spec; 
 							if (!isValidUrl(url)) {
 								subject.cancel(Cr.NS_BINDING_ABORTED);
 							}
 						}						
 						if (sendReqHeader) {
-							subject.QueryInterface(Ci.nsIHttpChannel);
+							if (reqKey) {
+								reqValue = getRequestValue(url,reqKey);
+								//x.debug("get req value: " + url + " : " + reqKey + " = " + reqValue);
+							}
+							//x.debug("req value: " + reqValue);
 							subject.setRequestHeader(reqHeader, reqValue, false);
 						}
 					} 
@@ -405,9 +409,12 @@ var seb = (function() {
 	
 	function setReqHeader() {
 		let rh = x.getParam("seb.request.header");
+		let rk = x.getParam("seb.request.key");
 		let rv = x.getParam("seb.request.value");
-		if (typeof rh === 'string' && rh != "" && typeof rv === 'string' && rv != "") {
+		
+		if (typeof rh === 'string' && rh != "") {
 			reqHeader = rh;
+			reqKey = rk;
 			reqValue = rv;
 			sendReqHeader = true;
 		}
@@ -902,6 +909,25 @@ var seb = (function() {
 			return false;
 		}
 		return true;	
+	}
+	
+	function getRequestValue(url,key) {
+		function toHexString(charCode) {
+			return ("0" + charCode.toString(16)).slice(-2);
+		}
+		var cv = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
+		var ch = Cc["@mozilla.org/security/hash;1"].createInstance(Ci.nsICryptoHash);
+		cv.charset = "UTF-8";
+		var arrUrl = {};
+		var arrKey = {};
+		var urlData = cv.convertToByteArray(url, arrUrl);
+		var keyData = cv.convertToByteArray(key, arrUrl);
+		ch.init(ch.SHA256);
+		ch.update(urlData, urlData.length);
+		ch.update(keyData, keyData.length);
+		var hash = ch.finish(false);
+		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+		return s;
 	}
 	
 	String.prototype.trim = function () {

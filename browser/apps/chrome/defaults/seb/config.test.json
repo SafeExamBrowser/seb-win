@@ -3,8 +3,9 @@
 						  "general.useragent.override" : "SEB"
 						  },										
 	"seb.url"				: "http://safeexambrowser.org",
-	"seb.request.header"			: "X-SafeExamBrowser",
-	"seb.request.value"			: "SEB",
+	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
+	"seb.request.key"			: "71aad4ab9dfd447cc479e6b4a7c9a544e2cafc7f3adeb68b2a21efad68eca4dc",
+	"seb.request.value"			: "",
 	"seb.mainWindow.titlebar.enabled"	: true,
 	"seb.trusted.content"			: true,
 	"seb.pattern.regex"			: false,

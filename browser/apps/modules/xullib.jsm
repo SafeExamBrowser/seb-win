@@ -55,7 +55,7 @@ var xullib = (function () {
 		app			=	null,
 		errPage			=	"",
 		wins			=	[], 		// windows array
-		//hiddenWin		=	null,		// hidddenWindow
+		hiddenWin		=	null,		// hidddenWindow
 		cl			=	null, 		// commandline Interface initialized from component xulApplication.js		
 		profile			=	{},			// object with obj(=nsIToolkitProfile), dirs[nsIFile]
 		userAppDir		=	null, 		// the HOME/.eqsoft/seb (UNIX)
@@ -65,7 +65,8 @@ var xullib = (function () {
 		checkUrl		= 	/^(http|https|file):\/\//gi,		
 		checkP12		=	/\.p12$/i,
 		checkCRT		=	/\.crt$/i,
-		
+		checkJSON		=	/^\s*?\{.*\}\s*?$/,
+		checkBase64		=	/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/,
 		winObserver		= 	{ // needed?
 			observe	: function(aSubject, aTopic, aData) {
 				_debug("observe: " + aTopic);
@@ -183,7 +184,7 @@ var xullib = (function () {
 					_debug("no debug preferences: " + debugPrefs.path);
 				}
 			}
-			//hiddenWin = Services.appShell.hiddenDOMWindow;
+			hiddenWin = Services.appShell.hiddenDOMWindow;
 			userAppDir = FileUtils.getDir("AppRegD",[], null);			 
 			_debug("userAppDir :" + userAppDir.path);
 			let defaultPrefs = FileUtils.getFile("AChrom",["defaults",APPNAME,"preferences","prefs.js"], null);
@@ -258,7 +259,7 @@ var xullib = (function () {
 			}								
 			
 			// callback for async loading of json config, the function will finish the initialisation
-			function cb(obj) {				
+			function cb(obj) {			
 				// catch json config params
 				if (typeof obj === "object" ) {
 					for (k in obj) {						
@@ -778,14 +779,53 @@ var xullib = (function () {
 	}
 	
 	// utils, debugging and misc
-	function getJSON(pUrl,callback) {
-		let url = pUrl;
+	function getJSON(data,callback) {
+		// check base64
+		if (checkBase64.test(data)) {
+			try {
+				var obj = JSON.parse(decodeBase64(data));
+				if (typeof obj === "object") {
+					callback(obj);
+						return;
+				}
+				else {
+					callback(false);
+					return;
+				}
+			}
+			catch(e) {
+				_err(e);
+				callback(false);
+				return;
+			}
+		}
+		// check json
+		if (checkJSON.test(data)) {
+			try {
+				var obj = JSON.parse(data);
+				if (typeof obj === "object") {
+					callback(obj);
+					return;
+				}
+				else {
+					callback(false);
+					return;
+				}
+			}
+			catch(e) {
+				_err(e);
+				callback(false);
+				return;
+			}
+		}
 		// check url
+		let url = data;
 		if (!checkUrl.test(url)) {
 			let f = FileUtils.File(url);
 			if (!f || !f.exists()) {
 				_err("wrong url for getJSON: " + url);
 				callback(false);
+				return;
 			}
 			else {
 				url = fph.newFileURI(f).spec;
@@ -984,6 +1024,31 @@ var xullib = (function () {
 		return ret;
 	}
 	
+	function isUTF8(charset) {
+		let type = typeof charset;
+		if (type === "undefined") {
+			return false;
+		}
+		if (type === "string" && charset.toLowerCase() === "utf-8") {
+			return true;
+		}
+		throw new Error("The charset argument can be only 'utf-8'");
+	}
+	
+	function decodeBase64(data,charset) {
+		if (isUTF8(charset)) {
+			return decodeURIComponent(escape(atob(data)))
+		}
+		return atob(data);
+	}
+	
+	function encodeBase64(data,charset) {
+		if (isUTF8(charset)) {
+			return btoa(unescape(encodeURIComponent(data)))
+		}
+		return btoa(data);
+	}
+	
 	String.prototype.normalize = function () {
 		return this.replace(/\W/g, "");
 	}
@@ -998,56 +1063,58 @@ var xullib = (function () {
 	
 	// public functions
 	return {
-		Cc							:	Cc,
-		Ci							:	Ci,
-		Cu							:	Cu,
-		Cr							:	Cr,
-		APPNAME						:	APPNAME,
-		ARRAY						:	ARRAY,
-		BOOLEAN						:	BOOLEAN,
-		NUMBER						:	NUMBER,
-		OBJECT						:	OBJECT,
-		STRING						:	STRING,
+		Cc				:	Cc,
+		Ci				:	Ci,
+		Cu				:	Cu,
+		Cr				:	Cr,
+		APPNAME				:	APPNAME,
+		ARRAY				:	ARRAY,
+		BOOLEAN				:	BOOLEAN,
+		NUMBER				:	NUMBER,
+		OBJECT				:	OBJECT,
+		STRING				:	STRING,
 		addBrowserStateListener		:	addBrowserStateListener,
 		addBrowserStatusListener	:	addBrowserStatusListener,
-		addParams					:	addParams,
-		addParam					:	addParam,
-		addWin						:	addWin,
-		debug						:	debug,
-		dumpObj						:	dumpObj,
-		err							:	err,
-		getBool						:	getBool,
-		getChromeWin				:	getChromeWin,
-		getCmd						:	getCmd,
-		getDebug					:	getDebug,
-		getParam					:	getParam,
-		getParams					:	getParams,
-		getProfile					:	getProfile,
-		getRecentWin				:	getRecentWin,		
-		getType						:	getType,
-		getMainWin					:	getMainWin,
-		getWinFromRequest			:	getWinFromRequest,
-		getWinFromUrl				:	getWinFromUrl,	
-		getWins						:	getWins,
-		getWinType					:	getWinType,
-		getUserAppDir				:	getUserAppDir,
-		goBack						:	goBack,
-		goForward					:	goForward,
-		init						:	init,
-		loadPage					:	loadPage,
-		out							:	out,
-		openXullibWin				:	openXullibWin,
-		quit						:	quit,
-		reload						:	reload,
-		removeSecondaryWins			:	removeSecondaryWins,
-		removeWin					:	removeWin,
-		resolveURI					:	resolveURI,
-		setParam					:	setParam,
-		showAllWin					:	showAllWin,
-		toString					:	toString,
-		winObserver					:	winObserver,
-		XHTML_NS					:	XHTML_NS,
-		XUL_NS						:	XUL_NS,
-		XULLIB_WIN					:	XULLIB_WIN
+		addParams			:	addParams,
+		addParam			:	addParam,
+		addWin				:	addWin,
+		debug				:	debug,
+		decodeBase64			:	decodeBase64,
+		dumpObj				:	dumpObj,
+		encodeBase64			:	encodeBase64,
+		err				:	err,
+		getBool				:	getBool,
+		getChromeWin			:	getChromeWin,
+		getCmd				:	getCmd,
+		getDebug			:	getDebug,
+		getParam			:	getParam,
+		getParams			:	getParams,
+		getProfile			:	getProfile,
+		getRecentWin			:	getRecentWin,		
+		getType				:	getType,
+		getMainWin			:	getMainWin,
+		getWinFromRequest		:	getWinFromRequest,
+		getWinFromUrl			:	getWinFromUrl,	
+		getWins				:	getWins,
+		getWinType			:	getWinType,
+		getUserAppDir			:	getUserAppDir,
+		goBack				:	goBack,
+		goForward			:	goForward,
+		init				:	init,
+		loadPage			:	loadPage,
+		out				:	out,
+		openXullibWin			:	openXullibWin,
+		quit				:	quit,
+		reload				:	reload,
+		removeSecondaryWins		:	removeSecondaryWins,
+		removeWin			:	removeWin,
+		resolveURI			:	resolveURI,
+		setParam			:	setParam,
+		showAllWin			:	showAllWin,
+		toString			:	toString,
+		winObserver			:	winObserver,
+		XHTML_NS			:	XHTML_NS,
+		XUL_NS				:	XUL_NS,
+		XULLIB_WIN			:	XULLIB_WIN
 	};
 }());

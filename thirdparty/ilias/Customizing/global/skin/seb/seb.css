@@ -1,0 +1,36 @@
+@import url("../../../../templates/default/delos.css") screen;
+
+/*  overrides existing delos classes */
+
+div.ilMainHeader {
+	background-image: none;
+	background-color: #ffffff;
+	height: 55px;
+}
+
+
+
+div.ilMainMenuSection {
+	background-color: #ffffff;
+}
+
+#fixed_content {
+	background-color: #F9F9F9;
+	box-shadow: inset 0px 2px 2px #18228F;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	top: 55px;
+	overflow: auto;
+}
+
+#il_status_box {
+	display: none;
+}
+
+/* seb style */
+
+span.sebFullname {
+	font-weight: bold;
+}

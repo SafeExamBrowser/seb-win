@@ -1,14 +1,16 @@
 @import url("../../../../templates/default/delos.css") screen;
 
 /*  overrides existing delos classes */
+div.ilStartupFrame {
+	background-image: none;
+	background-color: #ffffff;
+}
 
 div.ilMainHeader {
 	background-image: none;
 	background-color: #ffffff;
 	height: 55px;
 }
-
-
 
 div.ilMainMenuSection {
 	background-color: #ffffff;
@@ -21,7 +23,7 @@ div.ilMainMenuSection {
 	bottom: 0;
 	left: 0;
 	position: fixed;
-	top: 55px;
+	top: 53px;
 	overflow: auto;
 }
 
@@ -29,8 +31,15 @@ div.ilMainMenuSection {
 	display: none;
 }
 
-/* seb style */
+div.il_Footer {
+	display: none;
+}
 
+div.ilPermaLink {
+	display: none;
+}
+
+/* custom seb style */
 span.sebFullname {
 	font-weight: bold;
 }

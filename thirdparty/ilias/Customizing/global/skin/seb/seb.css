@@ -31,6 +31,25 @@ div.ilMainMenuSection {
 	display: none;
 }
 
+.kiosk {}
+
+div.kioskOptions {	
+	background-color: #ffffff;
+	height: 53px;
+}
+
+#tst_output {
+	background-color: #F9F9F9;
+	box-shadow: inset 0px 2px 2px #18228F;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	top: 55px;
+	overflow: auto;
+}
+
+/* ToDo hide in template */
 div.il_Footer {
 	display: none;
 }
@@ -39,7 +58,22 @@ div.ilPermaLink {
 	display: none;
 }
 
+a.ilTreeView { 
+	display: none;
+}
+
 /* custom seb style */
 span.sebFullname {
 	font-weight: bold;
+}
+
+div.sebKioskHeader {
+	padding-top : 1em;
+	padding-bottom : 1em;
+	padding-left : 2em;
+	padding-right : 2em;
+}
+
+div.sebKioskContent {
+	padding : 2em;
 }

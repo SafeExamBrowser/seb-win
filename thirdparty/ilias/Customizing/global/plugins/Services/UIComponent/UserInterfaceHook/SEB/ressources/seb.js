@@ -1,5 +1,5 @@
 function seb_init() {
-	addLogin();
+	//addLogin();
 }
 
 function addLogin() {

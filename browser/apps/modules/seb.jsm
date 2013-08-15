@@ -65,7 +65,7 @@ var seb = (function() {
 			url				=	"",
 			reqHeader			=	null,
 			reqKey				=	null,
-			reqValue			=	null,
+			reqSalt				=	null,
 			sendReqHeader			=	false,
 			loadFlag			=	0,
 			locs				=	null, 
@@ -95,7 +95,7 @@ var seb = (function() {
 							while(entries.hasMoreElements()) {  
 								let entry = entries.getNext();  
 								entry.QueryInterface(Components.interfaces.nsIFile);
-								x.debug("try to remove: " + entry.path);
+								//x.debug("try to remove: " + entry.path);
 								try {
 									entry.remove(true);
 								}
@@ -121,19 +121,22 @@ var seb = (function() {
 				observe	: function(subject, topic, data) {
 					if (topic == "http-on-modify-request") {
 						subject.QueryInterface(Ci.nsIHttpChannel);
-						let url = subject.URI.spec;
+						let url = subject.URI.spec.split("#"); // url fragment is not transmitted to the server!
+						url = url[0].toLowerCase();
+						
 						if (!x.getParam("seb.trusted.content")) {
 							if (!isValidUrl(url)) {
 								subject.cancel(Cr.NS_BINDING_ABORTED);
 							}
 						}						
 						if (sendReqHeader) {
-							if (reqKey) {
-								reqValue = getRequestValue(url,reqKey);
-								//x.debug("get req value: " + url + " : " + reqKey + " = " + reqValue);
+							var k;
+							if (reqSalt) {								
+								k = getRequestValue(url, reqKey);
+								//x.debug("get req value: " + url + " : " + reqKey + " = " + k);
 							}
-							//x.debug("req value: " + reqValue);
-							subject.setRequestHeader(reqHeader, reqValue, false);
+							//x.debug("saltdebug: " + url);
+							subject.setRequestHeader(reqHeader, k, false);
 						}
 					} 
 					
@@ -410,12 +413,12 @@ var seb = (function() {
 	function setReqHeader() {
 		let rh = x.getParam("seb.request.header");
 		let rk = x.getParam("seb.request.key");
-		let rv = x.getParam("seb.request.value");
+		let rs = x.getParam("seb.request.salt");
 		
-		if (typeof rh === 'string' && rh != "") {
+		if (typeof rh === 'string' && rh != "" && typeof rk === 'string' && rk != "") {
 			reqHeader = rh;
 			reqKey = rk;
-			reqValue = rv;
+			reqSalt = rs;
 			sendReqHeader = true;
 		}
 	}

@@ -18,22 +18,41 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	const NOT_A_SEB_REQUEST = 1;
 	const SEB_REQUEST = 2;
 	
-	const ROLES_NONE = 0;
-	const ALL_ROLES_EXPECT_ADMIN = 1;
+	const ROLES_NONE = 0; // not used
+	const ALL_ROLES_EXPECT_ADMIN = 1; // not used
 	
 	private static $_modifyGUI = 0;
 	
+	function getFullUrl() {
+		$s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+		$sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
+		$protocol = substr($sp, 0, strpos($sp, "/")) . $s;
+		$port = ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "443") ? "" : (":".$_SERVER["SERVER_PORT"]);
+		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
+	}
+	
 	function detectSeb() {
-		global $ilDB; // ToDo Caching of settings
+		global $ilDB; // ToDo Caching of settings in APC
+		//print($this->getFullUrl());
 		$q = "SELECT * FROM ui_uihk_seb_conf";
 		$ret = $ilDB->query($q);
 		$rec = $ilDB->fetchAssoc($ret);
+		$url_salt = $rec["url_salt"];
 		$req_header = $rec["req_header"];
 		$seb_key = $rec["seb_key"];
 		$role_id = $rec["role_id"];
 		$lock_role = $rec["lock_role"];
 		$kiosk = $rec["kiosk"];
+		
 		$ret = array("role_id" => $role_id, "lock_role" => $lock_role, "kiosk" => $kiosk);
+		
+		if ($url_salt) {
+			$url = strtolower($this->getFullUrl());
+			$ctx = hash_init('sha256');
+			hash_update($ctx, $url);
+			hash_update($ctx, $seb_key);
+			$seb_key = hash_final($ctx);
+		}				
 		
 		// if no seb_key or request header is configured there is nothing to be detected
 		if ($req_header == "") {
@@ -45,18 +64,16 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			return $ret;
 		}
 		
-		$server_req_header = trim($_SERVER[$req_header]);
+		$server_req_header = $_SERVER[$req_header];
+		// print $server_req_header . "<br/>" . $seb_key;
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
-		if (!$server_req_header || $server_req_header == "") {
+		if (!$server_req_header || $server_req_header == "") {			
 			$ret["request"] = self::NOT_A_SEB_REQUEST; // not a seb request
 			return $ret;
 		}
 		
-		// ToDo url salt check
-		// ....
-		
-		// if the value of the req_header is not the the stored seb key: // not a seb request
+		// if the value of the req_header is not the the stored or hashed seb key: // not a seb request
 		if ($server_req_header != $seb_key) {
 			$ret["request"] = self::NOT_A_SEB_REQUEST; // not a seb request
 			return $ret;
@@ -67,7 +84,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		}
 	}
 	
-	function getSebObject() {
+	function getSebObject() { // obsolet?
 		global $ilUser;
 		$pl = $this->getPluginObject();
 		$ret = "{
@@ -102,9 +119,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		
 		if (!self::$_modifyGUI) {
 			return array("mode" => ilUIHookPluginGUI::KEEP, "html" => "");
-		}
-		
-		
+		}			
 		
 		if ($a_comp == "Services/MainMenu" && $a_part == "main_menu_list_entries") {		
 			$pl = $this->getPluginObject();
@@ -139,11 +154,14 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	function modifyGUI($a_comp, $a_part, $a_par = array()) {
 		global $ilUser, $rbacreview, $styleDefinition, $ilAuth;
-		
+		/*
+		if (($a_part == "sub_tabs" || $a_part == "tabs") && $_GET["baseClass"] == "ilrepositorygui") {
+			
+		}*/
 		if ($a_comp == "Services/Init" && $a_part == "init_style") {
 			$req = $this->detectSeb();
 			if ($req["request"] == self::NOTHING_TO_DETECT) {
-				$this->_modifyGUI = 0;
+				self::$_modifyGUI = 0;
 				return;
 			}
 			if ($req["request"] == self::NOT_A_SEB_REQUEST) {
@@ -158,11 +176,10 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 						return;
 					}
 				}
-				
 			}
-			if ($req["request"] == self::SEB_REQUEST && $req["kiosk"]) {				
+			if ($req["request"] == self::SEB_REQUEST && $req["kiosk"]) {					
 				if (!$rbacreview->isAssigned($ilUser->getId(),2)) { // maybe admins want to test the kiosk mode?
-					// with seb request the mapped user role, anonymous and for the login site ($ilUser->getId() = 0) set seb skin
+					// with seb request the mapped user role, anonymous and for the login site ($ilUser->getId() = 0) set seb skin					
 					if (!$ilUser->getId() || $ilUser->getId() == ANONYMOUS_USER_ID || $rbacreview->isAssigned($ilUser->getId(),$req["role_id"])) {
 						self::$_modifyGUI = 1;
 						$styleDefinition->setCurrentSkin("seb");

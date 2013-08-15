@@ -5,7 +5,7 @@ include_once("./Services/Component/classes/class.ilPluginConfigGUI.php");
 /**
  * Example configuration user interface class
  *
- * @author Alex Killing <alex.killing@gmx.de>
+ * @author Stefan Schneider <schneider@hrz.uni-marburg.de>
  * @version $Id$
  *
  */
@@ -13,8 +13,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 	/**
 	* Handles all commmands, default is "configure"
 	*/
-	function performCommand($cmd)
-	{
+	function performCommand($cmd) {
 
 		switch ($cmd)
 		{
@@ -31,7 +30,6 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 	 */
 	function configure() {
 		global $tpl;
-
 		$form = $this->initConfigurationForm();
 		$tpl->setContent($form->getHTML());
 	}
@@ -134,12 +132,9 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			$kiosk = ($form->getInput("kiosk") != "") ? ((int) $form->getInput("kiosk")) : 0;
 						
 			// saving to db						
-			$q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_id = %s, lock_role = %s, kiosk = %s";
-			
+			$q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_id = %s, lock_role = %s, kiosk = %s";			
 			$types = array("text","text","integer","integer","integer","integer");
 			$data = array($req_header,$seb_key,$url_salt,$role_id,$lock_role,$kiosk);
-			//print_r($data);
-			//return;
 			
 			$ret = $ilDB->manipulateF($q,$types,$data);
 			if ($ret != 1) {
@@ -150,12 +145,10 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			}			
 			$ilCtrl->redirect($this, "configure");
 		}
-		else
-		{
+		else {
 			$form->setValuesByPost();
 			$tpl->setContent($form->getHtml());
 		}
 	}
-
 }
 ?>

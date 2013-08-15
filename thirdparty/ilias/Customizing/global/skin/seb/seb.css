@@ -9,7 +9,8 @@ div.ilStartupFrame {
 div.ilMainHeader {
 	background-image: none;
 	background-color: #ffffff;
-	height: 55px;
+	height: 53px;
+	box-shadow: inset 0 -4px 1px -2px #18228F;
 }
 
 div.ilMainMenuSection {
@@ -18,12 +19,13 @@ div.ilMainMenuSection {
 
 #fixed_content {
 	background-color: #F9F9F9;
-	box-shadow: inset 0px 2px 2px #18228F;
+	box-shadow: none;
+	/*box-shadow: inset 0px 2px 2px #18228F;*/
 	right: 0;
 	bottom: 0;
 	left: 0;
 	position: fixed;
-	top: 53px;
+	top: 55px;
 	overflow: auto;
 }
 
@@ -33,14 +35,14 @@ div.ilMainMenuSection {
 
 .kiosk {}
 
-div.kioskOptions {	
+#kioskOptions {	
 	background-color: #ffffff;
 	height: 53px;
+	box-shadow: inset 0 -4px 1px -2px #18228F;
 }
 
 #tst_output {
-	background-color: #F9F9F9;
-	box-shadow: inset 0px 2px 2px #18228F;
+	background-color: #F9F9F9;	
 	right: 0;
 	bottom: 0;
 	left: 0;

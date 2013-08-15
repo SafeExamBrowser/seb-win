@@ -53,7 +53,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			hash_update($ctx, $seb_key);
 			$seb_key = hash_final($ctx);
 		}				
-		
+				
 		// if no seb_key or request header is configured there is nothing to be detected
 		if ($req_header == "") {
 			$ret["request"] = self::NOTHING_TO_DETECT; // nothing to detect
@@ -65,6 +65,9 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		}
 		
 		$server_req_header = $_SERVER[$req_header];
+		//print $server_req_header . "<br />";
+		//print $seb_key . "<br />";
+		
 		// print $server_req_header . "<br/>" . $seb_key;
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
@@ -158,8 +161,10 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		if (($a_part == "sub_tabs" || $a_part == "tabs") && $_GET["baseClass"] == "ilrepositorygui") {
 			
 		}*/
-		if ($a_comp == "Services/Init" && $a_part == "init_style") {
+		if ($a_comp == "Services/Init" && $a_part == "init_style") {			
 			$req = $this->detectSeb();
+			//print_r($req);
+			
 			if ($req["request"] == self::NOTHING_TO_DETECT) {
 				self::$_modifyGUI = 0;
 				return;

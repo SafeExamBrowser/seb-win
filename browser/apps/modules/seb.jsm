@@ -138,6 +138,7 @@ var seb = (function() {
 							//x.debug("saltdebug: " + url);
 							subject.setRequestHeader(reqHeader, k, false);
 						}
+						// ToDo: MimeType and file extension detection: if handler exists, hook into the request
 					} 
 					
 				},
@@ -431,7 +432,7 @@ var seb = (function() {
 		if (!x.getParam("seb.navigation.enabled")) {
 			loadFlag |= wnav.LOAD_FLAGS_BYPASS_HISTORY;
 		}
-		x.debug("loadFlag: " + loadFlag);
+		//x.debug("loadFlag: " + loadFlag);
 	}
 	
 	// app lifecycle
@@ -635,27 +636,27 @@ var seb = (function() {
 		let wins = x.getWins();
 		let wx = 0;
 		let hx = 0;
-		switch (sn.sizemode) { // relative | absolute | full
-			case  "relative" :
-				x.debug("relative");
-				wx = (sn.width > 0) ? ((sw / 100) * sn.width) : sw;
-				hx = (sn.height > 0) ? ((sh / 100) * sn.height) : sh;
-				win.resizeTo(wx,hx);
-				win.setTimeout(function () { setPosition(this) }, 100 );
-			break;
-			case "absolute" :
-				x.debug("setSize absolute");
-				wx = (sn.width > 0) ? sn.width : sw;
-				hx = (sn.height > 0) ? sn.height : sh;
-				win.resizeTo(wx,hx);
-				win.setTimeout(function () { setPosition(this) }, 100 );
-				//setPosition(win);
-				break;
-			break;
-			case "full" :
-			default :
-				// do nothing;
+		if (typeof sn.width == "string" && /^\d+\%$/.test(sn.width)) {
+			var w = sn.width.replace("%","");
+			wx = (w > 0) ? ((sw / 100) * w) : sw;	
 		}
+		else {
+			wx = (sn.width > 0) ? sn.width : sw;
+		}
+		
+		if (typeof sn.height == "string" && /^\d+\%$/.test(sn.height)) {
+			var h = sn.height.replace("%","");
+			hx = (h > 0) ? ((sh / 100) * h) : sh;	
+		}
+		else {
+			hx = (sn.height > 0) ? sn.height : sh;
+		}
+		
+		if (!sn.fullsize) {
+			win.resizeTo(wx,hx);
+			win.setTimeout(function () { setPosition(this) }, 100 );
+		}
+		
 		function setPosition(win) {
 			if (win !== mainWin && wins.length > 2) { // all upcoming popups will be displayed with an x/y offset
 				let w = wins[wins.length-2];

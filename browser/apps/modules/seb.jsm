@@ -135,6 +135,9 @@ var seb = (function() {
 								k = getRequestValue(url, reqKey);
 								//x.debug("get req value: " + url + " : " + reqKey + " = " + k);
 							}
+							else {
+								k = reqKey;
+							}
 							//x.debug("saltdebug: " + url);
 							subject.setRequestHeader(reqHeader, k, false);
 						}

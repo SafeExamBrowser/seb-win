@@ -157,16 +157,18 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	function modifyGUI($a_comp, $a_part, $a_par = array()) {
 		global $ilUser, $rbacreview, $styleDefinition, $ilAuth;
+		
 		/*
 		if (($a_part == "sub_tabs" || $a_part == "tabs") && $_GET["baseClass"] == "ilrepositorygui") {
 			
 		}*/
 		if ($a_comp == "Services/Init" && $a_part == "init_style") {			
 			$req = $this->detectSeb();
+											
 			//print_r($req);
 			
 			if ($req["request"] == self::NOTHING_TO_DETECT) {
-				self::$_modifyGUI = 0;
+				self::$_modifyGUI = 1;
 				return;
 			}
 			if ($req["request"] == self::NOT_A_SEB_REQUEST) {

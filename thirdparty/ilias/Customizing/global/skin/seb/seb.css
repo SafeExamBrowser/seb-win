@@ -1,9 +1,13 @@
 @import url("../../../../templates/default/delos.css") screen;
 
 /*  overrides existing delos classes */
+
 div.ilStartupFrame {
+	margin-top: 0px;
 	background-image: none;
 	background-color: #ffffff;
+	position: relative;
+	top: 30px; 
 }
 
 div.ilMainHeader {
@@ -14,6 +18,14 @@ div.ilMainHeader {
 }
 
 div.ilMainMenuSection {
+	background-color: #ffffff;
+}
+
+div.ilInfoScreenSec {
+	display: none;
+}
+
+div.ilToolbar {
 	background-color: #ffffff;
 }
 

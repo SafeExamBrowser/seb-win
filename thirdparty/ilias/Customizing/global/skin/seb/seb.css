@@ -63,6 +63,11 @@ div.ilToolbar {
 	overflow: auto;
 }
 
+#timeleft {
+	float: right;
+	font-size: 2em;
+}
+
 /* ToDo hide in template */
 div.il_Footer {
 	display: none;
@@ -91,3 +96,5 @@ div.sebKioskHeader {
 div.sebKioskContent {
 	padding : 2em;
 }
+
+

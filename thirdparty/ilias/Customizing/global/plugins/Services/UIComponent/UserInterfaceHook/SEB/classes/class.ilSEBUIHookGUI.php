@@ -3,6 +3,7 @@
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 include_once("./Services/UIComponent/classes/class.ilUIHookPluginGUI.php");
+include_once("class.ilSEBPlugin.php");
 //include_once("./Services/JSON/classes/class.ilJsonUtil.php");
 
 /**
@@ -13,13 +14,6 @@ include_once("./Services/UIComponent/classes/class.ilUIHookPluginGUI.php");
  * @ingroup ServicesUIComponent
  */
 class ilSEBUIHookGUI extends ilUIHookPluginGUI {
-	
-	const NOTHING_TO_DETECT = 0;
-	const NOT_A_SEB_REQUEST = 1;
-	const SEB_REQUEST = 2;
-	
-	const ROLES_NONE = 0; // not used
-	const ALL_ROLES_EXPECT_ADMIN = 1; // not used
 	
 	private static $_modifyGUI = 0;
 	
@@ -40,11 +34,12 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		$url_salt = $rec["url_salt"];
 		$req_header = $rec["req_header"];
 		$seb_key = $rec["seb_key"];
-		$role_id = $rec["role_id"];
-		$lock_role = $rec["lock_role"];
-		$kiosk = $rec["kiosk"];
-		
-		$ret = array("role_id" => $role_id, "lock_role" => $lock_role, "kiosk" => $kiosk);
+		$role_deny = $rec["role_deny"];
+		$browser_access = $rec["browser_access"];
+		$role_kiosk = $rec["role_kiosk"];
+		$browser_kiosk = $rec["browser_kiosk"];
+				
+		$ret = array("role_deny" => $role_deny, "browser_access" => $browser_access, "role_kiosk" => $role_kiosk, "browser_kiosk" => $browser_kiosk);
 		
 		if ($url_salt) {
 			$url = strtolower($this->getFullUrl());
@@ -54,35 +49,21 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			$seb_key = hash_final($ctx);
 		}				
 				
-		// if no seb_key or request header is configured there is nothing to be detected
-		if ($req_header == "") {
-			$ret["request"] = self::NOTHING_TO_DETECT; // nothing to detect
-			return $ret; 
-		}
-		if ($seb_key == "") {
-			$ret["request"] = self::NOTHING_TO_DETECT; // nothing to detect
-			return $ret;
-		}
-		
-		$server_req_header = $_SERVER[$req_header];
-		//print $server_req_header . "<br />";
-		//print $seb_key . "<br />";
-		
-		// print $server_req_header . "<br/>" . $seb_key;
+		$server_req_header = $_SERVER[$req_header];		
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
-		if (!$server_req_header || $server_req_header == "") {			
-			$ret["request"] = self::NOT_A_SEB_REQUEST; // not a seb request
+		if (!$server_req_header || $server_req_header == "") {		
+			$ret["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
 			return $ret;
 		}
 		
 		// if the value of the req_header is not the the stored or hashed seb key: // not a seb request
 		if ($server_req_header != $seb_key) {
-			$ret["request"] = self::NOT_A_SEB_REQUEST; // not a seb request
+			$ret["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
 			return $ret;
 		}
 		else {
-			$ret["request"] = self::SEB_REQUEST; // seb request
+			$ret["request"] = ilSebPlugin::SEB_REQUEST; // seb request
 			return $ret;
 		}
 	}
@@ -90,6 +71,8 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	function getSebObject() { // obsolet?
 		global $ilUser;
 		$pl = $this->getPluginObject();
+		$ret = "{}"; // for further use
+		/*
 		$ret = "{
 				user: {
 					login:'".$ilUser->getLogin()."',
@@ -101,9 +84,33 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 					link: './ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems'  
 				}
 			}";
+			*/
 		return $ret;
 	}
 	 
+	function exitIlias() {
+		global $ilAuth;
+		ilSession::setClosingContext(ilSession::SESSION_CLOSE_LOGIN);
+		$ilAuth->logout();
+		session_unset();
+		session_destroy();
+		$script = "login.php?target=".$_GET["target"]."&client_id=".$_COOKIE["ilClientId"];
+		ilUtil::redirect($script);				
+	}
+	
+	function setSebGUI () {
+		global $styleDefinition;
+		self::$_modifyGUI = 1;
+		$styleDefinition->setCurrentSkin("seb");
+		$styleDefinition->setCurrentStyle("seb");
+	}
+	
+	function setUserGUI () {
+		global $styleDefinition, $ilUser;
+		self::$_modifyGUI = 0;
+		$styleDefinition->setCurrentSkin($ilUser->getPref("skin"));
+		$styleDefinition->setCurrentStyle($ilUser->getPref("style"));
+	}
 	/**
 	 * Modify HTML output of GUI elements. Modifications modes are:
 	 * - ilUIHookPluginGUI::KEEP (No modification)
@@ -127,7 +134,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		if ($a_comp == "Services/MainMenu" && $a_part == "main_menu_list_entries") {		
 			$pl = $this->getPluginObject();
 			$tpl->addJavaScript($pl->getDirectory() . "/ressources/seb.js");
-			$seb_object = $this->getSebObject();
+			$seb_object = $this->getSebObject(); 
 			return array("mode" => ilUIHookPluginGUI::REPLACE, "html" => "<script type=\"text/javascript\">var seb_object = " . $seb_object . ";</script>");
 		}
 		if ($a_comp == "Services/MainMenu" && $a_part == "main_menu_search") {		
@@ -156,41 +163,73 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 * @param string $a_par array of parameters (depend on $a_comp and $a_part)
 	 */
 	function modifyGUI($a_comp, $a_part, $a_par = array()) {
-		global $ilUser, $rbacreview, $styleDefinition, $ilAuth;
-		
-		/*
-		if (($a_part == "sub_tabs" || $a_part == "tabs") && $_GET["baseClass"] == "ilrepositorygui") {
-			
-		}*/
+		global $ilUser, $rbacreview, $ilAuth;
 		if ($a_comp == "Services/Init" && $a_part == "init_style") {			
 			$req = $this->detectSeb();
-											
 			//print_r($req);
+			$usr_id = $ilUser->getId();
+			$is_admin = $rbacreview->isAssigned($usr_id,2);
+			$is_logged_in = ($usr_id && $usr_id != ANONYMOUS_USER_ID);
+			$deny_user = false;
+			$role_deny = $req['role_deny'];
+			// check role deny			
+			if ($is_logged_in && $role_deny && !$is_admin) { // check access 				
+				$deny_user = ($role_deny == 1 || $rbacreview->isAssigned($usr_id,$role_deny));
+			}
 			
-			if ($req["request"] == self::NOTHING_TO_DETECT) {
-				self::$_modifyGUI = 1;
+			// check browser access
+			$browser_access = $req['browser_access'];					
+			$is_seb = ($req['request'] == ilSebPlugin::SEB_REQUEST);
+			$allow_browser = ($browser_access && $is_seb);
+
+			if ($deny_user && !$allow_browser) {
+				$this->exitIlias();
 				return;
 			}
-			if ($req["request"] == self::NOT_A_SEB_REQUEST) {
-				if ($req["lock_role"] && !$rbacreview->isAssigned($ilUser->getId(),2)) {					
-					if ($rbacreview->isAssigned($ilUser->getId(),$req["role_id"])) {
-						ilSession::setClosingContext(ilSession::SESSION_CLOSE_LOGIN);
-						$ilAuth->logout();
-						session_unset();
-						session_destroy();
-						$script = "login.php?target=".$_GET["target"]."&client_id=".$_COOKIE["ilClientId"];
-						ilUtil::redirect($script);
-						return;
+						
+			// check kiosk mode
+			$role_kiosk = $req['role_kiosk'];
+			$user_kiosk = false;
+			$browser_kiosk = $req['browser_kiosk'];
+			$kiosk_user = (($role_kiosk == 1 || $rbacreview->isAssigned($usr_id,$role_kiosk)) && !$is_admin);
+			
+			if ($is_logged_in) {				
+				$switchToSebGUI = false;
+				if ($kiosk_user) {
+					switch ($browser_kiosk) {
+						case ilSebPlugin::BROWSER_KIOSK_ALL :
+							$switchToSebGUI = true;
+							break;
+						case ilSebPlugin::BROWSER_KIOSK_SEB :
+							$switchToSebGUI = $is_seb;
+							break;
 					}
+					if ($switchToSebGUI) {
+						$this->setSebGUI();
+					}
+					else {
+						$this->setUserGUI();
+					}							
+				}
+				else {
+					$this->setUserGUI();
 				}
 			}
-			if ($req["request"] == self::SEB_REQUEST && $req["kiosk"]) {					
-				if (!$rbacreview->isAssigned($ilUser->getId(),2)) { // maybe admins want to test the kiosk mode?
-					// with seb request the mapped user role, anonymous and for the login site ($ilUser->getId() = 0) set seb skin					
-					if (!$ilUser->getId() || $ilUser->getId() == ANONYMOUS_USER_ID || $rbacreview->isAssigned($ilUser->getId(),$req["role_id"])) {
-						self::$_modifyGUI = 1;
-						$styleDefinition->setCurrentSkin("seb");
-						$styleDefinition->setCurrentStyle("seb");
+			else { 			
+				$switchToSebGUI = false;
+				if ($role_kiosk) {
+					switch ($browser_kiosk) {
+						case ilSebPlugin::BROWSER_KIOSK_ALL :
+							$switchToSebGUI = true;
+							break;
+						case ilSebPlugin::BROWSER_KIOSK_SEB :
+							$switchToSebGUI = $is_seb;
+					}
+					if ($switchToSebGUI) {
+						$this->setSebGUI();
+					}
+					else {
+						$this->setUserGUI();
 					}
 				}
 			}

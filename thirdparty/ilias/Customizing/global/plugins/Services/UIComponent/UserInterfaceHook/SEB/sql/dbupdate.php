@@ -1,5 +1,6 @@
 <#1>
 <?php
+
 $fields = array(
 	'req_header' => array(
                 'type' => 'text',
@@ -18,17 +19,22 @@ $fields = array(
                 'length' => 1,
                 'notnull' => false
         ),
-        'lock_role' => array(
-                'type' => 'integer',
-                'length' => 1,
-                'notnull' => false
-        ),
-        'role_id' => array(
+        'role_deny' => array(
                 'type' => 'integer',
                 'length' => 3,
                 'notnull' => false
         ),
-        'kiosk' => array(
+        'browser_access' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'notnull' => false
+        ),
+        'role_kiosk' => array(
+                'type' => 'integer',
+                'length' => 3,
+                'notnull' => false
+        ),
+        'browser_kiosk' => array(
                 'type' => 'integer',
                 'length' => 1,
                 'notnull' => false
@@ -37,9 +43,9 @@ $fields = array(
 
 $ilDB->createTable("ui_uihk_seb_conf", $fields, true, false);
 
-$q = 'INSERT INTO ui_uihk_seb_conf (req_header, seb_key, url_salt,lock_role,role_id,kiosk) VALUES (%s,%s,%s,%s,%s,%s)';
-$types = array("text", "text", "integer", "integer", "integer","integer");
-$data = array("X-SafeExamBrowser-RequestHash","",0,1,4,1);
+$q = 'INSERT INTO ui_uihk_seb_conf (req_header, seb_key, url_salt,role_deny, browser_access, role_kiosk, browser_kiosk) VALUES (%s,%s,%s,%s,%s,%s,%s)';
+$types = array("text", "text", "integer", "integer", "integer","integer","integer");
+$data = array("HTTP_X_SAFEEXAMBROWSER_REQUESTHASH","",0,1,1,1,1);
 
 $ilDB->manipulateF($q,$types,$data);
 ?>

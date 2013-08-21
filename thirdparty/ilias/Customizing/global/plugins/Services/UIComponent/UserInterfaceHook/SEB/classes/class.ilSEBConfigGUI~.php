@@ -1,7 +1,7 @@
 <?php
 
 include_once("./Services/Component/classes/class.ilPluginConfigGUI.php");
-include_once("class.ilSEBPlugin.php");
+ 
 /**
  * Example configuration user interface class
  *
@@ -52,11 +52,9 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		$req_header = ($rec['req_header'] != "") ?  $rec['req_header'] : "";
 		$seb_key = ($rec['seb_key'] != "") ? $rec['seb_key'] : "";
 		$url_salt = $rec['url_salt'];
-		$role_deny = $rec['role_deny'];
-		$browser_access = $rec['browser_access'];
-		$role_kiosk = $rec['role_kiosk'];
-		$browser_kiosk = $rec['browser_kiosk'];
-		$roles = array(0=>"none",1=>"all except Admin");
+		$lock_role = $rec['lock_role'];
+		$role_id = $rec['role_id'];
+		$kiosk = $rec['kiosk'];
 		
 		$pl = $this->getPluginObject();
 	
@@ -82,7 +80,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		$url_salt_cb->setChecked($url_salt);
 		$form->addItem($url_salt_cb);
 		
-		// global role access deny
+		// global role binding
 		$gr = $rbacreview->getGlobalRoles();
 		
 		foreach ($gr as $rid) {
@@ -92,29 +90,21 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			}
 		} 
 		
-		$role_deny_sel = new ilSelectInputGUI($pl->txt("role_deny"), "role_deny");
-		$role_deny_sel->setRequired(false);
-		$role_deny_sel->setOptions($roles);
-		$role_deny_sel->setValue($role_deny);
-		$form->addItem($role_deny_sel);
+		$roles_sel = new ilSelectInputGUI($pl->txt("roles"), "roles");
+		$roles_sel->setRequired(false);
+		$roles_sel->setOptions($roles);
+		$roles_sel->setValue($role_id);
+		$form->addItem($roles_sel);
 		
-		$browser_access_sel = new ilSelectInputGUI($pl->txt("browser_access"), "browser_access");
-		$browser_access_sel->setRequired(false);
-		$browser_access_sel->setOptions(array(0=>"none",1=>"seb"));
-		$browser_access_sel->setValue($browser_access);
-		$form->addItem($browser_access_sel);
+		// role access restriction (user with specified role are allowed to access ILIAS only with a valid SEB request)  
+		$lock_role_cb = new ilCheckboxInputGUI($pl->txt("lock_role"), "lock_role");
+		$lock_role_cb->setChecked($lock_role);
+		$form->addItem($lock_role_cb);
 		
-		$role_kiosk_sel = new ilSelectInputGUI($pl->txt("role_kiosk"), "role_kiosk");
-		$role_kiosk_sel->setRequired(false);
-		$role_kiosk_sel->setOptions($roles);
-		$role_kiosk_sel->setValue($role_kiosk);
-		$form->addItem($role_kiosk_sel);
-		 
-		$browser_kiosk_sel = new ilSelectInputGUI($pl->txt("browser_kiosk"), "browser_kiosk");
-		$browser_kiosk_sel->setRequired(false);
-		$browser_kiosk_sel->setOptions(array(0=>"all",1=>"seb"));
-		$browser_kiosk_sel->setValue($browser_kiosk);
-		$form->addItem($browser_kiosk_sel);
+		// kiosk (user with specified role are switched to the kiosk view)  
+		$kiosk_cb = new ilCheckboxInputGUI($pl->txt("kiosk"), "kiosk");
+		$kiosk_cb->setChecked($kiosk);
+		$form->addItem($kiosk_cb);
 		
 		$form->addCommandButton("save", $lng->txt("save"));
 	                
@@ -142,14 +132,14 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			
 			$seb_key = ($form->getInput("seb_key") != "") ? $form->getInput("seb_key") : "";
 			$url_salt = ($form->getInput("url_salt") != "") ? ((int) $form->getInput("url_salt")) : 0;
-			$role_deny = $form->getInput("role_deny");
-			$browser_access = $form->getInput("browser_access");
-			$role_kiosk = $form->getInput("role_kiosk");
-			$browser_kiosk = $form->getInput("browser_kiosk");
+			$role_id = ($form->getInput("roles") != "") ? $form->getInput("roles") : 0;
+			$lock_role = ($form->getInput("lock_role") != "") ? ((int) $form->getInput("lock_role")) : 0;
+			$kiosk = ($form->getInput("kiosk") != "") ? ((int) $form->getInput("kiosk")) : 0;
+						
 			// saving to db						
-			$q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_deny = %s, browser_access = %s, role_kiosk = %s, browser_kiosk = %s";			
-			$types = array("text","text","integer","integer","integer","integer","integer");
-			$data = array($req_header,$seb_key,$url_salt,$role_deny,$browser_access,$role_kiosk,$browser_kiosk);
+			$q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_id = %s, lock_role = %s, kiosk = %s";			
+			$types = array("text","text","integer","integer","integer","integer");
+			$data = array($req_header,$seb_key,$url_salt,$role_id,$lock_role,$kiosk);
 			
 			$ret = $ilDB->manipulateF($q,$types,$data);
 			if ($ret != 1) {

@@ -54,13 +54,17 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		
 		if ($rec["url_salt"]) {
 			$url = strtolower($this->getFullUrl());
-			$ctx = hash_init('sha256');
-			hash_update($ctx, $url);
-			hash_update($ctx, $rec["seb_key"]);
-			$rec["seb_key"] = hash_final($ctx);
+			//$ctx = hash_init('sha256');
+			//hash_update($ctx, $url.$rec["seb_key"]);
+			//hash_update($ctx, $rec["seb_key"]);
+			//$rec["seb_key"] = hash_final($ctx);
+			$rec["seb_key"] = hash('sha256',$url . $rec["seb_key"]);
+			//print $url . "<br/>";
+			//print $rec["seb_key"];
 		}				
 				
-		$server_req_header = $_SERVER[$rec["req_header"]];		
+		$server_req_header = $_SERVER[$rec["req_header"]];
+		// print "<br/>req_header: " . $server_req_header;		
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
 		if (!$server_req_header || $server_req_header == "") {		
@@ -192,12 +196,12 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			$browser_access = $req['browser_access'];					
 			$is_seb = ($req['request'] == ilSebPlugin::SEB_REQUEST);
 			$allow_browser = ($browser_access && $is_seb);
-
+			
 			if ($deny_user && !$allow_browser) {
 				$this->exitIlias();
 				return;
 			}
-						
+				
 			// check kiosk mode
 			$role_kiosk = $req['role_kiosk'];
 			$user_kiosk = false;

@@ -120,7 +120,10 @@ var seb = (function() {
 			httpRequestObserver = {
 				observe	: function(subject, topic, data) {
 					if (topic == "http-on-modify-request") {
+						//x.debug(data);
 						subject.QueryInterface(Ci.nsIHttpChannel);
+						//x.debug(subject.getRequestHeader('Accept'));
+						//x.debug(subject.referrer);
 						let url = subject.URI.spec.split("#"); // url fragment is not transmitted to the server!
 						url = url[0].toLowerCase();
 						
@@ -129,16 +132,15 @@ var seb = (function() {
 								subject.cancel(Cr.NS_BINDING_ABORTED);
 							}
 						}						
-						if (sendReqHeader) {
+						if (sendReqHeader && /text\/html/g.test(subject.getRequestHeader('Accept'))) { // experimental
 							var k;
 							if (reqSalt) {								
 								k = getRequestValue(url, reqKey);
-								//x.debug("get req value: " + url + " : " + reqKey + " = " + k);
+								x.debug("get req value: " + url + " : " + reqKey + " = " + k);
 							}
 							else {
 								k = reqKey;
 							}
-							//x.debug("saltdebug: " + url);
 							subject.setRequestHeader(reqHeader, k, false);
 						}
 						// ToDo: MimeType and file extension detection: if handler exists, hook into the request
@@ -926,12 +928,13 @@ var seb = (function() {
 		var cv = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
 		var ch = Cc["@mozilla.org/security/hash;1"].createInstance(Ci.nsICryptoHash);
 		cv.charset = "UTF-8";
-		var arrUrl = {};
+		//var arrUrl = {};
+		var strKey = url + key;
 		var arrKey = {};
-		var urlData = cv.convertToByteArray(url, arrUrl);
-		var keyData = cv.convertToByteArray(key, arrUrl);
+		//var urlData = cv.convertToByteArray(url, arrUrl);
+		var keyData = cv.convertToByteArray(strKey, arrKey);
 		ch.init(ch.SHA256);
-		ch.update(urlData, urlData.length);
+		//ch.update(urlData, urlData.length);
 		ch.update(keyData, keyData.length);
 		var hash = ch.finish(false);
 		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");

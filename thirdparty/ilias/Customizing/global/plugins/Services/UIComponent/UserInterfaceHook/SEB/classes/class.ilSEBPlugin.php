@@ -18,8 +18,12 @@ class ilSEBPlugin extends ilUserInterfaceHookPlugin
 	const BROWSER_KIOSK_ALL = 0;
 	const BROWSER_KIOSK_SEB = 1;
 	
-	function getPluginName()
-	{
+	public static function _isAPCInstalled() {
+		//$ret = return 1;
+		return (function_exists("apc_store") && function_exists("apc_fetch"));
+	}
+	
+	function getPluginName() {
 		return "SEB";
 	}
 	

@@ -27,10 +27,20 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	
 	function detectSeb() {
 		global $ilDB; // ToDo Caching of settings in APC
+		//if (ilSEBPlugin::)
 		//print($this->getFullUrl());
-		$q = "SELECT * FROM ui_uihk_seb_conf";
-		$ret = $ilDB->query($q);
-		$rec = $ilDB->fetchAssoc($ret);
+		$rec;
+		if (ilSEBPlugin::_isAPCInstalled() && apc_exists("SEB_CONFIG_CACHE")) {
+			$rec = apc_fetch("SEB_CONFIG_CACHE");
+			//var_dump($ret);
+		}
+		else {
+			$q = "SELECT * FROM ui_uihk_seb_conf";
+			$ret = $ilDB->query($q);
+			$rec = $ilDB->fetchAssoc($ret);
+		}
+		
+		/*
 		$url_salt = $rec["url_salt"];
 		$req_header = $rec["req_header"];
 		$seb_key = $rec["seb_key"];
@@ -40,31 +50,32 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		$browser_kiosk = $rec["browser_kiosk"];
 				
 		$ret = array("role_deny" => $role_deny, "browser_access" => $browser_access, "role_kiosk" => $role_kiosk, "browser_kiosk" => $browser_kiosk);
+		*/
 		
-		if ($url_salt) {
+		if ($rec["url_salt"]) {
 			$url = strtolower($this->getFullUrl());
 			$ctx = hash_init('sha256');
 			hash_update($ctx, $url);
-			hash_update($ctx, $seb_key);
-			$seb_key = hash_final($ctx);
+			hash_update($ctx, $rec["seb_key"]);
+			$rec["seb_key"] = hash_final($ctx);
 		}				
 				
-		$server_req_header = $_SERVER[$req_header];		
+		$server_req_header = $_SERVER[$rec["req_header"]];		
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
 		if (!$server_req_header || $server_req_header == "") {		
-			$ret["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
-			return $ret;
+			$rec["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
+			return $rec;
 		}
 		
 		// if the value of the req_header is not the the stored or hashed seb key: // not a seb request
-		if ($server_req_header != $seb_key) {
-			$ret["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
-			return $ret;
+		if ($server_req_header != $rec["seb_key"]) {
+			$rec["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
+			return $rec;
 		}
 		else {
-			$ret["request"] = ilSebPlugin::SEB_REQUEST; // seb request
-			return $ret;
+			$rec["request"] = ilSebPlugin::SEB_REQUEST; // seb request
+			return $rec;
 		}
 	}
 	

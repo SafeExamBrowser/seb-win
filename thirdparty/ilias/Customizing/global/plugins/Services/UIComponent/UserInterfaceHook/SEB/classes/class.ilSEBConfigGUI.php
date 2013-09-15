@@ -140,6 +140,8 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 				$req_header = "HTTP_".$req_header;				
 			}
 			
+			
+								
 			$seb_key = ($form->getInput("seb_key") != "") ? $form->getInput("seb_key") : "";
 			$url_salt = ($form->getInput("url_salt") != "") ? ((int) $form->getInput("url_salt")) : 0;
 			$role_deny = $form->getInput("role_deny");
@@ -156,8 +158,23 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 				ilUtil::sendFailure($lng->txt("save_failure"), true);
 			} 	
 			else 	{	
+				// store apc
+				if (ilSEBPlugin::_isAPCInstalled()) {										
+					$SEB_CONFIG_CACHE = array(
+						"req_header" => $req_header,
+						"seb_key" => $seb_key,
+						"url_salt" => (int)$url_salt,
+						"role_deny" => (int)$role_deny,
+						"browser_access" => (int)$browser_access,
+						"role_kiosk" => (int)$role_kiosk,
+						"browser_kiosk" => (int)$browser_kiosk
+					);
+					apc_store("SEB_CONFIG_CACHE",$SEB_CONFIG_CACHE);				  
+				}
 				ilUtil::sendSuccess($lng->txt("save_success"), true);
-			}			
+			}
+			
+			
 			$ilCtrl->redirect($this, "configure");
 		}
 		else {

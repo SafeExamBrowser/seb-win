@@ -53,6 +53,7 @@ var xullib = (function () {
 			
 	var 	__initialized 		= 	false,
 		app			=	null,
+		ctrls			=	{},
 		errPage			=	"",
 		wins			=	[], 		// windows array
 		hiddenWin		=	null,		// hidddenWindow
@@ -130,47 +131,56 @@ var xullib = (function () {
 		}
 	}
 	
-	// application context
-	switch (Services.appinfo.OS) { // line feed for dump messages
-		case "WINNT" :
-			lf = "\n\r";
-			break;
-		case "UNIX" :
-			lf = "\n";
-			break;
-		default :
-			lf = "\n";
-	}
-	
 	// application
 	function toString() {
 			return "xullib";
 	}
 		
 	function init(cmdLine) {
+		cl = cmdLine;
+		DEBUG = getBool(getCmd("debug"));
+		initContext();
+	}
+	
+	function initContext() {
+		// application context
+		switch (Services.appinfo.OS) { // line feed for dump messages
+			case "WINNT" :
+				lf = "\n\r";
+				loadController("win",cb,"os");
+				break;
+			case "UNIX" :
+				lf = "\n";
+				loadController("linux",cb,"os");
+				break;
+			default :
+				lf = "\n";
+		}
+		//osctrl.init();
+		
+		function cb(success) {
+			if (success) {
+				initApp();
+			}
+			else {
+				_err("failed to load controller.");
+			}
+		}
+		 
+	}
+	
+	function initApp() {
 		try {
-			if (__initialized == true) return;	
+			if (__initialized == true) return;
 			Cc["@mozilla.org/net/osfileconstantsservice;1"].getService(Ci.nsIOSFileConstantsService).init();					
 			// Services.ww.registerNotification(winObserver); // needed?
 			// profileObserver.register();
-			cl = cmdLine;
-			DEBUG = getBool(getCmd("debug"));
+			
 			let autostart = getBool(getCmd("autostart")); // if true, xullib will try to inject application module jsm and execute the init() function of the module;			
 			let errMsg = "Error importing app module " + APPNAME;
-			try {					
-				Components.utils.import("resource://modules/" + APPNAME + ".jsm");				
-				app = eval(APPNAME);
-				if (!app) {
-					_err(errMsg);
-					return false;
-				}
-				if (typeof app.init != "function") {
-					_err(errMsg + "\nno init() function in module");
-					return false;
-				}				
-			}
-			catch(e) {
-				_err(errMsg + "\n" + e);
+			
+			// application itself
+			if (!loadModule(APPNAME)) {
 				return false;
 			}
 			
@@ -312,6 +322,59 @@ var xullib = (function () {
 		}
 	}
 	
+	function loadController(ctrl,cb,id="") {
+		_debug("loading controller: " + ctrl);
+		var obj = loadModule(ctrl+"ctrl");
+		if (!obj) {
+			cb.call(null,false);
+			return false;
+			
+		}
+		if (id != "") {
+			ctrls[id] = obj;
+		}
+		else {
+			ctrls[ctrl] = obj;
+		}
+		
+		var config = getCmd(ctrl+"ctrl");
+		if (config != null) {
+			getJSON(config,_cb);
+		}
+		else {
+			obj.init(conf,cb);
+		}
+		function _cb(conf) {
+			if (typeof conf != "object" ) {
+				_err("no json object from -"+ctrl+"ctrl");
+			}
+			else {
+				obj.init(conf,cb);
+			}
+		}
+	}
+	
+	function loadModule(module) {
+		try {					
+			Components.utils.import("resource://modules/" + module + ".jsm");				
+			obj = eval(module);
+			if (!obj) {
+				_err("error loading module:"+module );
+				return false;
+			}
+			if (typeof obj.init != "function") {
+				_err(errMsg + "\nno init() function in module");
+				return false;
+			}
+			return obj;				
+		}
+		catch(e) {
+			_err(errMsg + "\n" + e);
+			return false;
+		}
+	}
+	
+
 	function quit() {
 		_debug("quit: " + APPNAME);
 		// Services.startup.quit(Services.startup.eForceQuit);
@@ -395,7 +458,7 @@ var xullib = (function () {
 		return t;
 	}
 	
-	function getPref(k) {rootDir
+	function getPref(k) {
 		switch (prefs.getPrefType(k)) {
 			case  prefs.PREF_STRING :
 				return prefs.getCharPref(k);
@@ -524,8 +587,19 @@ var xullib = (function () {
 	}
 	
 	function getParam(k) {
-		var k2 = (k.indexOf(".") < 0) ? APPNAME + "." + k : k;	
-		return params[k2];
+		var k2 = (k.indexOf(".") < 0) ? APPNAME + "." + k : k;
+		if (ctrls["os"].hasParamMapping(k2)) {
+			var ret = ctrls["os"].getParam(k2);
+			if (ret != null) {
+				return ret;
+			}
+			else {
+				return params[k2];
+			}
+		}
+		else {	
+			return params[k2];
+		}
 	}
 	
 	function getParams() {
@@ -1085,6 +1159,7 @@ var xullib = (function () {
 		getCmd				:	getCmd,
 		getDebug			:	getDebug,
 		getParam			:	getParam,
+		getJSON				:	getJSON,
 		getParams			:	getParams,
 		getProfile			:	getProfile,
 		getRecentWin			:	getRecentWin,		

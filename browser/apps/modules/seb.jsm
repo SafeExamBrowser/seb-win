@@ -36,6 +36,7 @@ Components.utils.import("resource://gre/modules/FileUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/NetUtil.jsm");
 
+
 var seb = (function() {
 	// XPCOM Services, Interfaces and Objects
 	const	x					=	xullib,
@@ -240,7 +241,7 @@ var seb = (function() {
 		Cc["@mozilla.org/net/osfileconstantsservice;1"].getService(Ci.nsIOSFileConstantsService).init();
 		x.debug("init window");
 		x.addWin(win);
-		getKeys(win); 						// for every window call
+		getKeys(win); 					// for every window call
 		setBrowserHandler(win); 			// for every window call
 		setReqHeader();
 		setLoadFlag();

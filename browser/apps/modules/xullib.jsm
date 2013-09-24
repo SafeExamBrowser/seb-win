@@ -166,7 +166,6 @@ var xullib = (function () {
 				_err("failed to load controller.");
 			}
 		}
-		 
 	}
 	
 	function initApp() {
@@ -342,7 +341,7 @@ var xullib = (function () {
 			getJSON(config,_cb);
 		}
 		else {
-			obj.init(conf,cb);
+			obj.init(null,cb);
 		}
 		function _cb(conf) {
 			if (typeof conf != "object" ) {

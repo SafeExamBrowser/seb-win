@@ -37,9 +37,12 @@ var winctrl = (function() {
 	const	x		=	xullib;
 	var 	config 		= 	null,
 		mapping		= 	{
-						"seb.url"		: 	"startURL",
-						"seb.shutdown.url"	: 	"quitURL",
-						"seb.request.key"	:	browserExamKey
+						"seb.url"			: 	"startURL",
+						"seb.shutdown.url"		: 	"quitURL",
+						"seb.request.key"		:	function() { paramHandler('browserExamKey') },
+						"seb.navigation.enabled"	:	"allowBrowsingBackForward",
+						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }
+							
 					};
 	
 	function toString () {
@@ -85,8 +88,18 @@ var winctrl = (function() {
 	}
 	
 	function browserExamKey() {
-		if (config && config["browserExamKey"] != null) {
-			return config["browserExamKey"];
+		// add some logic
+		return config["browserExamKey"];
+	}
+	
+	function allowQuit() {
+		// add some logic
+		return config["allowQuit"];
+	}
+	
+	function paramHandler(fn) {
+		if (config && config[fn] != null) {
+			return eval(fn).call(null);
 		}
 		else {
 			return null;

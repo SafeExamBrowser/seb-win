@@ -144,19 +144,20 @@ var xullib = (function () {
 	
 	function initContext() {
 		// application context
-		switch (Services.appinfo.OS) { // line feed for dump messages
+		_debug(Services.appinfo.OS);
+		switch (Services.appinfo.OS.toUpperCase()) { // line feed for dump messages
 			case "WINNT" :
 				lf = "\n\r";
 				loadController("win",cb,"os");
 				break;
 			case "UNIX" :
+			case "LINUX" :
 				lf = "\n";
 				loadController("linux",cb,"os");
 				break;
 			default :
 				lf = "\n";
 		}
-		//osctrl.init();
 		
 		function cb(success) {
 			if (success) {
@@ -354,7 +355,8 @@ var xullib = (function () {
 	}
 	
 	function loadModule(module) {
-		try {					
+		try {	
+							
 			Components.utils.import("resource://modules/" + module + ".jsm");				
 			obj = eval(module);
 			if (!obj) {

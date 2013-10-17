@@ -22,7 +22,7 @@
  *   
  * ***** END LICENSE BLOCK ***** */
 
-/* ***** GLOBAL linuxctrl SINGLETON *****
+/* ***** GLOBAL winctrl SINGLETON *****
 
 * *************************************/ 
 
@@ -32,14 +32,17 @@
 var EXPORTED_SYMBOLS = ["linuxctrl"];
 Components.utils.import("resource://modules/xullib.jsm");
 
-var winctrl = (function() {
+var linuxctrl = (function() {
 	// XPCOM Services, Interfaces and Objects
 	const	x		=	xullib;
 	var 	config 		= 	null,
 		mapping		= 	{
-						"seb.url"		: 	"startURL",
-						"seb.shutdown.url"	: 	"quitURL",
-						"seb.request.key"	:	browserExamKey
+						"seb.url"			: 	"startURL",
+						"seb.shutdown.url"		: 	"quitURL",
+						"seb.request.key"		:	function() { paramHandler('browserExamKey') },
+						"seb.navigation.enabled"	:	"allowBrowsingBackForward",
+						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }
+							
 					};
 	
 	function toString () {
@@ -53,10 +56,16 @@ var winctrl = (function() {
 	}
 	
 	function hasParamMapping(param) {
+		if (config === null) {
+			return null;
+		}
 		return mapping[param];
 	}
 	
 	function getParam(param) {
+		if (config === null) {
+			return null;
+		}
 		x.debug("ctrl.getParam: " + param);
 		switch (typeof mapping[param]) {
 			case "string" :
@@ -79,8 +88,18 @@ var winctrl = (function() {
 	}
 	
 	function browserExamKey() {
-		if (config["browserExamKey"] != null) {
-			return config["browserExamKey"];
+		// add some logic
+		return config["browserExamKey"];
+	}
+	
+	function allowQuit() {
+		// add some logic
+		return config["allowQuit"];
+	}
+	
+	function paramHandler(fn) {
+		if (config && config[fn] != null) {
+			return eval(fn).call(null);
 		}
 		else {
 			return null;

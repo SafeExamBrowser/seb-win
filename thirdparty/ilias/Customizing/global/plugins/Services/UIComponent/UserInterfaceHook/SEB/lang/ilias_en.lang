@@ -1,0 +1,13 @@
+// 
+// English Language File for SEB Plugin
+//
+ 
+<!-- language file start -->
+config#:#Configuration
+req_header#:#Request Header
+seb_key#:#SEB Key
+url_salt#:#URL Salt
+role_deny#:#Role Deny
+browser_access#:#Browser Access
+role_kiosk#:#Role for Kiosk Skin
+browser_kiosk#:#Browser for Kiosk Skin

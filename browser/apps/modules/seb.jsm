@@ -629,6 +629,8 @@ var seb = (function() {
 	
 	function setSize(win) {
 		x.debug("setSize");
+		x.debug("seb.taskbar.enabled: "+x.getParam("seb.taskbar.enabled"));
+		x.debug("seb.taskbar.height: "+x.getParam("seb.taskbar.height"));
 		let sn = (win === mainWin) ? x.getParam("seb.mainWindow.screen") : x.getParam("seb.popupWindows.screen");
 		
 		if (typeof sn != "object") {
@@ -663,6 +665,18 @@ var seb = (function() {
 			win.setTimeout(function () { setPosition(this) }, 100 );
 		}
 		
+		if (x.getParam("seb.taskbar.enabled")) {
+			let tbh = x.getParam("seb.taskbar.height");
+			x.debug("1:"+tbh);
+			tbh = (tbh && (tbh > 0)) ? tbh : 40;
+			x.debug("2:"+tbh);
+			hx -= tbh;
+			x.debug("3:"+hx);
+			x.debug("4:"+wx);
+			win.resizeTo(wx,hx);
+			//win.moveTo(0,0);			
+			win.setTimeout(function () { setPosition(this) }, 100 );
+		}
 		function setPosition(win) {
 			if (win !== mainWin && wins.length > 2) { // all upcoming popups will be displayed with an x/y offset
 				let w = wins[wins.length-2];

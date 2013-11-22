@@ -1,3 +1,27 @@
+<!-- BEGIN seb_screenshot -->
+<script type="text/javascript">
+$(document).ready(function() { $('form#taForm').submit( function() { return screenshot(); })} );
+function screenshot() {	 
+	if (seb_ScreenShot instanceof Function) {
+		var test_id = {TEST_ID};
+		var user_id = "{LOGIN}";		
+		var seq_id = {SEQ_ID};
+		var quest_id = {QUEST_ID};
+		var d = Date.now();
+		var file = { 
+			'path'		:	[test_id,user_id],
+			'filename'	:	seq_id + "_" + quest_id + "_" + d
+		};		
+		seb_ScreenShot(window,file);
+		return true;
+	}
+    else {
+		return true;
+	}
+	return true;
+}
+</script>
+<!-- END seb_screenshot -->
 <!-- BEGIN kiosk_message -->{MESSAGE}<!-- END kiosk_message -->
 <!-- BEGIN kiosk_options -->
 {KIOSK_HEAD}
@@ -28,6 +52,10 @@
 	<input type="image" name="cmd[{CMD_UNMARKED}][mark]" src="{IMAGE_UNMARKED}" title="{TEXT_UNMARKED}" />
 <!-- END isnotmarked -->
 <!-- END question_status -->
+<!-- BEGIN char_selector -->
+	<input type="image" value=" " id="ilCharSelectorToggleTest" class="ilCharSelectorToggle" title="{CHAR_SELECTOR_TEXT}" /> 
+{CHAR_SELECTOR_TEMPLATE}
+<!-- END char_selector -->
 			</td>
 			<td style="text-align: right;">
 <!-- BEGIN cancel_test -->

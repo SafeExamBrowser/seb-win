@@ -39,10 +39,11 @@ var winctrl = (function() {
 		mapping		= 	{
 						"seb.url"			: 	"startURL",
 						"seb.shutdown.url"		: 	"quitURL",
+						"seb.taskbar.enabled"		:	"showTaskBar",
+						"seb.taskbar.height"		:	"taskBarHeight",
 						"seb.request.key"		:	function() { paramHandler('browserExamKey') },
 						"seb.navigation.enabled"	:	"allowBrowsingBackForward",
-						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }
-							
+						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }							
 					};
 	
 	function toString () {

@@ -1,0 +1,21 @@
+// 
+// English Language File for SEB Plugin
+//
+ 
+<!-- language file start -->
+config#:#Configuration
+req_header#:#Request Header
+req_header_info#:#The key name of the request header field. PHP prefixes the header fields automatically with "HTTP_" alters "-" to "_" and set the whole string to uppercase. <br />The original request field name in the seb config is "X-SafeExamBrowser-RequestHash".
+seb_key#:#SEB Key
+seb_key_info#:#The key for SEB detection as a value of the request header above. 
+url_salt#:#URL Salt
+url_salt_info#:#If "URL Salt" is checked then the seb key is joined with the request url and sended as sha1-256 hash. Please ask your systemadmin for details.
+role_deny#:#Role Deny
+role_deny_info#:#If set to "all expect Admin" all other roles are blocked and only passed with a detected SEB.
+browser_access#:#Browser Access
+browser_access_info#:#If set to "seb" and "Role Deny" is set to "all expect Admin" only requests from a detected SEB are passed to ILIAS.<br />If set to "none" access is denied for <strong>ALL</strong> browsers and <strong>ALL</strong> users expected admin role, so be careful!
+role_kiosk#:#Role for Kiosk Skin
+role_kiosk_info#:#The roles to  activate the kiosk skin
+browser_kiosk#:#Browser for Kiosk Skin
+browser_kiosk_info#:#The browser to  activate the kiosk skin. If no role for kiosk mode is set above, the setting is ignored.
+

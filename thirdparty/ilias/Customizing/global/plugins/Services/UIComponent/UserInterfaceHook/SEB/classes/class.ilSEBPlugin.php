@@ -5,7 +5,7 @@ include_once("./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php
 /**
  * Example user interface plugin
  *
- * @author Alex Killing <alex.killing@gmx.de>
+ * @author Stefan Schneider <schneider@hrz.uni-marburg.de>
  * @version $Id$
  *
  */

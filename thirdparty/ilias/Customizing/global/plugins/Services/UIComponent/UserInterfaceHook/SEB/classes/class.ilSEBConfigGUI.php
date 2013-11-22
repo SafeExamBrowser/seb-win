@@ -65,6 +65,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		
 		// SEB detection
 		$req_header_txt = new ilTextInputGUI($pl->txt("req_header"), "req_header");
+		$req_header_txt->setInfo($pl->txt("req_header_info"));
 		$req_header_txt->setRequired(true);
 		$req_header_txt->setSize(50);
 		$req_header_txt->setValue($req_header);
@@ -72,6 +73,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		
 		// SEB key
 		$seb_key_txt = new ilTextInputGUI($pl->txt("seb_key"), "seb_key");
+		$seb_key_txt->setInfo($pl->txt("seb_key_info"));
 		$seb_key_txt->setRequired(true);
 		$seb_key_txt->setSize(150);
 		$seb_key_txt->setValue($seb_key);
@@ -79,6 +81,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		
 		// key is salted with current url
 		$url_salt_cb = new ilCheckboxInputGUI($pl->txt("url_salt"), "url_salt");
+		$url_salt_cb->setInfo($pl->txt("url_salt_info"));
 		$url_salt_cb->setChecked($url_salt);
 		$form->addItem($url_salt_cb);
 		
@@ -93,24 +96,28 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		} 
 		
 		$role_deny_sel = new ilSelectInputGUI($pl->txt("role_deny"), "role_deny");
+		$role_deny_sel->setInfo($pl->txt("role_deny_info"));
 		$role_deny_sel->setRequired(false);
 		$role_deny_sel->setOptions($roles);
 		$role_deny_sel->setValue($role_deny);
 		$form->addItem($role_deny_sel);
 		
 		$browser_access_sel = new ilSelectInputGUI($pl->txt("browser_access"), "browser_access");
+		$browser_access_sel->setInfo($pl->txt("browser_access_info"));
 		$browser_access_sel->setRequired(false);
 		$browser_access_sel->setOptions(array(0=>"none",1=>"seb"));
 		$browser_access_sel->setValue($browser_access);
 		$form->addItem($browser_access_sel);
 		
 		$role_kiosk_sel = new ilSelectInputGUI($pl->txt("role_kiosk"), "role_kiosk");
+		$role_kiosk_sel->setInfo($pl->txt("role_kiosk_info"));
 		$role_kiosk_sel->setRequired(false);
 		$role_kiosk_sel->setOptions($roles);
 		$role_kiosk_sel->setValue($role_kiosk);
 		$form->addItem($role_kiosk_sel);
 		 
 		$browser_kiosk_sel = new ilSelectInputGUI($pl->txt("browser_kiosk"), "browser_kiosk");
+		$browser_kiosk_sel->setInfo($pl->txt("browser_kiosk_info"));
 		$browser_kiosk_sel->setRequired(false);
 		$browser_kiosk_sel->setOptions(array(0=>"all",1=>"seb"));
 		$browser_kiosk_sel->setValue($browser_kiosk);

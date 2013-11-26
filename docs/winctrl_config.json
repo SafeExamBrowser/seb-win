@@ -1,1 +1,103 @@
-{"allowFlashFullscreen":false,"hashedQuitPassword":"","enableURLContentFilter":false,"enableJava":false,"downloadPDFFiles":false,"allowDownUploads":false,"hideBrowserWindowToolbar":true,"enableJavaScript":true,"mainBrowserWindowPositioning":1,"sendBrowserExamKey":true,"enableURLFilter":false,"chooseFileToUploadPolicy":0,"hashedAdminPassword":"","embeddedCertificates":[{"certificateData":"MIIGPjCCBSagAwIBAgIRAO6bXAAZgXz8YbQZXoYe5okwDQYJKoZIhvcNAQEFBQAwga4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJVVDEXMBUGA1UEBxMOU2FsdCBMYWtlIENpdHkxHjAcBgNVBAoTFVRoZSBVU0VSVFJVU1QgTmV0d29yazEhMB8GA1UECxMYaHR0cDovL3d3dy51c2VydHJ1c3QuY29tMTYwNAYDVQQDEy1VVE4tVVNFUkZpcnN0LUNsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgRW1haWwwHhcNMTAwNzA4MDAwMDAwWhcNMTEwNzA4MjM1OTU5WjCB5zE1MDMGA1UECxMsQ29tb2RvIFRydXN0IE5ldHdvcmsgLSBQRVJTT05BIE5PVCBWQUxJREFURUQxRjBEBgNVBAsTPVRlcm1zIGFuZCBDb25kaXRpb25zIG9mIHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9zaXRvcnkxHzAdBgNVBAsTFihjKTIwMDMgQ29tb2RvIExpbWl0ZWQxHDAaBgNVBAMTE0RhbmllbCBSLiBTY2huZWlkZXIxJzAlBgkqhkiG9w0BCQEWGGRyc0BkaWdpdGFsLWxpZmVzdHlsZS5jaDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOb7NmYQh6ftIGx30nKZ6sz2gicKjoG70gfx4xkGV\/4VR\/D4XCZs3gWnjGoyPI3Nn9uxe89dhGmyOz5txZT\/j1WCq39586qdoIQnHpdyKkKS4dJbdTKg8IBYCuFk1xH24KqeigT+FJImqmB6NQSOmoy57+grvyTB8M69DDuGQl7lUE56py+H+T79B31lAUSIXjQbDjycMgs7nR9DIEQmEJjmEw4K4rD7f9\/j6xp40zuFCUhXdc34HH8x5eqq9fVp\/oIcfq0zGt9K7eOZ+UlHKo4ClyCeWFRy1DZGpFt84fdPogL70z8\/5iG6kE1JHAhZUdszBTaGk+zE2GjNAa10mQMCAwEAAaOCAhowggIWMB8GA1UdIwQYMBaAFImCZ33EnSZwAEu0UEh83j2uBG59MB0GA1UdDgQWBBQm1qex9oqpzyhRRbFqXQTizIotRzAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH\/BAIwADAgBgNVHSUEGTAXBggrBgEFBQcDBAYLKwYBBAGyMQEDBQIwEQYJYIZIAYb4QgEBBAQDAgUgMEYGA1UdIAQ\/MD0wOwYMKwYBBAGyMQECAQEBMCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5uZXQvQ1BTMIGlBgNVHR8EgZ0wgZowTKBKoEiGRmh0dHA6Ly9jcmwuY29tb2RvY2EuY29tL1VUTi1VU0VSRmlyc3QtQ2xpZW50QXV0aGVudGljYXRpb25hbmRFbWFpbC5jcmwwSqBIoEaGRGh0dHA6Ly9jcmwuY29tb2RvLm5ldC9VVE4tVVNFUkZpcnN0LUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kRW1haWwuY3JsMGwGCCsGAQUFBwEBBGAwXjA2BggrBgEFBQcwAoYqaHR0cDovL2NydC5jb21vZG9jYS5jb20vVVROQUFBQ2xpZW50Q0EuY3J0MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5jb21vZG9jYS5jb20wIwYDVR0RBBwwGoEYZHJzQGRpZ2l0YWwtbGlmZXN0eWxlLmNoMA0GCSqGSIb3DQEBBQUAA4IBAQCi14bULjCgVzD5YLat+Y4mY7LRZo27vS7uwcNrWXZWqzcVb72ye\/4MQzkDzjULKzA7t3ipSKW\/ehtUVNh8+Umwe+BCCa594VeSf+L+1Uo1ifpjf3WLGdieti4xZTKBEFO3zugQL9+tDHvNWPFKRrUO8S74iCffTA2zFelvqHuO6CWrMD8HcoTKg4v3MJl399Kl096IRpSaWBoncEcMAQ5rHSj+kxmPXYIkI6q64L5oijheOBBFwRby6gL4YF0S3l\/QKaRBkdmY+LqA\/yYYEBfWVqN4VXaI+DFQhmIjEXgBH2lh9vzoJZNh5ugYF3VL5i+Yq3E4pCdmlU+TJvs\/ElZR","type":0,"name":"miner.ethz.ch "}],"allowQuit":true,"URLFilterRules":[{"active":true,"expression":"Allow .seb files only from safeexambrowser.org and https:\/\/exams.ethz.ch","ruleActions":[{"action":4,"active":true,"expression":"safeexambrowser.org"},{"action":2,"active":true,"expression":"https:\/\/exams.ethz.ch"},{"active":true,"expression":"*\/*.seb"}]},{"active":true,"expression":"Allow maps.google.*, block google.* and all other subdomains","ruleActions":[{"action":1,"active":true,"expression":"maps.google.*"},{"active":true,"expression":"google.*"}]},{"active":true,"expression":"Allow all other domains","ruleActions":[{"action":1,"active":true,"expression":"*"}]}],"showMenuBar":true,"browserExamKey":"a08a39c749e90b2b11d7377299e7a52f211c6f5c8c9bbfcd5172f99bcc87882c","newBrowserWindowByScriptBlockForeign":false,"quitURL":"http:\/\/safeexambrowser.org\/quit","startURL":"http:\/\/www.safeexambrowser.org\/macosx","mainBrowserWindowHeight":"100%","enableLogging":false,"logDirectoryWIN":"\/var\/folders\/9c\/gf77909d21s0vyrq43p__9lh0000gq\/T\/","monitorProcesses":false,"newBrowserWindowByLinkWidth":"800","downloadDirectoryWIN":"~\/Downloads","downloadAndOpenSebConfig":true,"newBrowserWindowByLinkBlockForeign":false,"mainBrowserWindowWidth":"100%","enableBrowserWindowToolbar":true,"proxies":{},"blockPopUpWindows":false,"newBrowserWindowByLinkPolicy":2,"newBrowserWindowByLinkHeight":"100%","allowBrowsingBackForward":false,"showTaskBar":true,"taskBarHeight":45,"enablePlugIns":true,"newBrowserWindowByScriptPolicy":2,"browserViewMode":0,"openDownloads":false,"newBrowserWindowByLinkPositioning":2}
+{
+"startURL":"http:\/\/www.safeexambrowser.org\/macosx",
+"browserExamKey":"SEBKEY",
+"browserViewMode":1,
+"mainBrowserWindowWidth":"100%",
+"mainBrowserWindowHeight":"100%",
+"mainBrowserWindowPositioning":1,
+"showTaskBar":true,
+"taskBarHeight":60,
+"allowQuit":true,
+"quitURL":"http:\/\/safeexambrowser.org\/quit",
+"allowBrowsingBackForward":false,
+"allowFlashFullscreen":false,
+"hashedQuitPassword":"",
+"enableURLContentFilter":false,
+"enableJava":false,
+"downloadPDFFiles":false,
+"allowDownUploads":false,
+"hideBrowserWindowToolbar":true,
+"enableJavaScript":true,
+"sendBrowserExamKey":true,
+"enableURLFilter":false,
+"chooseFileToUploadPolicy":0,
+"hashedAdminPassword":"",
+"embeddedCertificates":
+[
+	{
+	"certificateData":"MIIGPjCCBSagAwIBAgIRAO6bXAAZgXz8YbQZXoYe5okwDQYJKoZIhvcNAQEFBQAwga4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJVVDEXMBUGA1UEBxMOU2FsdCBMYWtlIENpdHkxHjAcBgNVBAoTFVRoZSBVU0VSVFJVU1QgTmV0d29yazEhMB8GA1UECxMYaHR0cDovL3d3dy51c2VydHJ1c3QuY29tMTYwNAYDVQQDEy1VVE4tVVNFUkZpcnN0LUNsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgRW1haWwwHhcNMTAwNzA4MDAwMDAwWhcNMTEwNzA4MjM1OTU5WjCB5zE1MDMGA1UECxMsQ29tb2RvIFRydXN0IE5ldHdvcmsgLSBQRVJTT05BIE5PVCBWQUxJREFURUQxRjBEBgNVBAsTPVRlcm1zIGFuZCBDb25kaXRpb25zIG9mIHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9zaXRvcnkxHzAdBgNVBAsTFihjKTIwMDMgQ29tb2RvIExpbWl0ZWQxHDAaBgNVBAMTE0RhbmllbCBSLiBTY2huZWlkZXIxJzAlBgkqhkiG9w0BCQEWGGRyc0BkaWdpdGFsLWxpZmVzdHlsZS5jaDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOb7NmYQh6ftIGx30nKZ6sz2gicKjoG70gfx4xkGV\/4VR\/D4XCZs3gWnjGoyPI3Nn9uxe89dhGmyOz5txZT\/j1WCq39586qdoIQnHpdyKkKS4dJbdTKg8IBYCuFk1xH24KqeigT+FJImqmB6NQSOmoy57+grvyTB8M69DDuGQl7lUE56py+H+T79B31lAUSIXjQbDjycMgs7nR9DIEQmEJjmEw4K4rD7f9\/j6xp40zuFCUhXdc34HH8x5eqq9fVp\/oIcfq0zGt9K7eOZ+UlHKo4ClyCeWFRy1DZGpFt84fdPogL70z8\/5iG6kE1JHAhZUdszBTaGk+zE2GjNAa10mQMCAwEAAaOCAhowggIWMB8GA1UdIwQYMBaAFImCZ33EnSZwAEu0UEh83j2uBG59MB0GA1UdDgQWBBQm1qex9oqpzyhRRbFqXQTizIotRzAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH\/BAIwADAgBgNVHSUEGTAXBggrBgEFBQcDBAYLKwYBBAGyMQEDBQIwEQYJYIZIAYb4QgEBBAQDAgUgMEYGA1UdIAQ\/MD0wOwYMKwYBBAGyMQECAQEBMCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5uZXQvQ1BTMIGlBgNVHR8EgZ0wgZowTKBKoEiGRmh0dHA6Ly9jcmwuY29tb2RvY2EuY29tL1VUTi1VU0VSRmlyc3QtQ2xpZW50QXV0aGVudGljYXRpb25hbmRFbWFpbC5jcmwwSqBIoEaGRGh0dHA6Ly9jcmwuY29tb2RvLm5ldC9VVE4tVVNFUkZpcnN0LUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kRW1haWwuY3JsMGwGCCsGAQUFBwEBBGAwXjA2BggrBgEFBQcwAoYqaHR0cDovL2NydC5jb21vZG9jYS5jb20vVVROQUFBQ2xpZW50Q0EuY3J0MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5jb21vZG9jYS5jb20wIwYDVR0RBBwwGoEYZHJzQGRpZ2l0YWwtbGlmZXN0eWxlLmNoMA0GCSqGSIb3DQEBBQUAA4IBAQCi14bULjCgVzD5YLat+Y4mY7LRZo27vS7uwcNrWXZWqzcVb72ye\/4MQzkDzjULKzA7t3ipSKW\/ehtUVNh8+Umwe+BCCa594VeSf+L+1Uo1ifpjf3WLGdieti4xZTKBEFO3zugQL9+tDHvNWPFKRrUO8S74iCffTA2zFelvqHuO6CWrMD8HcoTKg4v3MJl399Kl096IRpSaWBoncEcMAQ5rHSj+kxmPXYIkI6q64L5oijheOBBFwRby6gL4YF0S3l\/QKaRBkdmY+LqA\/yYYEBfWVqN4VXaI+DFQhmIjEXgBH2lh9vzoJZNh5ugYF3VL5i+Yq3E4pCdmlU+TJvs\/ElZR",
+	"type":0,
+	"name":"miner.ethz.ch "
+	}
+],
+"URLFilterRules":
+[
+	{
+	"active":true,
+	"expression":"Allow .seb files only from safeexambrowser.org and https:\/\/exams.ethz.ch",
+	"ruleActions":
+		[
+			{
+			"action":4,
+			"active":true,
+			"expression":"safeexambrowser.org"
+			},
+			{
+			"action":2,
+			"active":true,
+			"expression":"https:\/\/exams.ethz.ch"
+			},
+			{
+			"active":true,
+			"expression":"*\/*.seb"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow maps.google.*, block google.* and all other subdomains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"maps.google.*"
+			},
+			{
+			"active":true,
+			"expression":"google.*"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow all other domains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"*"
+			}
+		]
+	}
+],
+"showMenuBar":true,
+"newBrowserWindowByScriptBlockForeign":false,
+"enableLogging":false,
+"logDirectoryWIN":"\/var\/folders\/9c\/gf77909d21s0vyrq43p__9lh0000gq\/T\/",
+"monitorProcesses":false,
+"newBrowserWindowByLinkWidth":"800",
+"downloadDirectoryWIN":"~\/Downloads",
+"downloadAndOpenSebConfig":true,
+"newBrowserWindowByLinkBlockForeign":false,
+"enableBrowserWindowToolbar":true,
+"proxies":{},
+"blockPopUpWindows":false,
+"newBrowserWindowByLinkPolicy":2,
+"newBrowserWindowByLinkHeight":"100%",
+"enablePlugIns":true,
+"newBrowserWindowByScriptPolicy":2,
+"openDownloads":false,
+"newBrowserWindowByLinkPositioning":2
+}

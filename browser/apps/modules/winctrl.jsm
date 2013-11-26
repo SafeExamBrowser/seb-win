@@ -37,13 +37,16 @@ var winctrl = (function() {
 	const	x		=	xullib;
 	var 	config 		= 	null,
 		mapping		= 	{
-						"seb.url"			: 	"startURL",
-						"seb.shutdown.url"		: 	"quitURL",
-						"seb.taskbar.enabled"		:	"showTaskBar",
-						"seb.taskbar.height"		:	"taskBarHeight",
-						"seb.request.key"		:	function() { paramHandler('browserExamKey') },
-						"seb.navigation.enabled"	:	"allowBrowsingBackForward",
-						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }							
+						"seb.url"				: 	"startURL",
+						"seb.request.key"			:	browserExamKey,
+						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,
+						"seb.mainWindow.screen"			:	mainWindowScreen,
+						"seb.taskbar.enabled"			:	"showTaskBar",
+						"seb.taskbar.height"			:	"taskBarHeight",
+						"seb.shutdown.enabled"			:	"allowQuit",
+						"seb.shutdown.url"			: 	"quitURL",
+						"seb.shutdown.password"			: 	"hashedQuitPassword",					
+						"seb.navigation.enabled"		:	"allowBrowsingBackForward"												
 					};
 	
 	function toString () {
@@ -72,7 +75,6 @@ var winctrl = (function() {
 			case "string" :
 			case "number":
 			case "boolean":
-				//x.debug(config[mapping[param]]);
 				if (config[mapping[param]] != null && config[mapping[param]] != undefined) {
 					return config[mapping[param]];
 				}
@@ -88,30 +90,39 @@ var winctrl = (function() {
 		}
 	}
 	
+	function mainWindowScreen() {
+		var ret = {};
+		var pos = {
+				0 : "left",
+				1 : "center",
+				2 : "right"
+		};		
+		ret['fullsize'] = (config["browserViewMode"] == 0) ? false : true;
+		ret['width'] = config["mainBrowserWindowWidth"];
+		ret['height'] = config["mainBrowserWindowHeight"];
+		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
+		return ret;
+	}
+	
+	function titleBarEnabled() {
+		var ret = (config["browserViewMode"] == 0) ? true : false;
+		return ret;
+	}
+	
 	function browserExamKey() {
 		// add some logic
 		return config["browserExamKey"];
 	}
 	
-	function allowQuit() {
-		// add some logic
-		return config["allowQuit"];
-	}
-	
 	function paramHandler(fn) {
-		if (config && config[fn] != null) {
-			return eval(fn).call(null);
-		}
-		else {
-			return null;
-		}
+		return eval(fn).call(null); 
 	}
 	
 	return {
 		toString 			: 	toString,
 		init				:	init,
 		hasParamMapping			:	hasParamMapping,
-		getParam			:	getParam			
+		getParam			:	getParam
 	};
 }());
 

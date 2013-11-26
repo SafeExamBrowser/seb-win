@@ -8,7 +8,6 @@
  * To make a manual change to preferences, you can visit the URL about:config
  */
 
-user_pref("mousewheel.withaltkey.action", 3);
 user_pref("app.update.auto", false);
 user_pref("app.update.enabled", false);
 user_pref("browser.chromeURL", "chrome://seb/content/seb.xul");
@@ -24,11 +23,14 @@ user_pref("extensions.lastPlatformVersion", "13.0");
 user_pref("extensions.shownSelectionUI", true);
 user_pref("extensions.update.enabled", false);
 user_pref("general.useragent.locale", "de-DE");
+user_pref("gfx.direct3d.last_used_feature_level_idx", 0);
 user_pref("javascript.options.showInConsole", true);
 user_pref("javascript.options.strict", true);
+user_pref("mousewheel.withaltkey.action", 3);
 user_pref("nglayout.debug.disable_xul_cache", true);
 user_pref("nglayout.debug.disable_xul_fastload", true);
 user_pref("privacy.popups.firstTime", false);
 user_pref("privacy.popups.policy", 1);
 user_pref("toolkit.defaultChromeURI", "chrome://seb/content/seb.xul");
 user_pref("toolkit.singletonWindowType", "main");
+user_pref("toolkit.telemetry.previousBuildID", "16062008");

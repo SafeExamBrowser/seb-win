@@ -71,7 +71,7 @@ var xullib = (function () {
 		checkBase64		=	/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/,
 		winObserver		= 	{ // needed?
 			observe	: function(aSubject, aTopic, aData) {
-				_debug("observe: " + aTopic);
+				//_debug("observe: " + aTopic);
 				switch (aTopic) {
 					case "domwindowopened" :
 					break;
@@ -196,8 +196,6 @@ var xullib = (function () {
 			// profileObserver.register();
 			
 			let autostart = getBool(getCmd("autostart")); // if true, xullib will try to inject application module jsm and execute the init() function of the module;
-			
-			//_debug("autostart: " + autostart);
 						
 			let errMsg = "Error importing app module " + APPNAME;
 			
@@ -362,7 +360,7 @@ var xullib = (function () {
 			ctrls[ctrl] = obj;
 		}
 		
-		var config = getCmd(ctrl+"ctrl");
+		var config = getCmd("ctrl");
 		
 		
 		if (config != null) {
@@ -462,7 +460,6 @@ var xullib = (function () {
 	function setPrefs(prfs) {
 		for (var k in prfs) {
 			try {
-				_debug("setPref: " + k + ":" + prfs[k]);
 				setPref(k,prfs[k]);							
 			}
 			catch(e) {
@@ -895,7 +892,6 @@ var xullib = (function () {
 	function getJSON(data,callback) {		
 		// check base64
 		if (checkBase64.test(data)) {
-			_debug("check Base64?");
 			try {
 				var obj = JSON.parse(decodeBase64(data));
 				if (typeof obj === "object") {
@@ -937,7 +933,6 @@ var xullib = (function () {
 		var isUrl = checkUrl.test(url.toString());
 		
 		if (!isUrl) {
-			_debug("check URL: "+url);
 			let f = FileUtils.File(url);
 			if (!f || !f.exists()) {
 				_err("wrong url for getJSON: " + url);
@@ -1073,7 +1068,6 @@ var xullib = (function () {
 		for (var k in a) {
 			if (k.indexOf(".")<0) {
 				try {
-					_debug(APPNAME + '.' + k);
 					a[APPNAME + '.' + k] = a.k;				
 					delete a.k;
 				}

@@ -41,13 +41,20 @@ var winctrl = (function() {
 						"seb.request.key"			:	browserExamKey,
 						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,
 						"seb.mainWindow.screen"			:	mainWindowScreen,
+						"seb.popupWindows.screen"		:	popupScreen,
 						"seb.taskbar.enabled"			:	"showTaskBar",
 						"seb.taskbar.height"			:	"taskBarHeight",
 						"seb.shutdown.enabled"			:	"allowQuit",
+						"seb.popup.policy"			:	"newBrowserWindowByLinkPolicy",
 						"seb.shutdown.url"			: 	"quitURL",
 						"seb.shutdown.password"			: 	"hashedQuitPassword",					
 						"seb.navigation.enabled"		:	"allowBrowsingBackForward"												
-					};
+					},
+		pos = {
+				0 : "left",
+				1 : "center",
+				2 : "right"
+		};
 	
 	function toString () {
 			return "winctrl";
@@ -91,16 +98,20 @@ var winctrl = (function() {
 	}
 	
 	function mainWindowScreen() {
-		var ret = {};
-		var pos = {
-				0 : "left",
-				1 : "center",
-				2 : "right"
-		};		
+		var ret = {};		
 		ret['fullsize'] = (config["browserViewMode"] == 0) ? false : true;
 		ret['width'] = config["mainBrowserWindowWidth"];
 		ret['height'] = config["mainBrowserWindowHeight"];
 		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
+		return ret;
+	}
+	
+	function popupScreen() {
+		var ret = {};				
+		ret['fullsize'] = false;
+		ret['width'] = config["newBrowserWindowByLinkWidth"];
+		ret['height'] = config["newBrowserWindowByLinkHeight"];
+		ret['position'] = pos[config["newBrowserWindowByLinkPositioning"]];
 		return ret;
 	}
 	

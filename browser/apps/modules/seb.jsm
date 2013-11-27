@@ -72,6 +72,7 @@ var seb = (function() {
 			consts				=	null,
 			mainWin				=	null,
 			shutdownEnabled			=	false,
+			forceShutdown			=	false,
 			hiddenWin			=	null,
 			netMaxTimes			=	0,
 			netTimeout			=	0,
@@ -138,7 +139,7 @@ var seb = (function() {
 							var k;
 							if (reqSalt) {								
 								k = getRequestValue(url, reqKey);
-								x.debug("get req value: " + url + " : " + reqKey + " = " + k);
+								//x.debug("get req value: " + url + " : " + reqKey + " = " + k);
 							}
 							else {
 								k = reqKey;
@@ -183,15 +184,8 @@ var seb = (function() {
 							let win = x.getChromeWin(aWebProgress.DOMWindow);
 							if (aRequest && aRequest.name) {
 								if (shutdownUrl === aRequest.name) {
-									aRequest.cancel(aStatus);
-									if (!shutdownWarning) {
-										force_shutdown();
-									}
-									else {
-										if (prompt.confirm(mainWin, getLocStr("seb.title"), getLocStr("seb.shutdown.warning"))) {
-											force_shutdown();
-										}
-									}
+									aRequest.cancel(aStatus);									
+									force_shutdown();									
 									return;
 								}
 								let win = x.getChromeWin(aWebProgress.DOMWindow);
@@ -246,7 +240,6 @@ var seb = (function() {
 		setBrowserHandler(win); 			// for every window call
 		setReqHeader();
 		setLoadFlag();
-		x.debug(getHash("password"));
 		shutdownEnabled = x.getParam("seb.shutdown.enabled");		
 		if  (x.getWinType(win) == "main") {
 			if (x.getParam("seb.server.enabled")) {
@@ -454,18 +447,18 @@ var seb = (function() {
 		}
 		else {
 			let passwd = x.getParam("seb.shutdown.password");
-			if (passwd != "") {
+			if (passwd != "" && !forceShutdown) {
 				var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 				var password = {value: ""}; // default the password to pass
 				var check = {value: true}; // default the checkbox to true
-				var result = prompts.promptPassword(null, "SEB quit password", "Enter password:", password, null, check);
+				var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
 				if (!result) {
 					return;
 				}
 				var check = getHash(password.value);
 				if (check != passwd) {
 					//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
-					prompt.alert(mainWin, "Wrong Password!", "Wrong Password!");
+					prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
 					return;
 				}
 			}
@@ -680,11 +673,7 @@ var seb = (function() {
 		
 		if (sn.fullsize) { // needs to be resized with offWidth and offHeight browser frames
 			if (tb) {
-				//x.debug("win.outerWidth: "+ win.outerWidth); 
-				//x.debug("win.outerHeight: "+ win.outerHeight);
-				//x.debug("win.innerWidth: "+ win.innerWidth); 
-				//x.debug("win.innerHeight: "+ win.innerHeight);
-				win.resizeTo(sw+offWidth,sh+offHeight);
+				win.resizeTo(sw+offWidth,sh+offHeight); // don't know the correct size
 				win.setTimeout(function () { this.moveTo(0,0); }, 100 );
 			}
 		}
@@ -707,8 +696,6 @@ var seb = (function() {
 			else {
 				switch (sn.position) {
 					case "center" :
-						//win.moveTo(60,40);
-						//x.debug(win.moveTo);
 						win.moveTo(((sw/2)-(wx/2)),st);
 						break;
 					case "right" :
@@ -727,7 +714,7 @@ var seb = (function() {
 	function setTitlebar(win) {
 		let w = (win) ? win : x.getRecentWin(); 
 		w.document.getElementById("sebWindow").setAttribute("hidechrome",!x.getParam('seb.mainWindow.titlebar.enabled'));
-		x.debug("hidechrome " + w.document.getElementById("sebWindow").getAttribute("hidechrome"));
+		//x.debug("hidechrome " + w.document.getElementById("sebWindow").getAttribute("hidechrome"));
 	}
 	
 	function getKeys(win) {		
@@ -852,6 +839,7 @@ var seb = (function() {
 	}	
 	
 	function force_shutdown() {
+		forceShutdown = true;
 		shutdownEnabled = true;
 		shutdown();
 	}

@@ -1,3 +1,5 @@
-# ignore config file
-config.json
-config.eklausur.json
+# ignore test configs
+*ilias*
+*test*
+*nat*
+*local*

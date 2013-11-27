@@ -2,12 +2,12 @@
 	"prefs"					: {
 							"general.useragent.override" : "SEBKEY"
 						  },										
-	"seb.url"				: "http://vhrz522.hrz.uni-marburg.de/trunk",
+	"seb.url"				: "http://www.safeexambrowser.org",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
 	"seb.request.key"			: "SEBKEY",
 	"seb.request.salt"			: false,
 	"seb.taskbar.enabled"			: true,
-	"seb.taskbar.height"			: 10,
+	"seb.taskbar.height"			: 40,
 	"seb.mainWindow.titlebar.enabled"	: false,
 	"seb.popupWindows.titlebar.enabled"	: true,
 	"seb.mainWindow.screen"			: {
@@ -31,7 +31,7 @@
 	"seb.shutdown.keycode"			: "VK_F4",
 	"seb.shutdown.modifiers"		: "control shift",
 	"seb.shutdown.url"			: "http://seb/shutdown",
-	"seb.shutdown.password"			: "",
+	"seb.shutdown.password"			: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
 	"seb.load"				: "",
 	"seb.load.referrer.instring"		: "",
 	"seb.load.keycode"			: "VK_F6",
@@ -49,7 +49,8 @@
 	"seb.net.tries.enabled"			: false,
 	"seb.net.max.times"			: 3,
 	"seb.net.timeout"			: 10000,
-	"seb.showall.keycode"			: "VK_F1",	
+	"seb.showall.keycode"			: "VK_F1",
+	"seb.popup.policy"			: 2,
 	"seb.distinct.popup"			: true,
 	"seb.bypass.cache"			: true,	
 	"seb.removeProfile"			: true,

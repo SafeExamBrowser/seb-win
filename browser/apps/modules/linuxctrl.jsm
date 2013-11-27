@@ -22,7 +22,7 @@
  *   
  * ***** END LICENSE BLOCK ***** */
 
-/* ***** GLOBAL winctrl SINGLETON *****
+/* ***** GLOBAL linuxctrl SINGLETON *****
 
 * *************************************/ 
 
@@ -37,13 +37,24 @@ var linuxctrl = (function() {
 	const	x		=	xullib;
 	var 	config 		= 	null,
 		mapping		= 	{
-						"seb.url"			: 	"startURL",
-						"seb.shutdown.url"		: 	"quitURL",
-						"seb.request.key"		:	function() { paramHandler('browserExamKey') },
-						"seb.navigation.enabled"	:	"allowBrowsingBackForward",
-						"seb.shutdown.enabled"		:	function() { paramHandler('allowQuit') }
-							
-					};
+						"seb.url"				: 	"startURL",
+						"seb.request.key"			:	browserExamKey,
+						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,
+						"seb.mainWindow.screen"			:	mainWindowScreen,
+						"seb.popupWindows.screen"		:	popupScreen,
+						"seb.taskbar.enabled"			:	"showTaskBar",
+						"seb.taskbar.height"			:	"taskBarHeight",
+						"seb.shutdown.enabled"			:	"allowQuit",
+						"seb.popup.policy"			:	"newBrowserWindowByLinkPolicy",
+						"seb.shutdown.url"			: 	"quitURL",
+						"seb.shutdown.password"			: 	"hashedQuitPassword",					
+						"seb.navigation.enabled"		:	"allowBrowsingBackForward"												
+					},
+		pos = {
+				0 : "left",
+				1 : "center",
+				2 : "right"
+		};
 	
 	function toString () {
 			return "linuxctrl";
@@ -71,7 +82,6 @@ var linuxctrl = (function() {
 			case "string" :
 			case "number":
 			case "boolean":
-				//x.debug(config[mapping[param]]);
 				if (config[mapping[param]] != null && config[mapping[param]] != undefined) {
 					return config[mapping[param]];
 				}
@@ -87,30 +97,43 @@ var linuxctrl = (function() {
 		}
 	}
 	
+	function mainWindowScreen() {
+		var ret = {};		
+		ret['fullsize'] = (config["browserViewMode"] == 0) ? false : true;
+		ret['width'] = config["mainBrowserWindowWidth"];
+		ret['height'] = config["mainBrowserWindowHeight"];
+		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
+		return ret;
+	}
+	
+	function popupScreen() {
+		var ret = {};				
+		ret['fullsize'] = false;
+		ret['width'] = config["newBrowserWindowByLinkWidth"];
+		ret['height'] = config["newBrowserWindowByLinkHeight"];
+		ret['position'] = pos[config["newBrowserWindowByLinkPositioning"]];
+		return ret;
+	}
+	
+	function titleBarEnabled() {
+		var ret = (config["browserViewMode"] == 0) ? true : false;
+		return ret;
+	}
+	
 	function browserExamKey() {
 		// add some logic
 		return config["browserExamKey"];
 	}
 	
-	function allowQuit() {
-		// add some logic
-		return config["allowQuit"];
-	}
-	
 	function paramHandler(fn) {
-		if (config && config[fn] != null) {
-			return eval(fn).call(null);
-		}
-		else {
-			return null;
-		}
+		return eval(fn).call(null); 
 	}
 	
 	return {
 		toString 			: 	toString,
 		init				:	init,
 		hasParamMapping			:	hasParamMapping,
-		getParam			:	getParam			
+		getParam			:	getParam
 	};
 }());
 

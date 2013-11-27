@@ -1,10 +1,10 @@
 {
 	"prefs"					: {
-						  "general.useragent.override" : "SEB"
+						  "general.useragent.override" : "SEBKEY"
 						  },										
 	"seb.url"				: "http://safeexambrowser.org",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
-	"seb.request.key"			: "71aad4ab9dfd447cc479e6b4a7c9a544e2cafc7f3adeb68b2a21efad68eca4dc",
+	"seb.request.key"			: "SEBKEY",
 	"seb.request.salt"			: false,
 	"seb.mainWindow.titlebar.enabled"	: true,
 	"seb.trusted.content"			: true,

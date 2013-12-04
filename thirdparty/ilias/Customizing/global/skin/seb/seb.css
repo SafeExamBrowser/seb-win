@@ -25,6 +25,14 @@ div.ilInfoScreenSec {
 	display: none;
 }
 
+#infoscreen_section_1 {
+	display: block;
+}
+
+td.il_InfoScreenPropertyValue > a {
+	display: none;
+}
+
 div.ilToolbar {
 	background-color: #ffffff;
 }
@@ -55,15 +63,15 @@ div.ilToolbar {
 
 #kioskTestTitle {
 	position: fixed;
-	top: 12px;
-	left: 70px;
+	top: 15px;
+	left: 30px;
 	overflow: auto;
 }
 
 #kioskParticipant {
 	position: fixed;
-	top: 12px;
-	right: 10px;
+	top: 15px;
+	right: 30px;
 	overflow: auto;
 }
 

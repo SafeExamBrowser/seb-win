@@ -35,9 +35,15 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			//var_dump($ret);
 		}
 		else {
+			/*
 			$q = "SELECT * FROM ui_uihk_seb_conf";
 			$ret = $ilDB->query($q);
 			$rec = $ilDB->fetchAssoc($ret);
+			*/ 
+			$q = "SELECT config_json FROM ui_uihk_seb_conf";
+			$ret = $ilDB->query($q);
+			$rec = $ilDB->fetchAssoc($ret);
+			$rec = json_decode($rec['config_json'], true); // as assoc
 		}
 		
 		/*
@@ -139,7 +145,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 *
 	 * @return array array with entries "mode" => modification mode, "html" => your html
 	 */
-	function getHTML($a_comp, $a_part, $a_par = array()) {		
+	function getHTML($a_comp, $a_part, $a_par = array()) {				
 		global $ilUser, $rbacreview, $tpl;
 		
 		if (!self::$_modifyGUI) {
@@ -167,6 +173,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		if ($a_comp == "Services/PersonalDesktop" && $a_part == "left_column") {			
 			return array("mode" => ilUIHookPluginGUI::REPLACE, "html" => "");
 		}
+		 
 		return array("mode" => ilUIHookPluginGUI::KEEP, "html" => "");
 	}
 	
@@ -179,6 +186,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	function modifyGUI($a_comp, $a_part, $a_par = array()) {
 		global $ilUser, $rbacreview, $ilAuth;
+		
 		if ($a_comp == "Services/Init" && $a_part == "init_style") {			
 			$req = $this->detectSeb();
 			//print_r($req);

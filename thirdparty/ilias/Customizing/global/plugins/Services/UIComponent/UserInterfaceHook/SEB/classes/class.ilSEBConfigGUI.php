@@ -46,9 +46,11 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 	 */
 	public function initConfigurationForm() {
 		global $lng, $ilCtrl, $ilDB, $rbacreview;
-		$q = "SELECT * FROM ui_uihk_seb_conf";
+		$q = "SELECT config_json FROM ui_uihk_seb_conf";
 		$ret = $ilDB->query($q);
 		$rec = $ilDB->fetchAssoc($ret);
+		$rec = json_decode($rec['config_json'], true); // as assoc
+		
 		$req_header = ($rec['req_header'] != "") ?  $rec['req_header'] : "";
 		$seb_key = ($rec['seb_key'] != "") ? $rec['seb_key'] : "";
 		$url_salt = $rec['url_salt'];
@@ -146,8 +148,6 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			if (!preg_match("/^HTTP\_/", $req_header)) {
 				$req_header = "HTTP_".$req_header;				
 			}
-			
-			
 								
 			$seb_key = ($form->getInput("seb_key") != "") ? $form->getInput("seb_key") : "";
 			$url_salt = ($form->getInput("url_salt") != "") ? ((int) $form->getInput("url_salt")) : 0;
@@ -155,12 +155,27 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			$browser_access = $form->getInput("browser_access");
 			$role_kiosk = $form->getInput("role_kiosk");
 			$browser_kiosk = $form->getInput("browser_kiosk");
-			// saving to db						
-			$q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_deny = %s, browser_access = %s, role_kiosk = %s, browser_kiosk = %s";			
-			$types = array("text","text","integer","integer","integer","integer","integer");
-			$data = array($req_header,$seb_key,$url_salt,$role_deny,$browser_access,$role_kiosk,$browser_kiosk);
+			// saving to db
+			
+			// $q = "UPDATE ui_uihk_seb_conf SET req_header = %s, seb_key = %s, url_salt = %s, role_deny = %s, browser_access = %s, role_kiosk = %s, browser_kiosk = %s";			
+			// $types = array("text","text","integer","integer","integer","integer","integer");
+			// $data = array($req_header,$seb_key,$url_salt,$role_deny,$browser_access,$role_kiosk,$browser_kiosk);
+			
+			$val = array(
+				'req_header' => $req_header,
+				'seb_key' => $seb_key,
+				'url_salt' => $url_salt,
+				'role_deny' => $role_deny,
+				'browser_access' => $browser_access,
+				'role_kiosk' => $role_kiosk,
+				'browser_kiosk' => $browser_kiosk
+			);
+			$q = "UPDATE ui_uihk_seb_conf SET config_json = %s";			
+			$types = array("text");
+			$data = array(json_encode($val));
 			
 			$ret = $ilDB->manipulateF($q,$types,$data);
+			//ilUtil::sendFailure($lng->txt("save_failure") . ":" . $ret, true);
 			if ($ret != 1) {
 				ilUtil::sendFailure($lng->txt("save_failure"), true);
 			} 	

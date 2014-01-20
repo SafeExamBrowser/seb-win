@@ -26,58 +26,31 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	}
 	
 	function detectSeb() {
-		global $ilDB; // ToDo Caching of settings in APC
-		//if (ilSEBPlugin::)
-		//print($this->getFullUrl());
+		global $ilDB;
 		$rec;
+		
 		if (ilSEBPlugin::_isAPCInstalled() && apc_exists("SEB_CONFIG_CACHE")) {
 			$rec = apc_fetch("SEB_CONFIG_CACHE");
-			//var_dump($ret);
 		}
 		else {
-			/*
-			$q = "SELECT * FROM ui_uihk_seb_conf";
-			$ret = $ilDB->query($q);
-			$rec = $ilDB->fetchAssoc($ret);
-			*/ 
 			$q = "SELECT config_json FROM ui_uihk_seb_conf";
 			$ret = $ilDB->query($q);
 			$rec = $ilDB->fetchAssoc($ret);
-			$rec = json_decode($rec['config_json'], true); // as assoc
+			$rec = json_decode($rec['config_json'],true); // as assoc
 		}
-		
-		/*
-		$url_salt = $rec["url_salt"];
-		$req_header = $rec["req_header"];
-		$seb_key = $rec["seb_key"];
-		$role_deny = $rec["role_deny"];
-		$browser_access = $rec["browser_access"];
-		$role_kiosk = $rec["role_kiosk"];
-		$browser_kiosk = $rec["browser_kiosk"];
-				
-		$ret = array("role_deny" => $role_deny, "browser_access" => $browser_access, "role_kiosk" => $role_kiosk, "browser_kiosk" => $browser_kiosk);
-		*/
 		
 		if ($rec["url_salt"]) {
 			$url = strtolower($this->getFullUrl());
-			//$ctx = hash_init('sha256');
-			//hash_update($ctx, $url.$rec["seb_key"]);
-			//hash_update($ctx, $rec["seb_key"]);
-			//$rec["seb_key"] = hash_final($ctx);
 			$rec["seb_key"] = hash('sha256',$url . $rec["seb_key"]);
-			//print $url . "<br/>";
-			//print $rec["seb_key"];
-		}				
-				
+		}			
 		$server_req_header = $_SERVER[$rec["req_header"]];
-		// print "<br/>req_header: " . $server_req_header;		
+		
 		// ILIAS want to detect a valid SEB with a custom req_header and seb_key
 		// if no req_header exists in the current request: not a seb request
 		if (!$server_req_header || $server_req_header == "") {		
 			$rec["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
 			return $rec;
 		}
-		
 		// if the value of the req_header is not the the stored or hashed seb key: // not a seb request
 		if ($server_req_header != $rec["seb_key"]) {
 			$rec["request"] = ilSebPlugin::NOT_A_SEB_REQUEST; // not a seb request
@@ -93,19 +66,6 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		global $ilUser;
 		$pl = $this->getPluginObject();
 		$ret = "{}"; // for further use
-		/*
-		$ret = "{
-				user: {
-					login:'".$ilUser->getLogin()."',
-					firstname:'". $ilUser->getFirstname() ."',
-					lastname:'".$ilUser->getLastname()."',
-					matrikel:'".$ilUser->getMatriculation()."'
-				},
-				logo : {
-					link: './ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems'  
-				}
-			}";
-			*/
 		return $ret;
 	}
 	 
@@ -195,6 +155,7 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 			$is_logged_in = ($usr_id && $usr_id != ANONYMOUS_USER_ID);
 			$deny_user = false;
 			$role_deny = $req['role_deny'];
+			
 			// check role deny			
 			if ($is_logged_in && $role_deny && !$is_admin) { // check access 				
 				$deny_user = ($role_deny == 1 || $rbacreview->isAssigned($usr_id,$role_deny));

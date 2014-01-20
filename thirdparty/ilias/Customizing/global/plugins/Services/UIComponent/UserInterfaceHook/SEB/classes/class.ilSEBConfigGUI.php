@@ -46,6 +46,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 	 */
 	public function initConfigurationForm() {
 		global $lng, $ilCtrl, $ilDB, $rbacreview;
+		$pl = $this->getPluginObject();
 		$q = "SELECT config_json FROM ui_uihk_seb_conf";
 		$ret = $ilDB->query($q);
 		$rec = $ilDB->fetchAssoc($ret);
@@ -58,9 +59,9 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		$browser_access = $rec['browser_access'];
 		$role_kiosk = $rec['role_kiosk'];
 		$browser_kiosk = $rec['browser_kiosk'];
-		$roles = array(0=>"none",1=>"all except Admin");
+		$roles = array(0=>$pl->txt("role_none"),1=>$pl->txt("role_all_except_admin"));
 		
-		$pl = $this->getPluginObject();
+		
 	
 		include_once("Services/Form/classes/class.ilPropertyFormGUI.php");
 		$form = new ilPropertyFormGUI();
@@ -107,7 +108,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		$browser_access_sel = new ilSelectInputGUI($pl->txt("browser_access"), "browser_access");
 		$browser_access_sel->setInfo($pl->txt("browser_access_info"));
 		$browser_access_sel->setRequired(false);
-		$browser_access_sel->setOptions(array(0=>"none",1=>"seb"));
+		$browser_access_sel->setOptions(array(0=>$pl->txt("browser_none"),1=>$pl->txt("browser_seb")));
 		$browser_access_sel->setValue($browser_access);
 		$form->addItem($browser_access_sel);
 		
@@ -121,7 +122,7 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 		$browser_kiosk_sel = new ilSelectInputGUI($pl->txt("browser_kiosk"), "browser_kiosk");
 		$browser_kiosk_sel->setInfo($pl->txt("browser_kiosk_info"));
 		$browser_kiosk_sel->setRequired(false);
-		$browser_kiosk_sel->setOptions(array(0=>"all",1=>"seb"));
+		$browser_kiosk_sel->setOptions(array(0=>$pl->txt("browser_all"),1=>$pl->txt("browser_seb")));
 		$browser_kiosk_sel->setValue($browser_kiosk);
 		$form->addItem($browser_kiosk_sel);
 		
@@ -176,9 +177,14 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 			
 			$ret = $ilDB->manipulateF($q,$types,$data);
 			//ilUtil::sendFailure($lng->txt("save_failure") . ":" . $ret, true);
-			if ($ret != 1) {
-				ilUtil::sendFailure($lng->txt("save_failure"), true);
-			} 	
+			
+			if ($ret < 0) {
+				//ilUtil::sendFailure($lng->txt("save_failure"), true);
+				ilUtil::sendFailure($pl->txt("save_failure"), true);
+			} 
+			else if ($ret == 0) {
+				ilUtil::sendInfo($pl->txt("nothing_changed"), true);
+			}
 			else 	{	
 				// store apc
 				if (ilSEBPlugin::_isAPCInstalled()) {										
@@ -193,10 +199,8 @@ class ilSEBConfigGUI extends ilPluginConfigGUI {
 					);
 					apc_store("SEB_CONFIG_CACHE",$SEB_CONFIG_CACHE);				  
 				}
-				ilUtil::sendSuccess($lng->txt("save_success"), true);
+				ilUtil::sendSuccess($pl->txt("save_success"), true);
 			}
-			
-			
 			$ilCtrl->redirect($this, "configure");
 		}
 		else {

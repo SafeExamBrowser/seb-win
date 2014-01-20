@@ -1,11 +1,11 @@
 <#1>
 <?php
-
+//include_once("./Services/JSON/classes/class.ilJsonUtil.php");
 
 $data = array(
 	'req_header' => 'HTTP_X_SAFEEXAMBROWSER_REQUESTHASH',
 	'seb_key' => 0,
-	'url_salt' => 1,
+	'url_salt' => 0,
 	'role_deny' => 1,
 	'browser_access' => 1,
 	'role_kiosk' => 1,
@@ -14,10 +14,10 @@ $data = array(
 
 $fields = array(
 		'config_json' => array(
-				'type' => 'text',
-				'length' => '500',
-				'fixed' => false,
-				'notnull' => false
+			'type' => 'text',
+			'length' => '1000',
+			'fixed' => false,
+			'notnull' => false
 		)
 );
 

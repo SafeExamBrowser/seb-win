@@ -135,7 +135,8 @@ var seb = (function() {
 								subject.cancel(Cr.NS_BINDING_ABORTED);
 							}
 						}						
-						if (sendReqHeader && /text\/html/g.test(subject.getRequestHeader('Accept'))) { // experimental
+						//if (sendReqHeader && /text\/html/g.test(subject.getRequestHeader('Accept'))) { // experimental
+						if (sendReqHeader) { // experimental
 							var k;
 							if (reqSalt) {								
 								k = getRequestValue(url, reqKey);

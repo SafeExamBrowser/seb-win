@@ -128,7 +128,8 @@ var seb = (function() {
 						//x.debug(subject.getRequestHeader('Accept'));
 						//x.debug(subject.referrer);
 						let url = subject.URI.spec.split("#"); // url fragment is not transmitted to the server!
-						url = url[0].toLowerCase();
+						//url = url[0].toLowerCase();
+						url = url[0];
 						
 						if (!x.getParam("seb.trusted.content")) {
 							if (!isValidUrl(url)) {
@@ -928,6 +929,7 @@ var seb = (function() {
 	}
 	
 	function getRequestValue(url,key) {
+		x.debug("getRequestValue with url salt");
 		return getHash(url+key);
 	}
 	

@@ -100,6 +100,14 @@ enables/disables the titlebar of the main window and the popup windows.
 
 ```offset``` = popups will be positioned with an offset (pixel) to previous popups (only popupWindows)
 
+If your exam needs two or more independant secure browser splitted on the screen take a look to some example start files:
+
+```start_demo.left.*``` ```start_demo.right.*``` and a ```start_demo.split.*``` which starts the two files in one single command 
+
+The corresponding configs: 
+``` seb/browser/apps/chrome/defaults/seb/config.demo.left.json ```
+``` seb/browser/apps/chrome/defaults/seb/config.demo.right.json ```
+
 #### mapping seb.mainWindow.screen ####
 ```
 fullsize (true,false) : browserViewMode (1,0)
@@ -115,14 +123,6 @@ width = newBrowserWindowByLinkWidth
 height = newBrowserWindowByLinkHeight
 position ("left","center","right") = newBrowserWindowByLinkPositioning (0,1,2)
 ```
-
-If your exam needs two or more independant secure browser splitted on the screen take a look to some example start files:
-
-```start_demo.left.*``` ```start_demo.right.*``` and a ```start_demo.split.*``` which starts the two files in one single command 
-
-The corresponding configs: 
-``` seb/browser/apps/chrome/defaults/seb/config.demo.left.json ```
-``` seb/browser/apps/chrome/defaults/seb/config.demo.right.json ```
 
 ### blacklists / whitelists ###
 ```

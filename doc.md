@@ -10,15 +10,22 @@ and the startup scripts *.sh or *.bat: ``` seb/browser/bin/OS/ ```
 * ``` -config "demo" ``` loads ``` seb/browser/apps/chrome/defaults/seb/config.demo.json ``` which enables a local websocket server and the screenshot controller.
 * omitting the ```-config``` param will load ``` seb/browser/apps/chrome/defaults/seb/config.json ```
 * ``` -configpath "PATH" ``` loads a config file from local filesystem or http|file urls (``` -config "PRESET" ``` will be ignored).
-* The commandline option ``` -ctrl 1 ``` or ``` -ctrl "ewoic3RhcnR....." ``` can be used to assign control params at runtime. 
-This is currently used by the SEB 2.0 windows host application. Setting ``` -ctrl 1 ``` will use an OS specific controller config ``` seb/browser/apps/chrome/defaults/seb/winctrl.json | linuxctrl.json ``` (this is just used for debugging purposes).
-The windows seb host application assigns the config params directly as base64 encoded json string ``` -ctrl -ctrl "ewoic3RhcnR....." ``` . 
-The corresponding controller mappings are defined in the new jsm modules: ``` seb/browser/apps/modules/winctrl.jsm | linuxctrl.jsm ``` . 
-The params can be directly mapped to a seb config param like ``` "seb.url" : "startURL" ``` , or to a function like ``` "seb.mainWindow.screen"	: mainWindowScreen ``` .
-If a windows mapping param exists, its appended to the param section in the following documentation.
 
 ## Debugging ##
-The ``` *_debug ``` startup script opens an additional debug window and loads debug preferences for xulrunner (see: ``` seb/browser/apps/chrome/defaults/seb/preferences/debug.js ```)
+The ``` *_debug ``` startup script opens an additional debug window and loads debug preferences for xulrunner (see: ``` seb/browser/apps/chrome/defaults/seb/preferences/debug.js ``` )
+
+## Controller ##
+The commandline option ``` -ctrl 1 ``` or ``` -ctrl "ewoic3RhcnR....." ``` can be used to assign control params at runtime. 
+
+This is currently used by the seb 2.0 windows host application. Setting ``` -ctrl 1 ``` will use an OS specific controller config ``` seb/browser/apps/chrome/defaults/seb/winctrl.json | linuxctrl.json ``` (this is just used for debugg purposes).
+
+The windows seb host application assigns the config params directly as base64 encoded json string ``` -ctrl -ctrl "ewoic3RhcnR....." ``` . 
+
+The corresponding controller mappings are defined in the new jsm modules: ``` seb/browser/apps/modules/winctrl.jsm | linuxctrl.jsm ``` . 
+
+The params can be directly mapped to a seb config param like ``` "seb.url" : "startURL" ``` , or to a function like ``` "seb.mainWindow.screen"	: mainWindowScreen ``` .
+
+If a windows mapping param exists, it will be appended to the param section in the following documentation like ``` mapped (string) browserExamKey ``` .
 
 ## config.json ##
 
@@ -29,17 +36,23 @@ In the preferences section you can add any xulrunner preference (see http://kb.m
   "general.useragent.override" : "SEB"
 },
 ```
-ILIAS or Moodle are still using a special user-agent key for access control. 
-! The "general.useragent.override" entry overrides the **whole** user-agent string on every request, so some web applications with browser detection might be confused (switch to a mobile version or display the wrong css rules).
-The mechanism should be replaced by a custom request header (see next).
+! obsolet: The "general.useragent.override" entry overrides the **whole** user-agent string on every request, so some web applications with browser detection might be confused (switch to a mobile version or display the wrong css rules).
+It is replaced by a custom request header: 
 
-### request header / request value ###
+### request header / request value / request salt ###
 ```
-"seb.request.header"			: "X-SafeExamBrowser",
-"seb.request.value"			: "SEB",
+"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
+"seb.request.value"			: "SEB",  mapped (string) browserExamKey
+"seb.request.salt"			: false,  mapped (boolean) browserURLSalt
+
 ```
 The request header and value are sent on every request and can be used to customize the behavior of the web application. 
 A common application for this config is the assignment of SEB requests to standard user access and / or a special KIOSK mode.
+
+``` "seb.request.salt" : true ``` will append the url to the request value and send the key as sha1-256 hash. 
+
+The default value is true for seb 2.0 windows. The default of the url salt in the ILIAS PLugin is false, so it must be explicitly turned on or changed in the seb 2.0 settings.
+In a productive ILIAS setting i recommand a strong TLS connection and just one key without url salt switched on. 
 
 ### url ###
 The most important field is the autostart **URL** of the embedded Safe-Exam-Browser (SEB). It might be usefull to extend the url execution by other applications like java webstarter.

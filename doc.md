@@ -154,28 +154,9 @@ The whitelist is a list of comma seperated url pattern for explicitly allowed re
 If you set **"seb.pattern.regex"** to **true** the blacklist and whitelist pattern will be interpreted as regular expressions. 
 If you are not sure about regular expressions keep the default setting.
 
-### locking ###
-```
- "seb.locked" : true,
-```
-The default setting is a locked SEB. That means if you enable the main window titlebar or a shutdown key this will not work until you **unlock** SEB. An unlocked SEB can be relocked with:
-```
-"seb.lock.keycode" : "VK_F2",
-"seb.lock.modifiers" : "control shift",
-```
-
-### unlocking ###
-```
- "seb.unlock.enabled" : false,
-```
-If you enable the unlock function you can unlock a locked SEB:
-```
- "seb.unlock.keycode" : "VK_F3",
- "seb.unlock.modifiers" : "control shift",
-```
 
 ### shutdown ###
-An unlocked SEB can be shutdown with: 
+SEB can be shutdown with: 
 ```
  "seb.shutdown.keycode" : "VK_F4",
  "seb.shutdown.modifiers" : "control shift",

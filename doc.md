@@ -17,7 +17,7 @@ The ``` *_debug ``` startup script opens an additional debug window and loads de
 ## Controller ##
 The commandline option ``` -ctrl 1 ``` or ``` -ctrl "ewoic3RhcnR....." ``` can be used to assign control params at runtime. 
 
-This is currently used by the seb 2.0 windows host application. Setting ``` -ctrl 1 ``` will use an OS specific controller config ``` seb/browser/apps/chrome/defaults/seb/winctrl.json | linuxctrl.json ``` (this is just used for debugg purposes).
+This is currently used by the seb 2.0 windows host application. Setting ``` -ctrl 1 ``` will use an OS specific controller config ``` seb/browser/apps/chrome/defaults/seb/winctrl.json | linuxctrl.json ``` (this is just used for debugging).
 
 The windows seb host application assigns the config params directly as base64 encoded json string ``` -ctrl -ctrl "ewoic3RhcnR....." ``` . 
 
@@ -93,12 +93,16 @@ enables/disables the titlebar of the main window and the popup windows.
 },
 ```
 ```"fullsize" : true``` = fullscreen mode, positioning is ignored.
+
 ```"fullsize" : false``` = width and height are interpreted as percentage or pixel values.
+
 ```"width"```, ```"height"``` = pixel as numbers (without .px!) or percentage values (must be quoted!) are allowed (1950, "50%", ...)
+
 ```offset``` = popups will be positioned with an offset (pixel) to previous popups (only popupWindows)
 
 mapping of the window position in controller (see mainWindowScreen() and popupScreen() in winctrl.jsm, linuxctrl.jsm):
-seb.mainWindow.screen:
+
+#### seb.mainWindow.screen ####
 ```
 fullsize (true,false) : browserViewMode (1,0)
 width : mainBrowserWindowWidth
@@ -106,7 +110,7 @@ height : mainBrowserWindowHeight
 position ("left","center","right") : mainBrowserWindowPositioning (0,1,2)
 ```
 
-seb.popupWindows.screen:
+#### seb.popupWindows.screen ####
 ```
 fullsize (true,false) = no mapping
 width = newBrowserWindowByLinkWidth

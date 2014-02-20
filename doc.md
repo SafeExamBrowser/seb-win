@@ -41,13 +41,13 @@ It is replaced by a custom request header:
 
 ### request header / request value / request salt ###
 ```
-"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
-"seb.request.value"			: "SEB",  mapped (string) browserExamKey
-"seb.request.salt"			: false,  mapped (boolean) browserURLSalt
-
+"seb.request.header" : "X-SafeExamBrowser-RequestHash",
+"seb.request.value" ( mapped (string) browserExamKey ) : "SEB",  
+"seb.request.salt" ( mapped (boolean) browserURLSalt ) : false,  
 ```
+
 The request header and value are sent on every request and can be used to customize the behavior of the web application. 
-A common application for this config is the assignment of SEB requests to standard user access and / or a special KIOSK mode.
+A common application for this config is the assignment of SEB requests to standard user access and / or a special KIOSK mode (Moodle and ILIAS-SEBPlugin).
 
 ``` "seb.request.salt" : true ``` will append the url to the request value and send the key as sha1-256 hash. 
 
@@ -57,38 +57,62 @@ In a productive ILIAS setting i recommand a strong TLS connection and just one k
 ### url ###
 The most important field is the autostart **URL** of the embedded Safe-Exam-Browser (SEB). It might be usefull to extend the url execution by other applications like java webstarter.
 ```
-"seb.url" : "http://safeexambrowser.org",
+"seb.url" ( mapped (string) startURL ) : "http://safeexambrowser.org" ,
 ```
+
+### taskbar ###
+```
+"seb.taskbar.enabled" ( mapped (boolean)  showTaskBar ) : false,
+"seb.taskbar.height" ( mapped (number) taskBarHeight ) : 40,
+```
+
+enabled = true : space for a taskbar is left at the buttom of the screen (used in windows seb 2.0) 
 
 ### titlebar ###
 ```
- "seb.mainWindow.titlebar.enabled" : false,
+ "seb.mainWindow.titlebar.enabled" ( mapped (function) titleBarEnabled, browserViewMode ) : false,
  "seb.popupWindows.titlebar.enabled" : true,
 ```
 enables/disables the titlebar of the main window and the popup windows. 
-On locked = true the quit button on the mainWindow title bar is deactivated. Unfortunately hiding the quit button is not possible.
+
 
 ### window position and size ###
 ```
 "seb.mainWindow.screen"	: {
- "sizemode" : "full", 
- "width" : 0,
- "height" : 0,
- "position" : "left" 
+ "fullsize" : true, 
+ "width" : 1950,
+ "height" : 1200,
+ "position" : "center" 
 },
 "seb.popupWindows.screen" : {
- "sizemode" : "relative", 
- "width" : 50,
- "height" : 0,
+ "fullsize" : false, 
+ "width" : 800,
+ "height" : 600,
  "position" : "right",
  "offset" : 40 
 },
 ```
-```"sizemode" : "full"``` = fullscreen mode, positioning is ignored (only mainWindow)
-```"sizemode" : "relative"``` = width and height are interpreted as percentage values relative to the available screen size.
-```"sizemode" : "absolute"``` = width and height are interpreted as pixel values
-```"width"```, ```"height"``` = dependant on sizemode. 0 means full width or height (relative and absolute)
+```"fullsize" : true``` = fullscreen mode, positioning is ignored.
+```"fullsize" : false``` = width and height are interpreted as percentage or pixel values.
+```"width"```, ```"height"``` = pixel as numbers (without .px!) or percentage values (must be quoted!) are allowed (1950, "50%", ...)
 ```offset``` = popups will be positioned with an offset (pixel) to previous popups (only popupWindows)
+
+mapping of the window position in controller (see mainWindowScreen() and popupScreen() in winctrl.jsm, linuxctrl.jsm):
+seb.mainWindow.screen:
+```
+fullsize (true,false) : browserViewMode (1,0)
+width : mainBrowserWindowWidth
+height : mainBrowserWindowHeight
+position ("left","center","right") : mainBrowserWindowPositioning (0,1,2)
+```
+
+seb.popupWindows.screen:
+```
+fullsize (true,false) = no mapping
+width = newBrowserWindowByLinkWidth
+height = newBrowserWindowByLinkHeight
+position ("left","center","right") = newBrowserWindowByLinkPositioning (0,1,2)
+```
 
 If your exam needs two or more independant secure browser splitted on the screen take a look to some example start files:
 

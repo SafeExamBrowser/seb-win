@@ -39,6 +39,7 @@ var linuxctrl = (function() {
 		mapping		= 	{
 						"seb.url"				: 	"startURL",
 						"seb.request.key"			:	browserExamKey,
+						"seb.request.salt"			:	"browserURLSalt",
 						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,
 						"seb.mainWindow.screen"			:	mainWindowScreen,
 						"seb.popupWindows.screen"		:	popupScreen,

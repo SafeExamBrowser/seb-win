@@ -10,6 +10,12 @@ and the startup scripts *.sh or *.bat: ``` seb/browser/bin/OS/ ```
 * ``` -config "demo" ``` loads ``` seb/browser/apps/chrome/defaults/seb/config.demo.json ``` which enables a local websocket server and the screenshot controller.
 * omitting the ```-config``` param will load ``` seb/browser/apps/chrome/defaults/seb/config.json ```
 * ``` -configpath "PATH" ``` loads a config file from local filesystem or http|file urls (``` -config "PRESET" ``` will be ignored).
+* The commandline option ``` -ctrl 1 ``` or ``` -ctrl "ewoic3RhcnR....." ``` can be used to assign control params at runtime. 
+This is currently used by the SEB 2.0 windows host application. Setting ``` -ctrl 1 ``` will use an OS specific controller config ``` seb/browser/apps/chrome/defaults/seb/winctrl.json | linuxctrl.json ``` (this is just used for debugging purposes).
+The windows seb host application assigns the config params directly as base64 encoded json string ``` -ctrl -ctrl "ewoic3RhcnR....." ``` . 
+The corresponding controller mappings are defined in the new jsm modules: ``` seb/browser/apps/modules/winctrl.jsm | linuxctrl.jsm ``` . 
+The params can be directly mapped to a seb config param like ``` "seb.url" : "startURL" ``` , or to a function like ``` "seb.mainWindow.screen"	: mainWindowScreen ``` .
+If a windows mapping param exists, its appended to the param section in the following documentation.
 
 ## Debugging ##
 The ``` *_debug ``` startup script opens an additional debug window and loads debug preferences for xulrunner (see: ``` seb/browser/apps/chrome/defaults/seb/preferences/debug.js ```)
@@ -21,7 +27,7 @@ In the preferences section you can add any xulrunner preference (see http://kb.m
 ``` 
 "prefs": {
   "general.useragent.override" : "SEB"
- },
+},
 ```
 ILIAS or Moodle are still using a special user-agent key for access control. 
 ! The "general.useragent.override" entry overrides the **whole** user-agent string on every request, so some web applications with browser detection might be confused (switch to a mobile version or display the wrong css rules).
@@ -30,7 +36,7 @@ The mechanism should be replaced by a custom request header (see next).
 ### request header / request value ###
 ```
 "seb.request.header"			: "X-SafeExamBrowser",
-"seb.request.value"			: "SEB_REQUEST_KEY",
+"seb.request.value"			: "SEB",
 ```
 The request header and value are sent on every request and can be used to customize the behavior of the web application. 
 A common application for this config is the assignment of SEB requests to standard user access and / or a special KIOSK mode.

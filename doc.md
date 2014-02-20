@@ -100,9 +100,7 @@ enables/disables the titlebar of the main window and the popup windows.
 
 ```offset``` = popups will be positioned with an offset (pixel) to previous popups (only popupWindows)
 
-mapping of the window position in controller (see mainWindowScreen() and popupScreen() in winctrl.jsm, linuxctrl.jsm):
-
-#### seb.mainWindow.screen ####
+#### mapping seb.mainWindow.screen ####
 ```
 fullsize (true,false) : browserViewMode (1,0)
 width : mainBrowserWindowWidth
@@ -110,7 +108,7 @@ height : mainBrowserWindowHeight
 position ("left","center","right") : mainBrowserWindowPositioning (0,1,2)
 ```
 
-#### seb.popupWindows.screen ####
+#### mapping seb.popupWindows.screen ####
 ```
 fullsize (true,false) = no mapping
 width = newBrowserWindowByLinkWidth

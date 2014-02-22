@@ -156,11 +156,8 @@ var xullib = (function () {
 		else {
 			_debug("no default preferences: " + defaultPrefs.path);
 		}
-		prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)						
-		let loc = Services.locale.getLocaleComponentForUserAgent();
-		_debug("locale: " + loc);
+		prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)
 		prefs.savePrefFile(null);
-		setPref("general.useragent.locale",loc,prefs.PREF_STRING);
 		initContext();
 	}
 	
@@ -312,7 +309,8 @@ var xullib = (function () {
 				else {
 					_debug("no extra prefs in config.json"); 
 				}
-				_out("xullib started with application " + APPNAME);	
+				_out("xullib started with application " + APPNAME);
+				initLocale();	
 				if (autostart) {
 					_out("autostart " + APPNAME);
 					app.init();
@@ -346,6 +344,24 @@ var xullib = (function () {
 			_err(e);
 			return false;
 		}
+	}
+	
+	function initLocale() {
+		let loc = "en-US";
+		let osLoc = Services.locale.getLocaleComponentForUserAgent();
+		if (osLoc != "") {
+			loc = osLoc;
+		}
+		let paramLoc = getParam("seb.language");
+		if (paramLoc != null && paramLoc != "") {
+			loc = paramLoc;
+		}
+		let cmdLoc = getCmd("language");
+		if (cmdLoc != null && cmdLoc != "") {
+			loc = cmdLoc;
+		}
+		_debug("locale: " + loc);
+		setPref("general.useragent.locale",loc,prefs.PREF_STRING);
 	}
 	
 	function loadController(ctrl,cb,id="") {

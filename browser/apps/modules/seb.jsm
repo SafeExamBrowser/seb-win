@@ -776,7 +776,7 @@ var seb = (function() {
 		
 		//const { WebSocket } = Services.appShell.hiddenDOMWindow;
 		//var ws = WebSocket("ws://echo.websocket.org");		
-		x.debug("create controller...");				
+		x.debug("create screenshot controller...");				
 		win.seb_ScreenShot = function(w,file) {
 			let mimetype = x.getParam("sc.image.mimetype");
 			mimetype = (mimetype == sc.PNG || mimetype == sc.JPEG) ? mimetype : sc.PNG;

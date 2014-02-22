@@ -157,7 +157,10 @@ var xullib = (function () {
 			_debug("no default preferences: " + defaultPrefs.path);
 		}
 		prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)						
+		let loc = Services.locale.getLocaleComponentForUserAgent();
+		_debug("locale: " + loc);
 		prefs.savePrefFile(null);
+		setPref("general.useragent.locale",loc,prefs.PREF_STRING);
 		initContext();
 	}
 	

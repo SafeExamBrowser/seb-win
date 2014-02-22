@@ -38,6 +38,7 @@ var linuxctrl = (function() {
 	var 	config 		= 	null,
 		mapping		= 	{
 						"seb.url"				: 	"startURL",
+						"seb.language"				:	"browserLanguage",
 						"seb.request.key"			:	browserExamKey,
 						"seb.request.salt"			:	"browserURLSalt",
 						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,

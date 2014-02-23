@@ -42,7 +42,7 @@ It is replaced by a custom request header:
 ### request header / request value / request salt ###
 ```
 "seb.request.header" : "X-SafeExamBrowser-RequestHash",
-"seb.request.value" ( mapped (string) browserExamKey ) : "SEB",  
+"seb.request.value" ( mapped (string) browserExamKey ) : "SEBKEY",  
 "seb.request.salt" ( mapped (boolean) browserURLSalt ) : false,  
 ```
 
@@ -213,7 +213,9 @@ Sometimes network connection errors were reported after boot process of sebian. 
 "seb.restart.modifiers" : "control shift",
 ```
 **"seb.restart.mode"** = 0: manually restart is deactivated
+
 **"seb.restart.mode"** = 1: manually restart is only enabled if the initial conection failed and a blue page appears.
+
 **"seb.restart.mode"** = 2: manually restart is always enabled
 
 ### navigation ###
@@ -225,7 +227,7 @@ Sometimes network connection errors were reported after boot process of sebian. 
 "seb.forward.modifiers" : "control",
 "seb.bypass.cache" : true,
 ```
-With **"seb.navigation.enabled"** enabled you can navigate throw the browser history with assigned keys and key modifier. **"seb.bypass.cache"** controls the response caching, you have to check this for your environment.
+With **"seb.navigation.enabled"** you can navigate throw the browser history with assigned keys and key modifier. **"seb.bypass.cache"** controls the response caching, you have to check this for your environment.
 
 ```
 "seb.showall.keycode" : "VK_F1",
@@ -298,8 +300,10 @@ On the seb start screen edit the ```test id```  and ```user id```. Your screensh
 
 
 ## Third Party ##
-To use ILIAS with a SEB screenshot controller you can find a patch in ```seb/thirdparty/ilias```
-The patch will notify an existing SEB controller and hooks into the submit event of the question formular. The hook script send meta information like the id of the test, user, question and sequence and a window handle to the screenshot controller. SEB will perform a screenshot of the window DOM and send the binary screenshot data through a persistant secure websocket connection to the server (port 8443). The server stores the screenshot into ```seb/server/websocket/data/TESTID/USERID/SEQUENCEID_QUESTIONID_TIMESTAMP.jpg|png```
+To use ILIAS with a SEB screenshot controller you cann install the ILIAS SEBPlugin: 
+
+http://www.ilias.de/docu/goto_docu_dcl_3342_331.html
+
 
 ## Security: ssl and client certificates ##
 The demo version provides a CA and two client certificates to demonstrate the usage of ssl certificates: 

@@ -156,17 +156,24 @@ If you are not sure about regular expressions keep the default setting.
 
 
 ### shutdown ###
-SEB can be shutdown with: 
+SEB can be shutdown if enabled and if seb.password is not empty seb will prompt for a password (default password is base64("password")).
+
+The default shutdown keycode is ctrl-shift-F4 (or if not locked from OS also with alt-F4). 
+
+If you enabled the titlebar of the main window you can shutdown SEB with the default window close control of the titlebar.
+   
 ```
+ "seb.shutdown.enabled" ( mapped (boolean) allowQuit ) : true,
+ "seb.shutdown.password" ( mapped (string base64) hashedQuitPassword ) :  5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+ "seb.shutdown.url" (mapped (string) quitURL ) : "http://seb/shutdown"
  "seb.shutdown.keycode" : "VK_F4",
  "seb.shutdown.modifiers" : "control shift",
 ```
-or if you enabled the titlebar of the main window you can shutdown SEB with the default window close control of the titlebar.
 
-With a shutdown url, seb can be forced to quit by calling a special embedded url, locking will be ignored. 
+With a shutdown url, seb can be forced to quit by calling a special embedded url, the password will be ignored.
 ```
 "seb.shutdown.url" : "http://seb/shutdown",
-"seb.shutdown.warning" : true,
+
 ```
 
 ### loading alternative page ###
@@ -211,7 +218,7 @@ Sometimes network connection errors were reported after boot process of sebian. 
 
 ### navigation ###
 ```
-"seb.navigation.enabled" : false,
+"seb.navigation.enabled" ( mapped (boolean) allowBrowsingBackForward ) : false,
 "seb.back.keycode" : "VK_LEFT"
 "seb.back.modifiers" : "control",
 "seb.forward.keycode" : "VK_RIGHT",

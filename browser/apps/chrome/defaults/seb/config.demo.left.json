@@ -3,6 +3,7 @@
 							"general.useragent.override" : "SEBKEY"
 						  },										
 	"seb.url"				: "https://localhost:8443/demo/index.html",
+	"seb.language"				: "en-US",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
 	"seb.request.key"			: "SEBKEY",
 	"seb.request.salt"			: false,
@@ -54,8 +55,8 @@
 	"seb.distinct.popup"			: true,
 	"seb.bypass.cache"			: true,	
 	"seb.removeProfile"			: true,
-	"seb.screenshot.controller"		: true, 
 	"seb.alert.controller"			: true, 
+	"seb.screenshot.controller"		: true, 
 	"sc.image.mimetype"			: "image/jpeg",
 	"sc.sound"				: true,
 	"seb.togglehidden.enabled"		: true,

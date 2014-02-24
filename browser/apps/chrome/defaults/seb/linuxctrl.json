@@ -1,0 +1,105 @@
+{
+"startURL":"http://safeexambrowser.org",
+"browserExamKey":"SEBKEY",
+"browserURLSalt":true,
+"browserLanguage":"en-US",
+"browserViewMode":1,
+"mainBrowserWindowWidth":"100%",
+"mainBrowserWindowHeight":"100%",
+"mainBrowserWindowPositioning":0,
+"newBrowserWindowByLinkPolicy":2,
+"newBrowserWindowByLinkWidth":"800",
+"newBrowserWindowByLinkHeight":"600",
+"newBrowserWindowByLinkPositioning":1,
+"showTaskBar":false,
+"taskBarHeight":40,
+"allowQuit":true,
+"quitURL":"http:\/\/safeexambrowser.org\/quit",
+"hashedQuitPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+"allowBrowsingBackForward":true,
+"allowFlashFullscreen":false,
+"enableURLContentFilter":false,
+"enableJava":false,
+"downloadPDFFiles":false,
+"allowDownUploads":false,
+"hideBrowserWindowToolbar":true,
+"enableJavaScript":true,
+"sendBrowserExamKey":true,
+"enableURLFilter":false,
+"chooseFileToUploadPolicy":0,
+"hashedAdminPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+"embeddedCertificates":
+[
+	{
+	"certificateData":"",
+	"type":0,
+	"name":"miner.ethz.ch"
+	}
+],
+"URLFilterRules":
+[
+	{
+	"active":true,
+	"expression":"Allow .seb files only from safeexambrowser.org and https:\/\/exams.ethz.ch",
+	"ruleActions":
+		[
+			{
+			"action":4,
+			"active":true,
+			"expression":"safeexambrowser.org"
+			},
+			{
+			"action":2,
+			"active":true,
+			"expression":"https:\/\/exams.ethz.ch"
+			},
+			{
+			"active":true,
+			"expression":"*\/*.seb"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow maps.google.*, block google.* and all other subdomains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"maps.google.*"
+			},
+			{
+			"active":true,
+			"expression":"google.*"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow all other domains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"*"
+			}
+		]
+	}
+],
+"showMenuBar":true,
+"newBrowserWindowByScriptBlockForeign":false,
+"enableLogging":false,
+"logDirectoryWIN":"",
+"monitorProcesses":false,
+"downloadDirectoryWIN":"",
+"downloadAndOpenSebConfig":true,
+"newBrowserWindowByLinkBlockForeign":false,
+"enableBrowserWindowToolbar":true,
+"proxies":{},
+"blockPopUpWindows":false,
+"enablePlugIns":true,
+"newBrowserWindowByScriptPolicy":2,
+"openDownloads":false
+}

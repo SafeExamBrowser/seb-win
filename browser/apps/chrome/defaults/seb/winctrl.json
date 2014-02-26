@@ -1,7 +1,7 @@
 {
 "startURL":"http://safeexambrowser.org",
 "browserExamKey":"SEBKEY",
-"browserURLSalt":true,
+"browserURLSalt":false,
 "browserLanguage":"en-US",
 "browserViewMode":1,
 "mainBrowserWindowWidth":"100%",

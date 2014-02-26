@@ -72,7 +72,8 @@ var seb = (function() {
 			consts				=	null,
 			mainWin				=	null,
 			shutdownEnabled			=	false,
-			forceShutdown			=	false,
+			shutdownIgnorePassword		=	false,
+			shutdownIgnoreWarning		=	false,
 			hiddenWin			=	null,
 			netMaxTimes			=	0,
 			netTimeout			=	0,
@@ -186,8 +187,10 @@ var seb = (function() {
 							let win = x.getChromeWin(aWebProgress.DOMWindow);
 							if (aRequest && aRequest.name) {
 								if (shutdownUrl === aRequest.name) {
-									aRequest.cancel(aStatus);									
-									force_shutdown();									
+									aRequest.cancel(aStatus);
+									shutdownIgnorePassword = true;
+									shutdown();
+									shutdownIgnorePassword = false;
 									return;
 								}
 								let win = x.getChromeWin(aWebProgress.DOMWindow);
@@ -439,6 +442,7 @@ var seb = (function() {
 	// app lifecycle
 	function shutdown(e) { // only for mainWin
 		var w = mainWin;
+		var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 		if (e != null) { // catch event
 			e.preventDefault();
 			e.stopPropagation();				
@@ -449,8 +453,7 @@ var seb = (function() {
 		}
 		else {
 			let passwd = x.getParam("seb.shutdown.password");
-			if (passwd != "" && !forceShutdown) {
-				var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
+			if (passwd != "" && !shutdownIgnorePassword) {				
 				var password = {value: ""}; // default the password to pass
 				var check = {value: true}; // default the checkbox to true
 				var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
@@ -464,6 +467,14 @@ var seb = (function() {
 					return;
 				}
 			}
+			
+			if (passwd == "" && !shutdownIgnoreWarning) {
+				var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
+				if (!result) {
+					return;
+				}
+			}
+			
 			if (client) {
 				for (var s in client.streams) {
 					x.debug("close stream " + s);
@@ -841,7 +852,8 @@ var seb = (function() {
 	}	
 	
 	function force_shutdown() {
-		forceShutdown = true;
+		shutdownIgnoreWarning = true;
+		shutdownIgnorePassord = true;
 		shutdownEnabled = true;
 		shutdown();
 	}

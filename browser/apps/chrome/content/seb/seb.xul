@@ -18,9 +18,7 @@
 		<stringbundle id="const" src="chrome://seb/content/seb.properties" />
 	</stringbundleset>
 	<!-- commands -->
-	<commandset id="sebCommandSet">
-		<command id="sebCmdLock" oncommand="seb.lock();"/>
-		<command id="sebCmdUnlock" oncommand="seb.unlock();"/>		
+	<commandset id="sebCommandSet">	
 		<command id="sebCmdShutdown" oncommand="seb.shutdown();"/>
 		<command id="sebCmdReload" oncommand="seb.reload(window);"/>
 		<command id="sebCmdLoad" oncommand="seb.load();"/>
@@ -33,8 +31,6 @@
 	<audio xmlns="http://www.w3.org/1999/xhtml" id="seb.snapshot" src="chrome://seb/content/sounds/snapshot.ogg" preload="auto"></audio>
 	<!-- keysets -->
 	<keyset id="sebKeySet">
-		<key id="seb.lock" keycode="VK_F2" modifiers="control shift" command="sebCmdLock"/>
-		<key id="seb.unlock" keycode="VK_F3" modifiers="control shift" command="sebCmdUnlock"/>
 		<key id="seb.shutdown" keycode="VK_F4" modifiers="control shift" command="sebCmdShutdown"/>
 		<key id="seb.reload" keycode="VK_F5" modifiers="control shift" command="sebCmdReload"/>
 		<key id="seb.load" keycode="VK_F6" modifiers="control shift" command="sebCmdLoad"/>

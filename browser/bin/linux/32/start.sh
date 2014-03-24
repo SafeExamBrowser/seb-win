@@ -6,4 +6,4 @@
 #../../xulrunner/linux/32/xulrunner/xulrunner -app "apps/seb.ini" -configpath "$currDir/config.json"
 
 # the following command will load a config preset like "demo" or "debug" (see apps/chrome/defaults/seb/config.PRESET.json)
-../../../../../xulrunner/linux/32/xulrunner/xulrunner -app "../../../apps/seb.ini" -profile "../../../data/profile"
+../../../../../xulrunner/linux/32/xulrunner/xulrunner -app "../../../apps/seb.ini"

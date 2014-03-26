@@ -461,7 +461,7 @@ var seb = (function() {
 					return;
 				}
 				var check = getHash(password.value);
-				if (check != passwd) {
+				if (check.toLowerCase() != passwd.toLowerCase()) {
 					//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
 					prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
 					return;

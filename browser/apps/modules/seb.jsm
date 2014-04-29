@@ -188,9 +188,13 @@ var seb = (function() {
 							if (aRequest && aRequest.name) {
 								if (shutdownUrl === aRequest.name) {
 									aRequest.cancel(aStatus);
+									var tmpShutdown = shutdownEnabled; // store default shutdownEnabled
+									var tmpPassword = shutdownIgnorePassword; // store default shutdownIgnorePassword
+									shutdownEnabled = true; // set to true
 									shutdownIgnorePassword = true;
-									shutdown();
-									shutdownIgnorePassword = false;
+									shutdown();									
+									shutdownEnabled = tmpShutdown; // set default shutdownEnabled
+									shutdownIgnorePassword = tmpPassword; // set default shutdownIgnorePassword
 									return;
 								}
 								let win = x.getChromeWin(aWebProgress.DOMWindow);
@@ -447,13 +451,22 @@ var seb = (function() {
 			e.preventDefault();
 			e.stopPropagation();				
 		}
-		x.debug("try shutdown...");
+		x.debug("try shutdown...");				
+		
 		if (!shutdownEnabled) {
 			x.out("no way! seb is locked :-)");
 		}
 		else {
+			// first look for warning
+			if (!shutdownIgnoreWarning) {
+				var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
+				if (!result) {
+					return;
+				}
+			}
+			
 			let passwd = x.getParam("seb.shutdown.password");
-			if (passwd != "" && !shutdownIgnorePassword) {				
+			if (passwd && !shutdownIgnorePassword) {				
 				var password = {value: ""}; // default the password to pass
 				var check = {value: true}; // default the checkbox to true
 				var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
@@ -464,13 +477,6 @@ var seb = (function() {
 				if (check.toLowerCase() != passwd.toLowerCase()) {
 					//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
 					prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
-					return;
-				}
-			}
-			
-			if (passwd == "" && !shutdownIgnoreWarning) {
-				var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
-				if (!result) {
 					return;
 				}
 			}

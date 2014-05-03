@@ -56,6 +56,7 @@ var xullib = (function () {
 		app			=	null,
 		ctrls			=	{},
 		errPage			=	"",
+		externalHost		= 	false,
 		wins			=	[], 		// windows array
 		hiddenWin		=	null,		// hidddenWindow
 		cl			=	null, 		// commandline Interface initialized from component xulApplication.js		
@@ -383,6 +384,7 @@ var xullib = (function () {
 		
 		
 		if (config != null) {
+			externalHost = true;
 			if (config == 1) {				
 				let ctrlConfig = FileUtils.getFile("AChrom",["defaults",APPNAME,ctrl+"ctrl.json"],false);				
 				if (!ctrlConfig.exists()) {
@@ -468,14 +470,17 @@ var xullib = (function () {
 	}
 	
 	// profile
-	
 	function getProfile() {
 		return profile;
 	}
 	
+	// external host info, true if controller config is used
+	function getExternalHost() {
+		return externalHost;
+	}
+	
 	// prefs
 	// IMPORTANT for developers: changes in ".jsm" have no effect without "-purgecaches" in xulrunner commandline!  
-	
 	function setPrefs(prfs) {
 		for (var k in prfs) {
 			try {
@@ -1214,6 +1219,7 @@ var xullib = (function () {
 		getChromeWin			:	getChromeWin,
 		getCmd				:	getCmd,
 		getDebug			:	getDebug,
+		getExternalHost			:	getExternalHost,
 		getParam			:	getParam,
 		getJSON				:	getJSON,
 		getParams			:	getParams,

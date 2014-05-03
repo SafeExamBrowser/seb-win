@@ -242,8 +242,10 @@ var seb = (function() {
 	}
 	
 	function init(win) {
+		
 		Cc["@mozilla.org/net/osfileconstantsservice;1"].getService(Ci.nsIOSFileConstantsService).init();
 		x.debug("init window");
+		x.debug("externalHost: "+x.getExternalHost());
 		x.addWin(win);
 		getKeys(win); 					// for every window call
 		setBrowserHandler(win); 			// for every window call
@@ -453,31 +455,59 @@ var seb = (function() {
 		}
 		x.debug("try shutdown...");				
 		
-		if (!shutdownEnabled) {
+		if (!shutdownEnabled) { // on shutdown url the global variable "shutdownEnabled" is set to true
 			x.out("no way! seb is locked :-)");
 		}
 		else {
-			// first look for warning
-			if (!shutdownIgnoreWarning) {
-				var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
-				if (!result) {
-					return;
+			if (e) { // close window event: user action or host event 
+				// first look for warning
+				if (!shutdownIgnoreWarning && !x.getExternalHost()) {
+					var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
+					if (!result) {
+						return;
+					}
+				}
+				
+				let passwd = x.getParam("seb.shutdown.password");
+				
+				if (passwd && !shutdownIgnorePassword && !x.getExternalHost()) {				
+					var password = {value: ""}; // default the password to pass
+					var check = {value: true}; // default the checkbox to true
+					var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
+					if (!result) {
+						return;
+					}
+					var check = getHash(password.value);
+					if (check.toLowerCase() != passwd.toLowerCase()) {
+						//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
+						prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
+						return;
+					}
 				}
 			}
-			
-			let passwd = x.getParam("seb.shutdown.password");
-			if (passwd && !shutdownIgnorePassword) {				
-				var password = {value: ""}; // default the password to pass
-				var check = {value: true}; // default the checkbox to true
-				var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
-				if (!result) {
-					return;
+			else { // shutdown link: browser takes shutdown control
+				if (!shutdownIgnoreWarning) {
+					var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
+					if (!result) {
+						return;
+					}
 				}
-				var check = getHash(password.value);
-				if (check.toLowerCase() != passwd.toLowerCase()) {
-					//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
-					prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
-					return;
+				
+				let passwd = x.getParam("seb.shutdown.password");
+				
+				if (passwd && !shutdownIgnorePassword) {				
+					var password = {value: ""}; // default the password to pass
+					var check = {value: true}; // default the checkbox to true
+					var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);
+					if (!result) {
+						return;
+					}
+					var check = getHash(password.value);
+					if (check.toLowerCase() != passwd.toLowerCase()) {
+						//prompt.alert(mainWin, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
+						prompt.alert(mainWin, getLocStr("seb.password.title"), getLocStr("seb.password.wrong"));
+						return;
+					}
 				}
 			}
 			

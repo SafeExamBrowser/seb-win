@@ -2,14 +2,14 @@
 	"prefs"					: {
 							"general.useragent.override" : "SEBKEY"
 						  },										
-	"seb.url"				: "http://www.safeexambrowser.org",
+	"seb.url"				: "http://localhost:8000/app/index.html#detail",
 	"seb.language"				: "en-US",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
 	"seb.request.key"			: "SEBKEY",
 	"seb.request.salt"			: false,
 	"seb.taskbar.enabled"			: false,
 	"seb.taskbar.height"			: 40,
-	"seb.mainWindow.titlebar.enabled"	: false,
+	"seb.mainWindow.titlebar.enabled"	: true,
 	"seb.popupWindows.titlebar.enabled"	: true,
 	"seb.mainWindow.screen"			: {
 							"fullsize" : true, 
@@ -31,7 +31,7 @@
 	"seb.shutdown.enabled"			: "true",
 	"seb.shutdown.keycode"			: "VK_F4",
 	"seb.shutdown.modifiers"		: "control shift",
-	"seb.shutdown.url"			: "http://seb/shutdown",
+	"seb.shutdown.url"			: "http://localhost:8000/app/quit",
 	"seb.shutdown.password"			: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
 	"seb.load"				: "",
 	"seb.load.referrer.instring"		: "",

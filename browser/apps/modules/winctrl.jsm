@@ -50,7 +50,9 @@ var winctrl = (function() {
 						"seb.popup.policy"			:	"newBrowserWindowByLinkPolicy",
 						"seb.shutdown.url"			: 	"quitURL",
 						"seb.shutdown.password"			: 	"hashedQuitPassword",					
-						"seb.navigation.enabled"		:	"allowBrowsingBackForward"												
+						"seb.navigation.enabled"		:	"allowBrowsingBackForward",
+						"seb.messaging.url"			:	"browserMessagingUrl",
+						"seb.messaging.socket"			:	"browserMessagingSocket"																		
 					},
 		pos = {
 				0 : "left",

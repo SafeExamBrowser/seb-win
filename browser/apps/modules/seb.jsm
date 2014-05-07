@@ -61,6 +61,7 @@ var seb = (function() {
 			
 	var 	__initialized 				= 	false,
 			server				=	null,
+			message				=	{},
 			client				=	null,
 			url				=	"",
 			reqHeader			=	null,
@@ -253,8 +254,8 @@ var seb = (function() {
 		setLoadFlag();
 		shutdownEnabled = x.getParam("seb.shutdown.enabled");		
 		if  (x.getWinType(win) == "main") {
+			let hf = win.document.getElementById("hidden.iframe");
 			if (x.getParam("seb.server.enabled")) {
-				let hf = win.document.getElementById("hidden.iframe");
 				server = x.getParam("seb.server");
 				if (typeof server === "object") {
 					x.debug("connect to seb server...");
@@ -264,6 +265,13 @@ var seb = (function() {
 				else {
 					x.debug("no server configured");
 				}
+			}
+			if (x.getParam("seb.messaging.url")) {
+				message["url"] = x.getParam("seb.messaging.url");
+				message["socket"] = x.getParam("seb.messaging.socket");
+				x.debug("connect to message server...");
+				setHiddenMessageHandler(hf);			
+				hf.setAttribute("src",message.url);	
 			}
 			setShutdownHandler(win);
 			mainWin = win;
@@ -280,6 +288,30 @@ var seb = (function() {
 		fr.addEventListener("DOMContentLoaded",hiddenIFrameListener, true);
 	}
 	
+	function setHiddenMessageHandler(fr) {
+		x.debug("setHiddenMessageHandler");
+		fr.addEventListener("DOMContentLoaded",hiddenMessageListener, true);
+	}
+	
+	function hiddenMessageListener(e) {
+		
+		hiddenWin = mainWin.document.getElementById("hidden.iframe").contentWindow.wrappedJSObject;
+		const { WebSocket } = hiddenWin;
+		
+		var ws = WebSocket(message.socket);
+		x.debug(ws);
+		x.debug("WebSocket:"+message.socket);
+		
+		ws.onopen = function(evt) { x.debug("open: " + evt); ws.send("connected to seb server"); }; 
+		ws.onclose = function(evt) { x.debug("close: " + evt.data) }; 
+		ws.onmessage = function(evt) { x.debug("msg: " + evt.data) }; 
+		ws.onerror = function(evt) { x.debug("err: " + evt.data) };
+		
+		e.preventDefault();
+		e.stopPropagation();
+		
+	}
+	
 	function hiddenIFrameListener(e) {
 		hiddenWin = mainWin.document.getElementById("hidden.iframe").contentWindow.wrappedJSObject; 
 		client = new hiddenWin.BinaryClient(server.socket); 
@@ -287,6 +319,7 @@ var seb = (function() {
 		client.on('error', function(err) { x.debug("websocket error: " + err) });
 		client.on('close', function(err) { x.debug("websocket closed.") });
 		client.on('stream', on_client_stream );
+		
 		/*
 		const { io } = w;
 		var socket = io.connect(server.url);

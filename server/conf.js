@@ -1,5 +1,7 @@
 var 	fs 	= require('fs-extra'),
 	express = require('express'),
+	static = require('serve-static'),
+	directory = require('serve-index'),
 	utils	= require('./utils.js');
 
 const 	CA_CN 	= "eqsoft CA",
@@ -46,11 +48,16 @@ var conf = function conf() {
 				next();
 			}
 		});
-
+		app.use('/',static(__dirname));
+		app.use('/demo',static('demo'));
+		app.use('/websocket',static('websocket'));
+		app.use('/websocket/data',directory('websocket/data'));
+		/*
 		app.use('/',express.static(__dirname));
 		app.use('/demo',express.static('demo'));
 		app.use('/websocket',express.static('websocket'));
 		app.use('/websocket/data',express.directory('websocket/data'));
+		*/ 
 		return app;
 	}
 }

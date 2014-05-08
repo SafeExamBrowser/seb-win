@@ -4,7 +4,6 @@
 "browserURLSalt":false,
 "browserLanguage":"de-DE",
 "browserViewMode":0,
-"browserMessagingUrl":"http://localhost:8767/win/index.html",
 "browserMessagingSocket":"ws://localhost:8767",
 "mainBrowserWindowWidth":"100%",
 "mainBrowserWindowHeight":"100%",

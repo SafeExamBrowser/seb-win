@@ -47,4 +47,5 @@
 			<browser flex="1" id="hidden.iframe" src="about:blank" type="content-targetable"></browser>
 		</deck>
 	</vbox>
+	<browser id="hidden.message" src="about:blank" type="content-targetable" style="display:none"></browser>
 </window>

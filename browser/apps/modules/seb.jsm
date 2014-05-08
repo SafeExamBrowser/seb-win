@@ -266,12 +266,13 @@ var seb = (function() {
 					x.debug("no server configured");
 				}
 			}
-			if (x.getParam("seb.messaging.url")) {
-				message["url"] = x.getParam("seb.messaging.url");
+			if (x.getParam("seb.messaging.socket")) {
+				//message["url"] = x.getParam("seb.messaging.url");
 				message["socket"] = x.getParam("seb.messaging.socket");
 				x.debug("connect to message server...");
 				setHiddenMessageHandler(hf);			
-				hf.setAttribute("src",message.url);	
+				//hf.setAttribute("src",message.url);
+				hf.setAttribute("src",'about:config');	
 			}
 			setShutdownHandler(win);
 			mainWin = win;
@@ -295,7 +296,7 @@ var seb = (function() {
 	
 	function hiddenMessageListener(e) {
 		
-		hiddenWin = mainWin.document.getElementById("hidden.iframe").contentWindow.wrappedJSObject;
+		hiddenWin = mainWin.document.getElementById("hidden.message").contentWindow.wrappedJSObject;
 		const { WebSocket } = hiddenWin;
 		
 		var ws = WebSocket(message.socket);

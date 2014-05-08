@@ -59,7 +59,10 @@ var seb = (function() {
 			hiddenDeck			=	2,
 			XUL_NS_URI			=	"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 			
-	var 	__initialized 				= 	false,
+	var 	__initialized 				= 	null,
+			hostForceShutdown		=	false,
+			messageServer			=	false,
+			messageSocket			=	null,
 			server				=	null,
 			message				=	{},
 			client				=	null,
@@ -299,15 +302,33 @@ var seb = (function() {
 		hiddenWin = mainWin.document.getElementById("hidden.message").contentWindow.wrappedJSObject;
 		const { WebSocket } = hiddenWin;
 		
-		var ws = WebSocket(message.socket);
-		x.debug(ws);
-		x.debug("WebSocket:"+message.socket);
+		messageSocket = WebSocket(message.socket);
 		
-		ws.onopen = function(evt) { x.debug("open: " + evt); ws.send("connected to seb server"); }; 
-		ws.onclose = function(evt) { x.debug("close: " + evt.data) }; 
-		ws.onmessage = function(evt) { x.debug("msg: " + evt.data) }; 
-		ws.onerror = function(evt) { x.debug("err: " + evt.data) };
+		messageSocket.onopen = function(evt) { 			
+			x.debug("messageServer open: " + evt); 
+			messageSocket.send("seb.connected"); 
+			messageServer = true;
+		}
+			
+		messageSocket.onclose = function(evt) { 
+			x.debug("messageServer close: " + evt.data); 
+			messageServer = false;
+		}; 
 		
+		messageSocket.onmessage = function(evt) { 
+			// ToDo: message handling
+			switch (evt.data) {
+				case "SEB.close" :
+					x.debug("messageServer handled: " + evt.data);
+					hostForceShutdown = true;
+					break;
+				default :
+					x.debug("messageServer not handled msg: " + evt.data); 
+			}
+			
+		};
+		 
+		messageSocket.onerror = function(evt) { x.debug("messageServer err: " + evt.data) };
 		e.preventDefault();
 		e.stopPropagation();
 		
@@ -484,8 +505,20 @@ var seb = (function() {
 		var w = mainWin;
 		var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 		if (e != null) { // catch event
-			e.preventDefault();
-			e.stopPropagation();				
+			if (hostForceShutdown) {
+				x.debug("host force shutdown");
+				return true;
+			}
+			else {
+				e.preventDefault();
+				e.stopPropagation();				
+			}
+		}
+		if (messageServer) {
+			x.debug("shutdown should be handled by host");
+			var msg = (e) ? "seb.beforeclose.manual" : "seb.beforeclose.quiturl";
+			messageSocket.send(msg);
+			return;
 		}
 		x.debug("try shutdown...");				
 		
@@ -562,6 +595,25 @@ var seb = (function() {
 			}
 		}
 	}
+	
+	function shutdownForce() {
+		if (client) {
+			for (var s in client.streams) {
+				x.debug("close stream " + s);
+				client.streams[s]._socket.close();
+			}
+		}
+		for (var i=x.getWins().length-1;i>=0;i--) { // ich nehm Euch alle MIT!!!!
+			try {
+				x.debug("close window ...");
+				x.getWins()[i].close();
+			}
+			catch(e) {
+				x.err(e);
+			}
+		}
+	}
+	
 	
 	// browser and seb windows
 	function showLoading(win) {

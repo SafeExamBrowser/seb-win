@@ -52,7 +52,8 @@ var winctrl = (function() {
 						"seb.shutdown.password"			: 	"hashedQuitPassword",					
 						"seb.navigation.enabled"		:	"allowBrowsingBackForward",
 						"seb.messaging.url"			:	"browserMessagingUrl",
-						"seb.messaging.socket"			:	"browserMessagingSocket"																		
+						"seb.messaging.socket"			:	"browserMessagingSocket",
+						"seb.messaging.ping.time"		:	"browserMessagingPingTime"									
 					},
 		pos = {
 				0 : "left",

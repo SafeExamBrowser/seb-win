@@ -66,5 +66,9 @@
 	"seb.server"				: {
 						  "url"    : "https://localhost:8443/websocket",
 						  "socket" : "wss://localhost:8443/websocket"
+						  },
+	"windows.messaging"			: {
+						  "url"    : "http://localhost:8809/index.html",
+						  "socket" : "ws://localhost:8809/index.html"
 						  }
 }

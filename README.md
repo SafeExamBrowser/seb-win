@@ -52,7 +52,7 @@ The start scripts **must** point to an executable xulrunner binary.
 For demo mode including the screenshot component (pre alpha) you need to install node.js (http://nodejs.org/).
 After installing node.js you need to install some node modules:
 ``` 
-npm install -g fs-extra binaryjs express serve-static serve-index
+npm install -g fs-extra binaryjs express serve-static serve-index ws
 ``` 
 Switch to ``` seb/server/ ``` folder and type:
 ```

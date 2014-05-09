@@ -270,8 +270,8 @@ var seb = (function() {
 				}
 			}
 			if (x.getParam("seb.messaging.socket")) {
-				//message["url"] = x.getParam("seb.messaging.url");
 				message["socket"] = x.getParam("seb.messaging.socket");
+				message["pingtime"] = x.getParam("seb.messaging.ping.time");
 				x.debug("connect to message server...");
 				setHiddenMessageHandler(hf);			
 				//hf.setAttribute("src",message.url);
@@ -302,16 +302,28 @@ var seb = (function() {
 		hiddenWin = mainWin.document.getElementById("hidden.message").contentWindow.wrappedJSObject;
 		const { WebSocket } = hiddenWin;
 		
-		messageSocket = WebSocket(message.socket);
+		try {
+			messageSocket = WebSocket(message.socket);
+		}
+		catch (e) {
+			x.debug("messageSocket connection failed: " + message.socket + "\n"+e);
+			messageSocket = null;
+			return; 
+		}
 		
 		messageSocket.onopen = function(evt) { 			
-			x.debug("messageServer open: " + evt); 
+			x.debug("messageSocket open: " + evt); 
 			messageSocket.send("seb.connected"); 
 			messageServer = true;
+			x.debug("set ping intervall " + message.pingtime);
+			hiddenWin.setInterval(function() {
+				messageSocket.send("seb.ping"); 
+			} ,message.pingtime);
 		}
 			
-		messageSocket.onclose = function(evt) { 
-			x.debug("messageServer close: " + evt.data); 
+		messageSocket.onclose = function(e) { 
+			x.debug("messageSocket close: " + e); 
+			messageSocket = null; 
 			messageServer = false;
 		}; 
 		
@@ -319,16 +331,20 @@ var seb = (function() {
 			// ToDo: message handling
 			switch (evt.data) {
 				case "SEB.close" :
-					x.debug("messageServer handled: " + evt.data);
+					x.debug("messageSocket handled: " + evt.data);
 					hostForceShutdown = true;
 					break;
 				default :
-					x.debug("messageServer not handled msg: " + evt.data); 
+					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
 			
 		};
 		 
-		messageSocket.onerror = function(evt) { x.debug("messageServer err: " + evt.data) };
+		messageSocket.onerror = function(e) { 
+			x.debug("messageSocket err: " + e); 
+			messageSocket = null;
+			messageServer = false; 
+		};
 		e.preventDefault();
 		e.stopPropagation();
 		
@@ -528,16 +544,16 @@ var seb = (function() {
 		else {
 			if (e) { // close window event: user action or host event 
 				// first look for warning
-				if (!shutdownIgnoreWarning && !x.getExternalHost()) {
+				let passwd = x.getParam("seb.shutdown.password");
+				
+				if (!shutdownIgnoreWarning && !passwd) {
 					var result = prompts.confirm(null, getLocStr("seb.shutdown.warning.title"), getLocStr("seb.shutdown.warning"));
 					if (!result) {
 						return;
 					}
-				}
+				}							
 				
-				let passwd = x.getParam("seb.shutdown.password");
-				
-				if (passwd && !shutdownIgnorePassword && !x.getExternalHost()) {				
+				if (passwd && !shutdownIgnorePassword) {				
 					var password = {value: ""}; // default the password to pass
 					var check = {value: true}; // default the checkbox to true
 					var result = prompts.promptPassword(null, getLocStr("seb.password.title"), getLocStr("seb.password.text"), password, null, check);

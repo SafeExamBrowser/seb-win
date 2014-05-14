@@ -2,7 +2,6 @@ Standalone Browser Component of Safe-Exam-Browser
 =================================================
 See: http://www.safeexambrowser.org
 
-
 ## OS Support ##
 * Windows 32/64Bit
 * Linux   32/64Bit

@@ -53,7 +53,8 @@ var winctrl = (function() {
 						"seb.navigation.enabled"		:	"allowBrowsingBackForward",
 						"seb.messaging.url"			:	"browserMessagingUrl",
 						"seb.messaging.socket"			:	"browserMessagingSocket",
-						"seb.messaging.ping.time"		:	"browserMessagingPingTime"									
+						"seb.messaging.ping.time"		:	"browserMessagingPingTime",
+						"seb.screenkeyboard.controller"		:	"browserScreenKeyboard"									
 					},
 		pos = {
 				0 : "left",

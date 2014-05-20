@@ -56,6 +56,7 @@
 	"seb.bypass.cache"			: true,	
 	"seb.removeProfile"			: true, 
 	"seb.alert.controller"			: true, 
+	"seb.screenkeyboard.controller"		: true,
 	"seb.screenshot.controller"		: false,
 	"sc.image.mimetype"			: "image/jpeg",
 	"sc.sound"				: false,

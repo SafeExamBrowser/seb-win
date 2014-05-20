@@ -1,8 +1,9 @@
 {
-"startURL":"http://localhost:8000/app/index.html#detail",
+"startURL":"https://localhost:8443/demo/index.html",
 "browserExamKey":"SEBKEY",
 "browserURLSalt":false,
 "browserViewMode":0,
+"browserScreenKeyboard":true,
 "browserMessagingSocket":"ws://localhost:8706",
 "browserMessagingPingTime":"120000",
 "mainBrowserWindowWidth":"100%",

@@ -184,6 +184,9 @@ var seb = (function() {
 						if (win === mainWin && x.getParam("seb.screenshot.controller")) {
 							createScreenshotController(w);
 						}
+						if (win === mainWin && x.getParam("seb.screenkeyboard.controller")) {
+							createScreenKeyboardController(w);
+						}
 						showContent(win);
 					}
 					if (aStateFlags & wpl.STATE_START) {												
@@ -899,6 +902,8 @@ var seb = (function() {
 		win.alert = alert;
 	}
 	
+	
+	
 	function alert(msg,win,title) {
 		let t = (title) ? title  : "alert";  
 		if (win) {
@@ -906,6 +911,47 @@ var seb = (function() {
 		}
 		else {
 			prompt.alert(mainWin, t, msg);
+		}
+	}
+	
+	function createScreenKeyboardController(win) {
+		var ips = win.document.getElementsByTagName("input");
+		var tas = win.document.getElementsByTagName("textarea");
+		for (var i=0;i<ips.length;i++) {
+			switch (ips[i].getAttribute("type")) {
+				case "password" :
+				case "text" :
+					addEvtListener(ips[i]);
+				break;
+			}
+		}
+		for (var i=0;i<tas.length;i++) {
+			addEvtListener(tas[i]);
+		}
+		
+		function addEvtListener(el) {
+			if (el.getAttribute("readonly")) {
+				x.debug("readonly");
+				return;
+			}
+			el.addEventListener("focus",onFocus,false);
+			el.addEventListener("blur",onBlur,false);
+		}
+		
+		function onFocus(evt) {
+			x.debug("input onFocus: " + evt);
+			try {
+				messageSocket.send("seb.input.focus");
+				evt.target.scrollIntoView();
+			}
+			catch(e){}
+		}
+		function onBlur(evt) {
+			x.debug("input onBlur:" + evt);
+			try {
+				messageSocket.send("seb.input.blur"); 
+			}
+			catch(e){}
 		}
 	}
 	

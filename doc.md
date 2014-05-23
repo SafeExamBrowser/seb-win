@@ -148,8 +148,8 @@ Check the debug mode and try this setting:
 ```
 
 You should see a message in the error console that sebian.png is not allowed and it will not be loaded.
-The blacklist is a list of comma seperated url pattern for disallowed ressources and will be first executed.
-The whitelist is a list of comma seperated url pattern for explicitly allowed ressources. All other ressources will be denied.
+The blacklist is a list of semicolon separated url pattern for disallowed ressources and will be first executed.
+The whitelist is a list of semicolon separated url pattern for explicitly allowed ressources. All other ressources will be denied.
 
 If you set **"seb.pattern.regex"** to **true** the blacklist and whitelist pattern will be interpreted as regular expressions. 
 If you are not sure about regular expressions keep the default setting.

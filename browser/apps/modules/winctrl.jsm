@@ -54,7 +54,11 @@ var winctrl = (function() {
 						"seb.messaging.url"			:	"browserMessagingUrl",
 						"seb.messaging.socket"			:	"browserMessagingSocket",
 						"seb.messaging.ping.time"		:	"browserMessagingPingTime",
-						"seb.screenkeyboard.controller"		:	"browserScreenKeyboard"									
+						"seb.screenkeyboard.controller"		:	browserScreenKeyboard,
+						"seb.pattern.regex"		    	:	urlFilterRegex,
+						"seb.trusted.content"			:	urlFilterTrustedContent,
+					"seb.whitelist.pattern"				:	"whiteListURLFilter",
+						"seb.blacklist.pattern"			:	"blackListURLFilter"
 					},
 		pos = {
 				0 : "left",
@@ -125,6 +129,21 @@ var winctrl = (function() {
 		var ret = (config["browserViewMode"] == 0) ? true : false;
 		return ret;
 	}
+	
+    	function urlFilterRegex() {
+        	var ret = (config["urlFilterRegex"] == 1) ? true : false;
+        	return ret;
+    	}
+
+    	function urlFilterTrustedContent() {
+        	var ret = (config["urlFilterTrustedContent"] == 0) ? true : false;
+        	return ret;
+    	}
+    	
+    	function browserScreenKeyboard() {
+	        var ret = (config["browserScreenKeyboard"] == 1) ? true : false;
+	        return ret;
+    	}
 	
 	function browserExamKey() {
 		// add some logic

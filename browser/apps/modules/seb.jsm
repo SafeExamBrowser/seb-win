@@ -184,7 +184,7 @@ var seb = (function() {
 						if (win === mainWin && x.getParam("seb.screenshot.controller")) {
 							createScreenshotController(w);
 						}
-						if (win === mainWin && x.getParam("seb.screenkeyboard.controller")) {
+						if (x.getParam("seb.screenkeyboard.controller")) {
 							createScreenKeyboardController(w);
 						}
 						showContent(win);
@@ -902,8 +902,6 @@ var seb = (function() {
 		win.alert = alert;
 	}
 	
-	
-	
 	function alert(msg,win,title) {
 		let t = (title) ? title  : "alert";  
 		if (win) {
@@ -915,31 +913,43 @@ var seb = (function() {
 	}
 	
 	function createScreenKeyboardController(win) {
-		var ips = win.document.getElementsByTagName("input");
-		var tas = win.document.getElementsByTagName("textarea");
-		for (var i=0;i<ips.length;i++) {
-			switch (ips[i].getAttribute("type")) {
-				case "password" :
-				case "text" :
-					addEvtListener(ips[i]);
-				break;
-			}
-		}
-		for (var i=0;i<tas.length;i++) {
-			addEvtListener(tas[i]);
-		}
+		win.document.addEventListener("click",onClick,false);
+		var elArr = new Array();
 		
-		function addEvtListener(el) {
+		function onClick(evt) {
+			var el = evt.target;
+			switch (el.tagName) {
+				case "INPUT" :
+					var typ = el.getAttribute("type");
+					if (typ == "text" || typ == "password") {
+						handleClick(evt);
+					}
+				break;
+				case "TEXTAREA" :
+					handleClick(evt);
+				break;
+				default :
+					// do nothing
+			}
+			//x.debug(evt.target.tagName);
+		}
+		function handleClick(evt) {
+			var el = evt.target;
 			if (el.getAttribute("readonly")) {
-				x.debug("readonly");
+				//x.debug("readonly");
 				return;
 			}
-			el.addEventListener("focus",onFocus,false);
+			onFocus(evt);
+			if (elArr.contains(el)) {
+				//x.debug("input already exists in array");
+				return;
+			}
 			el.addEventListener("blur",onBlur,false);
+			elArr.push(el);
 		}
 		
 		function onFocus(evt) {
-			x.debug("input onFocus: " + evt);
+			x.debug("input onFocus");
 			try {
 				messageSocket.send("seb.input.focus");
 				evt.target.scrollIntoView();
@@ -947,14 +957,13 @@ var seb = (function() {
 			catch(e){}
 		}
 		function onBlur(evt) {
-			x.debug("input onBlur:" + evt);
+			x.debug("input onBlur");
 			try {
 				messageSocket.send("seb.input.blur"); 
 			}
 			catch(e){}
-		}
+		} 
 	}
-	
 	/* controller for webapplication */
 	function createScreenshotController(win) {
 		//const XMLHttpRequest = Components.Constructor("@mozilla.org/xmlextras/xmlhttprequest;1");
@@ -1152,6 +1161,16 @@ var seb = (function() {
 	
 	String.prototype.trim = function () {
 		return this.replace(/^\s*/, "").replace(/\s*$/, "");
+	}
+	
+	Array.prototype.contains = function(obj) {
+		var i = this.length;
+		while (i--) {
+			if (this[i] === obj) {
+				return true;
+			}
+		}	
+		return false;
 	}
 	
 	/* export public functions */

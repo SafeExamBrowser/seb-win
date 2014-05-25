@@ -915,7 +915,6 @@ var seb = (function() {
 	function createScreenKeyboardController(win) {
 		win.document.addEventListener("click",onClick,false);
 		var elArr = new Array();
-		
 		function onClick(evt) {
 			var el = evt.target;
 			switch (el.tagName) {
@@ -964,6 +963,7 @@ var seb = (function() {
 			catch(e){}
 		} 
 	}
+	
 	/* controller for webapplication */
 	function createScreenshotController(win) {
 		//const XMLHttpRequest = Components.Constructor("@mozilla.org/xmlextras/xmlhttprequest;1");

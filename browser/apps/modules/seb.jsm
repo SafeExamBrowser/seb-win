@@ -912,6 +912,7 @@ var seb = (function() {
 		}
 	}
 	
+	var textTypes = ['color','date','datetime','datetime-local','email','month','number','password','search','tel','text','time','url','week'];
 	function createScreenKeyboardController(win) {
 		win.document.addEventListener("click",onClick,false);
 		var elArr = new Array();
@@ -919,8 +920,7 @@ var seb = (function() {
 			var el = evt.target;
 			switch (el.tagName) {
 				case "INPUT" :
-					var typ = el.getAttribute("type");
-					if (typ == "text" || typ == "password") {
+					if (textTypes.indexOf(typ) > -1) {
 						handleClick(evt);
 					}
 				break;

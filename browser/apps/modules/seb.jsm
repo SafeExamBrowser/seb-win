@@ -920,6 +920,7 @@ var seb = (function() {
 			var el = evt.target;
 			switch (el.tagName) {
 				case "INPUT" :
+					var typ = el.getAttribute("type");
 					if (textTypes.indexOf(typ) > -1) {
 						handleClick(evt);
 					}

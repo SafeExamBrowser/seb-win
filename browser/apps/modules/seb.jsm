@@ -45,7 +45,6 @@ var seb = (function() {
 			Ci				=	x.Ci,
 			Cu				=	x.Cu,
 			Cr				=	x.Cr,
-			prefs				=	Services.prefs,
 			prompt				= 	Services.prompt,
 			wpl				=	Ci.nsIWebProgressListener,
 			wnav				= 	Ci.nsIWebNavigation,

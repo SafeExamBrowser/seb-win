@@ -57,8 +57,12 @@ var winctrl = (function() {
 						"seb.screenkeyboard.controller"		:	browserScreenKeyboard,
 						"seb.pattern.regex"		    	:	urlFilterRegex,
 						"seb.trusted.content"			:	urlFilterTrustedContent,
-					"seb.whitelist.pattern"				:	"whiteListURLFilter",
-						"seb.blacklist.pattern"			:	"blackListURLFilter"
+						"seb.whitelist.pattern"			:	"whiteListURLFilter",
+						"seb.blacklist.pattern"			:	"blackListURLFilter",
+						"network.proxy.type"			:	proxyType,
+						"network.proxy.autoconfig_url"		:	proxyAutoConfig,
+						"network.proxy.http" 			: 	proxyHttp,
+						"network.proxy.http_port" 		: 	proxyHttpPort
 					},
 		pos = {
 				0 : "left",
@@ -150,9 +154,61 @@ var winctrl = (function() {
 		return config["browserExamKey"];
 	}
 	
+	function proxyType() {
+		// see http://kb.mozillazine.org/Firefox_:_FAQs_:_About:config_Entries
+		// if no proxy object, don't map anything
+		if (!config["proxies"]) {
+			return null;
+		}
+		// autodetect proxy
+		if (config["proxies"]["AutoDiscoveryEnabled"]) {
+			return 4;
+		}
+		// auto config url
+		if (config["proxies"]["AutoConfigurationEnabled"]) {
+			return 2;
+		}
+		// http(s) proxy
+		if (config["proxies"]["HTTPEnable"] || config["proxies"]["HTTPSEnable"]) {
+			return 1;
+		}
+		return 0;
+	}
+	
+	function proxyAutoConfig() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["AutoConfigurationURL"]) {
+			return null;
+		}
+		return config["proxies"]["AutoConfigurationURL"];
+	}
+	
+	function proxyHttp() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["HTTPProxy"]) {
+			return null;
+		}
+		return config["proxies"]["HTTPProxy"];
+	}
+	
+	function proxyHttpPort() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["HTTPPort"]) {
+			return null;
+		}
+		return config["proxies"]["HTTPPort"];
+	}
+	
 	function paramHandler(fn) {
 		return eval(fn).call(null); 
 	}
+	
 	
 	return {
 		toString 			: 	toString,

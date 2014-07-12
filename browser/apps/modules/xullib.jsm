@@ -537,25 +537,34 @@ var xullib = (function () {
 		}		
 	}
 	
-	function setPref(k,v,t) {			
-		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(v);  
+	function setPref(k,v,t) {
+		_debug("setPref : " + k);
+		var val = v;
+		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(val);
+		if (ctrls["os"].hasParamMapping(k)) {
+			val = ctrls["os"].getParam(k);
+			_debug("pref mapping:\n" + k + " : " + val);
+		}
+		else {
+			_debug("no pref mapping:\n" + k + " : " + val);
+		}
 		switch (typ) {
 			case  prefs.PREF_STRING :
 				if (k == "general.useragent.override") {
 					clearPref(k); // remove old usr_key
-					if (v.split(" ").length < 3) { // key seems not to be a complete user_agent
+					if (val.split(" ").length < 3) { // key seems not to be a complete user_agent
 						// remove key from old profile user_agent
-						v = v.replace(" " + v,"");
-						v = hph.userAgent + " " + v; 
+						v = val.replace(" " + val,"");
+						v = hph.userAgent + " " + val; 
 					}
 				}
-				prefs.setCharPref(k,v);
+				prefs.setCharPref(k,val);
 			break;
 			case prefs.PREF_INT :
-				prefs.setIntPref(k,v);
+				prefs.setIntPref(k,val);
 			break;
 			case prefs.PREF_BOOL :
-				prefs.setBoolPref(k,v);
+				prefs.setBoolPref(k,val);
 			break;
 			default :
 				// nothing to do				
@@ -1244,6 +1253,7 @@ var xullib = (function () {
 		removeWin			:	removeWin,
 		resolveURI			:	resolveURI,
 		setParam			:	setParam,
+		setPref				:	setPref,
 		showAllWin			:	showAllWin,
 		toString			:	toString,
 		winObserver			:	winObserver,

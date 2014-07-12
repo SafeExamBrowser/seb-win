@@ -1,7 +1,11 @@
 {
 	"prefs"					: {
-							"general.useragent.override" : "SEBKEY"
-						  },										
+							"general.useragent.override" : "SEBKEY",
+							"network.proxy.type" : 0,
+							"network.proxy.autoconfig_url" : "",
+							"network.proxy.http" : "",
+							"network.proxy.http_port" : 3128
+						  },					
 	"seb.url"				: "http://www.safeexambrowser.org",
 	"seb.language"				: "en-US",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",

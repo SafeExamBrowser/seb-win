@@ -539,32 +539,32 @@ var xullib = (function () {
 	
 	function setPref(k,v,t) {
 		_debug("setPref : " + k);
-		var val = v;
-		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(val);
+		
+		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(v);
 		if (ctrls["os"].hasParamMapping(k)) {
-			val = ctrls["os"].getParam(k);
-			_debug("pref mapping:\n" + k + " : " + val);
+			v = ctrls["os"].getParam(k);
+			_debug("pref mapping:\n" + k + " : " + v);
 		}
 		else {
-			_debug("no pref mapping:\n" + k + " : " + val);
+			_debug("no pref mapping:\n" + k + " : " + v);
 		}
 		switch (typ) {
 			case  prefs.PREF_STRING :
 				if (k == "general.useragent.override") {
 					clearPref(k); // remove old usr_key
-					if (val.split(" ").length < 3) { // key seems not to be a complete user_agent
+					if (v.split(" ").length < 3) { // key seems not to be a complete user_agent
 						// remove key from old profile user_agent
-						v = val.replace(" " + val,"");
-						v = hph.userAgent + " " + val; 
+						v = v.replace(" " + v,"");
+						v = hph.userAgent + " " + v; 
 					}
 				}
-				prefs.setCharPref(k,val);
+				prefs.setCharPref(k,v);
 			break;
 			case prefs.PREF_INT :
-				prefs.setIntPref(k,val);
+				prefs.setIntPref(k,v);
 			break;
 			case prefs.PREF_BOOL :
-				prefs.setBoolPref(k,val);
+				prefs.setBoolPref(k,v);
 			break;
 			default :
 				// nothing to do				

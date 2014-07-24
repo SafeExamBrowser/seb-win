@@ -259,7 +259,7 @@ var seb = (function() {
 		setLoadFlag();
 		shutdownEnabled = x.getParam("seb.shutdown.enabled");		
 		if  (x.getWinType(win) == "main") {
-			let hf = win.document.getElementById("hidden.iframe");
+			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
 				server = x.getParam("seb.server");
 				if (typeof server === "object") {
@@ -271,7 +271,7 @@ var seb = (function() {
 					x.debug("no server configured");
 				}
 			}
-			if (x.getParam("seb.messaging.socket")) {
+			if (x.getParam("seb.messaging.socket")) {				
 				message["socket"] = x.getParam("seb.messaging.socket");
 				message["pingtime"] = x.getParam("seb.messaging.ping.time");
 				x.debug("connect to message server...");
@@ -303,9 +303,10 @@ var seb = (function() {
 		
 		hiddenWin = mainWin.document.getElementById("hidden.message").contentWindow.wrappedJSObject;
 		const { WebSocket } = hiddenWin;
+		x.debug("sdfsdfsdf:" + WebSocket);
 		
 		try {
-			messageSocket = WebSocket(message.socket);
+			messageSocket = new WebSocket(message.socket);
 		}
 		catch (e) {
 			x.debug("messageSocket connection failed: " + message.socket + "\n"+e);

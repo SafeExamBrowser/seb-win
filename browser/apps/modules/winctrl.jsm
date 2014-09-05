@@ -57,12 +57,13 @@ var winctrl = (function() {
 						"seb.screenkeyboard.controller"		:	browserScreenKeyboard,
 						"seb.pattern.regex"		    	:	urlFilterRegex,
 						"seb.trusted.content"			:	urlFilterTrustedContent,
-						"seb.whitelist.pattern"			:	"whiteListURLFilter",
-						"seb.blacklist.pattern"			:	"blackListURLFilter",
+						"seb.whitelist.pattern"			:	"whitelistURLFilter",
+						"seb.blacklist.pattern"			:	"blacklistURLFilter",
 						"network.proxy.type"			:	proxyType,
 						"network.proxy.autoconfig_url"		:	proxyAutoConfig,
 						"network.proxy.http" 			: 	proxyHttp,
-						"network.proxy.http_port" 		: 	proxyHttpPort
+						"network.proxy.http_port" 		: 	proxyHttpPort,
+						"seb.removeProfile"			:	"removeBrowserProfile"
 					},
 		pos = {
 				0 : "left",

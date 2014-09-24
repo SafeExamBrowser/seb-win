@@ -798,7 +798,6 @@ var xullib = (function () {
 		wins.push(main);
 	}
 	
-	
 	function getWinType(win) {
 		return win.document.getElementsByTagName("window")[0].getAttribute("windowtype");
 	}
@@ -818,6 +817,18 @@ var xullib = (function () {
 				_debug("show window: " + w.content.title);
 				w.focus();
 			}	
+		}
+	}
+	
+	function closeAllWin() {
+		for (var i=getWins().length-1;i>=0;i--) { // ich nehm Euch alle MIT!!!!
+			try {
+				_debug("close window ...");
+				getWins()[i].close();
+			}
+			catch(e) {
+				_err(e);
+			}
 		}
 	}
 	
@@ -1219,6 +1230,7 @@ var xullib = (function () {
 		addParams			:	addParams,
 		addParam			:	addParam,
 		addWin				:	addWin,
+		closeAllWin			:	closeAllWin,
 		debug				:	debug,
 		decodeBase64			:	decodeBase64,
 		dumpObj				:	dumpObj,

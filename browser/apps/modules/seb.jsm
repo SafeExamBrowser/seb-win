@@ -334,13 +334,16 @@ var seb = (function() {
 			// ToDo: message handling
 			switch (evt.data) {
 				case "SEB.close" :
-					x.debug("messageSocket handled: " + evt.data);
+					x.debug("messageSocket handled: " + evt.data); 
 					hostForceShutdown = true;
+					break;
+				case "SEB.restartExam" :
+					x.debug("messageSocket handled: " + evt.data);
+					hostRestartUrl();
 					break;
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
-			
 		};
 		 
 		messageSocket.onerror = function(e) { 
@@ -350,7 +353,6 @@ var seb = (function() {
 		};
 		e.preventDefault();
 		e.stopPropagation();
-		
 	}
 	
 	function hiddenIFrameListener(e) {
@@ -603,6 +605,8 @@ var seb = (function() {
 					client.streams[s]._socket.close();
 				}
 			}
+			x.closeAllWin();
+			/*
 			for (var i=x.getWins().length-1;i>=0;i--) { // ich nehm Euch alle MIT!!!!
 				try {
 					x.debug("close window ...");
@@ -612,6 +616,7 @@ var seb = (function() {
 					x.err(e);
 				}
 			}
+			*/ 
 		}
 	}
 	
@@ -694,6 +699,18 @@ var seb = (function() {
 		x.debug("restart...");
 		x.removeSecondaryWins();
 		let url = getUrl();
+		showLoading(mainWin);
+		loadPage(url);
+	}
+	
+	function hostRestartUrl() {
+		let url = x.getParam("seb.restart.url");
+		if (!url || url == "") {
+			x.err("no restart url from host");
+			return;
+		}
+		x.debug("host restart url: " + url);
+		x.removeSecondaryWins();
 		showLoading(mainWin);
 		loadPage(url);
 	}

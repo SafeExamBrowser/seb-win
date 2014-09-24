@@ -1,7 +1,9 @@
 {
 "startURL":"https://localhost:8443/demo/index.html",
+"restartExamURL":"https://localhost:8443/demo/q1.html",
+"touchOptimized":0,
 "browserExamKey":"SEBKEY",
-"browserURLSalt":false,
+"browserURLSalt":true,
 "browserViewMode":0,
 "browserScreenKeyboard":true,
 "browserMessagingSocket":"ws://localhost:8706",

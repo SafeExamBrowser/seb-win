@@ -63,7 +63,9 @@ var winctrl = (function() {
 						"network.proxy.autoconfig_url"		:	proxyAutoConfig,
 						"network.proxy.http" 			: 	proxyHttp,
 						"network.proxy.http_port" 		: 	proxyHttpPort,
-						"seb.removeProfile"			:	"removeBrowserProfile"
+						"seb.removeProfile"			:	"removeBrowserProfile",
+						"seb.restart.url"			:	"restartExamURL",
+						"seb.touch.optimized"			:	"touchOptimized"
 					},
 		pos = {
 				0 : "left",

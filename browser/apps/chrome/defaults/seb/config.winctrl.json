@@ -71,5 +71,7 @@
 	"windows.messaging"			: {
 						  "url"    : "http://localhost:8809/index.html",
 						  "socket" : "ws://localhost:8809/index.html"
-						  }
+						  },
+	"seb.restart.url"	: "",
+	"seb.touch.optimized"	: 0
 }

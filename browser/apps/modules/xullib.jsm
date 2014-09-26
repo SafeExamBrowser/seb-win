@@ -310,6 +310,7 @@ var xullib = (function () {
 				else {
 					_debug("no extra prefs in config.json"); 
 				}
+				
 				_out("xullib started with application " + APPNAME);
 				initLocale();	
 				if (autostart) {
@@ -538,7 +539,7 @@ var xullib = (function () {
 	}
 	
 	function setPref(k,v,t) {
-		_debug("setPref : " + k);
+		_debug("setPref : " + k + ":" + v + ":" + t);
 		
 		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(v);
 		if (ctrls["os"].hasParamMapping(k)) {
@@ -625,6 +626,7 @@ var xullib = (function () {
 	}
 	
 	function setParam(k,v) {
+		//_debug("setParam: " + k + ":" + v);
 		if (k.indexOf(".") < 0 ) { // don't allow params without a prefix -> defaults to app prefix!
 			k2 = APPNAME + "." + k;
 			_debug("warning: param " + k + " renamed to " + k2);
@@ -633,7 +635,9 @@ var xullib = (function () {
 			k2 = k;
 		}
 		delete params[k2];
-		return params[k2] = v;
+		params[k2] = v;
+		//_debug(JSON.stringify(params));
+		return params[k2];
 	}
 	
 	function addParams(obj,f) {

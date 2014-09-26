@@ -65,7 +65,7 @@ var winctrl = (function() {
 						"network.proxy.http_port" 		: 	proxyHttpPort,
 						"seb.removeProfile"			:	"removeBrowserProfile",
 						"seb.restart.url"			:	"restartExamURL",
-						"seb.touch.optimized"			:	"touchOptimized"
+						"seb.touch.optimized"			:	touchOptimized
 					},
 		pos = {
 				0 : "left",
@@ -115,11 +115,15 @@ var winctrl = (function() {
 	}
 	
 	function mainWindowScreen() {
-		var ret = {};		
+		var ret = {};		 
 		ret['fullsize'] = (config["browserViewMode"] == 0) ? false : true;
 		ret['width'] = config["mainBrowserWindowWidth"];
 		ret['height'] = config["mainBrowserWindowHeight"];
 		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
+		if (config["touchOptimized"] == 1) {
+			ret['width'] = "100%";
+			ret['height'] = "100%";
+		}
 		return ret;
 	}
 	
@@ -129,6 +133,10 @@ var winctrl = (function() {
 		ret['width'] = config["newBrowserWindowByLinkWidth"];
 		ret['height'] = config["newBrowserWindowByLinkHeight"];
 		ret['position'] = pos[config["newBrowserWindowByLinkPositioning"]];
+		if (config["touchOptimized"] == 1) {
+			ret['width'] = "100%";
+			ret['height'] = "100%";
+		}
 		return ret;
 	}
 	
@@ -206,6 +214,33 @@ var winctrl = (function() {
 			return null;
 		}
 		return config["proxies"]["HTTPPort"];
+	}
+	
+	function touchOptimized() {
+		
+		if (config["touchOptimized"] == 1) { // override fullcreen for popups
+			//var smain = x.getParam("seb.mainWindow.screen");
+			var spopup = x.getParam("seb.popupWindows.screen");
+			
+			/*
+			if (typeof smain != "object") {
+				x.err("no seb.mainWindow.screen object");
+				return;
+			}
+			*/ 
+			if (typeof spopup != "object") {
+				x.err("no seb.popupWindows.screen object");
+				return;
+			}
+			//smain["fullsize"] = true;
+			spopup["fullsize"] = true;
+			/*
+			smain["fullsize"] = true;
+			spopup["fullsize"] = true;
+			x.setParam("seb.mainWindow.screen",smain);
+			x.setParam("seb.popupWindows.screen",spopup);
+			*/ 
+		} 
 	}
 	
 	function paramHandler(fn) {

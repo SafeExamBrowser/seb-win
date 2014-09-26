@@ -177,6 +177,8 @@ var seb = (function() {
 						let win = x.getChromeWin(aWebProgress.DOMWindow);							
 						/* alert controller */
 						var w = aWebProgress.DOMWindow.wrappedJSObject;
+						//x.debug(w.document.getElementByTagName("Body")mozRequestFullScreen);
+						//x.debug("TEST:"+w.document.mozFullScreenEnabled);
 						if (x.getParam("seb.alert.controller")) {
 							createAlertController(w);
 						}
@@ -257,7 +259,8 @@ var seb = (function() {
 		setBrowserHandler(win); 			// for every window call
 		setReqHeader();
 		setLoadFlag();
-		shutdownEnabled = x.getParam("seb.shutdown.enabled");		
+		shutdownEnabled = x.getParam("seb.shutdown.enabled");
+		x.getParam("seb.touch.optimized"); // trigger ctrl to override default behaviour for setSize		
 		if  (x.getWinType(win) == "main") {
 			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
@@ -303,7 +306,6 @@ var seb = (function() {
 		
 		hiddenWin = mainWin.document.getElementById("hidden.message").contentWindow.wrappedJSObject;
 		const { WebSocket } = hiddenWin;
-		x.debug("sdfsdfsdf:" + WebSocket);
 		
 		try {
 			messageSocket = new WebSocket(message.socket);
@@ -341,6 +343,11 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					hostRestartUrl();
 					break;
+				case "SEB.displaySettingsChanged" :
+					x.debug("messageSocket handled: " + evt.data);
+					hostDisplaySettingsChanged();
+					break;
+					
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
@@ -416,6 +423,7 @@ var seb = (function() {
 		setListRegex(); 	// compile regexs 
 		locs = win.document.getElementById("locale");	
 		consts = win.document.getElementById("const");
+		
 		setSize(win);
 		setTitlebar(win);									
 		showLoading(win);
@@ -715,6 +723,14 @@ var seb = (function() {
 		loadPage(url);
 	}
 	
+	function hostDisplaySettingsChanged() {
+		x.debug("host display settings changed");
+		var wins = x.getWins();
+		for (i=0;i<wins.length;i++) {
+			setSize(wins[i]);
+		}
+	}
+	
 	function load() {		
 		x.debug("try load...");
 		if (typeof x.getParam("seb.load") != "string" || x.getParam("seb.load") == "") return;
@@ -800,9 +816,12 @@ var seb = (function() {
 	}
 	
 	function setSize(win) {
-		x.debug("setSize");
-		
+		x.debug("set size");
 		let sn = (win === mainWin) ? x.getParam("seb.mainWindow.screen") : x.getParam("seb.popupWindows.screen");
+		
+		if (win !== mainWin) {
+			//x.debug(win.document.mozRequestFullScreen);
+		}
 		
 		if (typeof sn != "object") {
 			return;
@@ -815,6 +834,8 @@ var seb = (function() {
 		let sh = mainWin.screen.height;
 		
 		var tb = x.getParam("seb.taskbar.enabled");
+		x.debug("taskbar.enabled:" + tb);
+		
 		if (tb) {
 			let tbh = x.getParam("seb.taskbar.height");
 			tbh = (tbh && (tbh > 0)) ? tbh : 45;
@@ -843,12 +864,13 @@ var seb = (function() {
 		}
 		
 		if (sn.fullsize) { // needs to be resized with offWidth and offHeight browser frames
-			if (tb) {
+			if (tb) {	
 				win.resizeTo(sw+offWidth,sh+offHeight); // don't know the correct size
-				win.setTimeout(function () { this.moveTo(0,0); }, 100 );
+				win.setTimeout(function () { this.moveTo(0,0); }, 100);
 			}
 		}
 		else {
+			x.debug("no fullsize. resize to: " + wx + ":" + hx);
 			win.resizeTo(wx,hx);
 			win.setTimeout(function () { setPosition(this) }, 100 );
 		}

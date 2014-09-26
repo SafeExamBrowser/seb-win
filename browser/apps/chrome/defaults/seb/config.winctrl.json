@@ -12,9 +12,9 @@
 	"seb.mainWindow.titlebar.enabled"	: false,
 	"seb.popupWindows.titlebar.enabled"	: true,
 	"seb.mainWindow.screen"			: {
-							"fullsize" : true, 
-							"width" : "1950",
-							"height" : "1200",
+							"fullsize" : false, 
+							"width" : "800",
+							"height" : "600",
 							"position" : "center" 
 						  },
 	"seb.popupWindows.screen"		: {

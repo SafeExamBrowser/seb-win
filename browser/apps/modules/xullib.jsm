@@ -539,12 +539,13 @@ var xullib = (function () {
 	}
 	
 	function setPref(k,v,t) {
-		_debug("setPref : " + k + ":" + v + ":" + t);
-		
 		var typ = (t) ? t : (prefs.getPrefType(k) != prefs.PREF_INVALID) ? prefs.getPrefType(k) : getPrefType(v);
 		if (ctrls["os"].hasParamMapping(k)) {
-			v = ctrls["os"].getParam(k);
-			_debug("pref mapping:\n" + k + " : " + v);
+			var v_ = ctrls["os"].getParam(k);
+			if (v_ != null) {
+				v = v_;
+				_debug("pref mapping:\n" + k + " : " + v);
+			}
 		}
 		else {
 			_debug("no pref mapping:\n" + k + " : " + v);
@@ -560,12 +561,15 @@ var xullib = (function () {
 					}
 				}
 				prefs.setCharPref(k,v);
+				_debug("setPref: "+k+":"+v+":string"); 
 			break;
 			case prefs.PREF_INT :
 				prefs.setIntPref(k,v);
+				_debug("setPref: "+k+":"+v+":integer");
 			break;
 			case prefs.PREF_BOOL :
 				prefs.setBoolPref(k,v);
+				_debug("setPref: "+k+":"+v+":boolean");
 			break;
 			default :
 				// nothing to do				
@@ -664,8 +668,8 @@ var xullib = (function () {
 	
 	function getParam(k) {
 		var k2 = (k.indexOf(".") < 0) ? APPNAME + "." + k : k;
-		if (ctrls["os"].hasParamMapping(k2)) {			
-			var ret = ctrls["os"].getParam(k2);			
+		if (ctrls["os"].hasParamMapping(k2)) {
+			var ret = ctrls["os"].getParam(k2);
 			if (ret != null) {
 				return ret;
 			}

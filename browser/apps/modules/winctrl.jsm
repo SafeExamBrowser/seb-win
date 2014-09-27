@@ -64,8 +64,7 @@ var winctrl = (function() {
 						"network.proxy.http" 			: 	proxyHttp,
 						"network.proxy.http_port" 		: 	proxyHttpPort,
 						"seb.removeProfile"			:	"removeBrowserProfile",
-						"seb.restart.url"			:	"restartExamURL",
-						"seb.touch.optimized"			:	touchOptimized
+						"seb.restart.url"			:	"restartExamURL"
 					},
 		pos = {
 				0 : "left",
@@ -94,19 +93,20 @@ var winctrl = (function() {
 		if (config === null) {
 			return null;
 		}
-		x.debug("ctrl.getParam: " + param);
 		switch (typeof mapping[param]) {
 			case "string" :
 			case "number":
 			case "boolean":
 				if (config[mapping[param]] != null && config[mapping[param]] != undefined) {
+					x.debug("ctrl.getParam: " + param);
 					return config[mapping[param]];
 				}
 				else {
 					return null;
 				}
 			break;
-			case "function" : 
+			case "function" :
+				x.debug("ctrl.getParam function: " + param);
 				return mapping[param].call(null,param);
 			break;
 			default :
@@ -183,7 +183,7 @@ var winctrl = (function() {
 		if (config["proxies"]["HTTPEnable"] || config["proxies"]["HTTPSEnable"]) {
 			return 1;
 		}
-		return 0;
+		return null;
 	}
 	
 	function proxyAutoConfig() {
@@ -216,32 +216,18 @@ var winctrl = (function() {
 		return config["proxies"]["HTTPPort"];
 	}
 	
+	/*
 	function touchOptimized() {
-		
 		if (config["touchOptimized"] == 1) { // override fullcreen for popups
-			//var smain = x.getParam("seb.mainWindow.screen");
 			var spopup = x.getParam("seb.popupWindows.screen");
-			
-			/*
-			if (typeof smain != "object") {
-				x.err("no seb.mainWindow.screen object");
-				return;
-			}
-			*/ 
 			if (typeof spopup != "object") {
 				x.err("no seb.popupWindows.screen object");
 				return;
 			}
-			//smain["fullsize"] = true;
 			spopup["fullsize"] = true;
-			/*
-			smain["fullsize"] = true;
-			spopup["fullsize"] = true;
-			x.setParam("seb.mainWindow.screen",smain);
-			x.setParam("seb.popupWindows.screen",spopup);
-			*/ 
 		} 
 	}
+	*/
 	
 	function paramHandler(fn) {
 		return eval(fn).call(null); 

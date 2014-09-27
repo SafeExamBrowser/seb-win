@@ -5,7 +5,7 @@
 							"network.proxy.autoconfig_url" : "",
 							"network.proxy.http" : "",
 							"network.proxy.http_port" : 3128
-						  },					
+						  },										
 	"seb.url"				: "http://www.safeexambrowser.org",
 	"seb.language"				: "en-US",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
@@ -17,8 +17,8 @@
 	"seb.popupWindows.titlebar.enabled"	: true,
 	"seb.mainWindow.screen"			: {
 							"fullsize" : true, 
-							"width" : "1950",
-							"height" : "1200",
+							"width" : 800,
+							"height" : 600,
 							"position" : "center" 
 						  },
 	"seb.popupWindows.screen"		: {
@@ -58,8 +58,9 @@
 	"seb.popup.policy"			: 2,
 	"seb.distinct.popup"			: true,
 	"seb.bypass.cache"			: true,	
-	"seb.removeProfile"			: true,
-	"seb.alert.controller"			: true, 
+	"seb.removeProfile"			: true, 
+	"seb.alert.controller"			: true,
+	"seb.screenkeyboard.controller"		: true,
 	"seb.screenshot.controller"		: false,
 	"sc.image.mimetype"			: "image/jpeg",
 	"sc.sound"				: false,
@@ -70,5 +71,7 @@
 	"seb.server"				: {
 						  "url"    : "https://localhost:8443/websocket",
 						  "socket" : "wss://localhost:8443/websocket"
-						  }
+						  },
+	"seb.restart.url"	: "",
+	"seb.touch.optimized"	: 0
 }

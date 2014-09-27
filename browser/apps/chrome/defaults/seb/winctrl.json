@@ -1,7 +1,7 @@
 {
 "startURL":"https://localhost:8443/demo/index.html",
 "restartExamURL":"https://localhost:8443/demo/q1.html",
-"touchOptimized":1,
+"touchOptimized":0,
 "browserExamKey":"SEBKEY",
 "browserURLSalt":true,
 "browserViewMode":1,
@@ -101,7 +101,9 @@
 "downloadAndOpenSebConfig":true,
 "newBrowserWindowByLinkBlockForeign":false,
 "enableBrowserWindowToolbar":true,
-"proxies":{},
+"proxies": {
+		"HTTPPort" : 2345
+},
 "blockPopUpWindows":false,
 "enablePlugIns":true,
 "newBrowserWindowByScriptPolicy":2,

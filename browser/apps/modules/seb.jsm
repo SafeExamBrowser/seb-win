@@ -260,7 +260,7 @@ var seb = (function() {
 		setReqHeader();
 		setLoadFlag();
 		shutdownEnabled = x.getParam("seb.shutdown.enabled");
-		x.getParam("seb.touch.optimized"); // trigger ctrl to override default behaviour for setSize		
+		//x.getParam("seb.touch.optimized"); // trigger ctrl to override default behaviour for setSize		
 		if  (x.getWinType(win) == "main") {
 			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
@@ -347,7 +347,6 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					hostDisplaySettingsChanged();
 					break;
-					
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}

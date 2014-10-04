@@ -18,6 +18,7 @@
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
 Components.utils.import("resource://gre/modules/ctypes.jsm");
+Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var EXPORTED_SYMBOLS = ["xullib"];
 		
@@ -62,7 +63,11 @@ var xullib = (function () {
 		cl			=	null, 		// commandline Interface initialized from component xulApplication.js		
 		profile			=	{},			// object with obj(=nsIToolkitProfile), dirs[nsIFile]
 		userAppDir		=	null, 		// the HOME/.eqsoft/seb (UNIX)
-		params			=	{}, 		
+		params			=	{}, 
+		logfile			=	null,
+		logenc			=	null,
+		socketlog		=	false,
+		messageSocket		=	null,	
 		DEBUG			=	false, 		// upper case: correspondent function "_debug()"
 		lf			=	"\n",
 		checkUrl		= 	/(http|https|file)\:\/\/.*/i,		
@@ -135,12 +140,68 @@ var xullib = (function () {
 	
 	// application
 	function toString() {
-			return "xullib";
+		return "xullib";
 	}
 		
 	function init(cmdLine) {
 		cl = cmdLine;
 		DEBUG = getBool(getCmd("debug"));
+		socketlog = getBool(getCmd("socketlog"));
+		_logfile = getCmd("logfile");
+		_logpath = "";
+		if (typeof _logfile == "string") {
+			_logpath = _logfile;
+		}
+		else if (typeof _logfile == "number" && _logfile > 0) {
+			_logpath = OS.Path.join(OS.Constants.Path.profileDir, APPNAME + ".log");
+		}
+		else {
+			_logpath = false;
+		}
+		
+		if (_logpath) {
+			logenc = new TextEncoder();
+			let promise = OS.File.open(_logpath,{write:true, append:true});
+			promise = promise.then(
+				function onSuccess(file) {
+					setLogFile(file);
+					//continueInit(file);
+				},
+				function onError(file) {
+					_err("Error creating logfile: " + _logpath);
+					//continueInit();
+				}
+			);
+		}
+		else {
+			//continueInit();
+		}
+		if (DEBUG) {
+			let debugPrefs = FileUtils.getFile("AChrom",["defaults",APPNAME,"preferences","debug.js"], null);
+			if (debugPrefs.exists()) {
+				prefs.readUserPrefs(debugPrefs);
+			}
+			else {
+				_debug("no debug preferences: " + debugPrefs.path);
+			}
+		}
+		let defaultPrefs = FileUtils.getFile("AChrom",["defaults",APPNAME,"preferences","prefs.js"], null);
+		if (defaultPrefs.exists()) {
+			prefs.readUserPrefs(defaultPrefs);				
+		}
+		else {
+			_debug("no default preferences: " + defaultPrefs.path);
+		}
+		prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)
+		prefs.savePrefFile(null);
+		initContext();
+	}
+	
+	function continueInit(file) {
+		_debug("continueInit()");
+		if (file) {
+			setLogfile(file);
+		}
 		if (DEBUG) {
 			let debugPrefs = FileUtils.getFile("AChrom",["defaults",APPNAME,"preferences","debug.js"], null);
 			if (debugPrefs.exists()) {
@@ -163,6 +224,7 @@ var xullib = (function () {
 	}
 	
 	function initContext() {
+		_debug("initContext()");
 		// application context
 		_debug(Services.appinfo.OS);
 		switch (Services.appinfo.OS.toUpperCase()) { // line feed for dump messages
@@ -191,6 +253,7 @@ var xullib = (function () {
 	
 	function initApp() {
 		try {
+			_debug("initApp()");
 			if (__initialized == true) return;
 			Cc["@mozilla.org/net/osfileconstantsservice;1"].getService(Ci.nsIOSFileConstantsService).init();					
 			// Services.ww.registerNotification(winObserver); // needed?
@@ -372,17 +435,17 @@ var xullib = (function () {
 		if (!obj) {
 			cb.call(null,false);
 			return false;
-			
 		}
 		if (id != "") {
 			ctrls[id] = obj;
+			//_debug("1:"+ctrls[id]);
 		}
 		else {
 			ctrls[ctrl] = obj;
+			//_debug("2:"+ctrls[ctrl]);
 		}
 		
 		var config = getCmd("ctrl");
-		
 		
 		if (config != null) {
 			externalHost = true;
@@ -438,6 +501,7 @@ var xullib = (function () {
 
 	function quit() {
 		_debug("quit: " + APPNAME);
+		//yield logfile.close();
 		// Services.startup.quit(Services.startup.eForceQuit);
 	}
 	
@@ -668,6 +732,10 @@ var xullib = (function () {
 	
 	function getParam(k) {
 		var k2 = (k.indexOf(".") < 0) ? APPNAME + "." + k : k;
+		if (!ctrls["os"]) {
+			_err("no ctrls.os: "+k2);
+			return;
+		}
 		if (ctrls["os"].hasParamMapping(k2)) {
 			var ret = ctrls["os"].getParam(k2);
 			if (ret != null) {
@@ -1032,9 +1100,10 @@ var xullib = (function () {
 		if (!DEBUG) return;	
 		ctx = (ctx) ? ctx : APPNAME;		
 		var str = ctx + ": " + msg;
-		//Cu.reportError(str);
 		cs.logStringMessage(str);
 		dump(str + lf);
+		writeLogFile(str);
+		sendMessage(str);
 	}
 	
 	function out(msg, ctx) { // for app messages
@@ -1042,6 +1111,8 @@ var xullib = (function () {
 		var str = ctx + ": " + msg;
 		cs.logStringMessage(str);
 		dump(str + lf);
+		writeLogFile(str);
+		sendMessage(str);
 	}
 	
 	function err(obj,ctx) { // error messages
@@ -1049,7 +1120,36 @@ var xullib = (function () {
 		var str = ctx + ": " + obj;
 		Cu.reportError(str);
 		dump(str + lf);
+		writeLogFile("err: "+str);
+		sendMessage("err: "+str);
 	}	
+	
+	function writeLogFile(str) {
+		if (logfile != null && logenc != null) {
+			let array = logenc.encode(str+"\n");
+			logfile.write(array);
+		}
+	}
+	
+	function sendMessage(str) {
+		if (socketlog && messageSocket != null) {
+			try {
+				messageSocket.send(str);
+			}
+			catch(e){};
+		}
+	}
+	 
+	function setLogFile(file) {
+		logfile = file;
+		var d = new Date();
+		let array = logenc.encode("\n*************************************\ninitialize logfile " + d.toLocaleString() + "\n*************************************\n");
+		logfile.write(array);
+	}
+	
+	function setMessageSocket(sock) {
+		messageSocket = sock;
+	}
 	
 	function getDebug() {
 		return DEBUG;
@@ -1110,11 +1210,12 @@ var xullib = (function () {
 			if (typeof source[i] == 'source') {
 				this[i] = new cloneObject(source[i]);
 			}
-        else {
-            this[i] = source[i];
+			else {
+				this[i] = source[i];
+			}
 		}
-    }
-}
+	}
+	
 	// checks namespaces: if no namespace exists add "app.name". namespace prefix
 	function validateNamespace(a) {
 		for (var k in a) {
@@ -1273,6 +1374,7 @@ var xullib = (function () {
 		removeWin			:	removeWin,
 		resolveURI			:	resolveURI,
 		setParam			:	setParam,
+		setMessageSocket		:	setMessageSocket,
 		setPref				:	setPref,
 		showAllWin			:	showAllWin,
 		toString			:	toString,

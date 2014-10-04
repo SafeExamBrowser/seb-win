@@ -7,4 +7,4 @@ console.log('received: %s', message);
 });
 ws.send('winserver connected');
 });
-console.log('websocket server started on port '+ port)
+console.log('websocket server started on port '+ port);

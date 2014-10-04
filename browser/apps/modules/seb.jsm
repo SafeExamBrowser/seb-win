@@ -174,7 +174,9 @@ var seb = (function() {
 					if (aStateFlags & wpl.STATE_STOP) {
 						net_tries = 0;
 						//x.debug("network stop: content to show: " + aRequest.name);
-						let win = x.getChromeWin(aWebProgress.DOMWindow);							
+						let win = x.getChromeWin(aWebProgress.DOMWindow);
+						//win.setCursor("-moz-auto");
+						//x.debug("maximize?:"+win.maximize);
 						/* alert controller */
 						var w = aWebProgress.DOMWindow.wrappedJSObject;
 						//x.debug(w.document.getElementByTagName("Body")mozRequestFullScreen);
@@ -192,8 +194,11 @@ var seb = (function() {
 					}
 					if (aStateFlags & wpl.STATE_START) {												
 						try {		
-							let win = x.getChromeWin(aWebProgress.DOMWindow);
+							
+							//let win = x.getChromeWin(aWebProgress.DOMWindow);
 							if (aRequest && aRequest.name) {
+								let win = x.getChromeWin(aWebProgress.DOMWindow);
+								//win.setCursor("-moz-spinning");
 								if (shutdownUrl === aRequest.name) {
 									aRequest.cancel(aStatus);
 									var tmpShutdown = shutdownEnabled; // store default shutdownEnabled
@@ -205,7 +210,7 @@ var seb = (function() {
 									shutdownIgnorePassword = tmpPassword; // set default shutdownIgnorePassword
 									return;
 								}
-								let win = x.getChromeWin(aWebProgress.DOMWindow);
+								
 								if (!isValidUrl(aRequest.name)) {
 									aRequest.cancel(aStatus);
 									prompt.alert(win, getLocStr("seb.title"), getLocStr("seb.url.blocked"));
@@ -230,6 +235,7 @@ var seb = (function() {
 										return 1; // 0?								
 									}
 									else {
+										//win.maximize();
 										x.debug("set request " + aRequest.name + " for popup.");
 										win.XulLibBrowser.setAttribute("request",aRequest.name);
 									}
@@ -309,6 +315,7 @@ var seb = (function() {
 		
 		try {
 			messageSocket = new WebSocket(message.socket);
+			x.setMessageSocket(messageSocket);
 		}
 		catch (e) {
 			x.debug("messageSocket connection failed: " + message.socket + "\n"+e);
@@ -613,6 +620,7 @@ var seb = (function() {
 				}
 			}
 			x.closeAllWin();
+			x.quit();
 			/*
 			for (var i=x.getWins().length-1;i>=0;i--) { // ich nehm Euch alle MIT!!!!
 				try {
@@ -1173,7 +1181,7 @@ var seb = (function() {
 	}
 	
 	function getRequestValue(url,key) {
-		x.debug("getRequestValue with url salt");
+		//x.debug("getRequestValue with url salt");
 		return getHash(url+key);
 	}
 	
@@ -1196,7 +1204,6 @@ var seb = (function() {
 		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
 		return s;
 	}
-	
 	
 	String.prototype.trim = function () {
 		return this.replace(/^\s*/, "").replace(/\s*$/, "");

@@ -32,7 +32,7 @@
 	"seb.pattern.regex"			: false,
 	"seb.blacklist.pattern"			: "",
 	"seb.whitelist.pattern"			: "",
-	"seb.shutdown.enabled"			: "true",
+	"seb.shutdown.enabled"			: true,
 	"seb.shutdown.keycode"			: "VK_F4",
 	"seb.shutdown.modifiers"		: "control shift",
 	"seb.shutdown.url"			: "http://seb/shutdown",

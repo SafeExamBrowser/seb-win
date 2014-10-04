@@ -73,7 +73,7 @@ var winctrl = (function() {
 		};
 	
 	function toString () {
-			return "winctrl";
+		return "winctrl";
 	}
 	
 	function init(conf,cb) {
@@ -98,7 +98,7 @@ var winctrl = (function() {
 			case "number":
 			case "boolean":
 				if (config[mapping[param]] != null && config[mapping[param]] != undefined) {
-					x.debug("ctrl.getParam: " + param);
+					//x.debug("ctrl.getParam: " + param);
 					return config[mapping[param]];
 				}
 				else {
@@ -106,7 +106,7 @@ var winctrl = (function() {
 				}
 			break;
 			case "function" :
-				x.debug("ctrl.getParam function: " + param);
+				//x.debug("ctrl.getParam function: " + param);
 				return mapping[param].call(null,param);
 			break;
 			default :
@@ -215,19 +215,6 @@ var winctrl = (function() {
 		}
 		return config["proxies"]["HTTPPort"];
 	}
-	
-	/*
-	function touchOptimized() {
-		if (config["touchOptimized"] == 1) { // override fullcreen for popups
-			var spopup = x.getParam("seb.popupWindows.screen");
-			if (typeof spopup != "object") {
-				x.err("no seb.popupWindows.screen object");
-				return;
-			}
-			spopup["fullsize"] = true;
-		} 
-	}
-	*/
 	
 	function paramHandler(fn) {
 		return eval(fn).call(null); 

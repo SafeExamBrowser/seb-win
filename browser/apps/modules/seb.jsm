@@ -883,30 +883,18 @@ var seb = (function() {
 		}
 		
 		function setPosition(win) {
-			if (win !== mainWin && wins.length > 2) { // all upcoming popups will be displayed with an x/y offset
-				let w = wins[wins.length-2];
-				if (sn.position == "right") {
-					win.resizeTo(wx,((sh - w.screenY) - sn.offset));
-					win.moveTo((w.screenX - sn.offset), (w.screenY + sn.offset));
-				}
-				else {
-					win.moveTo((w.screenX + sn.offset), (w.screenY + sn.offset));
-				}
-			}
-			else {
-				switch (sn.position) {
-					case "center" :
-						win.moveTo(((sw/2)-(wx/2)),st);
-						break;
-					case "right" :
-						win.moveTo((sw-wx),st);
-						break;
-					case "left" :
-						win.moveTo(sl,st);
-						break;
-					default :
-						// do nothing
-				}
+			switch (sn.position) {
+				case "center" :
+					win.moveTo(((sw/2)-(wx/2)),st);
+					break;
+				case "right" :
+					win.moveTo((sw-wx),st);
+					break;
+				case "left" :
+					win.moveTo(sl,st);
+					break;
+				default :
+					// do nothing
 			}
 		}
 	}

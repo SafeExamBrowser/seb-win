@@ -354,6 +354,10 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					hostDisplaySettingsChanged();
 					break;
+				case "SEB.reload" :
+					x.debug("messageSocket handled: " + evt.data);
+					reload(null);
+					break;
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
@@ -697,10 +701,20 @@ var seb = (function() {
 	function reload(win) {
 		x.debug("try reload...");
 		net_tries = 0;
+		win = (win === null) ? x.getRecentWin() : win; // klassische win win situation!
 		//
 		//var doc = (win) ? win.content.document : mainWin.content.document;
 		//doc.location.reload();
-		x.reload(win);
+		if (x.getParam("seb.reload.warning")) {
+			var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
+			var result = prompts.confirm(null, getLocStr("seb.reload.warning.title"), getLocStr("seb.reload.warning"));
+			if (result) {
+				x.reload(win);
+			}
+		}
+		else {
+			x.reload(win);
+		}
 	}
 	
 	function restart() { // only mainWin, experimental

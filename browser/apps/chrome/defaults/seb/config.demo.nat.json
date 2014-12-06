@@ -25,6 +25,7 @@
 	"seb.load.modifiers"			: "control shift",
 	"seb.reload.keycode"			: "VK_F5",
 	"seb.reload.modifiers"			: "",
+	"seb.reload.warning"			: true,	
 	"seb.navigation.enabled"		: true,
 	"seb.back.keycode"			: "VK_LEFT",
 	"seb.back.modifiers"			: "control",

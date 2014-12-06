@@ -39,6 +39,7 @@
 	"seb.load.modifiers"			: "control shift",
 	"seb.reload.keycode"			: "VK_F5",
 	"seb.reload.modifiers"			: "control shift",
+	"seb.reload.warning"			: true,
 	"seb.restart.mode"			: 2,
 	"seb.restart.keycode"			: "VK_F9",
 	"seb.restart.modifiers"			: "control shift",

@@ -1094,10 +1094,34 @@ var seb = (function() {
 	}	
 	
 	function force_shutdown() {
-		shutdownIgnoreWarning = true;
-		shutdownIgnorePassord = true;
-		shutdownEnabled = true;
-		shutdown();
+		var os = Services.appinfo.OS.toUpperCase();
+		if (os == "LINUX" || os == "UNIX") { // try sudo /sbin/halt from sebserver websocket message
+			// create an nsIFile for the executable
+			try {
+				var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+				file.initWithPath("/usr/bin/sudo");
+				// create an nsIProcess
+				var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+				process.init(file);
+				// Run the process.
+				// If first param is true, calling thread will be blocked until
+				// called process terminates.
+				// Second and third params are used to pass command-line arguments
+				// to the process.
+				var args = ["/sbin/halt"];
+				process.run(false, args, args.length);
+			}
+			catch(e) {
+				//prompt.alert(mainWin, "Message from Admin", e);
+				x.err("Error " + e);
+			}
+		}
+		else { // this is the windows SEB websocket call
+			shutdownIgnoreWarning = true;
+			shutdownIgnorePassord = true;
+			shutdownEnabled = true;
+			shutdown();
+		}
 	}
 	
 	// url processing

@@ -1,6 +1,17 @@
 {
 	"prefs"					: {
-							"general.useragent.override" : "SEBKEY"
+							"general.useragent.override" : "SEBKEY",
+							"network.proxy.type" : 0,
+							"network.proxy.autoconfig_url" : "",
+							"network.proxy.http" : "",
+							"network.proxy.http_port" : 3128,
+							"network.proxy.ssl" : "",
+							"network.proxy.ssl_port" : 0,
+							"network.proxy.ftp" : "",
+							"network.proxy.ftp_port" : 0,
+							"network.proxy.socks" : "",
+							"network.proxy.socks_port" : 0,
+							"network.proxy.no_proxies_on" : "localhost,127.0.0.1"
 						  },										
 	"seb.url"				: "http://www.safeexambrowser.org",
 	"seb.language"				: "en-US",

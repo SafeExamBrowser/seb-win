@@ -24,9 +24,9 @@
 	"seb.popupWindows.titlebar.enabled"	: true,
 	"seb.mainWindow.screen"			: {
 							"fullsize" : true, 
-							"width" : "100%",
-							"height" : "100%",
-							"position" : "left" 
+							"width" : 800,
+							"height" : 600,
+							"position" : "center" 
 						  },
 	"seb.popupWindows.screen"		: {
 							"fullsize" : false, 
@@ -50,7 +50,7 @@
 	"seb.load.modifiers"			: "control shift",
 	"seb.reload.keycode"			: "VK_F5",
 	"seb.reload.modifiers"			: "control shift",
-	"seb.reload.warning"			: true,	
+	"seb.reload.warning"			: true,
 	"seb.restart.mode"			: 2,
 	"seb.restart.keycode"			: "VK_F9",
 	"seb.restart.modifiers"			: "control shift",
@@ -66,17 +66,20 @@
 	"seb.popup.policy"			: 2,
 	"seb.distinct.popup"			: true,
 	"seb.bypass.cache"			: true,	
-	"seb.removeProfile"			: true,
-	"seb.alert.controller"			: true, 
-	"seb.screenshot.controller"		: true, 
+	"seb.removeProfile"			: true, 
+	"seb.alert.controller"			: true,
+	"seb.screenkeyboard.controller"		: true,
+	"seb.screenshot.controller"		: false,
 	"sc.image.mimetype"			: "image/jpeg",
-	"sc.sound"				: true,
-	"seb.togglehidden.enabled"		: true,
+	"sc.sound"				: false,
+	"seb.togglehidden.enabled"		: false,
 	"seb.togglehidden.keycode"		: "VK_F10",
 	"seb.togglehidden.modifiers"		: "",
-	"seb.server.enabled"			: true,
+	"seb.server.enabled"			: false,
 	"seb.server"				: {
 						  "url"    : "https://localhost:8443/websocket",
 						  "socket" : "wss://localhost:8443/websocket"
-						  }
+						  },
+	"seb.restart.url"	: "",
+	"seb.touch.optimized"	: 0
 }

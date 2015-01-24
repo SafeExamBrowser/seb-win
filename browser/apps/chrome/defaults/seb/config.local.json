@@ -1,11 +1,22 @@
 {
 	"prefs"					: {
-							"general.useragent.override" : "71aad4ab9dfd447cc479e6b4a7c9a544e2cafc7f3adeb68b2a21efad68eca4dc"
+							"general.useragent.override" : "SEBKEY",
+							"network.proxy.type" : 0,
+							"network.proxy.autoconfig_url" : "",
+							"network.proxy.http" : "",
+							"network.proxy.http_port" : 3128,
+							"network.proxy.ssl" : "",
+							"network.proxy.ssl_port" : 0,
+							"network.proxy.ftp" : "",
+							"network.proxy.ftp_port" : 0,
+							"network.proxy.socks" : "",
+							"network.proxy.socks_port" : 0,
+							"network.proxy.no_proxies_on" : "localhost,127.0.0.1"
 						  },										
 	"seb.url_"				: "http://localhost/ilias/trunk/",
 	"seb.url"				: "https://moodle-app1-skal.let.ethz.ch/2/mod/quiz/view.php?id=2",
 	"seb.request.header"			: "X-SafeExamBrowser-RequestHash",
-	"seb.request.key"			: "b5c4bb79914bc631f0c5871859ff75e47d086ee123031c94094dd9bbfbc06e42",
+	"seb.request.key"			: "SEBKEY",
 	"seb.request.salt"			: true,
 	"seb.mainWindow.titlebar.enabled"	: false,
 	"seb.popupWindows.titlebar.enabled"	: true,

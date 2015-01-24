@@ -61,8 +61,15 @@ var winctrl = (function() {
 						"seb.blacklist.pattern"			:	"blacklistURLFilter",
 						"network.proxy.type"			:	proxyType,
 						"network.proxy.autoconfig_url"		:	proxyAutoConfig,
+						"network.proxy.no_proxies_on"		:	proxyExceptionsList,
 						"network.proxy.http" 			: 	proxyHttp,
 						"network.proxy.http_port" 		: 	proxyHttpPort,
+						"network.proxy.ssl" 			: 	proxyHttps,
+						"network.proxy.ssl_port" 		: 	proxyHttpsPort,
+						"network.proxy.ftp" 			: 	proxyFtp,
+						"network.proxy.ftp_port" 		: 	proxyFtpPort,
+						"network.proxy.socks" 			: 	proxySocks,
+						"network.proxy.socks_port" 		: 	proxySocksPort,
 						"seb.removeProfile"			:	"removeBrowserProfile",
 						"seb.restart.url"			:	"restartExamURL"
 					},
@@ -214,6 +221,81 @@ var winctrl = (function() {
 			return null;
 		}
 		return config["proxies"]["HTTPPort"];
+	}
+	
+	function proxyHttps() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["HTTPSProxy"]) {
+			return null;
+		}
+		return config["proxies"]["HTTPSProxy"];
+	}
+	
+	function proxyHttpsPort() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["HTTPSPort"]) {
+			return null;
+		}
+		return config["proxies"]["HTTPSPort"];
+	}
+	
+	function proxyFtp() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["FTPProxy"]) {
+			return null;
+		}
+		return config["proxies"]["FTPProxy"];
+	}
+	
+	function proxyFtpPort() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["FTPPort"]) {
+			return null;
+		}
+		return config["proxies"]["FTPPort"];
+	}
+	
+	function proxySocks() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["SOCKSProxy"]) {
+			return null;
+		}
+		return config["proxies"]["SOCKSProxy"];
+	}
+	
+	function proxySocksPort() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["SOCKSPort"]) {
+			return null;
+		}
+		return config["proxies"]["SOCKSPort"];
+	}
+	
+	function proxyExceptionsList() {
+		if (!config["proxies"]) {
+			return null;
+		}
+		if (!config["proxies"]["ExceptionsList"]) {
+			return null;
+		}
+		var exceptList = config["proxies"]["ExceptionsList"];
+		//x.debug("proxyExceptionsList: " + typeof(exceptList));
+		if (typeof(exceptList) != "object") {
+			return null;
+		}
+		return config["proxies"]["ExceptionsList"].join(",") + ",localhost,127.0.0.1";
 	}
 	
 	function paramHandler(fn) {

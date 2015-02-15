@@ -51,10 +51,18 @@ var xullib = (function () {
 		NUMBER			=	1,
 		BOOLEAN			=	2,
 		ARRAY			=	3,
-		OBJECT			=	4;							
+		OBJECT			=	4,
+		nsIX509Cert 		=  	Components.interfaces.nsIX509Cert,
+		nsINSSCertCache 	= 	Components.interfaces.nsINSSCertCache,
+		nsNSSCertCache 		= 	"@mozilla.org/security/nsscertcache;1",
+		nsIX509CertDB 		= 	Components.interfaces.nsIX509CertDB,
+		nsX509CertDB 		= 	"@mozilla.org/security/x509certdb;1";				
 			
 	var 	__initialized 		= 	false,
 		app			=	null,
+		certcache		=	null,
+		certdb			=	null,
+		certlist		=	null,
 		ctrls			=	{},
 		errPage			=	"",
 		externalHost		= 	false,
@@ -194,6 +202,10 @@ var xullib = (function () {
 		}
 		prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)
 		prefs.savePrefFile(null);
+		//certcache = Cc[nsNSSCertCache].createInstance(nsINSSCertCache);
+		//certcache.cacheAllCerts();
+		//certlist = certcache.getX509CachedCerts();
+		certdb = Cc[nsX509CertDB].getService(nsIX509CertDB);
 		initContext();
 	}
 	
@@ -1166,6 +1178,18 @@ var xullib = (function () {
 		}
 	}
 	
+	function getCertDB() {
+		return certdb;
+	}
+	
+	function getCertCache() {
+		return certcache;
+	}
+	
+	function getCertList() {
+		return certlist;
+	}
+	
 	function merge(o1,o2) {	
 		var out = {};
 		if(!arguments.length)
@@ -1346,6 +1370,9 @@ var xullib = (function () {
 		encodeBase64			:	encodeBase64,
 		err				:	err,
 		getBool				:	getBool,
+		getCertCache			:	getCertCache,
+		getCertDB			:	getCertDB,
+		getCertList			:	getCertList,
 		getChromeWin			:	getChromeWin,
 		getCmd				:	getCmd,
 		getDebug			:	getDebug,

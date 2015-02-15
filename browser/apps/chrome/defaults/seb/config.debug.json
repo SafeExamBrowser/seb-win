@@ -78,5 +78,8 @@
 	"seb.server"				: {
 						  "url"    : "https://localhost:8443/websocket",
 						  "socket" : "wss://localhost:8443/websocket"
-						  }
+						  },
+	"seb.restart.url"	: "",
+	"seb.touch.optimized"	: 0,
+	"seb.embedded.certs"	: ""
 }

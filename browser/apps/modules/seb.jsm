@@ -265,8 +265,8 @@ var seb = (function() {
 		setBrowserHandler(win); 			// for every window call
 		setReqHeader();
 		setLoadFlag();
-		shutdownEnabled = x.getParam("seb.shutdown.enabled");
-		//x.getParam("seb.touch.optimized"); // trigger ctrl to override default behaviour for setSize		
+		shutdownEnabled = x.getParam("seb.shutdown.enabled");	
+		x.getParam("seb.embedded.certs"); // trigger ctrl to override default behaviour for embedded certs	
 		if  (x.getWinType(win) == "main") {
 			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
@@ -553,6 +553,7 @@ var seb = (function() {
 				e.stopPropagation();				
 			}
 		}
+		
 		if (messageServer) {
 			x.debug("shutdown should be handled by host");
 			var msg = (e) ? "seb.beforeclose.manual" : "seb.beforeclose.quiturl";

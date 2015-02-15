@@ -71,7 +71,8 @@ var winctrl = (function() {
 						"network.proxy.socks" 			: 	proxySocks,
 						"network.proxy.socks_port" 		: 	proxySocksPort,
 						"seb.removeProfile"			:	"removeBrowserProfile",
-						"seb.restart.url"			:	"restartExamURL"
+						"seb.restart.url"			:	"restartExamURL",
+						"seb.embedded.certs"			:	embeddedCerts
 					},
 		pos = {
 				0 : "left",
@@ -298,10 +299,44 @@ var winctrl = (function() {
 		return config["proxies"]["ExceptionsList"].join(",") + ",localhost,127.0.0.1";
 	}
 	
+	function embeddedCerts() {
+		if (!config["embeddedCertificates"]) {
+			return null;
+		}
+		var certlist = config["embeddedCertificates"];
+		for (i=0;i<certlist.length;i++) {
+			addCert(certlist[i]);
+		}
+	}
+	
+	function addCert(cert) {
+		//https://developer.mozilla.org/en-US/docs/Cert_override.txt
+		try {
+			var overrideService = x.Cc["@mozilla.org/security/certoverride;1"].getService(x.Ci.nsICertOverrideService);
+			var flags = overrideService.ERROR_UNTRUSTED | overrideService.ERROR_MISMATCH | overrideService.ERROR_TIME;
+			var certdb = x.getCertDB();
+			//var certcache = x.getCertCache();
+			//var certlist = x.getCertList();
+			var x509 = certdb.constructX509FromBase64(cert.certificateData);
+			//certlist.addCert(x509); // maybe needed for type 1 Identity Certs
+			//certcache.cacheCertList(certlist);
+			var host = cert.name;
+			var port = 443;
+			var fullhost = cert.name.split(":");
+			if (fullhost.length==2) {
+				host = fullhost[0];
+				port = parseInt(fullhost[1]);
+			}	
+			overrideService.rememberValidityOverride(host,port,x509,flags,true); 
+		}
+		catch (e) {
+			x.err(e);
+		}
+	}
+	
 	function paramHandler(fn) {
 		return eval(fn).call(null); 
 	}
-	
 	
 	return {
 		toString 			: 	toString,

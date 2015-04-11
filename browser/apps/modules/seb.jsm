@@ -265,8 +265,12 @@ var seb = (function() {
 		setBrowserHandler(win); 			// for every window call
 		setReqHeader();
 		setLoadFlag();
-		shutdownEnabled = x.getParam("seb.shutdown.enabled");	
-		x.getParam("seb.embedded.certs"); // trigger ctrl to override default behaviour for embedded certs	
+		shutdownEnabled = x.getParam("seb.shutdown.enabled");
+		var certs = x.getParam("seb.embedded.certs");
+		if (typeof certs == "object") {
+			embeddedCerts(certs);
+		}
+		//x.getParam("seb.embedded.certs"); // trigger ctrl to override default behaviour for embedded certs	
 		if  (x.getWinType(win) == "main") {
 			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
@@ -295,6 +299,39 @@ var seb = (function() {
 		else {	
 			setSize(win);
 		} 	
+	}
+	
+	function embeddedCerts(certs) {
+		x.debug("embedded certs: " + certs.length);
+		for (var i=0;i<certs.length;i++) {
+			addCert(certs[i]);
+		}
+	}
+	
+	function addCert(cert) {
+		//https://developer.mozilla.org/en-US/docs/Cert_override.txt
+		try {
+			var overrideService = Cc["@mozilla.org/security/certoverride;1"].getService(x.Ci.nsICertOverrideService);
+			var flags = overrideService.ERROR_UNTRUSTED | overrideService.ERROR_MISMATCH | overrideService.ERROR_TIME;
+			var certdb = x.getCertDB();
+			//var certcache = x.getCertCache();
+			//var certlist = x.getCertList();
+			var x509 = certdb.constructX509FromBase64(cert.certificateData);
+			//certlist.addCert(x509); // maybe needed for type 1 Identity Certs
+			//certcache.cacheCertList(certlist);
+			var host = cert.name;
+			var port = 443;
+			var fullhost = cert.name.split(":");
+			if (fullhost.length==2) {
+				host = fullhost[0];
+				port = parseInt(fullhost[1]);
+			}
+			x.debug("add cert: " + host + ":" + port + "\n" + cert.certificateData);	
+			overrideService.rememberValidityOverride(host,port,x509,flags,true); 
+		}
+		catch (e) {
+			x.err(e);
+		}
 	}
 	
 	// hidden iFrame for seb server

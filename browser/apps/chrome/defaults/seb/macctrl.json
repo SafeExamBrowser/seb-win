@@ -1,0 +1,119 @@
+{
+"startURL_":"https://localhost:8443/demo/index.html",
+"restartExamURL_":"https://localhost:8443/demo/q1.html",
+"startURL":"http://www.heise.de",
+"restartExamURL":"http://www.heise.de",
+"touchOptimized":0,
+"browserExamKey":"SEBKEY",
+"browserURLSalt":true,
+"browserViewMode":1,
+"browserScreenKeyboard":true,
+"browserMessagingSocket_":"ws://localhost:8706",
+"browserMessagingPingTime":"120000",
+"mainBrowserWindowWidth":"100%",
+"mainBrowserWindowHeight":"100%",
+"mainBrowserWindowPositioning":0,
+"newBrowserWindowByLinkPolicy":2,
+"newBrowserWindowByLinkWidth":"800",
+"newBrowserWindowByLinkHeight":"600",
+"newBrowserWindowByLinkPositioning":1,
+"showTaskBar":true,
+"taskBarHeight":40,
+"allowQuit":true,
+"quitURL":"http://localhost:8000/app/quit",
+"hashedQuitPassword_":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+"hashedQuitPassword":"",
+"allowBrowsingBackForward":true,
+"allowFlashFullscreen":false,
+"enableURLContentFilter":false,
+"enableJava":false,
+"downloadPDFFiles":false,
+"allowDownUploads":false,
+"hideBrowserWindowToolbar":true,
+"enableJavaScript":true,
+"sendBrowserExamKey":true,
+"enableURLFilter":false,
+"chooseFileToUploadPolicy":0,
+"hashedAdminPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+"embeddedCertificates":
+[
+	{
+	"certificateData_":"MIIEDDCCAvSgAwIBAgIFETIZ9b0wDQYJKoZIhvcNAQEFBQAwgYkxCzAJBgNVBAYTAkRFMQ8wDQYDVQQIEwZIZXNzZW4xEDAOBgNVBAcTB0dpZXNzZW4xDzANBgNVBAoTBmVxc29mdDEOMAwGA1UECxMFYWRtaW4xEjAQBgNVBAMTCWVxc29mdCBDQTEiMCAGCSqGSIb3DQEJARYTZXFzb2Z0ZGV2QGdtYWlsLmNvbTAeFw0xMzA5MTAxNjA5NTFaFw0yMzA5MDgxNjA5NTFaMIGRMQswCQYDVQQGEwJERTEPMA0GA1UECBMGSGVzc2VuMRAwDgYDVQQHEwdHaWVzc2VuMQ8wDQYDVQQKEwZlcXNvZnQxDjAMBgNVBAsTBWFkbWluMRowGAYDVQQDExFlcXNvZnQuZHluZG5zLm9yZzEiMCAGCSqGSIb3DQEJARYTZXFzb2Z0ZGV2QGdtYWlsLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALdnEq0fZqGt70S1\/5Z+GypwKzOKWx9h3ainbgWWrefSNNmMfJG5Rbr0pj0I4S2LhEeCST0OKCV87cuEsadPk643mNZgik4ujI\/\/2OYZlbbp8\/5kBpEKLay0gbN\/rI3sCx9+P4alkBupZs2MbkVfWs2E6yefyXfDQEeQ3DSw6TW5eHx0vlI95KyUUcPqx7xAB9HzCcgR29BFxomrjxrbpHL1MHrNEa5ZR3UJJDej5j448MfTz3inw2DPkHhLPaZqJ013rcg\/gZMugR5GdCcMg+yDRUVxInPmDDH70OA5L5PSvf4BcYXKAa+TVQPwa+O1r18fTUti\/OIGKpjWRp1Qcq8CAwEAAaNxMG8wHgYDVR0RBBcwFYETZXFzb2Z0ZGV2QGdtYWlsLmNvbTA6BglghkgBhvhCAQ0ELRYrbW9kX3NzbCBnZW5lcmF0ZWQgY3VzdG9tIHNlcnZlciBjZXJ0aWZpY2F0ZTARBglghkgBhvhCAQEEBAMCBkAwDQYJKoZIhvcNAQEFBQADggEBAGBuqfdc3cK0qh0zl36b9YF48643wWQHCrg76brW8KBXLJgP6ucTaYpND4XuOTkNvwwF5h\/N0S2lXaP1NIkpT7z8OeOMBpydXEfyPtAOD+6QozQ2oozW00yCXcFWjbl86XCRLGf9Nw0Las2vmc+WNVQbKFmHTNo1uSigf\/e3DO+5AVm1oQFn8rX8M3Qc3mpOvbW2mylqRoSi8QG1rmDD+md3PvBxxr7fSYisJv9M3FwlWaCv+kl3jzoLLnbKrY4\/7V0RrZSlPXy85DlgOU8d5Cp6JyTCori9W4c5Epd+4MjReJBmmZchHAoReS4SNw4JgDjXRCFLAoD9IMzbWI7Pbmg",
+	"certificateData":" ",
+	"type":0,
+	"name":"eqsoft.dyndns.org:444"
+	}
+],
+"URLFilterRules":
+[
+	{
+	"active":true,
+	"expression":"Allow .seb files only from safeexambrowser.org and https:\/\/exams.ethz.ch",
+	"ruleActions":
+		[
+			{
+			"action":4,
+			"active":true,
+			"expression":"safeexambrowser.org"
+			},
+			{
+			"action":2,
+			"active":true,
+			"expression":"https:\/\/exams.ethz.ch"
+			},
+			{
+			"active":true,
+			"expression":"*\/*.seb"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow maps.google.*, block google.* and all other subdomains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"maps.google.*"
+			},
+			{
+			"active":true,
+			"expression":"google.*"
+			}
+		]
+	},
+	{
+	"active":true,
+	"expression":"Allow all other domains",
+	"ruleActions":
+		[
+			{
+			"action":1,
+			"active":true,
+			"expression":"*"
+			}
+		]
+	}
+],
+"showMenuBar":true,
+"newBrowserWindowByScriptBlockForeign":false,
+"enableLogging":false,
+"logDirectoryWIN":"",
+"monitorProcesses":false,
+"downloadDirectoryWIN":"",
+"downloadAndOpenSebConfig":true,
+"newBrowserWindowByLinkBlockForeign":false,
+"enableBrowserWindowToolbar":true,
+"proxies": {
+		"ExceptionsList" : [
+			"*.local",
+			"169.254/16"
+		],
+		"HTTPPort" : 2345
+},
+"blockPopUpWindows":false,
+"enablePlugIns":true,
+"newBrowserWindowByScriptPolicy":2,
+"openDownloads":false
+}

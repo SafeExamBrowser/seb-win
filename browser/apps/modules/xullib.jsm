@@ -249,6 +249,10 @@ var xullib = (function () {
 				lf = "\n";
 				loadController("linux",cb,"os");
 				break;
+			case "DARWIN" :
+				lf = "\n";
+				loadController("mac",cb,"os");
+				break;
 			default :
 				lf = "\n";
 		}

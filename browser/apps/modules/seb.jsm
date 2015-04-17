@@ -266,12 +266,13 @@ var seb = (function() {
 		setReqHeader();
 		setLoadFlag();
 		shutdownEnabled = x.getParam("seb.shutdown.enabled");
-		var certs = x.getParam("seb.embedded.certs");
-		if (typeof certs == "object") {
-			embeddedCerts(certs);
-		}
+		
 		//x.getParam("seb.embedded.certs"); // trigger ctrl to override default behaviour for embedded certs	
 		if  (x.getWinType(win) == "main") {
+			var certs = x.getParam("seb.embedded.certs");
+			if (typeof certs == "object") {
+				embeddedCerts(certs);
+			}
 			let hf = win.document.getElementById("hidden.iframe");			
 			if (x.getParam("seb.server.enabled")) {
 				server = x.getParam("seb.server");

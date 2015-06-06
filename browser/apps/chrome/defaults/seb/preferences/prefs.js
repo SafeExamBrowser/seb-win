@@ -31,4 +31,5 @@ user_pref("privacy.popups.firstTime", false);
 user_pref("privacy.popups.policy", 1);
 user_pref("security.default_personal_cert", "Select Automatically");
 user_pref("toolkit.defaultChromeURI", "chrome://seb/content/seb.xul");
+user_pref("toolkit.defaultChromeFeatures", "chrome,dialog=no,resizable=yes,scrollbars=yes");
 user_pref("toolkit.singletonWindowType", "main");

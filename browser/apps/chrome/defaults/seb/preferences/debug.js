@@ -25,4 +25,5 @@ user_pref("nglayout.debug.disable_xul_fastload", true);
 user_pref("privacy.popups.firstTime", false);
 user_pref("privacy.popups.policy", 1);
 user_pref("toolkit.defaultChromeURI", "chrome://seb/content/seb.xul");
+user_pref("toolkit.defaultChromeFeatures", "chrome,dialog=no,resizable=yes,scrollbars=yes");
 user_pref("toolkit.singletonWindowType", "main");

@@ -299,6 +299,7 @@ var seb = (function() {
 		}
 		else {	
 			setSize(win);
+			setTitlebar(win);
 		} 	
 	}
 	
@@ -876,6 +877,152 @@ var seb = (function() {
 	}
 	
 	function setSize(win) {
+		x.debug("setSize: " + x.getWinType(win));
+		let os = Services.appinfo.OS.toUpperCase();
+		let scr = (x.getWinType(win) == "main") ? x.getParam("seb.mainWindow.screen") : x.getParam("seb.popupWindows.screen");
+		x.debug("mainScreen: " + JSON.stringify(scr));
+		
+		let swt = mainWin.screen.width;
+		let sht = mainWin.screen.height;
+		let stp = mainWin.screen.top;
+		let slt = mainWin.screen.left;
+		
+		x.debug("screenWidth: " + swt);
+		x.debug("screenHeight: " + sht);
+		x.debug("screenTop: " + stp);
+		x.debug("screenLeft: " + slt);
+		
+		let sawt = mainWin.screen.availWidth;
+		let saht = mainWin.screen.availHeight;
+		let satp = mainWin.screen.availTop;
+		let salt = mainWin.screen.availLeft;
+		
+		x.debug("screenAvailWidth: " + sawt);
+		x.debug("screenAvailHeight: " + saht);
+		x.debug("screenAvailTop: " + satp);
+		x.debug("screenAvailLeft: " + salt);
+		
+		let wow = win.outerWidth;
+		let wiw = win.innerWidth;
+		let woh = win.outerHeight;
+		let wih = win.innerHeight;
+		
+		x.debug("winOuterWidth: " + wow);
+		x.debug("winInnerWidth: " + wiw);
+		x.debug("winOuterHeight: " + woh);
+		x.debug("winInnerHeight: " + wih);
+		
+		let wsx = win.screenX;
+		let wsy = win.screenY;
+		
+		x.debug("winScreenX: " + wsx);
+		x.debug("winScreenY: " + wsy);
+		
+		let offWidth = win.outerWidth - win.innerWidth;
+		let offHeight = win.outerHeight - win.innerHeight;
+		x.debug("offWidth: " + offWidth);
+		x.debug("offHeight: " + offHeight);
+		
+		let tb = x.getParam("seb.taskbar.enabled");
+		x.debug("showTaskBar:" + tb);
+		
+		if (tb) {
+			let defaultTbh = (sht - saht);
+			let tbh = x.getParam("seb.taskbar.height");
+			tbh = (tbh > 0) ? tbh : defaultTbh;
+			sht -= tbh;
+			x.debug("showTaskBar: change height to " + sht);
+		}
+		
+		let wx = swt;
+		let hx = sht;
+		if (typeof scr.width == "string" && /^\d+\%$/.test(scr.width)) {
+			let w = scr.width.replace("%","");
+			wx = (w > 0) ? ((swt / 100) * w) : swt;
+		}
+		else {
+			wx = (scr.width > 0) ? scr.width : swt;
+		}
+		x.debug("wx: " + wx);
+		
+		if (typeof scr.height == "string" && /^\d+\%$/.test(scr.height)) {
+			var h = scr.height.replace("%","");
+			hx = (h > 0) ? ((sht / 100) * h) : sht;	
+		}
+		else {
+			hx = (scr.height > 0) ? scr.height : sht;
+		}
+		x.debug("hx: " + hx);
+		
+		
+		if (x.getWinType(win) == "main" && x.getParam('seb.mainWindow.titlebar.enabled')) {
+			wx -= getFrameWidth();
+			hx -= getFrameHeight();
+		}
+		
+		if (x.getWinType(win) != "main" && x.getParam('seb.popupWindows.titlebar.enabled')) {
+			wx -= getFrameWidth();
+			hx -= getFrameHeight();
+		}
+		
+		x.debug("resizeTo: " + wx + ":" + hx);
+		win.setTimeout(function() { 
+						this.resizeTo(wx,hx); 
+						this.setTimeout(function () { 
+								setPosition(this); 
+							}, 100 );
+						}, 100);
+		
+		//setPosition(win);
+		//win.setTimeout(function () { setPosition(this) }, 100 );
+		function getFrameWidth() {
+			switch (os) {
+				case "DARWIN" :
+					return 0;
+				case "UNIX" :
+				case "LINUX" :
+					return 0;
+				case "WINNT" :
+					return 0;
+			}
+		}
+		
+		function getFrameHeight() {
+			switch (os) {
+				case "DARWIN" :
+					return 0;
+				case "UNIX" :
+				case "LINUX" :
+					return 20;
+				case "WINNT" :
+					return 0;
+			}
+		}
+		
+		function setPosition(win) {
+			x.debug("setPosition: " + scr.position);
+			switch (scr.position) {
+				case "center" :
+					//x.debug();
+					x.debug("moveTo: " + ((swt/2)-(wx/2)) + ":" + satp);
+					win.moveTo(((swt/2)-(wx/2)),satp);
+					break;
+				case "right" :
+					x.debug("moveTo: " + (swt-wx) + ":" + satp);
+					win.moveTo((swt-wx),satp);
+					break;
+				case "left" :
+					x.debug("moveTo: " + salt + ":" + satp);
+					win.moveTo(salt,satp);
+					break;
+				default :
+					// do nothing
+			}
+		}
+	}
+	
+	/*
+	function setSize(win) {
 		x.debug("set size");
 		let sn = (win === mainWin) ? x.getParam("seb.mainWindow.screen") : x.getParam("seb.popupWindows.screen");
 		
@@ -951,11 +1098,19 @@ var seb = (function() {
 			}
 		}
 	}
+	*/
 	
 	function setTitlebar(win) {
-		let w = (win) ? win : x.getRecentWin(); 
-		w.document.getElementById("sebWindow").setAttribute("hidechrome",!x.getParam('seb.mainWindow.titlebar.enabled'));
-		//x.debug("hidechrome " + w.document.getElementById("sebWindow").getAttribute("hidechrome"));
+		let w = (win) ? win : x.getRecentWin();
+		let val = '';
+		if (x.getWinType(win) == 'main') {
+			val = (x.getParam('seb.mainWindow.titlebar.enabled')) ? "-1,-1,-1,-1" : "0,0,0,0";
+		}
+		else {
+			val = (x.getParam('seb.popupWindows.titlebar.enabled')) ? "-1,-1,-1,-1" : "0,0,0,0";
+		}
+		w.document.getElementById("sebWindow").setAttribute("chromemargin",val);
+		//w.document.getElementById("sebWindow").setAttribute("hidechrome",!x.getParam('seb.mainWindow.titlebar.enabled'));
 	}
 	
 	function getKeys(win) {		

@@ -42,6 +42,7 @@ var winctrl = (function() {
 						"seb.request.key"			:	browserExamKey,
 						"seb.request.salt"			:	"browserURLSalt",
 						"seb.mainWindow.titlebar.enabled"	:	titleBarEnabled,
+						"seb.popupWindows.titlebar.enabled"	:	popupTitleBarEnabled,
 						"seb.mainWindow.screen"			:	mainWindowScreen,
 						"seb.popupWindows.screen"		:	popupScreen,
 						"seb.taskbar.enabled"			:	"showTaskBar",
@@ -149,7 +150,12 @@ var winctrl = (function() {
 	}
 	
 	function titleBarEnabled() {
-		var ret = (config["browserViewMode"] == 0) ? true : false;
+		var ret = ((config["browserViewMode"] == 0) || (config["touchOptimized"] == 1)) ? false : true;
+		return ret;
+	}
+	
+	function popupTitleBarEnabled() {
+		var ret = (config["touchOptimized"] == 1) ? false : true;
 		return ret;
 	}
 	

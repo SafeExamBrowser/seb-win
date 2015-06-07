@@ -878,9 +878,14 @@ var seb = (function() {
 	
 	function setSize(win) {
 		x.debug("setSize: " + x.getWinType(win));
-		let os = Services.appinfo.OS.toUpperCase();
+		
 		let scr = (x.getWinType(win) == "main") ? x.getParam("seb.mainWindow.screen") : x.getParam("seb.popupWindows.screen");
-		x.debug("mainScreen: " + JSON.stringify(scr));
+		if (scr.fullsize) { // no resizing
+			return;
+		}
+		
+		let os = Services.appinfo.OS.toUpperCase();
+		//x.debug("mainScreen: " + JSON.stringify(scr));
 		
 		let swt = mainWin.screen.width;
 		let sht = mainWin.screen.height;

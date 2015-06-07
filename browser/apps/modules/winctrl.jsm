@@ -125,14 +125,10 @@ var winctrl = (function() {
 	
 	function mainWindowScreen() {
 		var ret = {};		 
-		ret['fullsize'] = (config["browserViewMode"] == 0) ? false : true;
+		ret['fullsize'] = ((config["browserViewMode"] == 0) || (config["touchOptimized"] == 1)) ? true : false;
 		ret['width'] = config["mainBrowserWindowWidth"];
 		ret['height'] = config["mainBrowserWindowHeight"];
 		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
-		if (config["touchOptimized"] == 1) {
-			ret['width'] = "100%";
-			ret['height'] = "100%";
-		}
 		return ret;
 	}
 	
@@ -143,8 +139,7 @@ var winctrl = (function() {
 		ret['height'] = config["newBrowserWindowByLinkHeight"];
 		ret['position'] = pos[config["newBrowserWindowByLinkPositioning"]];
 		if (config["touchOptimized"] == 1) {
-			ret['width'] = "100%";
-			ret['height'] = "100%";
+			ret['fullsize'] = true;
 		}
 		return ret;
 	}

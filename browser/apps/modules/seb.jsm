@@ -1105,7 +1105,7 @@ var seb = (function() {
 	}
 	*/
 	
-	function setTitlebar(win) {
+	function __setTitlebar(win) { // old
 		let w = (win) ? win : x.getRecentWin();
 		let val = '';
 		if (x.getWinType(win) == 'main') {
@@ -1116,6 +1116,45 @@ var seb = (function() {
 		}
 		w.document.getElementById("sebWindow").setAttribute("chromemargin",val);
 		//w.document.getElementById("sebWindow").setAttribute("hidechrome",!x.getParam('seb.mainWindow.titlebar.enabled'));
+	}
+	
+	function setTitlebar(win) {
+		let os = Services.appinfo.OS.toUpperCase();
+		let attr = "";
+		let val = "";
+		let margintop = "0px";
+		let sebwin = win.document.getElementById("sebWindow");
+		let titlebarEnabled = (x.getWinType(win) == 'main') ? x.getParam('seb.mainWindow.titlebar.enabled') : x.getParam('seb.popupWindows.titlebar.enabled');
+		
+		switch (os) { 
+			case "WINNT" :
+				//win.setTimeout(function() { this.fullScreen=true },1);
+				attr = "chromemargin";
+				val = (titlebarEnabled) ? "-1,-1,-1,-1" : "0,-1,-1,-1";
+				margintop = (titlebarEnabled) ? "0px" : "6px";
+				//attr = "hidechrome";
+				//val = (!scr.titlebarEnabled);
+				break;
+			case "DARWIN" : // maybe the best would be hidechrome and resizing
+				attr = "chromemargin";
+				val = (titlebarEnabled) ? "-1,-1,-1,-1" : "0,-1,-1,-1";
+				//attr = "hidechrome";
+				//val = (!scr.titlebarEnabled);
+				//win.setTimeout(function() { this.maximize(); },1);
+				break;
+			case "UNIX" :
+			case "LINUX" :
+				attr = "hidechrome";
+				val = (!titlebarEnabled);
+				break;
+			default :
+				x.err("Unknown OS: " + os)
+		}
+		x.debug(attr + ":" + val);
+		sebwin.style.marginTop = margintop;
+		sebwin.setAttribute(attr,val);
+		//win.maximize();
+		//win.setTimeout(function() { this.maximize(); },1);
 	}
 	
 	function getKeys(win) {		

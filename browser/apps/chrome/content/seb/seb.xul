@@ -7,8 +7,15 @@
 	<!ENTITY % sebDtdConst SYSTEM "chrome://seb/content/seb.dtd">
 	%sebDtdConst;
 ]>
-<window id="sebWindow" title="&seb.title;" windowtype="main" sizemode="maximized"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="seb.init(this);" onunload="seb.onunload(this);" onclose="seb.onclose(this)">
+<window id="sebWindow" 
+	title="&seb.title;" 
+	windowtype="main" 
+	sizemode="maximized"
+	accelerated="true"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+	onload="seb.init(this);" 
+	onunload="seb.onunload(this);" 
+	onclose="seb.onclose(this)">
 	<script type="application/x-javascript">
 		Components.utils.import("resource://modules/xullib.jsm");  
 		Components.utils.import("resource://modules/seb.jsm");

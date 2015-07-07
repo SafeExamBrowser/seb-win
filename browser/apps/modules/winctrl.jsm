@@ -125,7 +125,7 @@ var winctrl = (function() {
 	
 	function mainWindowScreen() {
 		var ret = {};		 
-		ret['fullsize'] = ((config["browserViewMode"] == 0) || (config["touchOptimized"] == 1)) ? true : false;
+		ret['fullsize'] = ((config["browserViewMode"] == 1) || (config["touchOptimized"] == 1)) ? true : false;
 		ret['width'] = config["mainBrowserWindowWidth"];
 		ret['height'] = config["mainBrowserWindowHeight"];
 		ret['position'] = pos[config["mainBrowserWindowPositioning"]];
@@ -145,7 +145,7 @@ var winctrl = (function() {
 	}
 	
 	function titleBarEnabled() {
-		var ret = ((config["browserViewMode"] == 0) || (config["touchOptimized"] == 1)) ? false : true;
+		var ret = ((config["browserViewMode"] == 1) || (config["touchOptimized"] == 1)) ? false : true;
 		return ret;
 	}
 	

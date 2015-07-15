@@ -85,6 +85,7 @@ var seb = (function() {
 			blackListRegs			= 	[],
 			shutdownUrl			=	"",
 			shutdownPassword		=	false,
+			elToScrollIntoView		=	null,
 			convertReg			= 	/[-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g,
 			wildcardReg			=	/\*/g,
 			stream_handler			=	{
@@ -397,6 +398,17 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					reload(null);
 					break;
+				case "SEB.keyboardShown" :
+					x.debug("messageSocket handled: " + evt.data);
+					if (elToScrollIntoView != null) {
+						try {
+							elToScrollIntoView.scrollIntoView();
+						}
+						catch (e) { 
+							x.err(e);
+						}
+					}
+					break;	
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
@@ -1238,6 +1250,7 @@ var seb = (function() {
 			x.debug("input onFocus");
 			try {
 				messageSocket.send("seb.input.focus");
+				elToScrollIntoView = evt.target;
 				evt.target.scrollIntoView();
 			}
 			catch(e){}
@@ -1245,6 +1258,7 @@ var seb = (function() {
 		function onBlur(evt) {
 			x.debug("input onBlur");
 			try {
+				elToScrollIntoView = null;
 				messageSocket.send("seb.input.blur"); 
 			}
 			catch(e){}

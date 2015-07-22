@@ -27,6 +27,20 @@ namespace MetroFramework
             metroButton1.Click += new EventHandler(button_Click);
             metroButton2.Click += new EventHandler(button_Click);
             metroButton3.Click += new EventHandler(button_Click);
+
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (x, y) =>
+            {
+                this.WindowState = FormWindowState.Normal;
+                InitializeSize();
+            };
+
+            InitializeSize();
+        }
+
+        private void InitializeSize()
+        {
+            this.WindowState = FormWindowState.Maximized;
+            this.Padding = new Padding(0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2), 0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2));
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

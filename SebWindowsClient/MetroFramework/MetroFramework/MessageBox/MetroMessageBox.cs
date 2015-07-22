@@ -113,7 +113,6 @@ namespace MetroFramework
                 }
 
                 MetroMessageBoxControl _control = new MetroMessageBoxControl();
-                //_control.BackColor = _owner.BackColor;
 
                 _control.BackColor = Color.White;
 
@@ -122,32 +121,10 @@ namespace MetroFramework
                 _control.Properties.Icon = icon;
                 _control.Properties.Message = message;
                 _control.Properties.Title = title;
-                //_control.Padding = new Padding(0, 0, 0, 0);
                 _control.ControlBox = false;
                 _control.ShowInTaskbar = false;
 
-                _control.Height = Screen.PrimaryScreen.Bounds.Height;
-                _control.Width = Screen.PrimaryScreen.Bounds.Width;
-                _control.WindowState = FormWindowState.Maximized;
-                _control.Padding = new Padding(0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2), 0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2));
-
-                //_owner.Controls.Add(_control);
-                //if (_owner is IMetroForm)
-                //{
-                //    //if (((MetroForm)_owner).DisplayHeader)
-                //    //{
-                //    //    _offset += 30;
-                //    //}
-                //    _control.Theme = ((MetroForm)_owner).Theme;
-                //    _control.Style = ((MetroForm)_owner).Style;
-                //}
-
-                //_control.Size = new Size(_owner.Size.Width, height);
-                //_control.Location = new Point(_owner.Location.X, _owner.Location.Y + (_owner.Height - _control.Height) / 2);
                 _control.ArrangeApperance();
-                int _overlaySizes = Convert.ToInt32(Math.Floor(_control.Size.Height * 0.28));
-                //_control.OverlayPanelTop.Size = new Size(_control.Size.Width, _overlaySizes - 30);
-                //_control.OverlayPanelBottom.Size = new Size(_control.Size.Width, _overlaySizes);
 
                 _control.ShowDialog();
                 _control.BringToFront();

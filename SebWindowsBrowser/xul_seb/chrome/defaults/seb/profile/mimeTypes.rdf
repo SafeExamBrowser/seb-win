@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Seq RDF:about="urn:schemes:root">
+    <RDF:li RDF:resource="urn:scheme:seb"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:scheme:seb"
+                   NC:value="seb">
+    <NC:handlerProp RDF:resource="urn:scheme:handler:seb"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:root"
+                   NC:en-US_defaultHandlersVersion="-1" />
+  <RDF:Description RDF:about="urn:schemes">
+    <NC:Protocol-Schemes RDF:resource="urn:schemes:root"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:scheme:handler:seb"
+                   NC:useSystemDefault="true"
+                   NC:alwaysAsk="false" />
+  <RDF:Seq RDF:about="urn:mimetypes:root">
+    <RDF:li RDF:resource="urn:mimetype:application/attemptdata"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mimetype:handler:application/attemptdata"
+                   NC:alwaysAsk="false"
+                   NC:saveToDisk="true">
+    <NC:externalApplication RDF:resource="urn:mimetype:externalApplication:application/attemptdata"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mimetype:application/attemptdata"
+                   NC:value="application/attemptdata"
+                   NC:editable="true"
+                   NC:fileExtensions="attemptdata"
+                   NC:description="">
+    <NC:handlerProp RDF:resource="urn:mimetype:handler:application/attemptdata"/>
+  </RDF:Description>
+</RDF:RDF>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://seb/content/css/seb.css" type="text/css"?>
+<!DOCTYPE window [
+	<!ENTITY % sebDtdLocal SYSTEM "chrome://seb/locale/seb.dtd">
+	%sebDtdLocal;
+	<!ENTITY % sebDtdConst SYSTEM "chrome://seb/content/seb.dtd">
+	%sebDtdConst;
+]>
+<window id="sebWindow" 
+	title="&seb.title;" 
+	windowtype="main" 
+	sizemode="maximized"
+	accelerated="true"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+	onload="seb.init(this);" 
+	onunload="seb.onunload(this);" 
+	onclose="seb.onclose(this)">
+	<script type="application/x-javascript">
+		Components.utils.import("resource://modules/xullib.jsm");  
+		Components.utils.import("resource://modules/seb.jsm");
+	</script>
+	<stringbundleset>
+		<stringbundle id="locale" src="chrome://seb/locale/seb.properties" />
+		<stringbundle id="const" src="chrome://seb/content/seb.properties" />
+	</stringbundleset>
+	<!-- commands -->
+	<commandset id="sebCommandSet">	
+		<command id="sebCmdShutdown" oncommand="seb.shutdown();"/>
+		<command id="sebCmdReload" oncommand="seb.reload(window);"/>
+		<command id="sebCmdLoad" oncommand="seb.load();"/>
+		<command id="sebCmdRestart" oncommand="seb.restart();"/>
+		<command id="sebCmdBack" oncommand="seb.back(window);"/>
+		<command id="sebCmdForward" oncommand="seb.forward(window);"/>
+		<command id="sebCmdShowAll" oncommand="seb.showAll();"/>
+		<command id="sebCmdToggleHidden" oncommand="seb.toggleHidden(window);"/>
+	</commandset>
+	<audio xmlns="http://www.w3.org/1999/xhtml" id="seb.snapshot" src="chrome://seb/content/sounds/snapshot.ogg" preload="auto"></audio>
+	<!-- keysets -->
+	<keyset id="sebKeySet">
+		<key id="seb.shutdown" keycode="VK_F4" modifiers="control shift" command="sebCmdShutdown"/>
+		<key id="seb.reload" keycode="VK_F5" modifiers="control shift" command="sebCmdReload"/>
+		<key id="seb.load" keycode="VK_F6" modifiers="control shift" command="sebCmdLoad"/>
+		<key id="seb.restart" keycode="VK_F9" modifiers="control shift" command="sebCmdRestart"/>
+		<key id="seb.back" keycode="VK_LEFT" modifiers="control" command="sebCmdBack"/>
+		<key id="seb.forward" keycode="VK_RIGHT" modifiers="control" command="sebCmdForward"/>
+		<key id="seb.showall" keycode="VK_F1" command="sebCmdShowAll"/>
+		<key id="seb.togglehidden" keycode="VK_F10" command="sebCmdToggleHidden"/>
+	</keyset>
+	<vbox flex="1">
+		<deck id="deckContents" selectedIndex="1" flex="1">	
+			<iframe flex="1" id="xullib.frame" src="about:blank" type="content-primary"></iframe>	
+			<browser flex="1" id="xullib.browser" type="content-primary" src="about:blank"/>
+			<browser flex="1" id="hidden.iframe" src="about:blank" type="content-targetable"></browser>
+		</deck>
+	</vbox>
+	<browser id="hidden.message" src="about:blank" type="content-targetable" style="display:none"></browser>
+</window>

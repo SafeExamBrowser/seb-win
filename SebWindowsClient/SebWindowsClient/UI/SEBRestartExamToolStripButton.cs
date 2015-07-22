@@ -45,10 +45,13 @@ namespace SebWindowsClient.UI
                 if (!String.IsNullOrWhiteSpace(quitPassword))
                 {
                     var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle, SEBUIStrings.restartExamMessage);
-                    if (String.IsNullOrWhiteSpace(password)) return;
                     var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
-                    if (String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
+                    if (String.IsNullOrWhiteSpace(password) ||
+                        String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
+                    {
+                        SEBMessageBox.Show(Resources.WrongPasswordTitle, Resources.WrongPasswordText, MessageBoxIcon.Error, MessageBoxButtons.OK);
                         return;
+                    }
                 }
             }
             SEBXULRunnerWebSocketServer.SendRestartExam();

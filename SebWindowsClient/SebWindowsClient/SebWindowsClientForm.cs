@@ -1200,22 +1200,8 @@ namespace SebWindowsClient
         {
             if (KeyboardShown && TapTipHandler.IsKeyboardDocked() && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
             {
-                int timeWaited = 0;
-                while (TapTipHandler.GetKeyboardWindowHandle().GetWindowHeight() == 0 && timeWaited < 500)
-                {
-                    Thread.Sleep(50);
-                    timeWaited += 50;
-                }
                 this.Hide();
                 var keyboardHeight = TapTipHandler.GetKeyboardWindowHandle().GetWindowHeight();
-                Logger.AddInformation("Keyboard height from its window: " + keyboardHeight.ToString());
-
-                if (keyboardHeight == 0)
-                {
-                    keyboardHeight = 400;
-                }
-                Logger.AddInformation("Final keyboard height: " + keyboardHeight.ToString());
-
                 SEBWorkingAreaHandler.SetTaskBarSpaceHeight(keyboardHeight);
                 var topWindow = SEBWindowHandler.GetOpenWindows().FirstOrDefault();
                 if (topWindow.Value != null)

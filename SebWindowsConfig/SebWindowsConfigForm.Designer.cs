@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1454,9 +1454,9 @@
             this.labelChooseSSLClientCertificate.Location = new System.Drawing.Point(16, 24);
             this.labelChooseSSLClientCertificate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelChooseSSLClientCertificate.Name = "labelChooseSSLClientCertificate";
-            this.labelChooseSSLClientCertificate.Size = new System.Drawing.Size(308, 13);
+            this.labelChooseSSLClientCertificate.Size = new System.Drawing.Size(280, 13);
             this.labelChooseSSLClientCertificate.TabIndex = 96;
-            this.labelChooseSSLClientCertificate.Text = "Choose TLS/SSL client certificate to embed into configuration...";
+            this.labelChooseSSLClientCertificate.Text = "Choose TLS/SSL certificate to embed into configuration...";
             // 
             // comboBoxChooseIdentityToEmbed
             // 
@@ -1513,8 +1513,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;

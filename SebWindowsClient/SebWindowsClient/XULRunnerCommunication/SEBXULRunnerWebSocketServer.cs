@@ -3,6 +3,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Forms;
 using Fleck;
+using Newtonsoft.Json;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 
@@ -156,6 +157,22 @@ namespace SebWindowsClient.XULRunnerCommunication
                     Console.WriteLine("SEB.Reload Sent");
                     Logger.AddInformation("WebSocket: Send message: SEB.reload");
                     XULRunner.Send("SEB.reload");
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public static void SendMessage(SEBXULMessage message)
+        {
+            try
+            {
+                if (XULRunner != null)
+                {
+                    Console.WriteLine(JsonConvert.SerializeObject(message));
+                    Logger.AddInformation("WebSocket: Send message: " + JsonConvert.SerializeObject(message));
+                    XULRunner.Send(JsonConvert.SerializeObject(message));
                 }
             }
             catch (Exception)

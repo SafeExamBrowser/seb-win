@@ -1830,6 +1830,9 @@ namespace SebWindowsClient
                 loadingThread = new Thread(SEBLoading.StartLoading);
                 loadingThread.Start();
             }
+
+            SEBProcessHandler.LogAllRunningProcesses();
+
             Logger.AddInformation("Attempting to CloseSEBForm in ExitApplication");
             try
             {

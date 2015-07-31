@@ -189,6 +189,9 @@ namespace SebWindowsClient
                 }
                 var splashThread = new Thread(new ThreadStart(StartSplash));
                 splashThread.Start();
+
+                SEBProcessHandler.LogAllRunningProcesses();
+
                 try
                 {
                     InitSEBDesktop();

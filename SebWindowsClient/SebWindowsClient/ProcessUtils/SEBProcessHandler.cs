@@ -130,6 +130,16 @@ namespace SebWindowsClient.ProcessUtils
             }
         }
 
+        public static void LogAllRunningProcesses()
+        {
+            var runningProcesses = "\nAll Running Processes:\n--------------";
+            foreach (var process in Process.GetProcesses())
+            {
+                runningProcesses += "\n" + process.GetExecutableName();
+            }
+            Logger.AddInformation(runningProcesses);
+        }
+
         #endregion
 
         #region Process WatchDog control

@@ -167,6 +167,20 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyRestartExamUseStartURL = "restartExamUseStartURL";
         public const String KeyRestartExamPasswordProtected = "restartExamPasswordProtected";
 
+        // Group Additional Resources
+        public const String KeyAdditionalResources = "additionalResources";
+        public const String KeyAdditionalResourcesActive = "active";
+        public const String KeyAdditionalResourcesAutoOpen = "autoOpen";
+        public const String KeyAdditionalResourcesIdentifier = "identifier";
+        public const String KeyAdditionalResourcesTitle = "title";
+        public const String KeyAdditionalResourcesUrl = "url";
+        public const String KeyAdditionalResourcesResourceData = "resourceData";
+        public const String KeyAdditionalResourcesResourceIcons = "resourceIcons";
+        public const String KeyAdditionalResourcesResourceIconsFormat = "format";
+        public const String KeyAdditionalResourcesResourceIconsResolution = "resolution";
+        public const String KeyAdditionalResourcesResourceIconsIconData = "iconData";
+        public const String KeyAdditionalResourcesIdentiﬁerCounter = "additionalResourcesIdentiﬁerCounter";
+
         // Group "Applications"
         public const String KeyMonitorProcesses = "monitorProcesses";
 
@@ -378,6 +392,10 @@ namespace SebWindowsClient.ConfigurationUtils
         public static DictObj permittedArgumentDataXulRunner2 = new DictObj();
         public static ListObj permittedArgumentListXulRunner  = new ListObj();
 
+        public static ListObj additionalResourcesList = new ListObj();
+        public static DictObj additionalResourcesData = new DictObj();
+        public static DictObj additionalResourcesDataDefault = new DictObj();
+
         public static int     prohibitedProcessIndex;
         public static ListObj prohibitedProcessList        = new ListObj();
         public static DictObj prohibitedProcessData        = new DictObj();
@@ -442,6 +460,10 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.prohibitedProcessList        = new ListObj();
             SEBSettings.prohibitedProcessData        = new DictObj();
             SEBSettings.prohibitedProcessDataDefault = new DictObj();
+
+            SEBSettings.additionalResourcesList = new ListObj();
+            SEBSettings.additionalResourcesData = new DictObj();
+            SEBSettings.additionalResourcesDataDefault = new DictObj();
 
             SEBSettings.urlFilterRuleList        = new ListObj();
             SEBSettings.urlFilterRuleData        = new DictObj();
@@ -586,6 +608,10 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamText, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamPasswordProtected, true);
+
+            // Default settings for group "Additional Resources"
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAdditionalResourcesIdentiﬁerCounter, 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAdditionalResources, new ListObj());
 
             // Default settings for group "Applications"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyMonitorProcesses         , true);
@@ -836,6 +862,9 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.prohibitedProcessIndex = -1;
             SEBSettings.prohibitedProcessList.Clear();
             SEBSettings.prohibitedProcessData.Clear();
+
+            SEBSettings.additionalResourcesList.Clear();
+            SEBSettings.additionalResourcesData.Clear();
 
             SEBSettings.urlFilterRuleIndex = -1;
             SEBSettings.urlFilterRuleList.Clear();

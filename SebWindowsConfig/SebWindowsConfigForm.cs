@@ -17,6 +17,7 @@ using SebWindowsClient;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
+using SebWindowsConfig.Sections;
 using ListObj  = System.Collections.Generic.List                <object>;
 using DictObj  = System.Collections.Generic.Dictionary  <string, object>;
 using KeyValue = System.Collections.Generic.KeyValuePair<string, object>;
@@ -409,6 +410,9 @@ namespace SebWindowsConfig
             checkBoxRestartExamPasswordProtected.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamPasswordProtected];
             textBoxRestartExamLink.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamURL];
             textBoxRestartExamText.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamText];
+
+            // Group AdditionalResources
+            tabAdditionalResources.Controls.Add(new AdditionalResources());
 
             // Group "Applications"
             checkBoxMonitorProcesses         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyMonitorProcesses];

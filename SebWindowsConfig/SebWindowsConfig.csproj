@@ -79,6 +79,12 @@
     </Compile>
     <Compile Include="SebWindowsConfigProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sections\AdditionalResources.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\AdditionalResources.Designer.cs">
+      <DependentUpon>AdditionalResources.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="SebWindowsConfigForm.resx">
       <DependentUpon>SebWindowsConfigForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -93,6 +99,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Sections\AdditionalResources.resx">
+      <DependentUpon>AdditionalResources.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

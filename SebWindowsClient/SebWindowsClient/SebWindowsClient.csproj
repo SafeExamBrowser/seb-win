@@ -181,6 +181,9 @@
     <Compile Include="UI\SEBInputLanguageToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\SEBAdditionalResourcesToolStripButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\SEBWlanToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -275,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SEBInputLanguageToolStripButton.resx">
       <DependentUpon>SEBInputLanguageToolStripButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SEBAdditionalResourcesToolStripButton.resx">
+      <DependentUpon>SEBAdditionalResourcesToolStripButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SEBWlanToolStripButton.resx">
       <DependentUpon>SEBWlanToolStripButton.cs</DependentUpon>

@@ -732,6 +732,8 @@ namespace SebWindowsClient
 
             //Filling System Icons
 
+            taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton());
+
             //QuitButton
             if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAllowQuit])
             {

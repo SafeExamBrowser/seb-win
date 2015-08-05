@@ -160,6 +160,9 @@
     <Compile Include="ServiceUtils\SEBWindowsServiceController.cs" />
     <Compile Include="ThreadedDialog.cs" />
     <Compile Include="UI\IconExtractor.cs" />
+    <Compile Include="UI\SEBAdditionalResourceMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\SEBWatchToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>

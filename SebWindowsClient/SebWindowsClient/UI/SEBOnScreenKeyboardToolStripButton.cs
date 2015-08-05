@@ -52,15 +52,18 @@ namespace SebWindowsClient.UI
 
         public static void RegisterXulRunnerEvents()
         {
-            SEBXULRunnerWebSocketServer.OnXulRunnerTextFocus += (x, y) => ShowKeyboard();
-            SEBXULRunnerWebSocketServer.OnXulRunnerTextBlur += (x, y) => HideKeyboard();   
+            if (!(bool) SEBSettings.settingsCurrent[SEBSettings.KeyOskNeverShow])
+            {
+                SEBXULRunnerWebSocketServer.OnXulRunnerTextFocus += (x, y) => ShowKeyboard();
+                SEBXULRunnerWebSocketServer.OnXulRunnerTextBlur += (x, y) => HideKeyboard();
+            }
         }
 
         public static void ShowKeyboard(bool force = false)
         {
                 try
                 {
-                    if (IsPhysicalKeyboardAttached() && !force)
+                    if (IsPhysicalKeyboardAttached() && !force && (bool)SEBSettings.settingsCurrent[SEBSettings.KeyOskAutoDetect])
                     {
                         return;
                     }

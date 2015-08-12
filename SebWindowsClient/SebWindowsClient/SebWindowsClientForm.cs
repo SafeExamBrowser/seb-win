@@ -1556,7 +1556,11 @@ namespace SebWindowsClient
             }
 
             // Check if VM and SEB Windows Service available and required
-            if (SebWindowsClientMain.CheckVMService()) {
+            try
+            {
+                SebWindowsClientMain.CheckIfInsideVirtualMachine();
+                SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
+
                 Logger.AddInformation("attempting to start socket server");
                 SEBXULRunnerWebSocketServer.StartServer();
 
@@ -1564,12 +1568,21 @@ namespace SebWindowsClient
                 try
                 {
                     Logger.AddInformation("setting registry values");
-                    if(SebWindowsServiceHandler.IsServiceAvailable && !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
-                        Logger.AddWarning("Unable to set registry values",this,null);
+                    if (SebWindowsServiceHandler.IsServiceAvailable &&
+                        !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
+                    {
+                        Logger.AddError("Unable to set Registry values", this, null);
+                        SebWindowsClientMain.CheckServicePolicy(false);
+                    }
+                }
+                catch (SEBNotAllowedToRunEception ex)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to set Registry values",this,ex);
+                    Logger.AddError("Unable to set Registry values", this, ex);
+                    SebWindowsClientMain.CheckServicePolicy(false);
                 }
 
                 //Disable windows update service (with SEBWindowsServiceWCF)
@@ -1593,24 +1606,10 @@ namespace SebWindowsClient
                 {
                     Logger.AddError("Unable to kill processes that are running before start", this, ex);
                 }
-                
 
                 // Disable unwanted keys.
                 SebKeyCapture.FilterKeys = true;
 
-                // Save the value of the environment variable determining if XULRunner (and Mozilla Firefox) start plugins in plugins-container.exe
-                // If SEB runs on an own desktop (createNewDesktop = true), plugins like Flash won't work if they are started in plugin-container.exe
-                //SEBClientInfo.XulRunnerFlashContainerState = System.Environment.GetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", EnvironmentVariableTarget.User);
-
-                //// Disable plugins-container if enablePlugIns = true and createNewDesktop = true
-                //if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyEnablePlugIns] && (bool)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
-                //{
-                //    System.Environment.SetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", "1", EnvironmentVariableTarget.User);
-                //    string xulRunnerFlashContainer = System.Environment.GetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", EnvironmentVariableTarget.User);
-                //    Logger.AddInformation("Environment Variable MOZ_DISABLE_OOP_PLUGINS had value: " +
-                //        (SEBClientInfo.XulRunnerFlashContainerState == null ? "null" : SEBClientInfo.XulRunnerFlashContainerState), null, null);
-                //    Logger.AddInformation("Environment Variable MOZ_DISABLE_OOP_PLUGINS was set to value: " + xulRunnerFlashContainer, null, null);
-                //}
                 try
                 {
                     Logger.AddInformation("adding allowed processes to taskbar");
@@ -1618,24 +1617,14 @@ namespace SebWindowsClient
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to addPermittedProcessesToTS",this,ex);
+                    Logger.AddError("Unable to addPermittedProcessesToTS", this, ex);
                 }
-                
-                //SetFormOnDesktop();
-                
-                //System.Diagnostics.Process oskProcess = null;
-                //oskProcess = Process.Start("OSK");
-                //SEBDesktopController d = SEBDesktopController.OpenDesktop(SEBClientInfo.DesktopName);
-                //oskProcess = d.CreateProcess("OSK");
-                
+
                 if (sebCloseDialogForm == null)
                 {
                     Logger.AddInformation("creating close dialog form");
                     sebCloseDialogForm = new SebCloseDialogForm();
-                    //SetForegroundWindow(sebCloseDialogForm.Handle);
                     sebCloseDialogForm.TopMost = true;
-                    //sebCloseDialogForm.Show();
-                    //sebCloseDialogForm.Visible = false;
                 }
                 if (sebApplicationChooserForm == null)
                 {
@@ -1648,10 +1637,10 @@ namespace SebWindowsClient
 
                 return true;
             }
-            else
+            catch (SEBNotAllowedToRunEception ex)
             {
                 // VM or service not available and set to be required
-                Logger.AddInformation("exiting without starting up because vm test failed");
+                Logger.AddInformation(string.Format("exiting without starting up because {0}", ex.Message));
                 ExitApplication(false);
                 return false;
             }

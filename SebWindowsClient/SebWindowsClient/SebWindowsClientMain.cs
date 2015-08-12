@@ -648,58 +648,46 @@ namespace SebWindowsClient
         /// </summary>
         /// <returns>true if both checks are positive, false means SEB needs to quit.</returns>
         /// ----------------------------------------------------------------------------------------
-        public static bool CheckVMService()
+        public static void CheckIfInsideVirtualMachine()
         {
             // Test if run inside virtual machine
             bool allowVirtualMachine = (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyAllowVirtualMachine)[SEBSettings.KeyAllowVirtualMachine];
             if (IsInsideVM() && (!allowVirtualMachine))
-            //if ((IsInsideVMWare() || IsInsideVPC()) && (!allowVirtualMachine))
             {
-                //SEBClientInfo.SebWindowsClientForm.Activate();
                 SEBMessageBox.Show(SEBUIStrings.detectedVirtualMachine, SEBUIStrings.detectedVirtualMachineForbiddenMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
                 Logger.AddError("Forbidden to run SEB on a virtual machine!", null, null);
                 Logger.AddInformation("Safe Exam Browser is exiting", null, null);
-                Application.Exit();
-                return false;
+                throw new SEBNotAllowedToRunEception("Forbidden to run SEB on a virtual machine!");
             }
+        }
 
-            // Test if Windows Service is running
-            bool serviceAvailable = SebWindowsServiceHandler.IsServiceAvailable;
-
+        public static void CheckServicePolicy(bool isServiceAvailable)
+        {
             int forceService = (Int32)SEBClientInfo.getSebSetting(SEBSettings.KeySebServicePolicy)[SEBSettings.KeySebServicePolicy];
             switch (forceService)
             {
                 case (int)sebServicePolicies.ignoreService:
                     break;
                 case (int)sebServicePolicies.indicateMissingService:
-                    if (!serviceAvailable)
+                    if (!isServiceAvailable)
                     {
                         //SEBClientInfo.SebWindowsClientForm.Activate();
                         SEBMessageBox.Show(SEBUIStrings.indicateMissingService, SEBUIStrings.indicateMissingServiceReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
                     }
                     break;
                 case (int)sebServicePolicies.forceSebService:
-                    if (!serviceAvailable)
+                    if (!isServiceAvailable)
                     {
                         //SEBClientInfo.SebWindowsClientForm.Activate();
                         SEBMessageBox.Show(SEBUIStrings.indicateMissingService, SEBUIStrings.forceSebServiceMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
                         Logger.AddError("SEB Windows service is not available and sebServicePolicies is set to forceSebService", null, null);
                         Logger.AddInformation("SafeExamBrowser is exiting", null, null);
-                        Application.Exit();
-
-                        return false;
+                        throw new SEBNotAllowedToRunEception("SEB Windows service is not available and sebServicePolicies is set to forceSebService");
                     }
                     break;
-                //default:
-                //    if (!serviceAvailable)
-                //    {
-                //        SEBMessageBox.Show(SEBGlobalConstants.IND_WINDOWS_SERVICE_NOT_AVAILABLE, SEBGlobalConstants.IND_MESSAGE_KIND_ERROR);
-                //    }
-                //    break;
             }
-
-            return true;
         }
+
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>

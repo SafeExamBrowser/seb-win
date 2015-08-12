@@ -136,12 +136,8 @@ namespace SebWindowsClient.ServiceUtils
 
         public static bool DisableWindowsUpdate()
         {
-            if (!OSVersion.FriendlyName().Contains("10"))
-            {
-                Logger.AddInformation("calling disable windows update on wcf service");
-                return _sebWindowsServicePipeProxy.DisableWindowsUpdate();   
-            }
-            return false;
+            Logger.AddInformation("calling disable windows update on wcf service");
+            return _sebWindowsServicePipeProxy.DisableWindowsUpdate();   
         }
 
         /// <summary>

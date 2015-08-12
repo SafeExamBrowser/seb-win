@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ServiceProcess;
 using SebWindowsServiceWCF.RegistryHandler;
 using SebWindowsServiceWCF.ServiceContracts;
 using WUApiLib;
@@ -130,23 +131,52 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
         private bool SetWindowsUpdate(bool enable)
         {
+            if (OSVersion.FriendlyName().Contains("10"))
+            {
+                //Stop per Windows Service on windows 10
+                ServiceController service = new ServiceController("wuauserv");
+                try
+                {
+                    TimeSpan timeout = TimeSpan.FromMilliseconds(500);
+                    if (enable)
+                    {
+                        service.Start();
+                        //service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                    }
+                    else
+                    {
+                        service.Stop();
+                        //service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    }
+
+                    Logger.Log(String.Format("Set windows update to {0}", enable));
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            //Use Automatic Update Class
             try
             {
                 var auc = new AutomaticUpdatesClass();
 
-                if(enable)
+                if (enable)
                     auc.Resume();
                 else
                     auc.Pause();
 
-                Logger.Log(String.Format("Set windows update to {0}",enable));
+                Logger.Log(String.Format("Set windows update to {0}", enable));
 
                 return true;
             }
             catch (Exception)
             {
                 return false;
-            }
+            }            
         }
 
 

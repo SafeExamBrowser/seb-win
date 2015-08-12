@@ -54,7 +54,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                         try
                         {
                             //If there is nothing to change, then do not change anything
-                            if (registryValue.Value == regEntry.DataValue) continue;
+                            if (object.Equals(registryValue.Value,regEntry.DataValue)) continue;
 
                             //Only store the entry in the persistent file if not already existing
                             if (!persistentRegistryFile.FileContent.RegistryValues.ContainsKey(registryValue.Key))
@@ -66,6 +66,11 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                             //Change the registry value if all operations succeeded until here
                             regEntry.DataValue = registryValue.Value;
                             Logger.Log(String.Format("Set Registry Key {0} to {1}", registryValue.Key, registryValue.Value));
+                            if (!object.Equals(regEntry.DataValue,registryValue.Value))
+                            {
+                                Logger.Log(String.Format("Registry Key {0} could not have been set to {1}",
+                                    registryValue.Key, registryValue.Value));
+                            }
                         }
                         catch (Exception ex)
                         {

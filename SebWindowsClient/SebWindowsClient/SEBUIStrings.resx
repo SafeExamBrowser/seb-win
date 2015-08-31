@@ -381,4 +381,13 @@
   <data name="reconfiguringLocalSettingsFailedWrongCurrentAdminPwd" xml:space="preserve">
     <value>You didn't enter the correct current SEB administrator password.</value>
   </data>
+  <data name="savingSettingsSucceeded" xml:space="preserve">
+    <value>Saving Settings Succeeded</value>
+  </data>
+  <data name="savingSettingsSucceededMessageConfigureClient" xml:space="preserve">
+    <value>Settings have been saved, use this file to configure local settings of a SEB client.</value>
+  </data>
+  <data name="savingSettingsSucceededStartExam" xml:space="preserve">
+    <value>Settings have been saved, use this file to start an exam with SEB.</value>
+  </data>
 </root>

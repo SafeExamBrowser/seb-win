@@ -637,6 +637,33 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saving Settings Succeeded.
+        /// </summary>
+        public static string savingSettingsSucceeded {
+            get {
+                return ResourceManager.GetString("savingSettingsSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings have been saved, use this file to configure local settings of a SEB client..
+        /// </summary>
+        public static string savingSettingsSucceededMessageConfigureClient {
+            get {
+                return ResourceManager.GetString("savingSettingsSucceededMessageConfigureClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings have been saved, use this file to start an exam with SEB..
+        /// </summary>
+        public static string savingSettingsSucceededStartExam {
+            get {
+                return ResourceManager.GetString("savingSettingsSucceededStartExam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SEB Configuration Files.
         /// </summary>
         public static string sebFileTypeName {

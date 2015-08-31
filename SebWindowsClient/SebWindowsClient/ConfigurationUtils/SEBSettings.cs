@@ -502,7 +502,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserMessagingPingTime, 120000);
 
             // Default settings for group "Config File"
-            SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPreferencesWindow , true);
             //SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedSettingsPassword , "");
 

@@ -590,7 +590,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeySendBrowserExamKey, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyQuitURL           , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamURL, "");
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamText, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamPasswordProtected, true);
 

@@ -9,6 +9,6 @@ namespace SebWindowsClient.UI
 {
     public class SEBAdditionalResourceMenuItem : ToolStripMenuItem
     {
-        public string Identifier { get; set; }
+        public Dictionary<string, object> Resource { get; set; }
     }
 }

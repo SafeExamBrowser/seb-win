@@ -44,7 +44,7 @@ namespace SebWindowsConfig.Sections
                 resource[SEBSettings.KeyAdditionalResourcesTitle],
                 (bool) resource[SEBSettings.KeyAdditionalResourcesActive] ? "" : " (inactive)",
                 (bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] ? " (A)" : "",
-                resource.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData) ? " (E)" : "",
+                !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]) ? " (E)" : "",
                 !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]) ? " (U)" : "");
         }
 
@@ -70,6 +70,8 @@ namespace SebWindowsConfig.Sections
             resourceData[SEBSettings.KeyAdditionalResourcesResourceIcons] = new ListObj();
             resourceData[SEBSettings.KeyAdditionalResourcesTitle] = "New Resource";
             resourceData[SEBSettings.KeyAdditionalResourcesUrl] = "";
+            resourceData[SEBSettings.KeyAdditionalResourcesResourceData] = "";
+            resourceData[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
             return resourceData;
         }
 
@@ -108,7 +110,7 @@ namespace SebWindowsConfig.Sections
                 textBoxAdditionalResourceUrl.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesUrl];
                 checkBoxAdditionalResourceAutoOpen.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesAutoOpen];
 
-                if (selectedResource.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData))
+                if (!string.IsNullOrEmpty((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData]))
                 {
                     buttonAdditionalResourceRemoveResourceData.Visible = true;
                     buttonAdditionalResourceEmbededResourceOpen.Visible = true;
@@ -356,13 +358,7 @@ namespace SebWindowsConfig.Sections
         private void buttonAdditionalResourceEmbededResourceOpen_Click(object sender, EventArgs e)
         {
             DictObj selectedResource = GetSelectedResource();
-            string tempPath = Environment.CurrentDirectory + "\\temp\\";
-            if (!Directory.Exists(tempPath))
-            {
-                Directory.CreateDirectory(tempPath);
-            }
-            File.WriteAllBytes(tempPath + selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename], _fileCompressor.DeCompressAndDecode((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData]));
-            Process.Start(tempPath + selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename]);
+            _fileCompressor.OpenCompressedAndEncodedFile((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData],(string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename]);
         }
 
         private void buttonAdditionalResourceRemoveResourceData_Click(object sender, EventArgs e)

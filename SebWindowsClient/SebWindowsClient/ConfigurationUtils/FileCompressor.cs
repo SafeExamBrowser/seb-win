@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 
@@ -11,10 +12,22 @@ namespace SebWindowsClient.ConfigurationUtils
             return base64_encode(Compress(File.ReadAllBytes(filename)));
         }
 
-        public byte[] DeCompressAndDecode(string base64)
+        private byte[] DeCompressAndDecode(string base64)
         {
             return Decompress(base64_decode(base64));
         }
+
+        public void OpenCompressedAndEncodedFile(string base64, string filename)
+        {
+            string tempPath = Environment.CurrentDirectory + "\\temp\\";
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+            File.WriteAllBytes(tempPath + filename, DeCompressAndDecode(base64));
+            Process.Start(tempPath + filename);
+        }
+
         private byte[] Compress(byte[] data)
         {
             using (var compressedStream = new MemoryStream())

@@ -3,6 +3,7 @@
     public interface IFileCompressor
     {
         string CompressAndEncode(string filename);
-        byte[] DeCompressAndDecode(string base64);
+
+        void OpenCompressedAndEncodedFile(string base64, string filename);
     }
 }

@@ -31,8 +31,10 @@ namespace SebWindowsConfig.Sections
 
         private string GetDisplayTitle(DictObj resource)
         {
-            return String.Format("{0}{1}", resource[SEBSettings.KeyAdditionalResourcesTitle],
-                (bool) resource[SEBSettings.KeyAdditionalResourcesActive] ? "" : " (inactive)");
+            return string.Format("{0}{1}{2}", 
+                resource[SEBSettings.KeyAdditionalResourcesTitle],
+                (bool) resource[SEBSettings.KeyAdditionalResourcesActive] ? "" : " (inactive)",
+                (bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] ? " (A)" : "");
         }
 
         private void buttonAdditionalResourcesAdd_Click(object sender, EventArgs e)
@@ -258,6 +260,14 @@ namespace SebWindowsConfig.Sections
         {
             DictObj selectedResource = GetSelectedResource();
             selectedResource[SEBSettings.KeyAdditionalResourcesActive] = checkBoxAdditionalResourceActive.Checked;
+
+            treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+        }
+
+        private void checkBoxAdditionalResourceAutoOpen_CheckedChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesAutoOpen] = checkBoxAdditionalResourceAutoOpen.Checked;
 
             treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
         }

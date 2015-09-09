@@ -40,6 +40,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourcesTitle = new System.Windows.Forms.TextBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
+            this.checkBoxAdditionalResourceAutoOpen = new System.Windows.Forms.CheckBox();
             this.groupBox14.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +101,7 @@
             // 
             // groupBox14
             // 
+            this.groupBox14.Controls.Add(this.checkBoxAdditionalResourceAutoOpen);
             this.groupBox14.Controls.Add(this.labelAdditionalResourceUrl);
             this.groupBox14.Controls.Add(this.textBoxAdditionalResourceUrl);
             this.groupBox14.Controls.Add(this.checkBoxAdditionalResourceActive);
@@ -172,6 +174,17 @@
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
             // 
+            // checkBoxAdditionalResourceAutoOpen
+            // 
+            this.checkBoxAdditionalResourceAutoOpen.AutoSize = true;
+            this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(201, 36);
+            this.checkBoxAdditionalResourceAutoOpen.Name = "checkBoxAdditionalResourceAutoOpen";
+            this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(98, 21);
+            this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
+            this.checkBoxAdditionalResourceAutoOpen.Text = "Auto Open";
+            this.checkBoxAdditionalResourceAutoOpen.UseVisualStyleBackColor = true;
+            this.checkBoxAdditionalResourceAutoOpen.CheckedChanged += new System.EventHandler(this.checkBoxAdditionalResourceAutoOpen_CheckedChanged);
+            // 
             // AdditionalResources
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -205,5 +218,6 @@
         private System.Windows.Forms.CheckBox checkBoxAdditionalResourceActive;
         private System.Windows.Forms.Label labelAdditionalResourceUrl;
         private System.Windows.Forms.TextBox textBoxAdditionalResourceUrl;
+        private System.Windows.Forms.CheckBox checkBoxAdditionalResourceAutoOpen;
     }
 }

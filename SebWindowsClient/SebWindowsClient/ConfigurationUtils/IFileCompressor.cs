@@ -4,6 +4,6 @@
     {
         string CompressAndEncode(string filename);
 
-        void OpenCompressedAndEncodedFile(string base64, string filename);
+        string DecompressDecodeAndSaveFile(string base64, string filename);
     }
 }

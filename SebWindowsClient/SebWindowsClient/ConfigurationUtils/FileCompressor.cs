@@ -16,8 +16,13 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             return Decompress(base64_decode(base64));
         }
-
-        public void OpenCompressedAndEncodedFile(string base64, string filename)
+        /// <summary>
+        /// Saves the file to a temporary directory and returns the path to the file (without filename)
+        /// </summary>
+        /// <param name="base64">the encoded and compressed file content</param>
+        /// <param name="filename">the filename of the file to save</param>
+        /// <returns></returns>
+        public string DecompressDecodeAndSaveFile(string base64, string filename)
         {
             string tempPath = Environment.CurrentDirectory + "\\temp\\";
             if (!Directory.Exists(tempPath))
@@ -25,7 +30,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 Directory.CreateDirectory(tempPath);
             }
             File.WriteAllBytes(tempPath + filename, DeCompressAndDecode(base64));
-            Process.Start(tempPath + filename);
+            return tempPath;
         }
 
         private byte[] Compress(byte[] data)

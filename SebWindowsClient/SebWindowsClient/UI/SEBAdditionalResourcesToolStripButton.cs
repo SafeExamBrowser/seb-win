@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
@@ -98,7 +99,30 @@ namespace SebWindowsClient.UI
 
         private void OpenEmbededResource(DictObj resource)
         {
-            _fileCompressor.OpenCompressedAndEncodedFile((string)resource[SEBSettings.KeyAdditionalResourcesResourceData],(string)resource[SEBSettings.KeyAdditionalResourcesResourceDataFilename]);
+            var launcher = (int) resource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher];
+            var filename = (string) resource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
+            var path =
+                _fileCompressor.DecompressDecodeAndSaveFile(
+                    (string) resource[SEBSettings.KeyAdditionalResourcesResourceData], filename);
+            //XulRunner
+            if (launcher == 0)
+            {
+                SEBXULRunnerWebSocketServer.SendMessage(
+                    new SEBXULMessage(
+                        SEBXULMessage.SEBXULHandler.AdditionalResources, new
+                        {
+                            id = resource[SEBSettings.KeyAdditionalResourcesIdentifier], 
+                            path = path
+                        }
+                    )
+                );
+            }
+            else
+            {
+                var permittedProcess = (DictObj)SEBSettings.permittedProcessList[launcher];
+                var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
+                Process.Start(fullPath, path + filename);
+            }
         }
 
         private void AutoOpenResource(DictObj resource)

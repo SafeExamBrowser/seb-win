@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -63,16 +64,8 @@ namespace SebWindowsConfig.Sections
         private DictObj CreateNewResource(string identifier)
         {
             DictObj resourceData = new DictObj();
-            resourceData[SEBSettings.KeyAdditionalResources] = new ListObj();
-            resourceData[SEBSettings.KeyAdditionalResourcesActive] = true;
-            resourceData[SEBSettings.KeyAdditionalResourcesAutoOpen] = false;
             resourceData[SEBSettings.KeyAdditionalResourcesIdentifier] = identifier;
-            resourceData[SEBSettings.KeyAdditionalResourcesResourceIcons] = new ListObj();
-            resourceData[SEBSettings.KeyAdditionalResourcesTitle] = "New Resource";
-            resourceData[SEBSettings.KeyAdditionalResourcesUrl] = "";
-            resourceData[SEBSettings.KeyAdditionalResourcesResourceData] = "";
-            resourceData[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
-            return resourceData;
+            return SetDefaultValuesOnResource(resourceData);
         }
 
         private void buttonAdditionalResourcesAddSubResource_Click(object sender, EventArgs e)
@@ -114,12 +107,20 @@ namespace SebWindowsConfig.Sections
                 {
                     buttonAdditionalResourceRemoveResourceData.Visible = true;
                     buttonAdditionalResourceEmbededResourceOpen.Visible = true;
+                    labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
+                    comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
                     textBoxAdditionalResourceUrl.Enabled = false;
+
+                    var indexBefore = (int) selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher];
+                    comboBoxAdditionalResourcesResourceDataLauncher.DataSource = GetLaunchers();
+                    comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndex = indexBefore;
                 }
                 else
                 {
                     buttonAdditionalResourceRemoveResourceData.Visible = false;
                     buttonAdditionalResourceEmbededResourceOpen.Visible = false;
+                    labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
+                    comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
                     textBoxAdditionalResourceUrl.Enabled = true;
                 }
 
@@ -131,9 +132,18 @@ namespace SebWindowsConfig.Sections
                 {
                     buttonAdditionalResourceChooseEmbededResource.Enabled = true;
                 }
-                
             }
             groupBoxAdditionalResourceDetails.Visible = selectedResource != null;
+        }
+
+        private List<string> GetLaunchers()
+        {
+            var res = new List<string>();
+            foreach (DictObj permittedProcess in SEBSettings.permittedProcessList)
+            {
+                res.Add((string)permittedProcess[SEBSettings.KeyTitle]);
+            }
+            return res;
         }
 
         private DictObj GetSelectedResource()
@@ -142,13 +152,13 @@ namespace SebWindowsConfig.Sections
 
             if (node.Level == 0)
             {
-                return (DictObj)SEBSettings.additionalResourcesList[node.Index];
+                return SetDefaultValuesOnResource((DictObj)SEBSettings.additionalResourcesList[node.Index]);
             }
             else if (node.Level == 1)
             {
                 DictObj rootResource = (DictObj)SEBSettings.additionalResourcesList[node.Parent.Index];
                 ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
-                return (DictObj)level1List[node.Index];
+                return SetDefaultValuesOnResource((DictObj)level1List[node.Index]);
             }
             else if (node.Level == 2)
             {
@@ -156,9 +166,35 @@ namespace SebWindowsConfig.Sections
                 ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
                 DictObj level1Resource = (DictObj)level1List[treeViewAdditionalResources.SelectedNode.Parent.Index];
                 ListObj level2List = (ListObj)level1Resource[SEBSettings.KeyAdditionalResources];
-                return (DictObj)level2List[node.Index];
+                return SetDefaultValuesOnResource((DictObj)level2List[node.Index]);
             }
             return null;
+        }
+
+        private DictObj SetDefaultValuesOnResource(DictObj resourceData)
+        {
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResources))
+                resourceData[SEBSettings.KeyAdditionalResources] = new ListObj();
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesActive))
+                resourceData[SEBSettings.KeyAdditionalResourcesActive] = true;
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesAutoOpen))
+                resourceData[SEBSettings.KeyAdditionalResourcesAutoOpen] = false;
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesIdentifier))
+                resourceData[SEBSettings.KeyAdditionalResourcesIdentifier] = "";
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceIcons))
+                resourceData[SEBSettings.KeyAdditionalResourcesResourceIcons] = new ListObj();
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesTitle))
+                resourceData[SEBSettings.KeyAdditionalResourcesTitle] = "New Resource";
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesUrl))
+                resourceData[SEBSettings.KeyAdditionalResourcesUrl] = "";
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData))
+                resourceData[SEBSettings.KeyAdditionalResourcesResourceData] = "";
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceDataFilename))
+                resourceData[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
+            if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceDataLauncher))
+                resourceData[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] = 0;
+
+            return resourceData;
         }
 
         private void UpdateAdditionalResourceIdentifiers()
@@ -349,6 +385,8 @@ namespace SebWindowsConfig.Sections
 
                 buttonAdditionalResourceRemoveResourceData.Visible = true;
                 buttonAdditionalResourceEmbededResourceOpen.Visible = true;
+                labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
+                comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
 
                 textBoxAdditionalResourceUrl.Text = "";
                 textBoxAdditionalResourceUrl.Enabled = false;
@@ -358,7 +396,11 @@ namespace SebWindowsConfig.Sections
         private void buttonAdditionalResourceEmbededResourceOpen_Click(object sender, EventArgs e)
         {
             DictObj selectedResource = GetSelectedResource();
-            _fileCompressor.OpenCompressedAndEncodedFile((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData],(string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename]);
+            var filename = (string) selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
+            var path =
+                _fileCompressor.DecompressDecodeAndSaveFile(
+                    (string) selectedResource[SEBSettings.KeyAdditionalResourcesResourceData], filename);
+            Process.Start(path + filename);
         }
 
         private void buttonAdditionalResourceRemoveResourceData_Click(object sender, EventArgs e)
@@ -370,8 +412,21 @@ namespace SebWindowsConfig.Sections
 
             buttonAdditionalResourceRemoveResourceData.Visible = false;
             buttonAdditionalResourceEmbededResourceOpen.Visible = false;
+            labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
+            comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
 
             textBoxAdditionalResourceUrl.Enabled = true;
+        }
+
+        private void comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            if ((int) selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] !=
+                comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndex)
+            {
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] =
+                    comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndex;
+            }
         }
     }
 }

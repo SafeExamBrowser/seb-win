@@ -34,6 +34,7 @@
             this.buttonAdditionalResourcesAdd = new System.Windows.Forms.Button();
             this.buttonadditionalResourcesRemove = new System.Windows.Forms.Button();
             this.groupBoxAdditionalResourceDetails = new System.Windows.Forms.GroupBox();
+            this.buttonAdditionalResourceRemoveResourceData = new System.Windows.Forms.Button();
             this.buttonAdditionalResourceEmbededResourceOpen = new System.Windows.Forms.Button();
             this.buttonAdditionalResourceChooseEmbededResource = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,7 +46,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourcesTitle = new System.Windows.Forms.TextBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
-            this.buttonAdditionalResourceRemoveResourceData = new System.Windows.Forms.Button();
+            this.comboBoxAdditionalResourcesResourceDataLauncher = new System.Windows.Forms.ComboBox();
+            this.labelAdditionalResourcesResourceDataLaunchWith = new System.Windows.Forms.Label();
             this.groupBoxAdditionalResourceDetails.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,6 +108,8 @@
             // 
             // groupBoxAdditionalResourceDetails
             // 
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.labelAdditionalResourcesResourceDataLaunchWith);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.comboBoxAdditionalResourcesResourceDataLauncher);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceRemoveResourceData);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceEmbededResourceOpen);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceChooseEmbededResource);
@@ -125,6 +129,16 @@
             this.groupBoxAdditionalResourceDetails.TabIndex = 9;
             this.groupBoxAdditionalResourceDetails.TabStop = false;
             this.groupBoxAdditionalResourceDetails.Text = "Selected Resource";
+            // 
+            // buttonAdditionalResourceRemoveResourceData
+            // 
+            this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(374, 156);
+            this.buttonAdditionalResourceRemoveResourceData.Name = "buttonAdditionalResourceRemoveResourceData";
+            this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceRemoveResourceData.TabIndex = 10;
+            this.buttonAdditionalResourceRemoveResourceData.Text = "Remove";
+            this.buttonAdditionalResourceRemoveResourceData.UseVisualStyleBackColor = true;
+            this.buttonAdditionalResourceRemoveResourceData.Click += new System.EventHandler(this.buttonAdditionalResourceRemoveResourceData_Click);
             // 
             // buttonAdditionalResourceEmbededResourceOpen
             // 
@@ -234,15 +248,24 @@
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
             // 
-            // buttonAdditionalResourceRemoveResourceData
+            // comboBoxAdditionalResourcesResourceDataLauncher
             // 
-            this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(374, 156);
-            this.buttonAdditionalResourceRemoveResourceData.Name = "buttonAdditionalResourceRemoveResourceData";
-            this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(75, 23);
-            this.buttonAdditionalResourceRemoveResourceData.TabIndex = 10;
-            this.buttonAdditionalResourceRemoveResourceData.Text = "Remove";
-            this.buttonAdditionalResourceRemoveResourceData.UseVisualStyleBackColor = true;
-            this.buttonAdditionalResourceRemoveResourceData.Click += new System.EventHandler(this.buttonAdditionalResourceRemoveResourceData_Click);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.FormattingEnabled = true;
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(156, 216);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(293, 24);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
+            this.comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged);
+            // 
+            // labelAdditionalResourcesResourceDataLaunchWith
+            // 
+            this.labelAdditionalResourcesResourceDataLaunchWith.AutoSize = true;
+            this.labelAdditionalResourcesResourceDataLaunchWith.Location = new System.Drawing.Point(159, 190);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Name = "labelAdditionalResourcesResourceDataLaunchWith";
+            this.labelAdditionalResourcesResourceDataLaunchWith.Size = new System.Drawing.Size(82, 17);
+            this.labelAdditionalResourcesResourceDataLaunchWith.TabIndex = 12;
+            this.labelAdditionalResourcesResourceDataLaunchWith.Text = "launch with:";
             // 
             // AdditionalResources
             // 
@@ -283,5 +306,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonAdditionalResourceEmbededResourceOpen;
         private System.Windows.Forms.Button buttonAdditionalResourceRemoveResourceData;
+        private System.Windows.Forms.Label labelAdditionalResourcesResourceDataLaunchWith;
+        private System.Windows.Forms.ComboBox comboBoxAdditionalResourcesResourceDataLauncher;
     }
 }

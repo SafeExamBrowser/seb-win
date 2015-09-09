@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 using ListObj = System.Collections.Generic.List<object>;
@@ -8,9 +11,15 @@ namespace SebWindowsConfig.Sections
 {
     public partial class AdditionalResources : UserControl
     {
+        private IFileCompressor _fileCompressor;
+
         public AdditionalResources()
         {
             InitializeComponent();
+
+            _fileCompressor = new FileCompressor();
+
+            groupBoxAdditionalResourceDetails.Visible = false;
 
             SEBSettings.additionalResourcesList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources];
             textBoxAdditionalResourcesTitle.Text = "";
@@ -31,10 +40,12 @@ namespace SebWindowsConfig.Sections
 
         private string GetDisplayTitle(DictObj resource)
         {
-            return string.Format("{0}{1}{2}", 
+            return string.Concat( 
                 resource[SEBSettings.KeyAdditionalResourcesTitle],
                 (bool) resource[SEBSettings.KeyAdditionalResourcesActive] ? "" : " (inactive)",
-                (bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] ? " (A)" : "");
+                (bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] ? " (A)" : "",
+                resource.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData) ? " (E)" : "",
+                !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]) ? " (U)" : "");
         }
 
         private void buttonAdditionalResourcesAdd_Click(object sender, EventArgs e)
@@ -90,9 +101,37 @@ namespace SebWindowsConfig.Sections
         private void treeViewAdditionalResources_AfterSelect(object sender, TreeViewEventArgs e)
         {
             DictObj selectedResource = GetSelectedResource();
-            textBoxAdditionalResourcesTitle.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesTitle];
-            checkBoxAdditionalResourceActive.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesActive];
-            textBoxAdditionalResourceUrl.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesUrl];
+            if (selectedResource != null)
+            {
+                textBoxAdditionalResourcesTitle.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesTitle];
+                checkBoxAdditionalResourceActive.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesActive];
+                textBoxAdditionalResourceUrl.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesUrl];
+                checkBoxAdditionalResourceAutoOpen.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesAutoOpen];
+
+                if (selectedResource.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData))
+                {
+                    buttonAdditionalResourceRemoveResourceData.Visible = true;
+                    buttonAdditionalResourceEmbededResourceOpen.Visible = true;
+                    textBoxAdditionalResourceUrl.Enabled = false;
+                }
+                else
+                {
+                    buttonAdditionalResourceRemoveResourceData.Visible = false;
+                    buttonAdditionalResourceEmbededResourceOpen.Visible = false;
+                    textBoxAdditionalResourceUrl.Enabled = true;
+                }
+
+                if (!string.IsNullOrEmpty((string) selectedResource[SEBSettings.KeyAdditionalResourcesUrl]))
+                {
+                    buttonAdditionalResourceChooseEmbededResource.Enabled = false;
+                }
+                else
+                {
+                    buttonAdditionalResourceChooseEmbededResource.Enabled = true;
+                }
+                
+            }
+            groupBoxAdditionalResourceDetails.Visible = selectedResource != null;
         }
 
         private DictObj GetSelectedResource()
@@ -284,6 +323,59 @@ namespace SebWindowsConfig.Sections
         {
             DictObj selectedResource = GetSelectedResource();
             selectedResource[SEBSettings.KeyAdditionalResourcesUrl] = textBoxAdditionalResourceUrl.Text;
+
+            treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+
+            buttonAdditionalResourceChooseEmbededResource.Enabled = string.IsNullOrEmpty(textBoxAdditionalResourceUrl.Text);
+        }
+
+        private void buttonAdditionalResourceChooseEmbededResource_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                DictObj selectedResource = GetSelectedResource();
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = new FileInfo(openFileDialog.FileName).Name;
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncode(openFileDialog.FileName);
+
+                treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+
+                buttonAdditionalResourceRemoveResourceData.Visible = true;
+                buttonAdditionalResourceEmbededResourceOpen.Visible = true;
+
+                textBoxAdditionalResourceUrl.Text = "";
+                textBoxAdditionalResourceUrl.Enabled = false;
+            }
+        }
+
+        private void buttonAdditionalResourceEmbededResourceOpen_Click(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            string tempPath = Environment.CurrentDirectory + "\\temp\\";
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+            File.WriteAllBytes(tempPath + selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename], _fileCompressor.DeCompressAndDecode((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData]));
+            Process.Start(tempPath + selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename]);
+        }
+
+        private void buttonAdditionalResourceRemoveResourceData_Click(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource.Remove(SEBSettings.KeyAdditionalResourcesResourceData);
+            
+            treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+
+            buttonAdditionalResourceRemoveResourceData.Visible = false;
+            buttonAdditionalResourceEmbededResourceOpen.Visible = false;
+
+            textBoxAdditionalResourceUrl.Enabled = true;
         }
     }
 }

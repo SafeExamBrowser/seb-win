@@ -175,6 +175,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyAdditionalResourcesTitle = "title";
         public const String KeyAdditionalResourcesUrl = "url";
         public const String KeyAdditionalResourcesResourceData = "resourceData";
+        public const String KeyAdditionalResourcesResourceDataFilename = "resourceDataFilename";
         public const String KeyAdditionalResourcesResourceIcons = "resourceIcons";
         public const String KeyAdditionalResourcesResourceIconsFormat = "format";
         public const String KeyAdditionalResourcesResourceIconsResolution = "resolution";

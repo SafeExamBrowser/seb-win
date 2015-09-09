@@ -33,15 +33,20 @@
             this.buttonAdditionalResourcesMoveUp = new System.Windows.Forms.Button();
             this.buttonAdditionalResourcesAdd = new System.Windows.Forms.Button();
             this.buttonadditionalResourcesRemove = new System.Windows.Forms.Button();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.groupBoxAdditionalResourceDetails = new System.Windows.Forms.GroupBox();
+            this.buttonAdditionalResourceEmbededResourceOpen = new System.Windows.Forms.Button();
+            this.buttonAdditionalResourceChooseEmbededResource = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxAdditionalResourceAutoOpen = new System.Windows.Forms.CheckBox();
             this.labelAdditionalResourceUrl = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourceUrl = new System.Windows.Forms.TextBox();
             this.checkBoxAdditionalResourceActive = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourcesTitle = new System.Windows.Forms.TextBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
-            this.checkBoxAdditionalResourceAutoOpen = new System.Windows.Forms.CheckBox();
-            this.groupBox14.SuspendLayout();
+            this.buttonAdditionalResourceRemoveResourceData = new System.Windows.Forms.Button();
+            this.groupBoxAdditionalResourceDetails.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonAdditionalResourcesAddSubResource
@@ -99,36 +104,91 @@
             this.buttonadditionalResourcesRemove.UseVisualStyleBackColor = true;
             this.buttonadditionalResourcesRemove.Click += new System.EventHandler(this.buttonadditionalResourcesRemove_Click);
             // 
-            // groupBox14
+            // groupBoxAdditionalResourceDetails
             // 
-            this.groupBox14.Controls.Add(this.checkBoxAdditionalResourceAutoOpen);
-            this.groupBox14.Controls.Add(this.labelAdditionalResourceUrl);
-            this.groupBox14.Controls.Add(this.textBoxAdditionalResourceUrl);
-            this.groupBox14.Controls.Add(this.checkBoxAdditionalResourceActive);
-            this.groupBox14.Controls.Add(this.label9);
-            this.groupBox14.Controls.Add(this.textBoxAdditionalResourcesTitle);
-            this.groupBox14.Location = new System.Drawing.Point(380, 4);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox14.Size = new System.Drawing.Size(1243, 746);
-            this.groupBox14.TabIndex = 9;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "Selected Resource";
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceRemoveResourceData);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceEmbededResourceOpen);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceChooseEmbededResource);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.label2);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.label1);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.checkBoxAdditionalResourceAutoOpen);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.labelAdditionalResourceUrl);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.textBoxAdditionalResourceUrl);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.checkBoxAdditionalResourceActive);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.label9);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.textBoxAdditionalResourcesTitle);
+            this.groupBoxAdditionalResourceDetails.Location = new System.Drawing.Point(380, 4);
+            this.groupBoxAdditionalResourceDetails.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBoxAdditionalResourceDetails.Name = "groupBoxAdditionalResourceDetails";
+            this.groupBoxAdditionalResourceDetails.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBoxAdditionalResourceDetails.Size = new System.Drawing.Size(1243, 746);
+            this.groupBoxAdditionalResourceDetails.TabIndex = 9;
+            this.groupBoxAdditionalResourceDetails.TabStop = false;
+            this.groupBoxAdditionalResourceDetails.Text = "Selected Resource";
+            // 
+            // buttonAdditionalResourceEmbededResourceOpen
+            // 
+            this.buttonAdditionalResourceEmbededResourceOpen.Location = new System.Drawing.Point(156, 156);
+            this.buttonAdditionalResourceEmbededResourceOpen.Name = "buttonAdditionalResourceEmbededResourceOpen";
+            this.buttonAdditionalResourceEmbededResourceOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceEmbededResourceOpen.TabIndex = 9;
+            this.buttonAdditionalResourceEmbededResourceOpen.Text = "Open";
+            this.buttonAdditionalResourceEmbededResourceOpen.UseVisualStyleBackColor = true;
+            this.buttonAdditionalResourceEmbededResourceOpen.Click += new System.EventHandler(this.buttonAdditionalResourceEmbededResourceOpen_Click);
+            // 
+            // buttonAdditionalResourceChooseEmbededResource
+            // 
+            this.buttonAdditionalResourceChooseEmbededResource.Location = new System.Drawing.Point(262, 156);
+            this.buttonAdditionalResourceChooseEmbededResource.Name = "buttonAdditionalResourceChooseEmbededResource";
+            this.buttonAdditionalResourceChooseEmbededResource.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceChooseEmbededResource.TabIndex = 8;
+            this.buttonAdditionalResourceChooseEmbededResource.Text = "Choose...";
+            this.buttonAdditionalResourceChooseEmbededResource.UseVisualStyleBackColor = true;
+            this.buttonAdditionalResourceChooseEmbededResource.Click += new System.EventHandler(this.buttonAdditionalResourceChooseEmbededResource_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(287, 130);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(21, 17);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "or";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(26, 148);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 34);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Embedded\r\nResource (E)";
+            // 
+            // checkBoxAdditionalResourceAutoOpen
+            // 
+            this.checkBoxAdditionalResourceAutoOpen.AutoSize = true;
+            this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(201, 36);
+            this.checkBoxAdditionalResourceAutoOpen.Name = "checkBoxAdditionalResourceAutoOpen";
+            this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(121, 21);
+            this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
+            this.checkBoxAdditionalResourceAutoOpen.Text = "Auto Open (A)";
+            this.checkBoxAdditionalResourceAutoOpen.UseVisualStyleBackColor = true;
+            this.checkBoxAdditionalResourceAutoOpen.CheckedChanged += new System.EventHandler(this.checkBoxAdditionalResourceAutoOpen_CheckedChanged);
             // 
             // labelAdditionalResourceUrl
             // 
             this.labelAdditionalResourceUrl.AutoSize = true;
-            this.labelAdditionalResourceUrl.Location = new System.Drawing.Point(83, 97);
+            this.labelAdditionalResourceUrl.Location = new System.Drawing.Point(59, 107);
             this.labelAdditionalResourceUrl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelAdditionalResourceUrl.Name = "labelAdditionalResourceUrl";
-            this.labelAdditionalResourceUrl.Size = new System.Drawing.Size(36, 17);
+            this.labelAdditionalResourceUrl.Size = new System.Drawing.Size(60, 17);
             this.labelAdditionalResourceUrl.TabIndex = 4;
-            this.labelAdditionalResourceUrl.Text = "URL";
+            this.labelAdditionalResourceUrl.Text = "URL (U)";
             // 
             // textBoxAdditionalResourceUrl
             // 
-            this.textBoxAdditionalResourceUrl.Location = new System.Drawing.Point(127, 94);
+            this.textBoxAdditionalResourceUrl.Location = new System.Drawing.Point(127, 104);
             this.textBoxAdditionalResourceUrl.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxAdditionalResourceUrl.Name = "textBoxAdditionalResourceUrl";
             this.textBoxAdditionalResourceUrl.Size = new System.Drawing.Size(367, 22);
@@ -174,16 +234,15 @@
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
             // 
-            // checkBoxAdditionalResourceAutoOpen
+            // buttonAdditionalResourceRemoveResourceData
             // 
-            this.checkBoxAdditionalResourceAutoOpen.AutoSize = true;
-            this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(201, 36);
-            this.checkBoxAdditionalResourceAutoOpen.Name = "checkBoxAdditionalResourceAutoOpen";
-            this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(98, 21);
-            this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
-            this.checkBoxAdditionalResourceAutoOpen.Text = "Auto Open";
-            this.checkBoxAdditionalResourceAutoOpen.UseVisualStyleBackColor = true;
-            this.checkBoxAdditionalResourceAutoOpen.CheckedChanged += new System.EventHandler(this.checkBoxAdditionalResourceAutoOpen_CheckedChanged);
+            this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(374, 156);
+            this.buttonAdditionalResourceRemoveResourceData.Name = "buttonAdditionalResourceRemoveResourceData";
+            this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceRemoveResourceData.TabIndex = 10;
+            this.buttonAdditionalResourceRemoveResourceData.Text = "Remove";
+            this.buttonAdditionalResourceRemoveResourceData.UseVisualStyleBackColor = true;
+            this.buttonAdditionalResourceRemoveResourceData.Click += new System.EventHandler(this.buttonAdditionalResourceRemoveResourceData_Click);
             // 
             // AdditionalResources
             // 
@@ -194,12 +253,12 @@
             this.Controls.Add(this.buttonAdditionalResourcesMoveUp);
             this.Controls.Add(this.buttonAdditionalResourcesAdd);
             this.Controls.Add(this.buttonadditionalResourcesRemove);
-            this.Controls.Add(this.groupBox14);
+            this.Controls.Add(this.groupBoxAdditionalResourceDetails);
             this.Controls.Add(this.treeViewAdditionalResources);
             this.Name = "AdditionalResources";
             this.Size = new System.Drawing.Size(1630, 757);
-            this.groupBox14.ResumeLayout(false);
-            this.groupBox14.PerformLayout();
+            this.groupBoxAdditionalResourceDetails.ResumeLayout(false);
+            this.groupBoxAdditionalResourceDetails.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -211,7 +270,7 @@
         private System.Windows.Forms.Button buttonAdditionalResourcesMoveUp;
         private System.Windows.Forms.Button buttonAdditionalResourcesAdd;
         private System.Windows.Forms.Button buttonadditionalResourcesRemove;
-        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.GroupBox groupBoxAdditionalResourceDetails;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBoxAdditionalResourcesTitle;
         private System.Windows.Forms.TreeView treeViewAdditionalResources;
@@ -219,5 +278,10 @@
         private System.Windows.Forms.Label labelAdditionalResourceUrl;
         private System.Windows.Forms.TextBox textBoxAdditionalResourceUrl;
         private System.Windows.Forms.CheckBox checkBoxAdditionalResourceAutoOpen;
+        private System.Windows.Forms.Button buttonAdditionalResourceChooseEmbededResource;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonAdditionalResourceEmbededResourceOpen;
+        private System.Windows.Forms.Button buttonAdditionalResourceRemoveResourceData;
     }
 }

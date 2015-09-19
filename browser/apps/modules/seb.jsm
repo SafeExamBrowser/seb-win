@@ -402,13 +402,13 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					if (elToScrollIntoView != null) {
 						try {
-							elToScrollIntoView.scrollIntoView();
+							elToScrollIntoView.scrollIntoView(false);
 						}
 						catch (e) { 
 							x.err(e);
 						}
 					}
-					break;	
+					break;
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}

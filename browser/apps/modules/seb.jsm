@@ -1251,7 +1251,7 @@ var seb = (function() {
 			try {
 				messageSocket.send("seb.input.focus");
 				elToScrollIntoView = evt.target;
-				evt.target.scrollIntoView();
+				//evt.target.scrollIntoView();
 			}
 			catch(e){}
 		}

@@ -41,3 +41,21 @@
 	max-width: 32px;
 	max-height: 32px;
 }
+
+#errBody {
+	font-family: courier, system;
+	color: white;
+	font-weight: bold;
+	font-size: 120%;
+	width: 50%;
+	line-height: 2em;
+}
+
+#errForm {
+	padding-top: 20%;
+	padding-left: 20%;
+}
+
+.errBtn {
+	width: 10em;
+}

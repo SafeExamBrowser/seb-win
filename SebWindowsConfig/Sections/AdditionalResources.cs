@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -132,6 +133,23 @@ namespace SebWindowsConfig.Sections
                 {
                     buttonAdditionalResourceChooseEmbededResource.Enabled = true;
                 }
+
+                if (((ListObj) selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons]).Count > 0)
+                {
+                    var icon =
+                        (DictObj) ((ListObj) selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons])[0];
+                    var memoryStream =
+                        new MemoryStream(
+                            _fileCompressor.DeCompressAndDecode(
+                                (string) icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                    var image = Image.FromStream(memoryStream);
+                    pictureBoxAdditionalResourceIcon.Image = image;
+                }
+                else
+                {
+                    pictureBoxAdditionalResourceIcon.Image = null;
+                }
+                
             }
             groupBoxAdditionalResourceDetails.Visible = selectedResource != null;
         }
@@ -429,6 +447,40 @@ namespace SebWindowsConfig.Sections
             {
                 selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] =
                     comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndex;
+            }
+        }
+
+        private void buttonAdditionalResourcesChooseIcon_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                Filter = "PNG Images|*.png"
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                DictObj selectedResource = GetSelectedResource();
+
+                var icon = new DictObj();
+                icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] =
+                    _fileCompressor.CompressAndEncode(openFileDialog.FileName);
+                icon[SEBSettings.KeyAdditionalResourcesResourceIconsFormat] = "png";
+
+                var icons = (ListObj)selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons];
+                if (icons.Count > 0)
+                {
+                    icons[0] = icon;
+                }
+                else
+                {
+                    icons.Add(icon);   
+                }
+
+                var memoryStream = new MemoryStream(_fileCompressor.DeCompressAndDecode((string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                var image = Image.FromStream(memoryStream);
+                pictureBoxAdditionalResourceIcon.Image = image;
             }
         }
     }

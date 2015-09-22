@@ -12,7 +12,7 @@ namespace SebWindowsClient.ConfigurationUtils
             return base64_encode(Compress(File.ReadAllBytes(filename)));
         }
 
-        private byte[] DeCompressAndDecode(string base64)
+        public byte[] DeCompressAndDecode(string base64)
         {
             return Decompress(base64_decode(base64));
         }

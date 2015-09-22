@@ -34,6 +34,8 @@
             this.buttonAdditionalResourcesAdd = new System.Windows.Forms.Button();
             this.buttonadditionalResourcesRemove = new System.Windows.Forms.Button();
             this.groupBoxAdditionalResourceDetails = new System.Windows.Forms.GroupBox();
+            this.labelAdditionalResourcesResourceDataLaunchWith = new System.Windows.Forms.Label();
+            this.comboBoxAdditionalResourcesResourceDataLauncher = new System.Windows.Forms.ComboBox();
             this.buttonAdditionalResourceRemoveResourceData = new System.Windows.Forms.Button();
             this.buttonAdditionalResourceEmbededResourceOpen = new System.Windows.Forms.Button();
             this.buttonAdditionalResourceChooseEmbededResource = new System.Windows.Forms.Button();
@@ -46,9 +48,11 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourcesTitle = new System.Windows.Forms.TextBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
-            this.comboBoxAdditionalResourcesResourceDataLauncher = new System.Windows.Forms.ComboBox();
-            this.labelAdditionalResourcesResourceDataLaunchWith = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonAdditionalResourcesChooseIcon = new System.Windows.Forms.Button();
+            this.pictureBoxAdditionalResourceIcon = new System.Windows.Forms.PictureBox();
             this.groupBoxAdditionalResourceDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAdditionalResourceIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonAdditionalResourcesAddSubResource
@@ -108,6 +112,9 @@
             // 
             // groupBoxAdditionalResourceDetails
             // 
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.pictureBoxAdditionalResourceIcon);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourcesChooseIcon);
+            this.groupBoxAdditionalResourceDetails.Controls.Add(this.label3);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.labelAdditionalResourcesResourceDataLaunchWith);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.comboBoxAdditionalResourcesResourceDataLauncher);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.buttonAdditionalResourceRemoveResourceData);
@@ -129,6 +136,25 @@
             this.groupBoxAdditionalResourceDetails.TabIndex = 9;
             this.groupBoxAdditionalResourceDetails.TabStop = false;
             this.groupBoxAdditionalResourceDetails.Text = "Selected Resource";
+            // 
+            // labelAdditionalResourcesResourceDataLaunchWith
+            // 
+            this.labelAdditionalResourcesResourceDataLaunchWith.AutoSize = true;
+            this.labelAdditionalResourcesResourceDataLaunchWith.Location = new System.Drawing.Point(159, 190);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Name = "labelAdditionalResourcesResourceDataLaunchWith";
+            this.labelAdditionalResourcesResourceDataLaunchWith.Size = new System.Drawing.Size(82, 17);
+            this.labelAdditionalResourcesResourceDataLaunchWith.TabIndex = 12;
+            this.labelAdditionalResourcesResourceDataLaunchWith.Text = "launch with:";
+            // 
+            // comboBoxAdditionalResourcesResourceDataLauncher
+            // 
+            this.comboBoxAdditionalResourcesResourceDataLauncher.FormattingEnabled = true;
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(156, 216);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(293, 24);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
+            this.comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged);
             // 
             // buttonAdditionalResourceRemoveResourceData
             // 
@@ -248,24 +274,35 @@
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
             // 
-            // comboBoxAdditionalResourcesResourceDataLauncher
+            // label3
             // 
-            this.comboBoxAdditionalResourcesResourceDataLauncher.FormattingEnabled = true;
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(156, 216);
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(293, 24);
-            this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
-            this.comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(85, 266);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(34, 17);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Icon";
             // 
-            // labelAdditionalResourcesResourceDataLaunchWith
+            // buttonAdditionalResourcesChooseIcon
             // 
-            this.labelAdditionalResourcesResourceDataLaunchWith.AutoSize = true;
-            this.labelAdditionalResourcesResourceDataLaunchWith.Location = new System.Drawing.Point(159, 190);
-            this.labelAdditionalResourcesResourceDataLaunchWith.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelAdditionalResourcesResourceDataLaunchWith.Name = "labelAdditionalResourcesResourceDataLaunchWith";
-            this.labelAdditionalResourcesResourceDataLaunchWith.Size = new System.Drawing.Size(82, 17);
-            this.labelAdditionalResourcesResourceDataLaunchWith.TabIndex = 12;
-            this.labelAdditionalResourcesResourceDataLaunchWith.Text = "launch with:";
+            this.buttonAdditionalResourcesChooseIcon.Location = new System.Drawing.Point(156, 262);
+            this.buttonAdditionalResourcesChooseIcon.Name = "buttonAdditionalResourcesChooseIcon";
+            this.buttonAdditionalResourcesChooseIcon.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourcesChooseIcon.TabIndex = 14;
+            this.buttonAdditionalResourcesChooseIcon.Text = "Choose...";
+            this.buttonAdditionalResourcesChooseIcon.UseVisualStyleBackColor = true;
+            this.buttonAdditionalResourcesChooseIcon.Click += new System.EventHandler(this.buttonAdditionalResourcesChooseIcon_Click);
+            // 
+            // pictureBoxAdditionalResourceIcon
+            // 
+            this.pictureBoxAdditionalResourceIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(262, 262);
+            this.pictureBoxAdditionalResourceIcon.Name = "pictureBoxAdditionalResourceIcon";
+            this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(48, 48);
+            this.pictureBoxAdditionalResourceIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxAdditionalResourceIcon.TabIndex = 15;
+            this.pictureBoxAdditionalResourceIcon.TabStop = false;
             // 
             // AdditionalResources
             // 
@@ -282,6 +319,7 @@
             this.Size = new System.Drawing.Size(1630, 757);
             this.groupBoxAdditionalResourceDetails.ResumeLayout(false);
             this.groupBoxAdditionalResourceDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAdditionalResourceIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -308,5 +346,8 @@
         private System.Windows.Forms.Button buttonAdditionalResourceRemoveResourceData;
         private System.Windows.Forms.Label labelAdditionalResourcesResourceDataLaunchWith;
         private System.Windows.Forms.ComboBox comboBoxAdditionalResourcesResourceDataLauncher;
+        private System.Windows.Forms.Button buttonAdditionalResourcesChooseIcon;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBoxAdditionalResourceIcon;
     }
 }

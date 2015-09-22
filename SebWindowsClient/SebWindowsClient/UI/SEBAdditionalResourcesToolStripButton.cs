@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media;
 using MetroFramework;
@@ -48,7 +49,7 @@ namespace SebWindowsClient.UI
                 l0item.Resource = l0resource;
                 l0item.Click += OnItemClicked;
                 AutoOpenResource(l0resource);
-                l0item.Image = Resources.closewindow;
+                l0item.Image = GetResourceIcon(l0resource);
 
                 foreach (DictObj l1resource in ((ListObj)l0resource[SEBSettings.KeyAdditionalResources]))
                 {
@@ -95,6 +96,22 @@ namespace SebWindowsClient.UI
                     SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = item.Resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
                 }
             }
+        }
+
+        private Image GetResourceIcon(DictObj resource)
+        {
+            if (((ListObj)resource[SEBSettings.KeyAdditionalResourcesResourceIcons]).Count > 0)
+            {
+                var icon =
+                    (DictObj)((ListObj)resource[SEBSettings.KeyAdditionalResourcesResourceIcons])[0];
+                var memoryStream =
+                    new MemoryStream(
+                        _fileCompressor.DeCompressAndDecode(
+                            (string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                return Image.FromStream(memoryStream);
+            }
+
+            return Resources.SebGlobalDialogImage;
         }
 
         private void OpenEmbededResource(DictObj resource)

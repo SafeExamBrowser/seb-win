@@ -406,7 +406,8 @@ namespace SebWindowsConfig.Sections
         private void buttonAdditionalResourceRemoveResourceData_Click(object sender, EventArgs e)
         {
             DictObj selectedResource = GetSelectedResource();
-            selectedResource.Remove(SEBSettings.KeyAdditionalResourcesResourceData);
+
+            selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = "";
             
             treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
 

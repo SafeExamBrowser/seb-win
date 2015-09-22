@@ -24,7 +24,7 @@ namespace SebWindowsClient.ConfigurationUtils
         /// <returns></returns>
         public string DecompressDecodeAndSaveFile(string base64, string filename)
         {
-            string tempPath = Environment.CurrentDirectory + "\\temp\\";
+            string tempPath = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\";
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);

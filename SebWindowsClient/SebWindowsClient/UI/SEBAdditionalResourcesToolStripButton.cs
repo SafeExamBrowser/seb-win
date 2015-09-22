@@ -121,7 +121,7 @@ namespace SebWindowsClient.UI
             {
                 var permittedProcess = (DictObj)SEBSettings.permittedProcessList[launcher];
                 var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
-                Process.Start(fullPath, path + filename);
+                Process.Start(fullPath, "\"" + path + filename + "\"");
             }
         }
 

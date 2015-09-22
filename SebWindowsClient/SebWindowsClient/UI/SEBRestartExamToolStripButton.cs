@@ -44,14 +44,32 @@ namespace SebWindowsClient.UI
                 }
                 if (!String.IsNullOrWhiteSpace(quitPassword))
                 {
-                    var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle, SEBUIStrings.restartExamMessage);
+                    var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle,
+                        SEBUIStrings.restartExamMessage);
                     var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
                     if (String.IsNullOrWhiteSpace(password) ||
                         String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
                     {
-                        SEBMessageBox.Show(Resources.WrongPasswordTitle, Resources.WrongPasswordText, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                        SEBMessageBox.Show(Resources.WrongPasswordTitle, Resources.WrongPasswordText,
+                            MessageBoxIcon.Error, MessageBoxButtons.OK);
                         return;
                     }
+                }
+                else
+                {
+                    if (SEBMessageBox.Show("Are you sure?", "Do you really want to restart the exam?",
+                        MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (SEBMessageBox.Show("Are you sure?", "Do you really want to restart the exam?",
+                        MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    return;   
                 }
             }
             SEBXULRunnerWebSocketServer.SendRestartExam();

@@ -117,9 +117,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyShowInputLanguage            = "showInputLanguage";
         public const String KeyAllowDictionaryLookup        = "allowDictionaryLookup";
         public const String KeyEnableTouchExit              = "enableTouchExit";
-        public const String KeyOskAlwaysShow                = "oskAlwaysShow";
-        public const String KeyOskNeverShow                 = "oskNeverShow";
-        public const String KeyOskAutoDetect                = "oskAutoDetect";
+        public const String KeyOskBehavior                = "oskBehavior";
 
 
         //Touch optimized settings
@@ -529,9 +527,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskAlwaysShow             , true);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskNeverShow             , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskAutoDetect             , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 0);
 
             //Touch Settings
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserScreenKeyboard       , false);

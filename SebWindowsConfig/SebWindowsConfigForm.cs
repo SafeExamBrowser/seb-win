@@ -357,9 +357,9 @@ namespace SebWindowsConfig
             radioButtonUseZoomPage            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
             radioButtonUseZoomText            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
             checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
-            radioButtonOskAlwaysShow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOskAlwaysShow];
-            radioButtonOskNeverShow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOskNeverShow];
-            radioButtonOskAutoDetect.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOskAutoDetect];
+            radioButtonOskAlwaysShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 0;
+            radioButtonOskNeverShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 1;
+            radioButtonOskAutoDetect.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 2;
 
             // Group "Browser"
              listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
@@ -3786,31 +3786,25 @@ namespace SebWindowsConfig
 
         private void radioButtonOskAlwaysShow_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonOskAlwaysShow.Checked == true)
+            if (radioButtonOskAlwaysShow.Checked)
             {
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAlwaysShow] = true;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskNeverShow] = false;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAutoDetect] = false;
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 0;
             }
         }
 
         private void radioButtonOskNeverShow_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonOskNeverShow.Checked == true)
+            if (radioButtonOskNeverShow.Checked)
             {
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAlwaysShow] = false;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskNeverShow] = true;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAutoDetect] = false;
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 1;
             }
         }
 
         private void radioButtonOskAutoDetect_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonOskAutoDetect.Checked == true)
+            if (radioButtonOskAutoDetect.Checked)
             {
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAlwaysShow] = false;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskNeverShow] = false;
-                SEBSettings.settingsCurrent[SEBSettings.KeyOskAutoDetect] = true;
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 2;
             }
         }
 

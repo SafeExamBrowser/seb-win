@@ -85,7 +85,6 @@ var seb = (function() {
 			blackListRegs			= 	[],
 			shutdownUrl			=	"",
 			shutdownPassword		=	false,
-			tryAgainUrl			=	"",
 			elToScrollIntoView		=	null,
 			convertReg			= 	/[-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g,
 			wildcardReg			=	/\*/g,
@@ -403,13 +402,13 @@ var seb = (function() {
 					x.debug("messageSocket handled: " + evt.data);
 					if (elToScrollIntoView != null) {
 						try {
-							elToScrollIntoView.scrollIntoView(false);
+							elToScrollIntoView.scrollIntoView();
 						}
 						catch (e) { 
 							x.err(e);
 						}
 					}
-					break;
+					break;	
 				default :
 					x.debug("messageSocket not handled msg: " + evt.data); 
 			}
@@ -517,7 +516,6 @@ var seb = (function() {
 							if (net_tries > netMaxTimes) {
 								net_tries = 0; // reset net_tries 
 								// try anyway and take a look what happens (ugly: // ToDo: internal error page and detailed response headers)
-								tryAgainUrl = url;
 								showError(mainWin);
 								return;
 							}
@@ -535,12 +533,7 @@ var seb = (function() {
 						});
 		}
 		else {
-			try {
-				x.loadPage(mainWin,url,loadFlag);
-			}
-			catch(e) {
-				x.err("Loading Error: " + e);
-			}
+			x.loadPage(mainWin,url,loadFlag);
 		}
 	}
 	
@@ -789,12 +782,6 @@ var seb = (function() {
 		let url = getUrl();
 		showLoading(mainWin);
 		loadPage(url);
-	}
-	
-	function tryAgain() {
-		x.debug("try again...");
-		showLoading();
-		loadPage(tryAgainUrl);
 	}
 	
 	function hostRestartUrl() {
@@ -1075,6 +1062,7 @@ var seb = (function() {
 		
 		if (tb) {
 			let tbh = x.getParam("seb.taskbar.height");
+			tbh = (tbh && (tbh > 0)) ? tbh : 45;
 			sh -= tbh;
 		}
 		
@@ -1263,7 +1251,7 @@ var seb = (function() {
 			try {
 				messageSocket.send("seb.input.focus");
 				elToScrollIntoView = evt.target;
-				//evt.target.scrollIntoView();
+				evt.target.scrollIntoView();
 			}
 			catch(e){}
 		}
@@ -1523,8 +1511,8 @@ var seb = (function() {
 		forward				:	forward,
 		showAll				:	showAll,
 		showError			:	showError,
-		toggleHidden			:	toggleHidden,
-		tryAgain			:	tryAgain	
+		toggleHidden			:	toggleHidden		
 	};	
 }());
+
 

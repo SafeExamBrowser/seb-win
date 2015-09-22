@@ -90,7 +90,7 @@ namespace SebWindowsClient.UI
                 {
                     OpenEmbededResource(item.Resource);
                 }
-                else
+                else if (!string.IsNullOrEmpty((string)item.Resource[SEBSettings.KeyAdditionalResourcesUrl]))
                 {
                     SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = item.Resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
                 }
@@ -121,7 +121,14 @@ namespace SebWindowsClient.UI
             {
                 var permittedProcess = (DictObj)SEBSettings.permittedProcessList[launcher];
                 var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
-                Process.Start(fullPath, "\"" + path + filename + "\"");
+                try
+                {
+                    Process.Start(fullPath, "\"" + path + filename + "\"");
+                }
+                catch (Exception ex)
+                {
+                    SEBMessageBox.Show("Error", ex.Message, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                }
             }
         }
 

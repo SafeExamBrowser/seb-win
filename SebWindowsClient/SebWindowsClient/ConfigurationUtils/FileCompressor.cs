@@ -29,7 +29,10 @@ namespace SebWindowsClient.ConfigurationUtils
             {
                 Directory.CreateDirectory(tempPath);
             }
-            File.WriteAllBytes(tempPath + filename, DeCompressAndDecode(base64));
+            if (!File.Exists(tempPath + filename))
+            {
+                File.WriteAllBytes(tempPath + filename, DeCompressAndDecode(base64));
+            }
             return tempPath;
         }
 

@@ -390,6 +390,8 @@ namespace SebWindowsConfig.Sections
 
                 textBoxAdditionalResourceUrl.Text = "";
                 textBoxAdditionalResourceUrl.Enabled = false;
+
+                comboBoxAdditionalResourcesResourceDataLauncher.DataSource = GetLaunchers();
             }
         }
 

@@ -135,6 +135,8 @@ namespace SebWindowsClient.UI
         /// </summary>
         public const int GWL_STYLE = -16;
 
+        private static bool _firstOpen = true;
+
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(String sClassName, String sAppName);
 
@@ -157,6 +159,12 @@ namespace SebWindowsClient.UI
         /// <returns>True if visible.</returns>
         public static bool IsKeyboardVisible()
         {
+            if (_firstOpen)
+            {
+                _firstOpen = false;
+                return false;
+            }
+
             IntPtr keyboardHandle = GetKeyboardWindowHandle();
 
             bool visible = false;

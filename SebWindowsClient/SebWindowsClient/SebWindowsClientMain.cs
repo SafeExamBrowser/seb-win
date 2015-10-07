@@ -92,8 +92,27 @@ namespace SebWindowsClient
 
         protected override void OnCreateMainForm()
         {
+            var splashThread = new Thread(SebWindowsClientMain.StartSplash);
+            splashThread.Start();
+
             //SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
             MainForm = SEBClientInfo.SebWindowsClientForm;
+
+            try
+            {
+                SebWindowsClientMain.InitSEBDesktop();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to InitSEBDesktop", null, ex);
+            }
+
+            if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
+            {
+                Logger.AddError("Unable to OpenSEBForm",null,null);
+            }
+
+            SebWindowsClientMain.CloseSplash();
         }
 
         public void SetMainForm(Form newMainForm)
@@ -175,67 +194,32 @@ namespace SebWindowsClient
             string[] arguments = Environment.GetCommandLineArgs();
             Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
             Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
-            if (arguments.Count() == 1)
+
+            singleInstanceController = new SingleInstanceController();
+
+            try
             {
-                try
-                {
-                    if (!InitSebSettings())
-                        return;
-                }
-                catch (Exception ex) 
-                {
-                    Logger.AddError("Unable to InitSebSettings",null, ex);
+                if (!InitSebSettings())
                     return;
-                }
-                var splashThread = new Thread(new ThreadStart(StartSplash));
-                splashThread.Start();
-                try
-                {
-                    InitSEBDesktop();
-                }
-                catch (Exception)
-                {
-
-                    Logger.AddInformation("Unable to InitSEBDesktop");
-                }
-                
-                SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
-                if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
-                {
-                    CloseSplash();
-                    return;
-                }
-                CloseSplash();
-
-                singleInstanceController = new SingleInstanceController();
-
-                try
-                {
-                    singleInstanceController.Run(arguments);
-                }
-                catch (Exception)
-                {
-
-                }
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    if (!InitSebSettings())
-                        return;
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddError("Unable to InitSebSettings", null, ex);
-                }
+                Logger.AddError("Unable to InitSebSettings", null, ex);
+                return;
+            }
+
+            try
+            {
                 SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
-                singleInstanceController = new SingleInstanceController();
                 singleInstanceController.Run(arguments);
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError(ex.Message, null, ex);
             }
         }
 
-        static public void StartSplash()
+        public static void StartSplash()
         {
             //Set the threads desktop to the new desktop if "Create new Desktop" is activated
             if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
@@ -247,7 +231,7 @@ namespace SebWindowsClient
             Application.Run(splash);
         }
 
-        private static void CloseSplash()
+        public static void CloseSplash()
         {
             if (splash == null)
                 return;

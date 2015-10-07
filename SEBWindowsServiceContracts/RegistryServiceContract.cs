@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace SebWindowsServiceWCF.ServiceContracts
+namespace SEBWindowsServiceContracts
 {
     /// <summary>
     /// The contact for the WCF Service

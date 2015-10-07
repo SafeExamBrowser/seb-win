@@ -35,32 +35,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Linq;
-using System.ServiceModel;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.DesktopUtils;
 using System.Net;
 using System.IO;
-using System.Security.Principal;
 using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.BlockShortcutsUtils;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ServiceUtils;
 using SebWindowsClient.UI;
 using SebWindowsClient.XULRunnerCommunication;
-using SebWindowsServiceWCF.ServiceContracts;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
 

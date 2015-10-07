@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
+using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.RegistryHandler;
-using SebWindowsServiceWCF.ServiceContracts;
 using WUApiLib;
 
 namespace SebWindowsServiceWCF.ServiceImplementations

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38E2404C-7230-412C-96C6-0B8CF2F7B46A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{5B604609-4125-4704-BE64-D1DDACF252A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SebRegistryResetter</RootNamespace>
-    <AssemblyName>SebRegistryResetter</AssemblyName>
+    <RootNamespace>SEBWindowsServiceContracts</RootNamespace>
+    <AssemblyName>SEBWindowsServiceContracts</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,21 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
-      <Project>{5B604609-4125-4704-BE64-D1DDACF252A0}</Project>
-      <Name>SEBWindowsServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SebWindowsServiceWCF\SebWindowsServiceWCF.csproj">
-      <Project>{10093827-ff41-4c09-b2ff-9c0d27b4b41a}</Project>
-      <Name>SebWindowsServiceWCF</Name>
-    </ProjectReference>
+    <Compile Include="RegistryServiceContract.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

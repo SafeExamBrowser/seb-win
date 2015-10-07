@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsServiceWCF.ServiceContracts;
+using SEBWindowsServiceContracts;
 
 namespace SebWindowsClient.ServiceUtils
 {

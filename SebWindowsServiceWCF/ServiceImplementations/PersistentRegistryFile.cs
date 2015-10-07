@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using SebWindowsServiceWCF.ServiceContracts;
+using SEBWindowsServiceContracts;
 
 namespace SebWindowsServiceWCF.ServiceImplementations
 {

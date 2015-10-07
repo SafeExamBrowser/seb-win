@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.ServiceProcess;
 using System.Threading;
-using SebWindowsServiceWCF.ServiceContracts;
+using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebWindowsServiceWCF

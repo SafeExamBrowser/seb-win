@@ -71,7 +71,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceContracts\RegistryServiceContract.cs" />
     <Compile Include="ServiceImplementations\Logger.cs" />
     <Compile Include="ServiceImplementations\PersistentRegistryFile.cs" />
     <Compile Include="ServiceImplementations\RegistryService.cs" />
@@ -100,6 +99,12 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>True</Private>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
+      <Project>{5b604609-4125-4704-be64-d1ddacf252a0}</Project>
+      <Name>SEBWindowsServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

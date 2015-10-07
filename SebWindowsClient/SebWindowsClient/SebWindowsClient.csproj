@@ -348,9 +348,9 @@
     <Content Include="SEBicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SebWindowsServiceWCF\SebWindowsServiceWCF.csproj">
-      <Project>{10093827-ff41-4c09-b2ff-9c0d27b4b41a}</Project>
-      <Name>SebWindowsServiceWCF</Name>
+    <ProjectReference Include="..\..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
+      <Project>{5b604609-4125-4704-be64-d1ddacf252a0}</Project>
+      <Name>SEBWindowsServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\MetroFramework\MetroFramework\MetroFramework.csproj">
       <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>

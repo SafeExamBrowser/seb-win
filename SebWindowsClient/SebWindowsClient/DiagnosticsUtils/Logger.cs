@@ -23,7 +23,7 @@ namespace SebWindowsClient.DiagnosticsUtils
             Log(Severity.Information, message, eventSource, exception, details);
         }
 
-        public static bool initLogger(string logFileDirectory = null, string logFilePath = null)
+        public static void InitLogger(string logFileDirectory = null, string logFilePath = null)
         {
             try
             {
@@ -53,9 +53,6 @@ namespace SebWindowsClient.DiagnosticsUtils
             {
                 LogFilePath = String.Format(@"{0}\{1}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SEBClientInfo.MANUFACTURER_LOCAL);
             }
-            
-
-            return true;
         }
 
         private static string LogFilePath { get; set; }

@@ -360,7 +360,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 {
                     SEBClientInfo.SetDefaultClientLogFile();
                 }
-                Logger.initLogger(SEBClientInfo.SebClientLogFileDirectory, null);
+                Logger.InitLogger(SEBClientInfo.SebClientLogFileDirectory, null);
             }
         }
 

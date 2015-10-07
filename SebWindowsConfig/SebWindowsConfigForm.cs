@@ -92,7 +92,7 @@ namespace SebWindowsConfig
             StringBuilder sebConfigLogFileBuilder = new StringBuilder(SEBClientInfo.SebClientLogFileDirectory).Append(SEB_CONFIG_LOG);
             string        SebConfigLogFile        = sebConfigLogFileBuilder.ToString();
 
-            Logger.initLogger(SEBClientInfo.SebClientLogFileDirectory, SebConfigLogFile);
+            Logger.InitLogger(SEBClientInfo.SebClientLogFileDirectory, SebConfigLogFile);
 
             // Set all the default values for the Plist structure "SEBSettings.settingsCurrent"
             SEBSettings.RestoreDefaultAndCurrentSettings();

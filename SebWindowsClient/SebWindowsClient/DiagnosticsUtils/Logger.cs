@@ -25,27 +25,35 @@ namespace SebWindowsClient.DiagnosticsUtils
 
         public static bool initLogger(string logFileDirectory = null, string logFilePath = null)
         {
-            if (String.IsNullOrEmpty(logFileDirectory))
+            try
             {
-                logFileDirectory = SEBClientInfo.SebClientLogFileDirectory;
                 if (String.IsNullOrEmpty(logFileDirectory))
                 {
-                    logFileDirectory = String.Format(@"{0}\{1}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SEBClientInfo.MANUFACTURER_LOCAL);
+                    logFileDirectory = SEBClientInfo.SebClientLogFileDirectory;
+                    if (String.IsNullOrEmpty(logFileDirectory))
+                    {
+                        throw new DirectoryNotFoundException();
+                    }
                 }
-            }
 
-            if (Directory.Exists(logFileDirectory) == false)
-                Directory.CreateDirectory(logFileDirectory);
+                if (Directory.Exists(logFileDirectory) == false)
+                    Directory.CreateDirectory(logFileDirectory);
 
-            if (String.IsNullOrEmpty(logFilePath))
-            {
-                logFilePath = SEBClientInfo.SebClientLogFile;
                 if (String.IsNullOrEmpty(logFilePath))
                 {
-                    logFilePath = String.Format(@"{0}\{1}", logFileDirectory, SEBClientInfo.SEB_CLIENT_LOG);
+                    logFilePath = SEBClientInfo.SebClientLogFile;
+                    if (String.IsNullOrEmpty(logFilePath))
+                    {
+                        logFilePath = String.Format(@"{0}\{1}", logFileDirectory, SEBClientInfo.SEB_CLIENT_LOG);
+                    }
                 }
+                LogFilePath = logFilePath;
             }
-            LogFilePath = logFilePath;
+            catch (Exception)
+            {
+                LogFilePath = String.Format(@"{0}\{1}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SEBClientInfo.MANUFACTURER_LOCAL);
+            }
+            
 
             return true;
         }

@@ -92,23 +92,8 @@ namespace SebWindowsClient
 
         protected override void OnCreateMainForm()
         {
-            try
-            {
-                SebWindowsClientMain.InitSEBDesktop();
-            }
-            catch (Exception)
-            {
-                Logger.AddInformation("Unable to InitSEBDesktop");
-                SEBClientInfo.SebWindowsClientForm.ExitApplication(false);
-            }
-
+            //SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
             MainForm = SEBClientInfo.SebWindowsClientForm;
-            if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
-            {
-                Logger.AddInformation("Unable to OpenSEBForm");
-                SEBClientInfo.SebWindowsClientForm.ExitApplication(false);
-            }
-            SebWindowsClientMain.CloseSplash();
         }
 
         public void SetMainForm(Form newMainForm)
@@ -204,8 +189,23 @@ namespace SebWindowsClient
                 }
                 var splashThread = new Thread(new ThreadStart(StartSplash));
                 splashThread.Start();
+                try
+                {
+                    InitSEBDesktop();
+                }
+                catch (Exception)
+                {
 
+                    Logger.AddInformation("Unable to InitSEBDesktop");
+                }
+                
                 SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
+                if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
+                {
+                    CloseSplash();
+                    return;
+                }
+                CloseSplash();
 
                 singleInstanceController = new SingleInstanceController();
 
@@ -215,7 +215,7 @@ namespace SebWindowsClient
                 }
                 catch (Exception)
                 {
-                    CloseSplash();
+
                 }
             }
             else
@@ -247,7 +247,7 @@ namespace SebWindowsClient
             Application.Run(splash);
         }
 
-        public static void CloseSplash()
+        private static void CloseSplash()
         {
             if (splash == null)
                 return;

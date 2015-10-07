@@ -54,9 +54,32 @@ namespace SebWindowsClient.UI
         {
             if ((int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] != 1)
             {
-                SEBXULRunnerWebSocketServer.OnXulRunnerTextFocus += (x, y) => ShowKeyboard();
-                SEBXULRunnerWebSocketServer.OnXulRunnerTextBlur += (x, y) => HideKeyboard();
+                SEBXULRunnerWebSocketServer.OnXulRunnerTextFocus += OnXulRunnerTextFocus;
+                SEBXULRunnerWebSocketServer.OnXulRunnerTextBlur += OnXulRunnerTextBlur;
             }
+        }
+
+        private static bool _textFocusHappened;
+
+        private static void OnXulRunnerTextFocus(object sender, EventArgs e)
+        {
+            _textFocusHappened = true;
+            ShowKeyboard();
+        }
+
+        private static void OnXulRunnerTextBlur(object sender, EventArgs e)
+        {
+            _textFocusHappened = false;
+            var t = new System.Timers.Timer { Interval = 50 };
+            t.Elapsed += (x, y) =>
+            {
+                if (!_textFocusHappened)
+                {
+                    HideKeyboard();
+                }
+                t.Stop();
+            };
+            t.Start();
         }
 
         public static void ShowKeyboard(bool force = false)

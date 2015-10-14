@@ -637,7 +637,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saving Settings Succeeded.
+        ///   Looks up a localized string similar to Saved Settings Purpose.
         /// </summary>
         public static string savingSettingsSucceeded {
             get {

@@ -926,6 +926,7 @@ namespace SebWindowsConfig
             if (radioButtonStartingAnExam.Checked == true)
                  SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
             else SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 1;
+            sebConfigPurposeChanged = true;
         }
 
         private void radioButtonConfiguringAClient_CheckedChanged(object sender, EventArgs e)
@@ -933,6 +934,7 @@ namespace SebWindowsConfig
             if (radioButtonConfiguringAClient.Checked == true)
                  SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 1;
             else SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
+            sebConfigPurposeChanged = true;
         }
 
         private void checkBoxAllowPreferencesWindow_CheckedChanged(object sender, EventArgs e)
@@ -1082,7 +1084,6 @@ namespace SebWindowsConfig
 
             StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(currentDireSebConfigFile).Append(@"\").Append(currentFileSebConfigFile);
             String fileName = sebClientSettingsAppDataBuilder.ToString();
-            string oldPathSEBConfigFile = currentPathSebConfigFile;
 
             /// Generate Browser Exam Key and its salt, if settings or the settings password changed
             string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
@@ -1105,12 +1106,14 @@ namespace SebWindowsConfig
             }
 
             // Before displaying message check if saved settings are local client settings or the default settings (no client settings saved yet), in other words:
-            // Check if not saving local client settings (in %appdata% or %commonappdata%) or if the last saved/opened file isn't the same we're saving now (usually after "Edit Duplicate")
-            if (!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && !currentPathSebConfigFile.Equals(oldPathSEBConfigFile))
+            // Check if not saving local client settings (in %appdata% or %commonappdata%) or if the last saved/opened file isn't the same we're saving now (usually after "Edit Duplicate") or if the flag for being duplicated was set
+            if ((!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && sebConfigPurposeChanged) || currentSebConfigFileWasDuplicated)
             {
                 // In this case tell the user what purpose the file was saved for
                 string messageFilePurpose = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0 ? SEBUIStrings.savingSettingsSucceededStartExam : SEBUIStrings.savingSettingsSucceededMessageConfigureClient;
                 SEBMessageBox.Show(SEBUIStrings.savingSettingsSucceeded, messageFilePurpose, MessageBoxIcon.Information, MessageBoxButtons.OK, neverShowTouchOptimized: true);
+                currentSebConfigFileWasDuplicated = false;
+                sebConfigPurposeChanged = false;
             }
 
             // Generate the new Browser Exam Key
@@ -1133,7 +1136,6 @@ namespace SebWindowsConfig
             // Set the default directory and file name in the File Dialog
             saveFileDialogSebConfigFile.InitialDirectory = currentDireSebConfigFile;
             saveFileDialogSebConfigFile.FileName = currentFileSebConfigFile;
-            string oldPathSEBConfigFile = currentPathSebConfigFile;
 
             // Get the user inputs in the File Dialog
             DialogResult fileDialogResult = saveFileDialogSebConfigFile.ShowDialog();
@@ -1163,12 +1165,14 @@ namespace SebWindowsConfig
                     SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt] = currentExamKeySalt;
                     return;
                 }
-                // Check if currently edited settings are local client settings (in %appdata% or %commonappdata%) or the default settings (no client settings saved yet)
-                if (!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && !currentPathSebConfigFile.Equals(oldPathSEBConfigFile)) 
+                // Check if currently edited settings should be saved as local client settings (in %appdata% or %commonappdata%) or at the same path as before or if they were duplicated
+                if ((!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && sebConfigPurposeChanged) || currentSebConfigFileWasDuplicated) 
                 {
                     // Tell the user what purpose the file was saved for
                     string messageFilePurpose = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0 ? SEBUIStrings.savingSettingsSucceededStartExam : SEBUIStrings.savingSettingsSucceededMessageConfigureClient;
                     SEBMessageBox.Show(SEBUIStrings.savingSettingsSucceeded, messageFilePurpose, MessageBoxIcon.Information, MessageBoxButtons.OK, neverShowTouchOptimized: true);
+                    currentSebConfigFileWasDuplicated = false;
+                    sebConfigPurposeChanged = false;
                 }
 
                 // Generate the new Browser Exam Key
@@ -1339,6 +1343,7 @@ namespace SebWindowsConfig
 
                 StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(currentDireSebConfigFile).Append(@"\").Append(currentFileSebConfigFile);
                 currentPathSebConfigFile = sebClientSettingsAppDataBuilder.ToString();
+                currentSebConfigFileWasDuplicated = true;
                 // Update title of edited settings file
                 UpdateAllWidgetsOfProgram();
         }

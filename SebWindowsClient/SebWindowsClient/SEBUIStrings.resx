@@ -382,7 +382,7 @@
     <value>You didn't enter the correct current SEB administrator password.</value>
   </data>
   <data name="savingSettingsSucceeded" xml:space="preserve">
-    <value>Saving Settings Succeeded</value>
+    <value>Saved Settings Purpose</value>
   </data>
   <data name="savingSettingsSucceededMessageConfigureClient" xml:space="preserve">
     <value>Settings have been saved, use this file to configure local settings of a SEB client.</value>

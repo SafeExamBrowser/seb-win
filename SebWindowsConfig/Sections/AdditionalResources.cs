@@ -111,10 +111,14 @@ namespace SebWindowsConfig.Sections
                     labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
                     comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
                     textBoxAdditionalResourceUrl.Enabled = false;
+                    comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true;
+                    comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = false;
 
                     var indexBefore = (int) selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher];
                     comboBoxAdditionalResourcesResourceDataLauncher.DataSource = GetLaunchers();
                     comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndex = indexBefore;
+                    comboBoxAdditionalResourcesChooseFileToLaunch.Text =
+                        selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename].ToString();
                 }
                 else
                 {
@@ -123,6 +127,7 @@ namespace SebWindowsConfig.Sections
                     labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
                     comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
                     textBoxAdditionalResourceUrl.Enabled = true;
+                    comboBoxAdditionalResourcesChooseFileToLaunch.Visible = false;
                 }
 
                 if (!string.IsNullOrEmpty((string) selectedResource[SEBSettings.KeyAdditionalResourcesUrl]))
@@ -397,20 +402,59 @@ namespace SebWindowsConfig.Sections
             {
                 DictObj selectedResource = GetSelectedResource();
                 selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = new FileInfo(openFileDialog.FileName).Name;
-                selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncode(openFileDialog.FileName);
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncodeFile(openFileDialog.FileName);
+                comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true; 
+                comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = false;
+                comboBoxAdditionalResourcesChooseFileToLaunch.Text = new FileInfo(openFileDialog.FileName).Name;
 
                 treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
-
-                buttonAdditionalResourceRemoveResourceData.Visible = true;
-                buttonAdditionalResourceEmbededResourceOpen.Visible = true;
-                labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
-                comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
-
-                textBoxAdditionalResourceUrl.Text = "";
-                textBoxAdditionalResourceUrl.Enabled = false;
-
-                comboBoxAdditionalResourcesResourceDataLauncher.DataSource = GetLaunchers();
+                EmbeddedResourceChosen();
             }
+        }
+
+        private void buttonAdditionalResourcesChooseEmbeddedFolder_Click(object sender, EventArgs e)
+        {
+            var chooseFolderDialog = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = false,
+                Description = "Choose a folder to embed, including subdirectories. Afterwards you can select the file to start when the resource is selected"
+            };
+            if (chooseFolderDialog.ShowDialog() == DialogResult.OK)
+            {
+                DictObj selectedResource = GetSelectedResource();
+                List<string> containingFilenames;
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncodeDirectory(chooseFolderDialog.SelectedPath, out containingFilenames);
+
+                treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+                
+                comboBoxAdditionalResourcesChooseFileToLaunch.DataSource = containingFilenames;
+                comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true;
+                comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = true;
+
+                EmbeddedResourceChosen();
+            }
+        }
+
+        private void comboBoxAdditionalResourcesChooseFileToLaunch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxAdditionalResourcesChooseFileToLaunch.SelectedItem != null)
+            {
+                DictObj selectedResource = GetSelectedResource();
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = comboBoxAdditionalResourcesChooseFileToLaunch.SelectedItem;   
+            }
+        }
+
+        private void EmbeddedResourceChosen()
+        {
+            buttonAdditionalResourceRemoveResourceData.Visible = true;
+            buttonAdditionalResourceEmbededResourceOpen.Visible = true;
+            labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
+            comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
+
+            textBoxAdditionalResourceUrl.Text = "";
+            textBoxAdditionalResourceUrl.Enabled = false;
+
+            comboBoxAdditionalResourcesResourceDataLauncher.DataSource = GetLaunchers();
         }
 
         private void buttonAdditionalResourceEmbededResourceOpen_Click(object sender, EventArgs e)
@@ -465,7 +509,7 @@ namespace SebWindowsConfig.Sections
 
                 var icon = new DictObj();
                 icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] =
-                    _fileCompressor.CompressAndEncode(openFileDialog.FileName);
+                    _fileCompressor.CompressAndEncodeFile(openFileDialog.FileName);
                 icon[SEBSettings.KeyAdditionalResourcesResourceIconsFormat] = "png";
 
                 var icons = (ListObj)selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons];

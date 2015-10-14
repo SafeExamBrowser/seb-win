@@ -1,10 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
     public interface IFileCompressor
     {
-        string CompressAndEncode(string filename);
+        string CompressAndEncodeFile(string filename);
+
+        string CompressAndEncodeDirectory(string path, out List<string> containingFileNames);
 
         string DecompressDecodeAndSaveFile(string base64, string filename);
 

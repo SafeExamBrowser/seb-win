@@ -1,15 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.IO.Packaging;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
     public class FileCompressor : IFileCompressor
     {
-        public string CompressAndEncode(string filename)
+        public string CompressAndEncodeFile(string filename)
         {
-            return base64_encode(Compress(File.ReadAllBytes(filename)));
+            return base64_encode(CompressFile(File.ReadAllBytes(filename)));
+        }
+
+        public string CompressAndEncodeDirectory(string path, out List<string> containingFilenames)
+        {
+            List<string> containingFileNames;
+            var compressedBytes = CompressDirectory(path, out containingFilenames);
+            return base64_encode(compressedBytes);
         }
 
         public byte[] DeCompressAndDecode(string base64)
@@ -36,7 +45,7 @@ namespace SebWindowsClient.ConfigurationUtils
             return tempPath;
         }
 
-        private byte[] Compress(byte[] data)
+        private byte[] CompressFile(byte[] data)
         {
             using (var compressedStream = new MemoryStream())
             using (var zipStream = new GZipStream(compressedStream, CompressionMode.Compress))
@@ -46,6 +55,24 @@ namespace SebWindowsClient.ConfigurationUtils
                 return compressedStream.ToArray();
             }
         }
+
+        private byte[] CompressDirectory(string path, out List<string> containingFilenames)
+        {
+            containingFilenames = new List<string>();
+            using (var compressedStream = new MemoryStream())
+            using (var zipStream = new GZipStream(compressedStream, CompressionMode.Compress))
+            {
+                foreach (var filename in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories))
+                {
+                    containingFilenames.Add(filename.Replace(path,""));
+                    var data = File.ReadAllBytes(filename);
+                    zipStream.Write(data, 0, data.Length);
+                }
+                zipStream.Close();
+                return compressedStream.ToArray();
+            }
+        }
+
         private byte[] Decompress(byte[] data)
         {
             using (var compressedStream = new MemoryStream(data))

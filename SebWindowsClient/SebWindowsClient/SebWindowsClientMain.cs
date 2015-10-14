@@ -195,8 +195,6 @@ namespace SebWindowsClient
             Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
             Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
 
-            singleInstanceController = new SingleInstanceController();
-
             try
             {
                 if (!InitSebSettings())
@@ -207,6 +205,8 @@ namespace SebWindowsClient
                 Logger.AddError("Unable to InitSebSettings", null, ex);
                 return;
             }
+
+            singleInstanceController = new SingleInstanceController();
 
             try
             {

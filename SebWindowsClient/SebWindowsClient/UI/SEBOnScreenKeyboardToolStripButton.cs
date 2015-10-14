@@ -140,10 +140,6 @@ namespace SebWindowsClient.UI
                 uint WM_SYSCOMMAND = 274;
                 IntPtr SC_CLOSE = new IntPtr(61536);
                 PostMessage(GetKeyboardWindowHandle(), WM_SYSCOMMAND, SC_CLOSE, (IntPtr)0);
-                if (OnKeyboardStateChanged != null)
-                {
-                    OnKeyboardStateChanged(false);
-                }
             }
         }
 

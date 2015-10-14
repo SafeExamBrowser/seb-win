@@ -228,26 +228,34 @@ namespace SebWindowsClient
                     return false;
                 }
 
-                if (uri.Scheme == "seb")
-                // The URI is holding a seb:// web address for a .seb settings file: download it
+                if (uri.Scheme == "seb" || uri.Scheme == "sebs")
+                // The URI is holding a seb:// or sebs:// (secure) web address for a .seb settings file: download it
                 {
                     // But only download and use the seb:// link to a .seb file if this is enabled
                     if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyDownloadAndOpenSebConfig))
                     {
                         try
                         {
-                            Logger.AddError("Trying to download .seb settings by http", null, null);
                             WebClient myWebClient = new WebClient();
-                            // Try first by http
-                            UriBuilder httpURL = new UriBuilder("http", uri.Host, uri.Port, uri.AbsolutePath);
-                            using (myWebClient)
+
+                            if (uri.Scheme == "seb")
                             {
-                                sebSettings = myWebClient.DownloadData(httpURL.Uri);
+                                // Try first by http
+                                Logger.AddError("Trying to download .seb settings by http", null, null);
+                                UriBuilder httpURL = new UriBuilder("http", uri.Host, uri.Port, uri.AbsolutePath);
+                                using (myWebClient)
+                                {
+                                    sebSettings = myWebClient.DownloadData(httpURL.Uri);
+                                }
+                                if (sebSettings == null)
+                                {
+                                    Logger.AddError("Downloading .seb settings by http failed, try to download by https", null, null);
+                                }
                             }
                             if (sebSettings == null)
                             {
-                                // Nothing got downloaded: Try by https
-                                Logger.AddError("Downloading .seb settings by http failed, trying to download by https", null, null);
+                                // Download by https
+                                Logger.AddError("Downloading .seb settings by https", null, null);
                                 UriBuilder httpsURL = new UriBuilder("https", uri.Host, uri.Port, uri.AbsolutePath);
                                 using (myWebClient)
                                 {

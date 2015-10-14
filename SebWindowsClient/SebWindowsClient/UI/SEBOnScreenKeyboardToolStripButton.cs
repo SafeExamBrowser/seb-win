@@ -25,12 +25,15 @@ namespace SebWindowsClient.UI
 
         protected override void OnClick(EventArgs e)
         {
+            bool firstOpen = TapTipHandler.FirstOpen;
             if (TapTipHandler.IsKeyboardVisible())
             {
                 TapTipHandler.HideKeyboard();
             }
             else
             {
+                //reset firstopen because it will be checked again
+                TapTipHandler.FirstOpen = firstOpen;
                 TapTipHandler.ShowKeyboard(true);
             }
         }
@@ -70,7 +73,7 @@ namespace SebWindowsClient.UI
         private static void OnXulRunnerTextBlur(object sender, EventArgs e)
         {
             _textFocusHappened = false;
-            var t = new System.Timers.Timer { Interval = 50 };
+            var t = new System.Timers.Timer { Interval = 100 };
             t.Elapsed += (x, y) =>
             {
                 if (!_textFocusHappened)
@@ -158,7 +161,7 @@ namespace SebWindowsClient.UI
         /// </summary>
         public const int GWL_STYLE = -16;
 
-        private static bool _firstOpen = true;
+        public static bool FirstOpen = true;
 
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(String sClassName, String sAppName);
@@ -182,9 +185,9 @@ namespace SebWindowsClient.UI
         /// <returns>True if visible.</returns>
         public static bool IsKeyboardVisible()
         {
-            if (_firstOpen)
+            if (FirstOpen)
             {
-                _firstOpen = false;
+                FirstOpen = false;
                 return false;
             }
 

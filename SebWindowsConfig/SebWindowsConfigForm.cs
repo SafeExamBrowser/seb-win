@@ -1165,8 +1165,8 @@ namespace SebWindowsConfig
                     SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt] = currentExamKeySalt;
                     return;
                 }
-                // Check if currently edited settings should be saved as local client settings (in %appdata% or %commonappdata%) or at the same path as before or if they were duplicated
-                if ((!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && sebConfigPurposeChanged) || currentSebConfigFileWasDuplicated) 
+                // If currently edited settings should be saved as local client settings (in %appdata% or %commonappdata%), then don't show the config file purpose message
+                if (!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile))
                 {
                     // Tell the user what purpose the file was saved for
                     string messageFilePurpose = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0 ? SEBUIStrings.savingSettingsSucceededStartExam : SEBUIStrings.savingSettingsSucceededMessageConfigureClient;

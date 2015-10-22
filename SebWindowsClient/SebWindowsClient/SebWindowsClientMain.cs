@@ -82,7 +82,7 @@ namespace SebWindowsClient
             if (e.CommandLine.Count() > 1)
             {
                 string es = string.Join(", ", e.CommandLine);
-                Logger.AddError("StartupNextInstanceEventArgs: " + es, null, null);
+                Logger.AddInformation("StartupNextInstanceEventArgs: " + es);
                 if (!form.LoadFile(e.CommandLine[1]))
                 {
                     Logger.AddError("LoadFile() from StartupNextInstanceEvent failed!", null, null);

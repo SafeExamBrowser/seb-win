@@ -165,21 +165,13 @@ namespace SebWindowsClient.ProcessUtils
         {
             try
             {
-                //This only works with 32bit processes
-                return process.MainModule.ModuleName;
+                //This makes the method kind of obsolete but maybe in the future another method is appropriate to get the exact executable name instead of the process name
+                return process.ProcessName;
             }
-            catch
+            catch (Exception)
             {
-                try
-                {
-                    //This makes the method kind of obsolete but maybe in the future another method is appropriate to get the exact executable name instead of the process name
-                    return process.ProcessName;
-                }
-                catch (Exception)
-                {
-                    Logger.AddWarning("Unable to GetExecutableName of process", null);
-                    return "";
-                }
+                Logger.AddWarning("Unable to GetExecutableName of process", null);
+                return "";
             }
         }
 

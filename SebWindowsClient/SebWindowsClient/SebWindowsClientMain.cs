@@ -7,28 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.DesktopUtils;
 using System.Diagnostics;
-using System.Net;
-using System.Security.Principal;
-using System.Xml.Serialization;
-using System.IO;
-using SebWindowsClient.CryptographyUtils;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
 using System.Text;
 //using COM.Tools.VMDetect;
-using SebWindowsClient.ServiceUtils;
 using System.Runtime.InteropServices;
 using System.Threading;
 
 using Microsoft.VisualBasic.ApplicationServices;
-using SebWindowsClient.XULRunnerCommunication;
 
 //
 //  SebWindowsClient.cs
@@ -92,27 +82,29 @@ namespace SebWindowsClient
 
         protected override void OnCreateMainForm()
         {
-            var splashThread = new Thread(SebWindowsClientMain.StartSplash);
-            splashThread.Start();
-
-            //SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
             MainForm = SEBClientInfo.SebWindowsClientForm;
-
-            try
+            string[] arguments = Environment.GetCommandLineArgs();
+            if (arguments.Count() == 1)
             {
-                SebWindowsClientMain.InitSEBDesktop();
-            }
-            catch (Exception ex)
-            {
-                Logger.AddError("Unable to InitSEBDesktop", null, ex);
-            }
+                var splashThread = new Thread(SebWindowsClientMain.StartSplash);
+                splashThread.Start();
 
-            if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
-            {
-                Logger.AddError("Unable to OpenSEBForm",null,null);
-            }
+                try
+                {
+                    SebWindowsClientMain.InitSEBDesktop();
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to InitSEBDesktop", null, ex);
+                }
 
-            SebWindowsClientMain.CloseSplash();
+                if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
+                {
+                    Logger.AddError("Unable to OpenSEBForm", null, null);
+                }
+
+                SebWindowsClientMain.CloseSplash();
+            }
         }
 
         public void SetMainForm(Form newMainForm)

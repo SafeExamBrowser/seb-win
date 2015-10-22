@@ -233,7 +233,6 @@
             this.buttonDownloadDirectoryWin = new System.Windows.Forms.Button();
             this.listBoxChooseFileToUploadPolicy = new System.Windows.Forms.ListBox();
             this.labelChooseFileToUploadPolicy = new System.Windows.Forms.Label();
-            this.checkBoxDownloadPDFFiles = new System.Windows.Forms.CheckBox();
             this.checkBoxOpenDownloads = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowDownUploads = new System.Windows.Forms.CheckBox();
             this.tabPageBrowser = new System.Windows.Forms.TabPage();
@@ -381,6 +380,8 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxDownloadPDFFiles = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowPDFPlugIn = new System.Windows.Forms.CheckBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -2886,6 +2887,7 @@
             // 
             // tabPageDownUploads
             // 
+            this.tabPageDownUploads.Controls.Add(this.checkBoxAllowPDFPlugIn);
             this.tabPageDownUploads.Controls.Add(this.textBoxDownloadDirectoryWin);
             this.tabPageDownUploads.Controls.Add(this.checkBoxDownloadOpenSEBFiles);
             this.tabPageDownUploads.Controls.Add(this.label5);
@@ -2982,22 +2984,6 @@
             this.labelChooseFileToUploadPolicy.Size = new System.Drawing.Size(145, 13);
             this.labelChooseFileToUploadPolicy.TabIndex = 75;
             this.labelChooseFileToUploadPolicy.Text = "Choose file to upload... (Mac)";
-            // 
-            // checkBoxDownloadPDFFiles
-            // 
-            this.checkBoxDownloadPDFFiles.AutoSize = true;
-            this.checkBoxDownloadPDFFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(44, 241);
-            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxDownloadPDFFiles.Name = "checkBoxDownloadPDFFiles";
-            this.checkBoxDownloadPDFFiles.Size = new System.Drawing.Size(348, 17);
-            this.checkBoxDownloadPDFFiles.TabIndex = 3;
-            this.checkBoxDownloadPDFFiles.Text = "Download and open PDF files instead of displaying them inline (Mac)";
-            this.toolTip1.SetToolTip(this.checkBoxDownloadPDFFiles, "PDF files will not be displayed by SEB but downloaded and openend (if \"Open files" +
-        " after downloading\" is active!) by the application set in Finder (usually Previe" +
-        "w or Adobe Acrobat).");
-            this.checkBoxDownloadPDFFiles.UseVisualStyleBackColor = true;
-            this.checkBoxDownloadPDFFiles.CheckedChanged += new System.EventHandler(this.checkBoxDownloadPDFFiles_CheckedChanged);
             // 
             // checkBoxOpenDownloads
             // 
@@ -4882,6 +4868,37 @@
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
+            // checkBoxDownloadPDFFiles
+            // 
+            this.checkBoxDownloadPDFFiles.AutoSize = true;
+            this.checkBoxDownloadPDFFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(44, 241);
+            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxDownloadPDFFiles.Name = "checkBoxDownloadPDFFiles";
+            this.checkBoxDownloadPDFFiles.Size = new System.Drawing.Size(348, 17);
+            this.checkBoxDownloadPDFFiles.TabIndex = 3;
+            this.checkBoxDownloadPDFFiles.Text = "Download and open PDF files instead of displaying them inline (Mac)";
+            this.toolTip1.SetToolTip(this.checkBoxDownloadPDFFiles, "PDF files will not be displayed by SEB but downloaded and openend (if \"Open files" +
+        " after downloading\" is active!) by the application set in Finder (usually Previe" +
+        "w or Adobe Acrobat).");
+            this.checkBoxDownloadPDFFiles.UseVisualStyleBackColor = true;
+            this.checkBoxDownloadPDFFiles.CheckedChanged += new System.EventHandler(this.checkBoxDownloadPDFFiles_CheckedChanged);
+            // 
+            // checkBoxAllowPDFPlugIn
+            // 
+            this.checkBoxAllowPDFPlugIn.AutoSize = true;
+            this.checkBoxAllowPDFPlugIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxAllowPDFPlugIn.Location = new System.Drawing.Point(44, 262);
+            this.checkBoxAllowPDFPlugIn.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAllowPDFPlugIn.Name = "checkBoxAllowPDFPlugIn";
+            this.checkBoxAllowPDFPlugIn.Size = new System.Drawing.Size(310, 17);
+            this.checkBoxAllowPDFPlugIn.TabIndex = 88;
+            this.checkBoxAllowPDFPlugIn.Text = "Allow using Acrobat Reader PDF plugin (insecure! Mac only)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPDFPlugIn, "The Adobe Acrobat Reader browser plugin should only be used on secured managed Ma" +
+        "c computers, at it allows to access the file system and to cloud services");
+            this.checkBoxAllowPDFPlugIn.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPDFPlugIn.CheckedChanged += new System.EventHandler(this.checkBoxAllowPDFPlugIn_CheckedChanged);
+            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5056,7 +5073,6 @@
         private System.Windows.Forms.Button buttonDownloadDirectoryWin;
         private System.Windows.Forms.ListBox listBoxChooseFileToUploadPolicy;
         private System.Windows.Forms.Label labelChooseFileToUploadPolicy;
-        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
         private System.Windows.Forms.CheckBox checkBoxOpenDownloads;
         private System.Windows.Forms.CheckBox checkBoxAllowDownUploads;
         private System.Windows.Forms.TabPage tabPageBrowser;
@@ -5350,6 +5366,8 @@
         private System.Windows.Forms.RadioButton radioButtonOskAutoDetect;
         private System.Windows.Forms.RadioButton radioButtonOskNeverShow;
         private System.Windows.Forms.RadioButton radioButtonOskAlwaysShow;
+        private System.Windows.Forms.CheckBox checkBoxAllowPDFPlugIn;
+        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
 
     }
 }

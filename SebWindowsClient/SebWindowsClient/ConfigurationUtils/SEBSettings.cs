@@ -156,6 +156,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyOpenDownloads            = "openDownloads";
         public const String KeyChooseFileToUploadPolicy = "chooseFileToUploadPolicy";
         public const String KeyDownloadPDFFiles         = "downloadPDFFiles";
+        public const String KeyAllowPDFPlugIn           = "allowPDFPlugIn";
         public const String KeyDownloadAndOpenSebConfig = "downloadAndOpenSebConfig";
 
         // Group "Exam"
@@ -577,6 +578,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyOpenDownloads           , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyChooseFileToUploadPolicy, 0);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadPDFFiles        , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPDFPlugIn          , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadAndOpenSebConfig, true);
 
             // Default settings for group "Exam"

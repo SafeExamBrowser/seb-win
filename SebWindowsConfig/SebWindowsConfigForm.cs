@@ -401,7 +401,8 @@ namespace SebWindowsConfig
             checkBoxAllowDownUploads.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDownUploads];
             checkBoxOpenDownloads   .Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOpenDownloads];
             checkBoxDownloadPDFFiles.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadPDFFiles];
-            textBoxDownloadDirectoryWin.Text             =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryWin];
+            checkBoxAllowPDFPlugIn  .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowPDFPlugIn];
+            textBoxDownloadDirectoryWin.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryWin];
             textBoxDownloadDirectoryOSX.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryOSX];
             listBoxChooseFileToUploadPolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeyChooseFileToUploadPolicy];
             checkBoxDownloadOpenSEBFiles.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig];
@@ -1416,9 +1417,9 @@ namespace SebWindowsConfig
         }
 
 
-        // ******************
-        // Group "Appearance"
-        // ******************
+        // **********************
+        // Group "User Interface"
+        // **********************
         private void radioButtonUseBrowserWindow_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonUseBrowserWindow.Checked == true)
@@ -1795,6 +1796,10 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyDownloadPDFFiles] = checkBoxDownloadPDFFiles.Checked;
         }
 
+        private void checkBoxAllowPDFPlugIn_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowPDFPlugIn] = checkBoxAllowPDFPlugIn.Checked;
+        }
 
 
         // ************

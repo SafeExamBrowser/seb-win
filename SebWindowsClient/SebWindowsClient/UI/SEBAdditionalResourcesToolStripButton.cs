@@ -105,9 +105,8 @@ namespace SebWindowsClient.UI
                 var icon =
                     (DictObj)((ListObj)resource[SEBSettings.KeyAdditionalResourcesResourceIcons])[0];
                 var memoryStream =
-                    new MemoryStream(
                         _fileCompressor.DeCompressAndDecode(
-                            (string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                            (string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]);
                 return Image.FromStream(memoryStream);
             }
 
@@ -120,7 +119,7 @@ namespace SebWindowsClient.UI
             var filename = (string) resource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
             var path =
                 _fileCompressor.DecompressDecodeAndSaveFile(
-                    (string) resource[SEBSettings.KeyAdditionalResourcesResourceData], filename);
+                    (string)resource[SEBSettings.KeyAdditionalResourcesResourceData], filename, resource[SEBSettings.KeyAdditionalResourcesIdentifier].ToString());
             //XulRunner
             if (launcher == 0)
             {

@@ -144,9 +144,8 @@ namespace SebWindowsConfig.Sections
                     var icon =
                         (DictObj) ((ListObj) selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons])[0];
                     var memoryStream =
-                        new MemoryStream(
                             _fileCompressor.DeCompressAndDecode(
-                                (string) icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                                (string) icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]);
                     var image = Image.FromStream(memoryStream);
                     pictureBoxAdditionalResourceIcon.Image = image;
                 }
@@ -463,7 +462,7 @@ namespace SebWindowsConfig.Sections
             var filename = (string) selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
             var path =
                 _fileCompressor.DecompressDecodeAndSaveFile(
-                    (string) selectedResource[SEBSettings.KeyAdditionalResourcesResourceData], filename);
+                    (string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData], filename, selectedResource[SEBSettings.KeyAdditionalResourcesIdentifier].ToString());
             Process.Start(path + filename);
         }
 
@@ -522,7 +521,7 @@ namespace SebWindowsConfig.Sections
                     icons.Add(icon);   
                 }
 
-                var memoryStream = new MemoryStream(_fileCompressor.DeCompressAndDecode((string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]));
+                var memoryStream = _fileCompressor.DeCompressAndDecode((string)icon[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]);
                 var image = Image.FromStream(memoryStream);
                 pictureBoxAdditionalResourceIcon.Image = image;
             }

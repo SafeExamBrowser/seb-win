@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.IO.Packaging;
+using System.Linq;
+using Ionic.Zip;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
@@ -11,85 +10,57 @@ namespace SebWindowsClient.ConfigurationUtils
     {
         public string CompressAndEncodeFile(string filename)
         {
-            return base64_encode(CompressFile(File.ReadAllBytes(filename)));
+            var zip = new ZipFile();
+            zip.AddFile(filename,"");
+            var stream = new MemoryStream();
+            zip.Save(stream);
+            return base64_encode(stream.ToArray());
         }
 
         public string CompressAndEncodeDirectory(string path, out List<string> containingFilenames)
         {
-            List<string> containingFileNames;
-            var compressedBytes = CompressDirectory(path, out containingFilenames);
-            return base64_encode(compressedBytes);
+            var zip = new ZipFile();
+            zip.AddDirectory(path, "");
+            var stream = new MemoryStream();
+            zip.Save(stream);
+            containingFilenames = zip.Entries.Select(x => x.FileName.Replace(path, "")).ToList();
+            return base64_encode(stream.ToArray());
         }
 
-        public byte[] DeCompressAndDecode(string base64)
-        {
-            return Decompress(base64_decode(base64));
-        }
         /// <summary>
         /// Saves the file to a temporary directory and returns the path to the file (without filename)
         /// </summary>
         /// <param name="base64">the encoded and compressed file content</param>
         /// <param name="filename">the filename of the file to save</param>
+        /// <param name="directoryName">the subdirectory of the tempdir (usually the id of the additional resource</param>
         /// <returns></returns>
-        public string DecompressDecodeAndSaveFile(string base64, string filename)
+        public string DecompressDecodeAndSaveFile(string base64, string filename, string directoryName)
         {
-            string tempPath = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\";
-            if (!Directory.Exists(tempPath))
+            string tempPath = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\" + directoryName + "\\";
+            if (Directory.Exists(tempPath))
             {
-                Directory.CreateDirectory(tempPath);
+                Directory.Delete(tempPath, true);
             }
-            if (!File.Exists(tempPath + filename))
-            {
-                File.WriteAllBytes(tempPath + filename, DeCompressAndDecode(base64));
-            }
+            Directory.CreateDirectory(tempPath);
+
+            var data = base64_decode(base64);
+            var stream = new MemoryStream(data);
+            var zip = ZipFile.Read(stream);
+            zip.ExtractAll(tempPath);
+
             return tempPath;
         }
 
-        private byte[] CompressFile(byte[] data)
+        public MemoryStream DeCompressAndDecode(string base64)
         {
-            using (var compressedStream = new MemoryStream())
-            using (var zipStream = new GZipStream(compressedStream, CompressionMode.Compress))
-            {
-                zipStream.Write(data, 0, data.Length);
-                zipStream.Close();
-                return compressedStream.ToArray();
-            }
+            var data = base64_decode(base64);
+            var zipStream = new MemoryStream(data);
+            var zip = ZipFile.Read(zipStream);
+            var stream = new MemoryStream();
+            zip.Entries.First().Extract(stream);
+            return stream;
         }
 
-        private byte[] CompressDirectory(string path, out List<string> containingFilenames)
-        {
-            containingFilenames = new List<string>();
-            using (var compressedStream = new MemoryStream())
-            using (var zipStream = new GZipStream(compressedStream, CompressionMode.Compress))
-            {
-                foreach (var filename in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories))
-                {
-                    containingFilenames.Add(filename.Replace(path,""));
-                    var data = File.ReadAllBytes(filename);
-                    zipStream.Write(data, 0, data.Length);
-                }
-                zipStream.Close();
-                return compressedStream.ToArray();
-            }
-        }
-
-        private byte[] Decompress(byte[] data)
-        {
-            using (var compressedStream = new MemoryStream(data))
-            using (var zipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
-            using (var resultStream = new MemoryStream())
-            {
-                var buffer = new byte[4096];
-                int read;
-
-                while ((read = zipStream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    resultStream.Write(buffer, 0, read);
-                }
-
-                return resultStream.ToArray();
-            }
-        }
         private string base64_encode(byte[] data)
         {
             if (data == null)

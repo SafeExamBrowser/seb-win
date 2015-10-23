@@ -309,6 +309,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyInsideSebEnableShutDown          = "insideSebEnableShutDown";
         public const String KeyInsideSebEnableEaseOfAccess      = "insideSebEnableEaseOfAccess";
         public const String KeyInsideSebEnableVmWareClientShade = "insideSebEnableVmWareClientShade";
+        public const String KeyInsideSebEnableNetworkConnectionSelector = "insideSebEnableEnableNetworkConnectionSelector";
 
         // Group "Hooked Keys"
         public const String KeyHookKeys = "hookKeys";
@@ -796,6 +797,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableShutDown         , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableEaseOfAccess     , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableVmWareClientShade, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector, false);
 
             // Default settings for group "Hooked Keys"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHookKeys, true);

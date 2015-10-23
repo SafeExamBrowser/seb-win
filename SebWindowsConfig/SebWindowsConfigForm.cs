@@ -622,6 +622,7 @@ namespace SebWindowsConfig
             checkBoxInsideSebEnableShutDown         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableShutDown];
             checkBoxInsideSebEnableEaseOfAccess     .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableEaseOfAccess];
             checkBoxInsideSebEnableVmWareClientShade.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableVmWareClientShade];
+            checkBoxInsideSebEnableNetworkConnectionSelector.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector];
 
             // Group "Hooked Keys"
             checkBoxHookKeys.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyHookKeys];
@@ -3455,6 +3456,11 @@ namespace SebWindowsConfig
         private void checkBoxInsideSebEnableVmWareClientShade_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableVmWareClientShade] = checkBoxInsideSebEnableVmWareClientShade.Checked;
+        }
+
+        private void checkBoxInsideSebEnableNetworkConnectionSelector_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] = checkBoxInsideSebEnableNetworkConnectionSelector.Checked;
         }
 
 

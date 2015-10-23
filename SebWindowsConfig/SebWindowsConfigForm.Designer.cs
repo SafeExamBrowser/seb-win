@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -62,6 +62,7 @@
             this.tabPageRegistry = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxInsideSeb = new System.Windows.Forms.GroupBox();
+            this.checkBoxInsideSebEnableNetworkConnectionSelector = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableSwitchUser = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableLockThisComputer = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableChangeAPassword = new System.Windows.Forms.CheckBox();
@@ -226,6 +227,7 @@
             this.labelBrowserExamKey = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPageDownUploads = new System.Windows.Forms.TabPage();
+            this.checkBoxAllowPDFPlugIn = new System.Windows.Forms.CheckBox();
             this.textBoxDownloadDirectoryWin = new System.Windows.Forms.TextBox();
             this.checkBoxDownloadOpenSEBFiles = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -381,7 +383,6 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxInsideSebEnableNetworkConnectionSelector = new System.Windows.Forms.CheckBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -849,6 +850,21 @@
             this.groupBoxInsideSeb.TabStop = false;
             this.groupBoxInsideSeb.Text = "While running SEB";
             // 
+            // checkBoxInsideSebEnableNetworkConnectionSelector
+            // 
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.AutoSize = true;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Location = new System.Drawing.Point(9, 247);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Name = "checkBoxInsideSebEnableNetworkConnectionSelector";
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Size = new System.Drawing.Size(260, 21);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.TabIndex = 8;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Text = "Enable Network Connection Selector";
+            this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableNetworkConnectionSelector, "Activates the \"Shade\" bar at the upper edge of a virtual desktop, if existent. If" +
+        " you\'re not using VMware, this setting doesn\'t have any effect.");
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.UseVisualStyleBackColor = true;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.CheckedChanged += new System.EventHandler(this.checkBoxInsideSebEnableNetworkConnectionSelector_CheckedChanged);
+            // 
             // checkBoxInsideSebEnableSwitchUser
             // 
             this.checkBoxInsideSebEnableSwitchUser.AutoSize = true;
@@ -962,7 +978,7 @@
             this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableVmWareClientShade, "Activates the \"Shade\" bar at the upper edge of a virtual desktop, if existent. If" +
         " you\'re not using VMware, this setting doesn\'t have any effect.");
             this.checkBoxInsideSebEnableVmWareClientShade.UseVisualStyleBackColor = true;
-            this.checkBoxInsideSebEnableVmWareClientShade.CheckedChanged += new System.EventHandler(this.checkBoxInsideSebEnableNetworkConnectionSelector_CheckedChanged);
+            this.checkBoxInsideSebEnableVmWareClientShade.CheckedChanged += new System.EventHandler(this.checkBoxInsideSebEnableVmWareClientShade_CheckedChanged);
             // 
             // tabPageSecurity
             // 
@@ -994,9 +1010,9 @@
             this.groupBox10.Controls.Add(this.label4);
             this.groupBox10.Controls.Add(this.checkBoxUseStandardDirectory);
             this.groupBox10.Location = new System.Drawing.Point(31, 244);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox10.Size = new System.Drawing.Size(740, 175);
             this.groupBox10.TabIndex = 95;
             this.groupBox10.TabStop = false;
@@ -1032,7 +1048,7 @@
             // textBoxLogDirectoryOSX
             // 
             this.textBoxLogDirectoryOSX.Location = new System.Drawing.Point(224, 128);
-            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryOSX.Name = "textBoxLogDirectoryOSX";
             this.textBoxLogDirectoryOSX.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryOSX.TabIndex = 82;
@@ -1041,7 +1057,7 @@
             // textBoxLogDirectoryWin
             // 
             this.textBoxLogDirectoryWin.Location = new System.Drawing.Point(224, 63);
-            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryWin.Name = "textBoxLogDirectoryWin";
             this.textBoxLogDirectoryWin.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryWin.TabIndex = 92;
@@ -1260,9 +1276,9 @@
             this.tabPageUrlFilter.Controls.Add(this.groupBox1);
             this.tabPageUrlFilter.Controls.Add(this.checkBoxEnableURLContentFilter);
             this.tabPageUrlFilter.Location = new System.Drawing.Point(4, 25);
-            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Name = "tabPageUrlFilter";
-            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Size = new System.Drawing.Size(933, 572);
             this.tabPageUrlFilter.TabIndex = 3;
             this.tabPageUrlFilter.Text = "Filter";
@@ -1300,9 +1316,9 @@
             this.groupBox2.Controls.Add(this.btnRemoveBlackListFilter);
             this.groupBox2.Controls.Add(this.btnAddBlackListFilter);
             this.groupBox2.Location = new System.Drawing.Point(19, 263);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(888, 201);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
@@ -1363,9 +1379,9 @@
             this.groupBox1.Controls.Add(this.btnRemoveWhitelistFilter);
             this.groupBox1.Controls.Add(this.btnAddWhitelistFilter);
             this.groupBox1.Location = new System.Drawing.Point(20, 44);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(888, 201);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
@@ -1525,8 +1541,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -1573,7 +1589,7 @@
             // textBoxBypassedProxyHostList
             // 
             this.textBoxBypassedProxyHostList.Location = new System.Drawing.Point(25, 391);
-            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxBypassedProxyHostList.Multiline = true;
             this.textBoxBypassedProxyHostList.Name = "textBoxBypassedProxyHostList";
             this.textBoxBypassedProxyHostList.Size = new System.Drawing.Size(873, 121);
@@ -2022,7 +2038,7 @@
             // ButtonChooseExecutable
             // 
             this.ButtonChooseExecutable.Location = new System.Drawing.Point(648, 98);
-            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonChooseExecutable.Name = "ButtonChooseExecutable";
             this.ButtonChooseExecutable.Size = new System.Drawing.Size(40, 27);
             this.ButtonChooseExecutable.TabIndex = 92;
@@ -2675,9 +2691,9 @@
             this.groupBox9.Controls.Add(this.textBox4);
             this.groupBox9.Controls.Add(this.textBox3);
             this.groupBox9.Location = new System.Drawing.Point(32, 308);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox9.Size = new System.Drawing.Size(740, 223);
             this.groupBox9.TabIndex = 121;
             this.groupBox9.TabStop = false;
@@ -2770,9 +2786,9 @@
             this.groupBox8.Controls.Add(this.textBoxQuitURL);
             this.groupBox8.Controls.Add(this.textBox1);
             this.groupBox8.Location = new System.Drawing.Point(32, 181);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(740, 111);
             this.groupBox8.TabIndex = 120;
             this.groupBox8.TabStop = false;
@@ -2812,9 +2828,9 @@
             this.groupBox7.Controls.Add(this.checkBoxSendBrowserExamKey);
             this.groupBox7.Controls.Add(this.textBoxBrowserExamKey);
             this.groupBox7.Location = new System.Drawing.Point(32, 20);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox7.Size = new System.Drawing.Size(740, 144);
             this.groupBox7.TabIndex = 119;
             this.groupBox7.TabStop = false;
@@ -2880,6 +2896,7 @@
             // 
             // tabPageDownUploads
             // 
+            this.tabPageDownUploads.Controls.Add(this.checkBoxAllowPDFPlugIn);
             this.tabPageDownUploads.Controls.Add(this.textBoxDownloadDirectoryWin);
             this.tabPageDownUploads.Controls.Add(this.checkBoxDownloadOpenSEBFiles);
             this.tabPageDownUploads.Controls.Add(this.label5);
@@ -2900,10 +2917,25 @@
             this.tabPageDownUploads.Text = "Down/Uploads";
             this.tabPageDownUploads.UseVisualStyleBackColor = true;
             // 
+            // checkBoxAllowPDFPlugIn
+            // 
+            this.checkBoxAllowPDFPlugIn.AutoSize = true;
+            this.checkBoxAllowPDFPlugIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxAllowPDFPlugIn.Location = new System.Drawing.Point(44, 262);
+            this.checkBoxAllowPDFPlugIn.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAllowPDFPlugIn.Name = "checkBoxAllowPDFPlugIn";
+            this.checkBoxAllowPDFPlugIn.Size = new System.Drawing.Size(408, 21);
+            this.checkBoxAllowPDFPlugIn.TabIndex = 88;
+            this.checkBoxAllowPDFPlugIn.Text = "Allow using Acrobat Reader PDF plugin (insecure! Mac only)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPDFPlugIn, "The Adobe Acrobat Reader browser plugin should only be used on secured managed Ma" +
+        "c computers, at it allows to access the file system and to cloud services");
+            this.checkBoxAllowPDFPlugIn.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPDFPlugIn.CheckedChanged += new System.EventHandler(this.checkBoxAllowPDFPlugIn_CheckedChanged);
+            // 
             // textBoxDownloadDirectoryWin
             // 
             this.textBoxDownloadDirectoryWin.Location = new System.Drawing.Point(359, 68);
-            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryWin.Name = "textBoxDownloadDirectoryWin";
             this.textBoxDownloadDirectoryWin.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryWin.TabIndex = 87;
@@ -2937,7 +2969,7 @@
             // textBoxDownloadDirectoryOSX
             // 
             this.textBoxDownloadDirectoryOSX.Location = new System.Drawing.Point(359, 105);
-            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryOSX.Name = "textBoxDownloadDirectoryOSX";
             this.textBoxDownloadDirectoryOSX.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryOSX.TabIndex = 84;
@@ -2982,8 +3014,8 @@
             // 
             this.checkBoxDownloadPDFFiles.AutoSize = true;
             this.checkBoxDownloadPDFFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(59, 297);
-            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(44, 241);
+            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxDownloadPDFFiles.Name = "checkBoxDownloadPDFFiles";
             this.checkBoxDownloadPDFFiles.Size = new System.Drawing.Size(461, 21);
             this.checkBoxDownloadPDFFiles.TabIndex = 3;
@@ -3055,9 +3087,9 @@
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacDefault);
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacCustom);
             this.groupBox14.Location = new System.Drawing.Point(723, 380);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox14.Size = new System.Drawing.Size(667, 126);
             this.groupBox14.TabIndex = 74;
             this.groupBox14.TabStop = false;
@@ -3114,9 +3146,9 @@
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchDefault);
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchCustom);
             this.groupBox13.Location = new System.Drawing.Point(723, 521);
-            this.groupBox13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox13.Size = new System.Drawing.Size(667, 151);
             this.groupBox13.TabIndex = 73;
             this.groupBox13.TabStop = false;
@@ -3206,9 +3238,9 @@
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopDefault);
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopCustom);
             this.groupBox12.Location = new System.Drawing.Point(31, 521);
-            this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox12.Size = new System.Drawing.Size(667, 151);
             this.groupBox12.TabIndex = 72;
             this.groupBox12.TabStop = false;
@@ -3291,9 +3323,9 @@
             this.groupBox11.Controls.Add(this.checkBoxAllowBrowsingBackForward);
             this.groupBox11.Controls.Add(this.checkBoxBlockPopUpWindows);
             this.groupBox11.Location = new System.Drawing.Point(31, 346);
-            this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox11.Size = new System.Drawing.Size(667, 160);
             this.groupBox11.TabIndex = 71;
             this.groupBox11.TabStop = false;
@@ -3376,7 +3408,7 @@
             // 
             this.checkBoxRemoveProfile.AutoSize = true;
             this.checkBoxRemoveProfile.Location = new System.Drawing.Point(19, 124);
-            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxRemoveProfile.Name = "checkBoxRemoveProfile";
             this.checkBoxRemoveProfile.Size = new System.Drawing.Size(163, 21);
             this.checkBoxRemoveProfile.TabIndex = 6;
@@ -3686,9 +3718,9 @@
             this.groupBox6.Controls.Add(this.checkBoxHideBrowserWindowToolbar);
             this.groupBox6.Controls.Add(this.checkBoxShowMenuBar);
             this.groupBox6.Location = new System.Drawing.Point(31, 268);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox6.Size = new System.Drawing.Size(667, 85);
             this.groupBox6.TabIndex = 83;
             this.groupBox6.TabStop = false;
@@ -3746,9 +3778,9 @@
             this.groupBox5.Controls.Add(this.checkBoxShowTime);
             this.groupBox5.Controls.Add(this.checkBoxShowReloadButton);
             this.groupBox5.Location = new System.Drawing.Point(31, 366);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox5.Size = new System.Drawing.Size(667, 162);
             this.groupBox5.TabIndex = 82;
             this.groupBox5.TabStop = false;
@@ -3850,9 +3882,9 @@
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomPage);
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomText);
             this.groupBoxEnableZoom.Location = new System.Drawing.Point(31, 540);
-            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Name = "groupBoxEnableZoom";
-            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Size = new System.Drawing.Size(321, 85);
             this.groupBoxEnableZoom.TabIndex = 76;
             this.groupBoxEnableZoom.TabStop = false;
@@ -3891,9 +3923,9 @@
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomPage);
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomText);
             this.groupBoxZoomMode.Location = new System.Drawing.Point(376, 540);
-            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Name = "groupBoxZoomMode";
-            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Size = new System.Drawing.Size(321, 85);
             this.groupBoxZoomMode.TabIndex = 75;
             this.groupBoxZoomMode.TabStop = false;
@@ -3934,9 +3966,9 @@
             this.groupBox4.Controls.Add(this.radioButtonUseFullScreenMode);
             this.groupBox4.Controls.Add(this.radioButtonTouchOptimized);
             this.groupBox4.Location = new System.Drawing.Point(31, 20);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(667, 113);
             this.groupBox4.TabIndex = 74;
             this.groupBox4.TabStop = false;
@@ -4877,20 +4909,6 @@
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
-            // checkBoxInsideSebEnableNetworkConnectionSelector
-            // 
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.AutoSize = true;
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Location = new System.Drawing.Point(9, 247);
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Name = "checkBoxInsideSebEnableNetworkConnectionSelector";
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Size = new System.Drawing.Size(260, 21);
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.TabIndex = 8;
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Text = "Enable Network Connection Selector";
-            this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableNetworkConnectionSelector, "Activates the \"Shade\" bar at the upper edge of a virtual desktop, if existent. If" +
-        " you\'re not using VMware, this setting doesn\'t have any effect.");
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.UseVisualStyleBackColor = true;
-            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5065,7 +5083,6 @@
         private System.Windows.Forms.Button buttonDownloadDirectoryWin;
         private System.Windows.Forms.ListBox listBoxChooseFileToUploadPolicy;
         private System.Windows.Forms.Label labelChooseFileToUploadPolicy;
-        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
         private System.Windows.Forms.CheckBox checkBoxOpenDownloads;
         private System.Windows.Forms.CheckBox checkBoxAllowDownUploads;
         private System.Windows.Forms.TabPage tabPageBrowser;
@@ -5360,6 +5377,8 @@
         private System.Windows.Forms.RadioButton radioButtonOskNeverShow;
         private System.Windows.Forms.RadioButton radioButtonOskAlwaysShow;
         private System.Windows.Forms.CheckBox checkBoxInsideSebEnableNetworkConnectionSelector;
+        private System.Windows.Forms.CheckBox checkBoxAllowPDFPlugIn;
+        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
 
     }
 }

@@ -292,7 +292,7 @@ namespace SebWindowsClient
                     SebWindowsClientMain.LoadingSebFile(false);
                     return false;
                 }
-                Logger.AddInformation("Succesfully read the new configuration");
+                Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
                 // Decrypt, parse and store new settings and restart SEB if this was successfull
                 Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 

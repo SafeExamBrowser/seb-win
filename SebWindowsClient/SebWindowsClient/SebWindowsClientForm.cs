@@ -40,6 +40,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
@@ -347,6 +348,18 @@ namespace SebWindowsClient
             //}
         }
 
+        private static T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
+        }
+
         /// ----------------------------------------------------------------------------------------
         /// <summary>
         // Start xulRunner process.
@@ -361,9 +374,7 @@ namespace SebWindowsClient
             try
             {
                 // Create JSON object with XULRunner parameters to pass to xulrunner.exe as base64 string
-                DictObj currentSettings = SEBSettings.settingsCurrent;
-                var xulRunnerSettings = currentSettings.ToDictionary(entry => entry.Key,
-                                               entry => entry.Value);
+                var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
                 string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
                 // Create the path to xulrunner.exe plus all arguments
                 StringBuilder xulRunnerPathBuilder = new StringBuilder(SEBClientInfo.XulRunnerExePath);

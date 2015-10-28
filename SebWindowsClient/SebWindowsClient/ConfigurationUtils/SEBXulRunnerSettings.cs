@@ -45,6 +45,8 @@ using System.Windows.Forms;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.XULRunnerCommunication;
+using ListObj = System.Collections.Generic.List<object>;
+using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
@@ -233,6 +235,9 @@ namespace SebWindowsClient.ConfigurationUtils
             // Set onscreen keyboard settings flag when touch optimized is enabled
             xulRunnerSettings[SEBSettings.KeyBrowserScreenKeyboard] = (bool)xulRunnerSettings[SEBSettings.KeyTouchOptimized];
 
+            //Remove all AdditionalResourceData from settings
+            RecursivelyRemoveAdditionalResourceData((ListObj)xulRunnerSettings[SEBSettings.KeyAdditionalResources]);
+
             // Serialise 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string jsonSettings = serializer.Serialize(xulRunnerSettings);
@@ -243,6 +248,19 @@ namespace SebWindowsClient.ConfigurationUtils
             //string base64Json = base64String.Substring(0, base64String.Length - 2);
 
             return base64Json;
+        }
+
+        private static void RecursivelyRemoveAdditionalResourceData(ListObj additionalResources)
+        {
+            foreach (DictObj additionalResource in additionalResources)
+            {
+                additionalResource.Remove(SEBSettings.KeyAdditionalResourcesResourceData);
+                additionalResource.Remove(SEBSettings.KeyAdditionalResourcesResourceIcons);
+                if (additionalResource[SEBSettings.KeyAdditionalResources] != null)
+                {
+                    RecursivelyRemoveAdditionalResourceData((ListObj)additionalResource[SEBSettings.KeyAdditionalResources]);
+                }
+            }
         }
 
     }

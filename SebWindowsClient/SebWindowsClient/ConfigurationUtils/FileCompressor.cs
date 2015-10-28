@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Ionic.Zip;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
     public class FileCompressor : IFileCompressor
     {
+        private static readonly string TempDirectory = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\";
+
+        public static void CleanupTempDirectory()
+        {
+            try
+            {
+                if (Directory.Exists(TempDirectory))
+                {
+                    Directory.Delete(TempDirectory, true);
+                }
+            }
+            catch (Exception)
+            {
+                SEBMessageBox.Show("Could not cleanup temp directory", "Could not cleanup temp directory",
+                    MessageBoxIcon.Error, MessageBoxButtons.OK);
+            }
+        }
         public string CompressAndEncodeFile(string filename)
         {
             var zip = new ZipFile();
@@ -36,10 +54,10 @@ namespace SebWindowsClient.ConfigurationUtils
         /// <returns></returns>
         public string DecompressDecodeAndSaveFile(string base64, string filename, string directoryName)
         {
-            string tempPath = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\" + directoryName + "\\";
+            string tempPath = TempDirectory + directoryName + "\\";
             if (Directory.Exists(tempPath))
             {
-                Directory.Delete(tempPath, true);
+                return tempPath;
             }
             Directory.CreateDirectory(tempPath);
 

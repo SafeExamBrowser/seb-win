@@ -26,10 +26,17 @@ namespace SebWindowsClient.UI
         {
             InitializeComponent();
 
+            FileCompressor.CleanupTempDirectory();
+
             _menu = new ContextMenuStrip();
             _fileCompressor = new FileCompressor();
 
             LoadItems();
+        }
+
+        ~SEBAdditionalResourcesToolStripButton()
+        {
+            FileCompressor.CleanupTempDirectory();
         }
 
         private void InitializeComponent()
@@ -139,7 +146,11 @@ namespace SebWindowsClient.UI
                 var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
                 try
                 {
-                    Process.Start(fullPath, "\"" + path + filename + "\"");
+                    var process = Process.Start(fullPath, "\"" + path + filename + "\"");
+                    if (SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] == null)
+                    {
+                        SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] = process;
+                    }
                 }
                 catch (Exception ex)
                 {

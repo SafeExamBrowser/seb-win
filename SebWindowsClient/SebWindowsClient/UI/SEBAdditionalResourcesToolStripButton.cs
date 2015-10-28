@@ -146,7 +146,7 @@ namespace SebWindowsClient.UI
                 var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
                 try
                 {
-                    var process = Process.Start(fullPath, "\"" + path + filename + "\"");
+                    Process process = SEBClientInfo.SebWindowsClientForm.CreateProcessWithExitHandler(string.Join(" ", fullPath, "\"" + path + filename + "\""));
                     if (SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] == null)
                     {
                         SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] = process;

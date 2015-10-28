@@ -1131,7 +1131,7 @@ namespace SebWindowsClient
         /// Create a new process and add an exited event handler.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        private Process CreateProcessWithExitHandler(string fullPathArgumentsCall)
+        public Process CreateProcessWithExitHandler(string fullPathArgumentsCall)
         {
             Process newProcess = SEBDesktopController.CreateProcess(fullPathArgumentsCall, SEBClientInfo.DesktopName);
             //newProcess.EnableRaisingEvents = true;

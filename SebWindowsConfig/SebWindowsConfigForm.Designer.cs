@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -707,8 +707,8 @@
             this.checkBoxEnableAltMouseWheel.TabIndex = 8;
             this.checkBoxEnableAltMouseWheel.Text = "Enable Alt-Mousewheel";
             this.toolTip1.SetToolTip(this.checkBoxEnableAltMouseWheel, "Corresponds to \'Allow browsing back/forward\' in Browser pane. Disabling browsing " +
-        "to previously visited pagesmay increase security, because browsing back might al" +
-        "low to leave an exam");
+        "to previously visited pages may increase security, because browsing back might a" +
+        "llow to leave an exam");
             this.checkBoxEnableAltMouseWheel.UseVisualStyleBackColor = true;
             this.checkBoxEnableAltMouseWheel.CheckedChanged += new System.EventHandler(this.checkBoxEnableAltMouseWheel_CheckedChanged);
             // 
@@ -1536,8 +1536,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle5;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2142,8 +2142,9 @@
             this.textBoxPermittedProcessIdentifier.Name = "textBoxPermittedProcessIdentifier";
             this.textBoxPermittedProcessIdentifier.Size = new System.Drawing.Size(317, 20);
             this.textBoxPermittedProcessIdentifier.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.textBoxPermittedProcessIdentifier, "Title of the main window of a Java third party application. Mac OS X: Bundle iden" +
-        "tifier of the process in reverse domain notation.");
+            this.toolTip1.SetToolTip(this.textBoxPermittedProcessIdentifier, "(Sub) string in the title of the main window of a tricky third party application " +
+        "(Java, Acrobat etc.). Mac OS X: Bundle identifier of the process in reverse doma" +
+        "in notation.");
             this.textBoxPermittedProcessIdentifier.TextChanged += new System.EventHandler(this.textBoxPermittedProcessIdentifier_TextChanged);
             // 
             // buttonPermittedProcessRemoveArgument

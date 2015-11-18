@@ -488,7 +488,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyOriginatorVersion, "SEB_Win_2.1");
 
             // Default settings for group "General"
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org/start");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebServerURL       , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedAdminPassword, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowQuit          , true);

@@ -33,46 +33,37 @@ namespace SebWindowsClient.UI
 
         protected override void OnClick(EventArgs e)
         {
-            if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamPasswordProtected)[SEBSettings.KeyRestartExamPasswordProtected])
+            string restartExamTitle = (String)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamText)[SEBSettings.KeyRestartExamText];
+            // If there was no individual restart exam text set, we use the default text (which is localized)
+            if (String.IsNullOrEmpty(restartExamTitle))
             {
-                var quitPassword = (String)SEBClientInfo.getSebSetting(SEBSettings.KeyHashedQuitPassword)[SEBSettings.KeyHashedQuitPassword];
-                // Get text (title/tool tip) for restarting exam
-                string restartExamTitle = (String)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamText)[SEBSettings.KeyRestartExamText];
-                // If there was no individual restart exam text set, we use the default text (which is localized)
-                if (String.IsNullOrEmpty(restartExamTitle)) {
-                    restartExamTitle = SEBUIStrings.restartExamDefaultTitle;
-                }
-                if (!String.IsNullOrWhiteSpace(quitPassword))
+                restartExamTitle = SEBUIStrings.restartExamDefaultTitle;
+            }
+
+            string quitPassword = (String)SEBClientInfo.getSebSetting(SEBSettings.KeyHashedQuitPassword)[SEBSettings.KeyHashedQuitPassword];
+
+            if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamPasswordProtected)[SEBSettings.KeyRestartExamPasswordProtected] && !String.IsNullOrWhiteSpace(quitPassword))
+            {
+                var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle, SEBUIStrings.restartExamEnterPassword);
+                var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
+                if (String.IsNullOrWhiteSpace(password) ||
+                    String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
                 {
-                    var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle,
-                        SEBUIStrings.restartExamMessage);
-                    var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
-                    if (String.IsNullOrWhiteSpace(password) ||
-                        String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
-                    {
-                        SEBMessageBox.Show(SEBUIStrings.WrongPasswordTitle, SEBUIStrings.WrongPasswordText,
-                            MessageBoxIcon.Error, MessageBoxButtons.OK);
-                        return;
-                    }
+                    SEBMessageBox.Show(restartExamTitle, SEBUIStrings.wrongQuitRestartPasswordText, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    return;
                 }
                 else
                 {
-                    if (SEBMessageBox.Show("Are you sure?", "Do you really want to restart the exam?",
-                        MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
-                    {
-                        return;
-                    }
+                    SEBXULRunnerWebSocketServer.SendRestartExam();
+                    return;
                 }
             }
-            else
+
+            if (SEBMessageBox.Show(restartExamTitle, SEBUIStrings.restartExamConfirm, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                if (SEBMessageBox.Show("Are you sure?", "Do you really want to restart the exam?",
-                        MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
-                {
-                    return;   
-                }
+                SEBXULRunnerWebSocketServer.SendRestartExam();
             }
-            SEBXULRunnerWebSocketServer.SendRestartExam();
         }
+
     }
 }

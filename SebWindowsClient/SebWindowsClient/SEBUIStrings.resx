@@ -264,8 +264,8 @@
   <data name="restartExamDefaultTitle" xml:space="preserve">
     <value>Restart Exam</value>
   </data>
-  <data name="restartExamMessage" xml:space="preserve">
-    <value>Enter password:</value>
+  <data name="restartExamEnterPassword" xml:space="preserve">
+    <value>Enter quit/restart password:</value>
   </data>
   <data name="savingSettingsFailed" xml:space="preserve">
     <value>Saving Settings Failed</value>
@@ -396,10 +396,10 @@
   <data name="WLANNotConnected" xml:space="preserve">
     <value>Not connected</value>
   </data>
-  <data name="WrongPasswordText" xml:space="preserve">
-    <value>Wrong Password</value>
+  <data name="wrongQuitRestartPasswordText" xml:space="preserve">
+    <value>Wrong quit/restart password</value>
   </data>
-  <data name="WrongPasswordTitle" xml:space="preserve">
-    <value>Wrong Password</value>
+  <data name="restartExamConfirm" xml:space="preserve">
+    <value>Are you sure?</value>
   </data>
 </root>

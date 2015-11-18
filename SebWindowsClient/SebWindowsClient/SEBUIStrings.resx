@@ -390,4 +390,16 @@
   <data name="savingSettingsSucceededStartExam" xml:space="preserve">
     <value>Settings have been saved, use this file to start an exam with SEB.</value>
   </data>
+  <data name="NoWLANInterface" xml:space="preserve">
+    <value>No WLAN Interface found</value>
+  </data>
+  <data name="WLANNotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="WrongPasswordText" xml:space="preserve">
+    <value>Wrong Password</value>
+  </data>
+  <data name="WrongPasswordTitle" xml:space="preserve">
+    <value>Wrong Password</value>
+  </data>
 </root>

@@ -50,7 +50,7 @@ namespace SebWindowsClient.UI
                     if (String.IsNullOrWhiteSpace(password) ||
                         String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
                     {
-                        SEBMessageBox.Show(Resources.WrongPasswordTitle, Resources.WrongPasswordText,
+                        SEBMessageBox.Show(SEBUIStrings.WrongPasswordTitle, SEBUIStrings.WrongPasswordText,
                             MessageBoxIcon.Error, MessageBoxButtons.OK);
                         return;
                     }

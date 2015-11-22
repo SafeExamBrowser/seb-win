@@ -12,12 +12,20 @@ namespace SebWindowsClient.UI
     {
         private Timer timer;
         private int currentIndex;
+        private IntPtr[] languages;
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool PostMessage(IntPtr hWnd, [MarshalAs(UnmanagedType.U4)] uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         static extern IntPtr LoadKeyboardLayout(string pwszKLID, uint Flags);
+
+        [DllImport("user32.dll")]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr id);
+
+
+        [DllImport("user32.dll")]
+        static extern uint GetKeyboardLayout(uint idThread);
 
         private const int WM_INPUTLANGCHANGEREQUEST = 0x0050;
 
@@ -39,6 +47,14 @@ namespace SebWindowsClient.UI
 
                 SEBWindowHandler.ForegroundWatchDog.OnForegroundWindowChanged += handle => SetKeyboardLayoutAccordingToIndex();
 
+                languages = new IntPtr[InputLanguage.InstalledInputLanguages.Count];
+                for (int i = 0; i < InputLanguage.InstalledInputLanguages.Count; i++)
+                {
+                    languages[i] =
+                        LoadKeyboardLayout(
+                            InputLanguage.InstalledInputLanguages[i].Culture.KeyboardLayoutId.ToString("X8"), 1);
+                }
+
                 //Start the update timer
                 timer = new Timer();
                 timer.Tick += (x, y) => UpdateDisplayText();
@@ -58,12 +74,18 @@ namespace SebWindowsClient.UI
             {
                 InputLanguage.CurrentInputLanguage = InputLanguage.InstalledInputLanguages[currentIndex];
 
+                var threadIdOfCurrentForegroundWindow = GetWindowThreadProcessId(SEBWindowHandler.GetForegroundWindow(), IntPtr.Zero);
+                var currentKeyboardLayout = GetKeyboardLayout(threadIdOfCurrentForegroundWindow);
+
                 //This is for Windows 7
-                PostMessage(SEBWindowHandler.GetForegroundWindow(), 
-                    WM_INPUTLANGCHANGEREQUEST, 
-                    IntPtr.Zero,
-                    LoadKeyboardLayout(InputLanguage.CurrentInputLanguage.Culture.KeyboardLayoutId.ToString("X8"), 1)
-                );
+                if (languages[currentIndex].ToInt32() != currentKeyboardLayout)
+                {
+                    PostMessage(SEBWindowHandler.GetForegroundWindow(),
+                        WM_INPUTLANGCHANGEREQUEST,
+                        IntPtr.Zero,
+                        languages[currentIndex]
+                    );
+                }
             }
             catch (Exception ex)
             {

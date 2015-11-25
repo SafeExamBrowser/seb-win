@@ -188,6 +188,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
             // Add websocket sever address to XULRunner seb settings
             xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocket] = SEBXULRunnerWebSocketServer.ServerAddress;
+            xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocketEnabled] = true;
             Logger.AddInformation("Socket: " + xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocket].ToString(), null, null);
 
             // Expand environment variables in paths which XULRunner seb is processing

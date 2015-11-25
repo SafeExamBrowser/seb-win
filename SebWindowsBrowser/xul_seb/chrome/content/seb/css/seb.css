@@ -1,12 +1,5 @@
-@import url(chrome://global/skin/)
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 #sebBackground {	
 	background-color : #3A6EA5;
-}
-
-#toolbar {
-	max-height: 38px;
-	min-height: 38px;
 }
 
 #sebWindow {
@@ -24,20 +17,64 @@
 	background-position: 50% 50%;
 }
 
-#imgLoader {
-	list-style-image: url("chrome://seb/content/images/loader.gif");
-	margin-top: 3px;
-	margin-bottom: 3px;
-	margin-right: 10px;
-	max-width: 32px;
-	max-height: 32px;
+#loadingBox {
+	width: 20px;
+	height: 20px;
+	position: fixed;
+	top: 2px;
+	right: 10px;
 }
 
-#imgLoaderStop {
-	list-style-image: url("chrome://seb/content/images/loader_stop.gif");
-	margin-top: 3px;
-	margin-bottom: 3px;
-	margin-right: 10px;
-	max-width: 32px;
-	max-height: 32px;
+#loadingImage {
+	width: 18px;
+	height: 18px;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+#toolBar {
+	background-color : #eee;
+	max-height: 24px;
+	min-height: 24px;
+	white-space: nowrap;
+}
+
+.tbBtn {
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+	border: none;
+	background-color: #eee;
+	margin-top: 2px;
+	margin-left: 10px;
+	
+}
+
+#locationBar {
+	border: none;
+	font-size: 0.8em;
+	vertical-align: top;
+	margin-left: 10px;
+	margin-right: 20px;
+	width: 400px;
+}
+
+.winHiddenChromeMargin {
+	margin-top: 6px;
+}
+
+.disabled  {
+	opacity : 0.3;
+	cursor : default;
+}
+
+.enabled {
+	opacity : 1;
+	cursor : pointer;
 }

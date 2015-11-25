@@ -1,9 +1,8 @@
-const Cc = Components.classes;
-const Ci = Components.interfaces;
+const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components;
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://modules/seb.jsm");
 
-Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("resource://modules/xullib.jsm");
 var xulApplication = function () {};
 
 xulApplication.prototype = {
@@ -15,34 +14,14 @@ xulApplication.prototype = {
 		entry: "m-xul-application"
 	}],	
 	QueryInterface: XPCOMUtils.generateQI([Ci.nsICommandLineHandler]),
-	handle : function clh_handle(cmdLine) {				
-		try {
-			// dump(xullib.XULLIB_WIN+"\n\r");
-			// var w = Services.ww.openWindow(null,xullib.XULLIB_WIN,"xullibwin","chrome,extrachrome,menubar,toolbar,status,resizable,dialog=no",null);
-			// dump(w+"\n\r");
-			xullib.init(cmdLine);	
+	handle : function clh_handle(cmdLine) {		
+		try {	
+			seb.initCmdLine(cmdLine);	
 			cmdLine.preventDefault = false;	 // what about p2pdf or apps without a main window event loop? 
-			/*	
-			if (Services.appinfo.name === "Firefox") { // don't hook into default BrowserHandler!
-				cmdLine.preventDefault = false;
-			}
-			else { // custom app
-				cmdLine.preventDefault = true;
-			}
-			*/
 		}
-		catch (e) {
-			dump(e+"\n");
-			//this.err(e);
-		}			
+		catch (e) { dump(e+"\n"); }			
 	},
-	// CHANGEME: change the help info as appropriate, but
-	// follow the guidelines in nsICommandLineHandler.idl
-	// specifically, flag descriptions should start at
-	// character 24, and lines should be wrapped at
-	// 72 characters with embedded newlines,
-	// and finally, the string should end with a newline
-	helpInfo : "	-debug              set debug true|false\n" +
+	helpInfo : "	-debug              set debug 1|0\n" +
              "		-config	<uri>       additional json object url,\n" +
              "		wrapping this description\n"
 };

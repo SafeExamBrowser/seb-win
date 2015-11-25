@@ -9,7 +9,7 @@ namespace SebWindowsClient.ConfigurationUtils
 {
     public class FileCompressor : IFileCompressor
     {
-        private static readonly string TempDirectory = SEBClientInfo.SebClientSettingsAppDataDirectory + "\\temp\\";
+        private static readonly string TempDirectory = SEBClientInfo.SebClientSettingsAppDataDirectory + "temp\\";
 
         public static void CleanupTempDirectory()
         {

@@ -92,6 +92,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeySebMode              = "sebMode";
         public const String KeyBrowserMessagingSocket = "browserMessagingSocket";
         public const String KeyBrowserMessagingPingTime = "browserMessagingPingTime";
+        public const String KeyBrowserMessagingSocketEnabled = "browserMessagingSocketEnabled";
 
         // Group "Config File"
         public const String KeySebConfigPurpose        = "sebConfigPurpose";

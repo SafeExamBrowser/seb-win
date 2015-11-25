@@ -5,3 +5,6 @@ sys.path[0:0] = [os.path.join('c:/builds/moz2_slave/rel-m-rel-xr_w32_bld-0000000
 
 import mozilla.autoload
 mozilla.autoload.register(gdb.current_objfile())
+
+import mozilla.asmjs
+mozilla.asmjs.install()

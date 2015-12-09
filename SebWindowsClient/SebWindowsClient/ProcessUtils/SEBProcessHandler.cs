@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -174,15 +175,12 @@ namespace SebWindowsClient.ProcessUtils
         {
             try
             {
-                //This only works with 32bit processes
-                //return process.MainModule.ModuleName;
-                Console.WriteLine(process.ProcessName);
                 //This makes the method kind of obsolete but maybe in the future another method is appropriate to get the exact executable name instead of the process name
                 return process.ProcessName;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.AddError("Unable to GetExecutableName",null,ex);
+                Logger.AddWarning("Unable to GetExecutableName of process", null);
                 return "";
             }
         }

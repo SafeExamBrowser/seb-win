@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections;
 using System.Windows.Forms;
+using System.Reflection;
 using Microsoft.VisualBasic.Devices;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
@@ -535,35 +536,50 @@ namespace SebWindowsClient.CryptographyUtils
             string sebXML = Plist.writeXml(SEBSettings.settingsCurrent);
 
             //Add the Hash of the Executable and of the XulRunnerFiles to the message
-            sebXML = String.Format("{0}{1}{2}", sebXML, ComputeExecutableHash(), ComputeXulRunnerHash());
+
+            sebXML = String.Format("{0}{1}", sebXML, ComputeSEBComponentsHash());
 
             byte[] message = Encoding.UTF8.GetBytes(sebXML);
             byte[] salt = (byte[])SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyExamKeySalt);
             var hash = new HMACSHA256(salt);
             byte[] browserExamKey = hash.ComputeHash(message);
             string browserExamKeyString = BitConverter.ToString(browserExamKey);
-            //browserExamKeyString.Replace("-", "");
             return browserExamKeyString.Replace("-", "").ToLower();
         }
 
-        public static string ComputeExecutableHash()
+        private static string ComputeSEBComponentsHash()
         {
-            //Find installed exe of SafeExamBrowser
-            return ComputeFileHash("SafeExamBrowser.exe");
+            string SEBDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+			var fileNames = new List<string>
+			{
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_SEB),
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_SEBCONFIGTOOL),
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_FLECK),
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_ICONLIB),
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_METRO),
+				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
+				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_SEBSERVICE),
+				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
+				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_INTEROP),
+			};
+
+            var SEBBrowserDirectory = Path.Combine(SEBDirectory, SEBClientInfo.SEB_BROWSER_DIRECTORY);
+            if (Directory.Exists(SEBBrowserDirectory))
+			{
+                fileNames.AddRange(Directory.GetFiles(SEBBrowserDirectory, "*.*", SearchOption.AllDirectories));
+			}
+            return ComputeHashForFiles(fileNames);
         }
 
-        public static string ComputeXulRunnerHash()
+        public static string ComputeHashForFiles(IEnumerable<string> fileNames)
         {
-            var bigHash = "";
-            if (Directory.Exists("SafeExamBrowser"))
+            var bigHash = new StringBuilder();
+            foreach (string fileName in fileNames)
             {
-                foreach (var file in Directory.GetFiles("SafeExamBrowser", "*.*", SearchOption.AllDirectories))
-                {
-                    bigHash += ComputeFileHash(file);
-                }
+                bigHash.Append(ComputeFileHash(fileName));
             }
             var sha = new SHA256Managed();
-            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(bigHash));
+            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(bigHash.ToString()));
             return BitConverter.ToString(hash).Replace("-", String.Empty);
         }
 

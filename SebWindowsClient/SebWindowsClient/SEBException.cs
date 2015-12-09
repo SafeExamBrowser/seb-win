@@ -39,4 +39,11 @@ namespace SebWindowsClient
             set { base.Source = value; }
         }
     }
+
+    public class SEBNotAllowedToRunEception : Exception
+    {
+        public SEBNotAllowedToRunEception(string message) : base(message)
+        {
+        }
+    }
 }

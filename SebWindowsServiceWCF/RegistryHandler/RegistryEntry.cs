@@ -199,4 +199,15 @@ namespace SebWindowsServiceWCF.RegistryHandler
             this.DataType = typeof(String);
         }
     }
+    public class RegDontDisplayNetworkSelectionUI : RegistryEntry
+    {
+        public RegDontDisplayNetworkSelectionUI(string SID)
+            : base(SID)
+        {
+            this.RegistryPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System";
+            this.DataItemName = "DontDisplayNetworkSelectionUI";
+            //DWORD
+            this.DataType = typeof(Int32);
+        }
+    }
 }

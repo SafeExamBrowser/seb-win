@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -62,6 +62,7 @@
             this.tabPageRegistry = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxInsideSeb = new System.Windows.Forms.GroupBox();
+            this.checkBoxInsideSebEnableNetworkConnectionSelector = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableSwitchUser = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableLockThisComputer = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableChangeAPassword = new System.Windows.Forms.CheckBox();
@@ -226,6 +227,7 @@
             this.labelBrowserExamKey = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPageDownUploads = new System.Windows.Forms.TabPage();
+            this.checkBoxAllowPDFPlugIn = new System.Windows.Forms.CheckBox();
             this.textBoxDownloadDirectoryWin = new System.Windows.Forms.TextBox();
             this.checkBoxDownloadOpenSEBFiles = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -279,6 +281,10 @@
             this.labelNewWindowPosition = new System.Windows.Forms.Label();
             this.listBoxNewBrowserWindowPositioning = new System.Windows.Forms.ListBox();
             this.tabPageAppearance = new System.Windows.Forms.TabPage();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.radioButtonOskAutoDetect = new System.Windows.Forms.RadioButton();
+            this.radioButtonOskNeverShow = new System.Windows.Forms.RadioButton();
+            this.radioButtonOskAlwaysShow = new System.Windows.Forms.RadioButton();
             this.checkBoxAllowDictionaryLookup = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.checkBoxEnableBrowserWindowToolbar = new System.Windows.Forms.CheckBox();
@@ -377,7 +383,7 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabAdditionalResources = new System.Windows.Forms.TabPage();
+            this.tabPageAdditionalResources = new System.Windows.Forms.TabPage();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -418,6 +424,7 @@
             this.groupBox11.SuspendLayout();
             this.groupBoxNewBrowserWindow.SuspendLayout();
             this.tabPageAppearance.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBoxEnableZoom.SuspendLayout();
@@ -701,8 +708,8 @@
             this.checkBoxEnableAltMouseWheel.TabIndex = 8;
             this.checkBoxEnableAltMouseWheel.Text = "Enable Alt-Mousewheel";
             this.toolTip1.SetToolTip(this.checkBoxEnableAltMouseWheel, "Corresponds to \'Allow browsing back/forward\' in Browser pane. Disabling browsing " +
-        "to previously visited pagesmay increase security, because browsing back might al" +
-        "low to leave an exam");
+        "to previously visited pages may increase security, because browsing back might a" +
+        "llow to leave an exam");
             this.checkBoxEnableAltMouseWheel.UseVisualStyleBackColor = true;
             this.checkBoxEnableAltMouseWheel.CheckedChanged += new System.EventHandler(this.checkBoxEnableAltMouseWheel_CheckedChanged);
             // 
@@ -825,6 +832,7 @@
             // 
             // groupBoxInsideSeb
             // 
+            this.groupBoxInsideSeb.Controls.Add(this.checkBoxInsideSebEnableNetworkConnectionSelector);
             this.groupBoxInsideSeb.Controls.Add(this.checkBoxInsideSebEnableSwitchUser);
             this.groupBoxInsideSeb.Controls.Add(this.checkBoxInsideSebEnableLockThisComputer);
             this.groupBoxInsideSeb.Controls.Add(this.checkBoxInsideSebEnableChangeAPassword);
@@ -837,11 +845,26 @@
             this.groupBoxInsideSeb.Location = new System.Drawing.Point(27, 66);
             this.groupBoxInsideSeb.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxInsideSeb.Name = "groupBoxInsideSeb";
-            this.groupBoxInsideSeb.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxInsideSeb.Size = new System.Drawing.Size(251, 263);
+            this.groupBoxInsideSeb.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBoxInsideSeb.Size = new System.Drawing.Size(315, 311);
             this.groupBoxInsideSeb.TabIndex = 25;
             this.groupBoxInsideSeb.TabStop = false;
             this.groupBoxInsideSeb.Text = "While running SEB";
+            // 
+            // checkBoxInsideSebEnableNetworkConnectionSelector
+            // 
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.AutoSize = true;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Location = new System.Drawing.Point(7, 252);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Name = "checkBoxInsideSebEnableNetworkConnectionSelector";
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Size = new System.Drawing.Size(260, 21);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.TabIndex = 8;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Text = "Enable Network Connection Selector";
+            this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableNetworkConnectionSelector, "Activates the button which allows to connect to WiFi networks, introduced in Wind" +
+        "ows 10.");
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.UseVisualStyleBackColor = true;
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.CheckedChanged += new System.EventHandler(this.checkBoxInsideSebEnableNetworkConnectionSelector_CheckedChanged);
             // 
             // checkBoxInsideSebEnableSwitchUser
             // 
@@ -931,7 +954,7 @@
             // 
             this.checkBoxInsideSebEnableEaseOfAccess.AutoSize = true;
             this.checkBoxInsideSebEnableEaseOfAccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxInsideSebEnableEaseOfAccess.Location = new System.Drawing.Point(9, 194);
+            this.checkBoxInsideSebEnableEaseOfAccess.Location = new System.Drawing.Point(7, 227);
             this.checkBoxInsideSebEnableEaseOfAccess.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxInsideSebEnableEaseOfAccess.Name = "checkBoxInsideSebEnableEaseOfAccess";
             this.checkBoxInsideSebEnableEaseOfAccess.Size = new System.Drawing.Size(175, 21);
@@ -947,8 +970,8 @@
             // 
             this.checkBoxInsideSebEnableVmWareClientShade.AutoSize = true;
             this.checkBoxInsideSebEnableVmWareClientShade.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxInsideSebEnableVmWareClientShade.Location = new System.Drawing.Point(9, 222);
-            this.checkBoxInsideSebEnableVmWareClientShade.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxInsideSebEnableVmWareClientShade.Location = new System.Drawing.Point(7, 202);
+            this.checkBoxInsideSebEnableVmWareClientShade.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxInsideSebEnableVmWareClientShade.Name = "checkBoxInsideSebEnableVmWareClientShade";
             this.checkBoxInsideSebEnableVmWareClientShade.Size = new System.Drawing.Size(212, 21);
             this.checkBoxInsideSebEnableVmWareClientShade.TabIndex = 7;
@@ -988,9 +1011,9 @@
             this.groupBox10.Controls.Add(this.label4);
             this.groupBox10.Controls.Add(this.checkBoxUseStandardDirectory);
             this.groupBox10.Location = new System.Drawing.Point(31, 244);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox10.Size = new System.Drawing.Size(740, 175);
             this.groupBox10.TabIndex = 95;
             this.groupBox10.TabStop = false;
@@ -1026,7 +1049,7 @@
             // textBoxLogDirectoryOSX
             // 
             this.textBoxLogDirectoryOSX.Location = new System.Drawing.Point(224, 128);
-            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryOSX.Name = "textBoxLogDirectoryOSX";
             this.textBoxLogDirectoryOSX.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryOSX.TabIndex = 82;
@@ -1035,7 +1058,7 @@
             // textBoxLogDirectoryWin
             // 
             this.textBoxLogDirectoryWin.Location = new System.Drawing.Point(224, 63);
-            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryWin.Name = "textBoxLogDirectoryWin";
             this.textBoxLogDirectoryWin.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryWin.TabIndex = 92;
@@ -1254,9 +1277,9 @@
             this.tabPageUrlFilter.Controls.Add(this.groupBox1);
             this.tabPageUrlFilter.Controls.Add(this.checkBoxEnableURLContentFilter);
             this.tabPageUrlFilter.Location = new System.Drawing.Point(4, 25);
-            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Name = "tabPageUrlFilter";
-            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Size = new System.Drawing.Size(933, 572);
             this.tabPageUrlFilter.TabIndex = 3;
             this.tabPageUrlFilter.Text = "Filter";
@@ -1294,13 +1317,13 @@
             this.groupBox2.Controls.Add(this.btnRemoveBlackListFilter);
             this.groupBox2.Controls.Add(this.btnAddBlackListFilter);
             this.groupBox2.Location = new System.Drawing.Point(19, 263);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(888, 201);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Blacklist";
+            this.groupBox2.Text = "Block";
             // 
             // datagridBlackListFilter
             // 
@@ -1357,13 +1380,13 @@
             this.groupBox1.Controls.Add(this.btnRemoveWhitelistFilter);
             this.groupBox1.Controls.Add(this.btnAddWhitelistFilter);
             this.groupBox1.Location = new System.Drawing.Point(20, 44);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(888, 201);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Whitelist";
+            this.groupBox1.Text = "Allow";
             // 
             // datagridWhitelist
             // 
@@ -1460,9 +1483,9 @@
             this.labelChooseSSLClientCertificate.AutoSize = true;
             this.labelChooseSSLClientCertificate.Location = new System.Drawing.Point(21, 30);
             this.labelChooseSSLClientCertificate.Name = "labelChooseSSLClientCertificate";
-            this.labelChooseSSLClientCertificate.Size = new System.Drawing.Size(406, 17);
+            this.labelChooseSSLClientCertificate.Size = new System.Drawing.Size(369, 17);
             this.labelChooseSSLClientCertificate.TabIndex = 96;
-            this.labelChooseSSLClientCertificate.Text = "Choose TLS/SSL client certificate to embed into configuration...";
+            this.labelChooseSSLClientCertificate.Text = "Choose TLS/SSL certificate to embed into configuration...";
             // 
             // comboBoxChooseIdentityToEmbed
             // 
@@ -1519,8 +1542,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -1567,7 +1590,7 @@
             // textBoxBypassedProxyHostList
             // 
             this.textBoxBypassedProxyHostList.Location = new System.Drawing.Point(25, 391);
-            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxBypassedProxyHostList.Multiline = true;
             this.textBoxBypassedProxyHostList.Name = "textBoxBypassedProxyHostList";
             this.textBoxBypassedProxyHostList.Size = new System.Drawing.Size(873, 121);
@@ -2016,7 +2039,7 @@
             // ButtonChooseExecutable
             // 
             this.ButtonChooseExecutable.Location = new System.Drawing.Point(648, 98);
-            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonChooseExecutable.Name = "ButtonChooseExecutable";
             this.ButtonChooseExecutable.Size = new System.Drawing.Size(40, 27);
             this.ButtonChooseExecutable.TabIndex = 92;
@@ -2117,8 +2140,9 @@
             this.textBoxPermittedProcessIdentifier.Name = "textBoxPermittedProcessIdentifier";
             this.textBoxPermittedProcessIdentifier.Size = new System.Drawing.Size(421, 22);
             this.textBoxPermittedProcessIdentifier.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.textBoxPermittedProcessIdentifier, "Title of the main window of a Java third party application. Mac OS X: Bundle iden" +
-        "tifier of the process in reverse domain notation.");
+            this.toolTip1.SetToolTip(this.textBoxPermittedProcessIdentifier, "(Sub) string in the title of the main window of a tricky third party application " +
+        "(Java, Acrobat etc.). Mac OS X: Bundle identifier of the process in reverse doma" +
+        "in notation.");
             this.textBoxPermittedProcessIdentifier.TextChanged += new System.EventHandler(this.textBoxPermittedProcessIdentifier_TextChanged);
             // 
             // buttonPermittedProcessRemoveArgument
@@ -2669,13 +2693,13 @@
             this.groupBox9.Controls.Add(this.textBox4);
             this.groupBox9.Controls.Add(this.textBox3);
             this.groupBox9.Location = new System.Drawing.Point(32, 308);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox9.Size = new System.Drawing.Size(740, 223);
             this.groupBox9.TabIndex = 121;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Restart exam button";
+            this.groupBox9.Text = "Restart Exam Button";
             // 
             // checkBoxUseStartURL
             // 
@@ -2687,7 +2711,7 @@
             this.checkBoxUseStartURL.Size = new System.Drawing.Size(237, 21);
             this.checkBoxUseStartURL.TabIndex = 119;
             this.checkBoxUseStartURL.Text = "Use Start URL (see General tab)";
-            this.toolTip1.SetToolTip(this.checkBoxUseStartURL, "The restart exam button reloads the exam starting URL");
+            this.toolTip1.SetToolTip(this.checkBoxUseStartURL, "The restart exam button reloads the exam\'s Start URL");
             this.checkBoxUseStartURL.UseVisualStyleBackColor = true;
             this.checkBoxUseStartURL.CheckedChanged += new System.EventHandler(this.checkBoxUseStartURL_CheckedChanged);
             // 
@@ -2741,8 +2765,8 @@
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(608, 27);
             this.textBox4.TabIndex = 118;
-            this.textBox4.Text = "Title/tool tip text of the restart button (leave empty for localized standard tex" +
-    "t)\r\n";
+            this.textBox4.Text = "Title/tool tip text for the restart button (leave empty for localized standard te" +
+    "xt)\r\n";
             // 
             // textBox3
             // 
@@ -2754,18 +2778,19 @@
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(608, 28);
+            this.textBox3.Size = new System.Drawing.Size(525, 23);
             this.textBox3.TabIndex = 118;
-            this.textBox3.Text = "Link to redirect the exam to when the restart exam button is pressed. ";
+            this.textBox3.Text = "Enter restart link or select \"Use Start URL\" to display the restart exam button i" +
+    "n the SEB task bar.";
             // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.textBoxQuitURL);
             this.groupBox8.Controls.Add(this.textBox1);
             this.groupBox8.Location = new System.Drawing.Point(32, 181);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(740, 111);
             this.groupBox8.TabIndex = 120;
             this.groupBox8.TabStop = false;
@@ -2805,9 +2830,9 @@
             this.groupBox7.Controls.Add(this.checkBoxSendBrowserExamKey);
             this.groupBox7.Controls.Add(this.textBoxBrowserExamKey);
             this.groupBox7.Location = new System.Drawing.Point(32, 20);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox7.Size = new System.Drawing.Size(740, 144);
             this.groupBox7.TabIndex = 119;
             this.groupBox7.TabStop = false;
@@ -2873,6 +2898,7 @@
             // 
             // tabPageDownUploads
             // 
+            this.tabPageDownUploads.Controls.Add(this.checkBoxAllowPDFPlugIn);
             this.tabPageDownUploads.Controls.Add(this.textBoxDownloadDirectoryWin);
             this.tabPageDownUploads.Controls.Add(this.checkBoxDownloadOpenSEBFiles);
             this.tabPageDownUploads.Controls.Add(this.label5);
@@ -2893,10 +2919,26 @@
             this.tabPageDownUploads.Text = "Down/Uploads";
             this.tabPageDownUploads.UseVisualStyleBackColor = true;
             // 
+            // checkBoxAllowPDFPlugIn
+            // 
+            this.checkBoxAllowPDFPlugIn.AutoSize = true;
+            this.checkBoxAllowPDFPlugIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxAllowPDFPlugIn.Location = new System.Drawing.Point(33, 322);
+            this.checkBoxAllowPDFPlugIn.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAllowPDFPlugIn.Name = "checkBoxAllowPDFPlugIn";
+            this.checkBoxAllowPDFPlugIn.Size = new System.Drawing.Size(408, 21);
+            this.checkBoxAllowPDFPlugIn.TabIndex = 88;
+            this.checkBoxAllowPDFPlugIn.Text = "Allow using Acrobat Reader PDF plugin (insecure! Mac only)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPDFPlugIn, "The Adobe Acrobat Reader browser plugin should only be used on secured managed Ma" +
+        "c computers, at it allows limited access the file system and unlimited to cloud " +
+        "services");
+            this.checkBoxAllowPDFPlugIn.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPDFPlugIn.CheckedChanged += new System.EventHandler(this.checkBoxAllowPDFPlugIn_CheckedChanged);
+            // 
             // textBoxDownloadDirectoryWin
             // 
             this.textBoxDownloadDirectoryWin.Location = new System.Drawing.Point(359, 68);
-            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryWin.Name = "textBoxDownloadDirectoryWin";
             this.textBoxDownloadDirectoryWin.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryWin.TabIndex = 87;
@@ -2930,7 +2972,7 @@
             // textBoxDownloadDirectoryOSX
             // 
             this.textBoxDownloadDirectoryOSX.Location = new System.Drawing.Point(359, 105);
-            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryOSX.Name = "textBoxDownloadDirectoryOSX";
             this.textBoxDownloadDirectoryOSX.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryOSX.TabIndex = 84;
@@ -2975,8 +3017,8 @@
             // 
             this.checkBoxDownloadPDFFiles.AutoSize = true;
             this.checkBoxDownloadPDFFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(59, 297);
-            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxDownloadPDFFiles.Location = new System.Drawing.Point(33, 303);
+            this.checkBoxDownloadPDFFiles.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxDownloadPDFFiles.Name = "checkBoxDownloadPDFFiles";
             this.checkBoxDownloadPDFFiles.Size = new System.Drawing.Size(461, 21);
             this.checkBoxDownloadPDFFiles.TabIndex = 3;
@@ -3048,9 +3090,9 @@
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacDefault);
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacCustom);
             this.groupBox14.Location = new System.Drawing.Point(723, 380);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox14.Size = new System.Drawing.Size(667, 126);
             this.groupBox14.TabIndex = 74;
             this.groupBox14.TabStop = false;
@@ -3107,9 +3149,9 @@
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchDefault);
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchCustom);
             this.groupBox13.Location = new System.Drawing.Point(723, 521);
-            this.groupBox13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox13.Size = new System.Drawing.Size(667, 151);
             this.groupBox13.TabIndex = 73;
             this.groupBox13.TabStop = false;
@@ -3199,9 +3241,9 @@
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopDefault);
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopCustom);
             this.groupBox12.Location = new System.Drawing.Point(31, 521);
-            this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox12.Size = new System.Drawing.Size(667, 151);
             this.groupBox12.TabIndex = 72;
             this.groupBox12.TabStop = false;
@@ -3284,9 +3326,9 @@
             this.groupBox11.Controls.Add(this.checkBoxAllowBrowsingBackForward);
             this.groupBox11.Controls.Add(this.checkBoxBlockPopUpWindows);
             this.groupBox11.Location = new System.Drawing.Point(31, 346);
-            this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox11.Size = new System.Drawing.Size(667, 160);
             this.groupBox11.TabIndex = 71;
             this.groupBox11.TabStop = false;
@@ -3369,7 +3411,7 @@
             // 
             this.checkBoxRemoveProfile.AutoSize = true;
             this.checkBoxRemoveProfile.Location = new System.Drawing.Point(19, 124);
-            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxRemoveProfile.Name = "checkBoxRemoveProfile";
             this.checkBoxRemoveProfile.Size = new System.Drawing.Size(163, 21);
             this.checkBoxRemoveProfile.TabIndex = 6;
@@ -3588,6 +3630,7 @@
             // 
             // tabPageAppearance
             // 
+            this.tabPageAppearance.Controls.Add(this.groupBox15);
             this.tabPageAppearance.Controls.Add(this.checkBoxAllowDictionaryLookup);
             this.tabPageAppearance.Controls.Add(this.groupBox6);
             this.tabPageAppearance.Controls.Add(this.groupBox5);
@@ -3605,6 +3648,59 @@
             this.tabPageAppearance.TabIndex = 8;
             this.tabPageAppearance.Text = "User Interface";
             this.tabPageAppearance.UseVisualStyleBackColor = true;
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.radioButtonOskAutoDetect);
+            this.groupBox15.Controls.Add(this.radioButtonOskNeverShow);
+            this.groupBox15.Controls.Add(this.radioButtonOskAlwaysShow);
+            this.groupBox15.Location = new System.Drawing.Point(704, 20);
+            this.groupBox15.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox15.Size = new System.Drawing.Size(294, 113);
+            this.groupBox15.TabIndex = 85;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Automatic on-screen keyboard behavior";
+            // 
+            // radioButtonOskAutoDetect
+            // 
+            this.radioButtonOskAutoDetect.AutoSize = true;
+            this.radioButtonOskAutoDetect.Location = new System.Drawing.Point(5, 62);
+            this.radioButtonOskAutoDetect.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButtonOskAutoDetect.Name = "radioButtonOskAutoDetect";
+            this.radioButtonOskAutoDetect.Size = new System.Drawing.Size(188, 21);
+            this.radioButtonOskAutoDetect.TabIndex = 2;
+            this.radioButtonOskAutoDetect.TabStop = true;
+            this.radioButtonOskAutoDetect.Text = "Detect physical keyboard";
+            this.radioButtonOskAutoDetect.UseVisualStyleBackColor = true;
+            this.radioButtonOskAutoDetect.CheckedChanged += new System.EventHandler(this.radioButtonOskAutoDetect_CheckedChanged);
+            // 
+            // radioButtonOskNeverShow
+            // 
+            this.radioButtonOskNeverShow.AutoSize = true;
+            this.radioButtonOskNeverShow.Location = new System.Drawing.Point(5, 40);
+            this.radioButtonOskNeverShow.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButtonOskNeverShow.Name = "radioButtonOskNeverShow";
+            this.radioButtonOskNeverShow.Size = new System.Drawing.Size(103, 21);
+            this.radioButtonOskNeverShow.TabIndex = 1;
+            this.radioButtonOskNeverShow.TabStop = true;
+            this.radioButtonOskNeverShow.Text = "Never show";
+            this.radioButtonOskNeverShow.UseVisualStyleBackColor = true;
+            this.radioButtonOskNeverShow.CheckedChanged += new System.EventHandler(this.radioButtonOskNeverShow_CheckedChanged);
+            // 
+            // radioButtonOskAlwaysShow
+            // 
+            this.radioButtonOskAlwaysShow.AutoSize = true;
+            this.radioButtonOskAlwaysShow.Location = new System.Drawing.Point(5, 18);
+            this.radioButtonOskAlwaysShow.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButtonOskAlwaysShow.Name = "radioButtonOskAlwaysShow";
+            this.radioButtonOskAlwaysShow.Size = new System.Drawing.Size(108, 21);
+            this.radioButtonOskAlwaysShow.TabIndex = 0;
+            this.radioButtonOskAlwaysShow.TabStop = true;
+            this.radioButtonOskAlwaysShow.Text = "Always show";
+            this.radioButtonOskAlwaysShow.UseVisualStyleBackColor = true;
+            this.radioButtonOskAlwaysShow.CheckedChanged += new System.EventHandler(this.radioButtonOskAlwaysShow_CheckedChanged);
             // 
             // checkBoxAllowDictionaryLookup
             // 
@@ -3625,9 +3721,9 @@
             this.groupBox6.Controls.Add(this.checkBoxHideBrowserWindowToolbar);
             this.groupBox6.Controls.Add(this.checkBoxShowMenuBar);
             this.groupBox6.Location = new System.Drawing.Point(31, 268);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox6.Size = new System.Drawing.Size(667, 85);
             this.groupBox6.TabIndex = 83;
             this.groupBox6.TabStop = false;
@@ -3685,9 +3781,9 @@
             this.groupBox5.Controls.Add(this.checkBoxShowTime);
             this.groupBox5.Controls.Add(this.checkBoxShowReloadButton);
             this.groupBox5.Location = new System.Drawing.Point(31, 366);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox5.Size = new System.Drawing.Size(667, 162);
             this.groupBox5.TabIndex = 82;
             this.groupBox5.TabStop = false;
@@ -3742,7 +3838,8 @@
             this.checkBoxShowKeyboardLayout.Size = new System.Drawing.Size(169, 21);
             this.checkBoxShowKeyboardLayout.TabIndex = 78;
             this.checkBoxShowKeyboardLayout.Text = "Show keyboard layout";
-            this.toolTip1.SetToolTip(this.checkBoxShowKeyboardLayout, "Shows current keyboard layout and allows to change it");
+            this.toolTip1.SetToolTip(this.checkBoxShowKeyboardLayout, "Shows current keyboard layout and allows to switch between other active keyboard " +
+        "layouts");
             this.checkBoxShowKeyboardLayout.UseVisualStyleBackColor = true;
             this.checkBoxShowKeyboardLayout.CheckedChanged += new System.EventHandler(this.checkBoxShowKeyboardLayout_CheckedChanged);
             // 
@@ -3788,9 +3885,9 @@
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomPage);
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomText);
             this.groupBoxEnableZoom.Location = new System.Drawing.Point(31, 540);
-            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Name = "groupBoxEnableZoom";
-            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Size = new System.Drawing.Size(321, 85);
             this.groupBoxEnableZoom.TabIndex = 76;
             this.groupBoxEnableZoom.TabStop = false;
@@ -3829,9 +3926,9 @@
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomPage);
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomText);
             this.groupBoxZoomMode.Location = new System.Drawing.Point(376, 540);
-            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Name = "groupBoxZoomMode";
-            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Size = new System.Drawing.Size(321, 85);
             this.groupBoxZoomMode.TabIndex = 75;
             this.groupBoxZoomMode.TabStop = false;
@@ -3872,9 +3969,9 @@
             this.groupBox4.Controls.Add(this.radioButtonUseFullScreenMode);
             this.groupBox4.Controls.Add(this.radioButtonTouchOptimized);
             this.groupBox4.Location = new System.Drawing.Point(31, 20);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(667, 113);
             this.groupBox4.TabIndex = 74;
             this.groupBox4.TabStop = false;
@@ -4673,14 +4770,14 @@
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageBrowser);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageDownUploads);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageExam);
-            this.tabControlSebWindowsConfig.Controls.Add(this.tabAdditionalResources);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageApplications);
+            this.tabControlSebWindowsConfig.Controls.Add(this.tabPageAdditionalResources);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageNetwork);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageSecurity);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageRegistry);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageHookedKeys);
             this.tabControlSebWindowsConfig.ImageList = this.imageListTabIcons;
-            this.tabControlSebWindowsConfig.Location = new System.Drawing.Point(45, 31);
+            this.tabControlSebWindowsConfig.Location = new System.Drawing.Point(45, 30);
             this.tabControlSebWindowsConfig.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControlSebWindowsConfig.Name = "tabControlSebWindowsConfig";
             this.tabControlSebWindowsConfig.SelectedIndex = 0;
@@ -4724,7 +4821,7 @@
             this.openSettingsToolStripMenuItem.Name = "openSettingsToolStripMenuItem";
             this.openSettingsToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+O";
             this.openSettingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openSettingsToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.openSettingsToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
             this.openSettingsToolStripMenuItem.Text = "Open Settings...";
             this.openSettingsToolStripMenuItem.Click += new System.EventHandler(this.openSettingsToolStripMenuItem_Click);
             // 
@@ -4733,14 +4830,14 @@
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
             this.saveSettingsToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+S";
             this.saveSettingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
             this.saveSettingsToolStripMenuItem.Text = "Save Settings";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // saveSettingsAsToolStripMenuItem
             // 
             this.saveSettingsAsToolStripMenuItem.Name = "saveSettingsAsToolStripMenuItem";
-            this.saveSettingsAsToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.saveSettingsAsToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
             this.saveSettingsAsToolStripMenuItem.Text = "Save Settings As...";
             this.saveSettingsAsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsAsToolStripMenuItem_Click);
             // 
@@ -4748,7 +4845,7 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeyDisplayString = "Alt+F4";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -4765,21 +4862,21 @@
             // defaultSettingsToolStripMenuItem
             // 
             this.defaultSettingsToolStripMenuItem.Name = "defaultSettingsToolStripMenuItem";
-            this.defaultSettingsToolStripMenuItem.Size = new System.Drawing.Size(212, 24);
+            this.defaultSettingsToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.defaultSettingsToolStripMenuItem.Text = "Default Settings";
             this.defaultSettingsToolStripMenuItem.Click += new System.EventHandler(this.defaultSettingsToolStripMenuItem_Click);
             // 
             // localClientSettingsToolStripMenuItem
             // 
             this.localClientSettingsToolStripMenuItem.Name = "localClientSettingsToolStripMenuItem";
-            this.localClientSettingsToolStripMenuItem.Size = new System.Drawing.Size(212, 24);
+            this.localClientSettingsToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.localClientSettingsToolStripMenuItem.Text = "Local Client Settings";
             this.localClientSettingsToolStripMenuItem.Click += new System.EventHandler(this.localClientSettingsToolStripMenuItem_Click);
             // 
             // lastOpenedToolStripMenuItem
             // 
             this.lastOpenedToolStripMenuItem.Name = "lastOpenedToolStripMenuItem";
-            this.lastOpenedToolStripMenuItem.Size = new System.Drawing.Size(212, 24);
+            this.lastOpenedToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.lastOpenedToolStripMenuItem.Text = "Last Opened";
             this.lastOpenedToolStripMenuItem.Click += new System.EventHandler(this.lastOpenedToolStripMenuItem_Click);
             // 
@@ -4796,14 +4893,14 @@
             // editDuplicateToolStripMenuItem
             // 
             this.editDuplicateToolStripMenuItem.Name = "editDuplicateToolStripMenuItem";
-            this.editDuplicateToolStripMenuItem.Size = new System.Drawing.Size(234, 24);
+            this.editDuplicateToolStripMenuItem.Size = new System.Drawing.Size(240, 26);
             this.editDuplicateToolStripMenuItem.Text = "Edit Duplicate";
             this.editDuplicateToolStripMenuItem.Click += new System.EventHandler(this.editDuplicateToolStripMenuItem_Click);
             // 
             // configureClientToolStripMenuItem
             // 
             this.configureClientToolStripMenuItem.Name = "configureClientToolStripMenuItem";
-            this.configureClientToolStripMenuItem.Size = new System.Drawing.Size(234, 24);
+            this.configureClientToolStripMenuItem.Size = new System.Drawing.Size(240, 26);
             this.configureClientToolStripMenuItem.Text = "Configure Client";
             this.configureClientToolStripMenuItem.Click += new System.EventHandler(this.configureClientToolStripMenuItem_Click);
             // 
@@ -4812,19 +4909,20 @@
             this.applyAndStartSEBToolStripMenuItem.Name = "applyAndStartSEBToolStripMenuItem";
             this.applyAndStartSEBToolStripMenuItem.ShortcutKeyDisplayString = "F5";
             this.applyAndStartSEBToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(234, 24);
+            this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(240, 26);
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
-            // tabAdditionalResources
+            // tabPageAdditionalResources
             // 
-            this.tabAdditionalResources.ImageKey = "Icon_04_Browser.png";
-            this.tabAdditionalResources.Location = new System.Drawing.Point(4, 39);
-            this.tabAdditionalResources.Name = "tabAdditionalResources";
-            this.tabAdditionalResources.Size = new System.Drawing.Size(1459, 769);
-            this.tabAdditionalResources.TabIndex = 28;
-            this.tabAdditionalResources.Text = "Additional Resources";
-            this.tabAdditionalResources.UseVisualStyleBackColor = true;
+            this.tabPageAdditionalResources.ImageKey = "(none)";
+            this.tabPageAdditionalResources.Location = new System.Drawing.Point(4, 39);
+            this.tabPageAdditionalResources.Name = "tabPageAdditionalResources";
+            this.tabPageAdditionalResources.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAdditionalResources.Size = new System.Drawing.Size(1459, 769);
+            this.tabPageAdditionalResources.TabIndex = 28;
+            this.tabPageAdditionalResources.Text = "Additional Resources";
+            this.tabPageAdditionalResources.UseVisualStyleBackColor = true;
             // 
             // SebWindowsConfigForm
             // 
@@ -4914,6 +5012,8 @@
             this.groupBoxNewBrowserWindow.PerformLayout();
             this.tabPageAppearance.ResumeLayout(false);
             this.tabPageAppearance.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -4998,7 +5098,6 @@
         private System.Windows.Forms.Button buttonDownloadDirectoryWin;
         private System.Windows.Forms.ListBox listBoxChooseFileToUploadPolicy;
         private System.Windows.Forms.Label labelChooseFileToUploadPolicy;
-        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
         private System.Windows.Forms.CheckBox checkBoxOpenDownloads;
         private System.Windows.Forms.CheckBox checkBoxAllowDownUploads;
         private System.Windows.Forms.TabPage tabPageBrowser;
@@ -5288,7 +5387,14 @@
         private System.Windows.Forms.TextBox textBoxUserAgentTouchModeIPad;
         private System.Windows.Forms.RadioButton radioButtonUserAgentTouchIPad;
         private System.Windows.Forms.CheckBox checkBoxEnableTouchExit;
-        private System.Windows.Forms.TabPage tabAdditionalResources;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.RadioButton radioButtonOskAutoDetect;
+        private System.Windows.Forms.RadioButton radioButtonOskNeverShow;
+        private System.Windows.Forms.RadioButton radioButtonOskAlwaysShow;
+        private System.Windows.Forms.CheckBox checkBoxInsideSebEnableNetworkConnectionSelector;
+        private System.Windows.Forms.CheckBox checkBoxAllowPDFPlugIn;
+        private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
+        private System.Windows.Forms.TabPage tabPageAdditionalResources;
 
     }
 }

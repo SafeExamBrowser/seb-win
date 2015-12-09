@@ -93,7 +93,7 @@ namespace SebWindowsConfig
             StringBuilder sebConfigLogFileBuilder = new StringBuilder(SEBClientInfo.SebClientLogFileDirectory).Append(SEB_CONFIG_LOG);
             string        SebConfigLogFile        = sebConfigLogFileBuilder.ToString();
 
-            Logger.initLogger(SEBClientInfo.SebClientLogFileDirectory, SebConfigLogFile);
+            Logger.InitLogger(SEBClientInfo.SebClientLogFileDirectory, SebConfigLogFile);
 
             // Set all the default values for the Plist structure "SEBSettings.settingsCurrent"
             SEBSettings.RestoreDefaultAndCurrentSettings();
@@ -237,7 +237,10 @@ namespace SebWindowsConfig
             SEBSettings.sebConfigPurposes configPurpose = (SEBSettings.sebConfigPurposes)currentConfigPurpose;
 
             // Write the "new" settings to file
-            if (!SEBSettings.WriteSebConfigurationFile(fileName, filePassword, settingsPasswordFieldsContainHash, fileCertificateRef, configPurpose, forEditing: true)) return false;
+            if (!SEBSettings.WriteSebConfigurationFile(fileName, filePassword, settingsPasswordFieldsContainHash, fileCertificateRef, configPurpose, forEditing: true)) 
+            { 
+                return false;
+            }
 
             // If the settings could be written to file, update the widgets
             currentDireSebConfigFile = Path.GetDirectoryName(fileName);
@@ -354,7 +357,10 @@ namespace SebWindowsConfig
             comboBoxTaskBarHeight             .Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
             radioButtonUseZoomPage            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
             radioButtonUseZoomText            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
-            checkBoxEnableTouchExit.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
+            checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
+            radioButtonOskAlwaysShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 0;
+            radioButtonOskNeverShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 1;
+            radioButtonOskAutoDetect.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 2;
 
             // Group "Browser"
              listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
@@ -396,7 +402,8 @@ namespace SebWindowsConfig
             checkBoxAllowDownUploads.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDownUploads];
             checkBoxOpenDownloads   .Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOpenDownloads];
             checkBoxDownloadPDFFiles.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadPDFFiles];
-            textBoxDownloadDirectoryWin.Text             =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryWin];
+            checkBoxAllowPDFPlugIn  .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowPDFPlugIn];
+            textBoxDownloadDirectoryWin.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryWin];
             textBoxDownloadDirectoryOSX.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryOSX];
             listBoxChooseFileToUploadPolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeyChooseFileToUploadPolicy];
             checkBoxDownloadOpenSEBFiles.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig];
@@ -412,7 +419,7 @@ namespace SebWindowsConfig
             textBoxRestartExamText.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamText];
 
             // Group AdditionalResources
-            tabAdditionalResources.Controls.Add(new AdditionalResources());
+            tabPageAdditionalResources.Controls.Add(new AdditionalResources());
 
             // Group "Applications"
             checkBoxMonitorProcesses         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyMonitorProcesses];
@@ -620,6 +627,7 @@ namespace SebWindowsConfig
             checkBoxInsideSebEnableShutDown         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableShutDown];
             checkBoxInsideSebEnableEaseOfAccess     .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableEaseOfAccess];
             checkBoxInsideSebEnableVmWareClientShade.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableVmWareClientShade];
+            checkBoxInsideSebEnableNetworkConnectionSelector.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector];
 
             // Group "Hooked Keys"
             checkBoxHookKeys.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyHookKeys];
@@ -924,6 +932,7 @@ namespace SebWindowsConfig
             if (radioButtonStartingAnExam.Checked == true)
                  SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
             else SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 1;
+            sebConfigPurposeChanged = true;
         }
 
         private void radioButtonConfiguringAClient_CheckedChanged(object sender, EventArgs e)
@@ -931,6 +940,7 @@ namespace SebWindowsConfig
             if (radioButtonConfiguringAClient.Checked == true)
                  SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 1;
             else SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
+            sebConfigPurposeChanged = true;
         }
 
         private void checkBoxAllowPreferencesWindow_CheckedChanged(object sender, EventArgs e)
@@ -1100,6 +1110,18 @@ namespace SebWindowsConfig
                 SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt] = currentExamKeySalt;
                 return false;
             }
+
+            // Before displaying message check if saved settings are local client settings or the default settings (no client settings saved yet), in other words:
+            // Check if not saving local client settings (in %appdata% or %commonappdata%) or if the last saved/opened file isn't the same we're saving now (usually after "Edit Duplicate") or if the flag for being duplicated was set
+            if ((!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && sebConfigPurposeChanged) || currentSebConfigFileWasDuplicated)
+            {
+                // In this case tell the user what purpose the file was saved for
+                string messageFilePurpose = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0 ? SEBUIStrings.savingSettingsSucceededStartExam : SEBUIStrings.savingSettingsSucceededMessageConfigureClient;
+                SEBMessageBox.Show(SEBUIStrings.savingSettingsSucceeded, messageFilePurpose, MessageBoxIcon.Information, MessageBoxButtons.OK, neverShowTouchOptimized: true);
+                currentSebConfigFileWasDuplicated = false;
+                sebConfigPurposeChanged = false;
+            }
+
             // Generate the new Browser Exam Key
             lastBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
             // Display the new Browser Exam Key in Exam pane
@@ -1149,6 +1171,16 @@ namespace SebWindowsConfig
                     SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt] = currentExamKeySalt;
                     return;
                 }
+                // If currently edited settings should be saved as local client settings (in %appdata% or %commonappdata%), then don't show the config file purpose message
+                if (!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile))
+                {
+                    // Tell the user what purpose the file was saved for
+                    string messageFilePurpose = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0 ? SEBUIStrings.savingSettingsSucceededStartExam : SEBUIStrings.savingSettingsSucceededMessageConfigureClient;
+                    SEBMessageBox.Show(SEBUIStrings.savingSettingsSucceeded, messageFilePurpose, MessageBoxIcon.Information, MessageBoxButtons.OK, neverShowTouchOptimized: true);
+                    currentSebConfigFileWasDuplicated = false;
+                    sebConfigPurposeChanged = false;
+                }
+
                 // Generate the new Browser Exam Key
                 lastBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
                 // Display the new Browser Exam Key in Exam pane
@@ -1179,6 +1211,14 @@ namespace SebWindowsConfig
             settingsPasswordFieldsContainHash = false;
             SEBSettings.RestoreDefaultAndCurrentSettings();
             SEBSettings.PermitXulRunnerProcess();
+
+            // Check if currently edited settings are local client settings (in %appdata% or %commonappdata%) or the default settings (no client settings saved yet)
+            if (!currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsAppDataFile) && !currentPathSebConfigFile.Equals(SEBClientInfo.SebClientSettingsProgramDataFile) && !currentPathSebConfigFile.Equals(SEBUIStrings.settingsTitleDefaultSettings))
+            {
+                // If reverting other than local client/default settings, use "starting exam" as config purpose
+                SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
+            }
+
             UpdateAllWidgetsOfProgram();
             // Generate Browser Exam Key of default settings
             string currentBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
@@ -1309,6 +1349,7 @@ namespace SebWindowsConfig
 
                 StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(currentDireSebConfigFile).Append(@"\").Append(currentFileSebConfigFile);
                 currentPathSebConfigFile = sebClientSettingsAppDataBuilder.ToString();
+                currentSebConfigFileWasDuplicated = true;
                 // Update title of edited settings file
                 UpdateAllWidgetsOfProgram();
         }
@@ -1381,9 +1422,9 @@ namespace SebWindowsConfig
         }
 
 
-        // ******************
-        // Group "Appearance"
-        // ******************
+        // **********************
+        // Group "User Interface"
+        // **********************
         private void radioButtonUseBrowserWindow_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonUseBrowserWindow.Checked == true)
@@ -1760,6 +1801,10 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyDownloadPDFFiles] = checkBoxDownloadPDFFiles.Checked;
         }
 
+        private void checkBoxAllowPDFPlugIn_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowPDFPlugIn] = checkBoxAllowPDFPlugIn.Checked;
+        }
 
 
         // ************
@@ -3422,6 +3467,11 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableVmWareClientShade] = checkBoxInsideSebEnableVmWareClientShade.Checked;
         }
 
+        private void checkBoxInsideSebEnableNetworkConnectionSelector_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] = checkBoxInsideSebEnableNetworkConnectionSelector.Checked;
+        }
+
 
         // *******************
         // Group "Hooked Keys"
@@ -3752,6 +3802,30 @@ namespace SebWindowsConfig
         private void checkBoxEnableTouchExit_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit] = checkBoxEnableTouchExit.Checked;
+        }
+
+        private void radioButtonOskAlwaysShow_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonOskAlwaysShow.Checked)
+            {
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 0;
+            }
+        }
+
+        private void radioButtonOskNeverShow_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonOskNeverShow.Checked)
+            {
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 1;
+            }
+        }
+
+        private void radioButtonOskAutoDetect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonOskAutoDetect.Checked)
+            {
+                SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 2;
+            }
         }
 
     } // end of   class     SebWindowsConfigForm

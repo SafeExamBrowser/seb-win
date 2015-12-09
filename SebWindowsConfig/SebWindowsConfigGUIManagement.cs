@@ -185,6 +185,8 @@ namespace SebWindowsConfig
         static String currentFileSebConfigFile;
         static String lastPathSebConfigFile;
         static String currentPathSebConfigFile;
+        static bool currentSebConfigFileWasDuplicated = false;
+        static bool sebConfigPurposeChanged = false;
 
         // Strings for encryption identities (KeyChain, Certificate Store)
         //static ArrayList chooseIdentityStringArrayList = new ArrayList();

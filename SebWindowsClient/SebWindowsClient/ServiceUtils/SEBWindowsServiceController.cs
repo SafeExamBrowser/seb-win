@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsServiceWCF.ServiceContracts;
+using SEBWindowsServiceContracts;
 
 namespace SebWindowsClient.ServiceUtils
 {
@@ -110,6 +110,7 @@ namespace SebWindowsClient.ServiceUtils
                 {RegistryIdentifiers.EnableShade, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? 1 : 0},
                 {RegistryIdentifiers.EnableShadeHorizon, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? "True" : "False"},
                 {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? "" : "SebDummy.exe"},
+                {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1},
             };
 
             return SetRegistryAccordingToConfiguration(valuesToSet);
@@ -137,7 +138,7 @@ namespace SebWindowsClient.ServiceUtils
         public static bool DisableWindowsUpdate()
         {
             Logger.AddInformation("calling disable windows update on wcf service");
-            return _sebWindowsServicePipeProxy.DisableWindowsUpdate();
+            return _sebWindowsServicePipeProxy.DisableWindowsUpdate();   
         }
 
         /// <summary>

@@ -35,33 +35,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.DesktopUtils;
 using System.Net;
 using System.IO;
-using System.Security.Principal;
 using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.BlockShortcutsUtils;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ServiceUtils;
 using SebWindowsClient.UI;
 using SebWindowsClient.XULRunnerCommunication;
-using SebWindowsServiceWCF.ServiceContracts;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
 
@@ -238,17 +230,20 @@ namespace SebWindowsClient
                     return false;
                 }
 
-                if (uri.Scheme == "seb")
-                // The URI is holding a seb:// web address for a .seb settings file: download it
+                if (uri.Scheme == "seb" || uri.Scheme == "sebs")
+                // The URI is holding a seb:// or sebs:// (secure) web address for a .seb settings file: download it
                 {
                     // But only download and use the seb:// link to a .seb file if this is enabled
                     if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyDownloadAndOpenSebConfig))
                     {
                         try
                         {
-                            Logger.AddError("Trying to download .seb settings by http", null, null);
                             WebClient myWebClient = new WebClient();
+
+                            if (uri.Scheme == "seb")
+                            {
                             // Try first by http
+                                Logger.AddError("Trying to download .seb settings by http", null, null);
                             UriBuilder httpURL = new UriBuilder("http", uri.Host, uri.Port, uri.AbsolutePath);
                             using (myWebClient)
                             {
@@ -256,8 +251,13 @@ namespace SebWindowsClient
                             }
                             if (sebSettings == null)
                             {
-                                // Nothing got downloaded: Try by https
-                                Logger.AddError("Downloading .seb settings by http failed, trying to download by https", null, null);
+                                    Logger.AddError("Downloading .seb settings by http failed, try to download by https", null, null);
+                                }
+                            }
+                            if (sebSettings == null)
+                            {
+                                // Download by https
+                                Logger.AddError("Downloading .seb settings by https", null, null);
                                 UriBuilder httpsURL = new UriBuilder("https", uri.Host, uri.Port, uri.AbsolutePath);
                                 using (myWebClient)
                                 {
@@ -294,7 +294,7 @@ namespace SebWindowsClient
                     SebWindowsClientMain.LoadingSebFile(false);
                     return false;
                 }
-                Logger.AddInformation("Succesfully read the new configuration");
+                Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
                 // Decrypt, parse and store new settings and restart SEB if this was successfull
                 Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 
@@ -1215,6 +1215,8 @@ namespace SebWindowsClient
             {
                 this.Hide();
                 var keyboardHeight = TapTipHandler.GetKeyboardWindowHandle().GetWindowHeight();
+                Logger.AddInformation("Keyboard height from its window: " + keyboardHeight);
+
                 SEBWorkingAreaHandler.SetTaskBarSpaceHeight(keyboardHeight);
                 var topWindow = SEBWindowHandler.GetOpenWindows().FirstOrDefault();
                 if (topWindow.Value != null)
@@ -1567,7 +1569,11 @@ namespace SebWindowsClient
             }
 
             // Check if VM and SEB Windows Service available and required
-            if (SebWindowsClientMain.CheckVMService()) {
+            try
+            {
+                SebWindowsClientMain.CheckIfInsideVirtualMachine();
+                SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
+
                 Logger.AddInformation("attempting to start socket server");
                 SEBXULRunnerWebSocketServer.StartServer();
 
@@ -1575,12 +1581,21 @@ namespace SebWindowsClient
                 try
                 {
                     Logger.AddInformation("setting registry values");
-                    if(SebWindowsServiceHandler.IsServiceAvailable && !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
-                        Logger.AddWarning("Unable to set registry values",this,null);
+                    if (SebWindowsServiceHandler.IsServiceAvailable &&
+                        !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
+                    {
+                        Logger.AddError("Unable to set Registry values", this, null);
+                        SebWindowsClientMain.CheckServicePolicy(false);
+                    }
+                }
+                catch (SEBNotAllowedToRunEception ex)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to set Registry values",this,ex);
+                    Logger.AddError("Unable to set Registry values", this, ex);
+                    SebWindowsClientMain.CheckServicePolicy(false);
                 }
 
                 //Disable windows update service (with SEBWindowsServiceWCF)
@@ -1605,23 +1620,9 @@ namespace SebWindowsClient
                     Logger.AddError("Unable to kill processes that are running before start", this, ex);
                 }
                 
-
                 // Disable unwanted keys.
                 SebKeyCapture.FilterKeys = true;
 
-                // Save the value of the environment variable determining if XULRunner (and Mozilla Firefox) start plugins in plugins-container.exe
-                // If SEB runs on an own desktop (createNewDesktop = true), plugins like Flash won't work if they are started in plugin-container.exe
-                //SEBClientInfo.XulRunnerFlashContainerState = System.Environment.GetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", EnvironmentVariableTarget.User);
-
-                //// Disable plugins-container if enablePlugIns = true and createNewDesktop = true
-                //if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyEnablePlugIns] && (bool)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
-                //{
-                //    System.Environment.SetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", "1", EnvironmentVariableTarget.User);
-                //    string xulRunnerFlashContainer = System.Environment.GetEnvironmentVariable("MOZ_DISABLE_OOP_PLUGINS", EnvironmentVariableTarget.User);
-                //    Logger.AddInformation("Environment Variable MOZ_DISABLE_OOP_PLUGINS had value: " +
-                //        (SEBClientInfo.XulRunnerFlashContainerState == null ? "null" : SEBClientInfo.XulRunnerFlashContainerState), null, null);
-                //    Logger.AddInformation("Environment Variable MOZ_DISABLE_OOP_PLUGINS was set to value: " + xulRunnerFlashContainer, null, null);
-                //}
                 try
                 {
                     Logger.AddInformation("adding allowed processes to taskbar");
@@ -1629,24 +1630,14 @@ namespace SebWindowsClient
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to addPermittedProcessesToTS",this,ex);
+                    Logger.AddError("Unable to addPermittedProcessesToTS", this, ex);
                 }
-                
-                //SetFormOnDesktop();
-                
-                //System.Diagnostics.Process oskProcess = null;
-                //oskProcess = Process.Start("OSK");
-                //SEBDesktopController d = SEBDesktopController.OpenDesktop(SEBClientInfo.DesktopName);
-                //oskProcess = d.CreateProcess("OSK");
                 
                 if (sebCloseDialogForm == null)
                 {
                     Logger.AddInformation("creating close dialog form");
                     sebCloseDialogForm = new SebCloseDialogForm();
-                    //SetForegroundWindow(sebCloseDialogForm.Handle);
                     sebCloseDialogForm.TopMost = true;
-                    //sebCloseDialogForm.Show();
-                    //sebCloseDialogForm.Visible = false;
                 }
                 if (sebApplicationChooserForm == null)
                 {
@@ -1659,10 +1650,10 @@ namespace SebWindowsClient
 
                 return true;
             }
-            else
+            catch (SEBNotAllowedToRunEception ex)
             {
                 // VM or service not available and set to be required
-                Logger.AddInformation("exiting without starting up because vm test failed");
+                Logger.AddInformation(string.Format("exiting without starting up because {0}", ex.Message));
                 ExitApplication(false);
                 return false;
             }

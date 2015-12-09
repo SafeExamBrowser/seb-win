@@ -169,6 +169,7 @@ namespace SebWindowsClient.BlockShortcutsUtils
                 SebKeyCapture._FilterKeys = value; 
                 if(value)
                 {
+                    UnregisterKeyboardHookMethod();
                     RegisterKeyboardHookMethod();
                 } else 
                 {

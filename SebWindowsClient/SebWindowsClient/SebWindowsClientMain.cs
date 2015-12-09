@@ -7,28 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.DesktopUtils;
 using System.Diagnostics;
-using System.Net;
-using System.Security.Principal;
-using System.Xml.Serialization;
-using System.IO;
-using SebWindowsClient.CryptographyUtils;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
 using System.Text;
 //using COM.Tools.VMDetect;
-using SebWindowsClient.ServiceUtils;
 using System.Runtime.InteropServices;
 using System.Threading;
 
 using Microsoft.VisualBasic.ApplicationServices;
-using SebWindowsClient.XULRunnerCommunication;
 
 //
 //  SebWindowsClient.cs
@@ -82,7 +72,7 @@ namespace SebWindowsClient
             if (e.CommandLine.Count() > 1)
             {
                 string es = string.Join(", ", e.CommandLine);
-                Logger.AddError("StartupNextInstanceEventArgs: " + es, null, null);
+                Logger.AddInformation("StartupNextInstanceEventArgs: " + es);
                 if (!form.LoadFile(e.CommandLine[1]))
                 {
                     Logger.AddError("LoadFile() from StartupNextInstanceEvent failed!", null, null);
@@ -92,8 +82,29 @@ namespace SebWindowsClient
 
         protected override void OnCreateMainForm()
         {
-            //SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
             MainForm = SEBClientInfo.SebWindowsClientForm;
+            string[] arguments = Environment.GetCommandLineArgs();
+            if (arguments.Count() == 1)
+            {
+                var splashThread = new Thread(SebWindowsClientMain.StartSplash);
+                splashThread.Start();
+
+                try
+                {
+                    SebWindowsClientMain.InitSEBDesktop();
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to InitSEBDesktop", null, ex);
+                }
+
+                if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
+                {
+                    Logger.AddError("Unable to OpenSEBForm", null, null);
+        }
+
+                SebWindowsClientMain.CloseSplash();
+            }
         }
 
         public void SetMainForm(Form newMainForm)
@@ -175,8 +186,7 @@ namespace SebWindowsClient
             string[] arguments = Environment.GetCommandLineArgs();
             Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
             Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
-            if (arguments.Count() == 1)
-            {
+
                 try
                 {
                     if (!InitSebSettings())
@@ -184,61 +194,24 @@ namespace SebWindowsClient
                 }
                 catch (Exception ex) 
                 {
-                    Logger.AddError("Unable to InitSebSettings",null, ex);
+                Logger.AddError("Unable to InitSebSettings", null, ex);
                     return;
                 }
-                var splashThread = new Thread(new ThreadStart(StartSplash));
-                splashThread.Start();
-
                 SEBProcessHandler.LogAllRunningProcesses();
-
-                try
-                {
-                    InitSEBDesktop();
-                }
-                catch (Exception)
-                {
-
-                    Logger.AddInformation("Unable to InitSEBDesktop");
-                }
-                
-                SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
-                if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
-                {
-                    CloseSplash();
-                    return;
-                }
-                CloseSplash();
-
                 singleInstanceController = new SingleInstanceController();
 
                 try
                 {
+                SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
                     singleInstanceController.Run(arguments);
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (!InitSebSettings())
-                        return;
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to InitSebSettings", null, ex);
+                Logger.AddError(ex.Message, null, ex);
                 }
-                SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
-                singleInstanceController = new SingleInstanceController();
-                singleInstanceController.Run(arguments);
             }
-        }
 
-        static public void StartSplash()
+        public static void StartSplash()
         {
             //Set the threads desktop to the new desktop if "Create new Desktop" is activated
             if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
@@ -250,7 +223,7 @@ namespace SebWindowsClient
             Application.Run(splash);
         }
 
-        private static void CloseSplash()
+        public static void CloseSplash()
         {
             if (splash == null)
                 return;
@@ -651,58 +624,46 @@ namespace SebWindowsClient
         /// </summary>
         /// <returns>true if both checks are positive, false means SEB needs to quit.</returns>
         /// ----------------------------------------------------------------------------------------
-        public static bool CheckVMService()
+        public static void CheckIfInsideVirtualMachine()
         {
             // Test if run inside virtual machine
             bool allowVirtualMachine = (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyAllowVirtualMachine)[SEBSettings.KeyAllowVirtualMachine];
             if (IsInsideVM() && (!allowVirtualMachine))
-            //if ((IsInsideVMWare() || IsInsideVPC()) && (!allowVirtualMachine))
             {
-                //SEBClientInfo.SebWindowsClientForm.Activate();
                 SEBMessageBox.Show(SEBUIStrings.detectedVirtualMachine, SEBUIStrings.detectedVirtualMachineForbiddenMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
                 Logger.AddError("Forbidden to run SEB on a virtual machine!", null, null);
                 Logger.AddInformation("Safe Exam Browser is exiting", null, null);
-                Application.Exit();
-                return false;
+                throw new SEBNotAllowedToRunEception("Forbidden to run SEB on a virtual machine!");
+            }
             }
 
-            // Test if Windows Service is running
-            bool serviceAvailable = SebWindowsServiceHandler.IsServiceAvailable;
-
+        public static void CheckServicePolicy(bool isServiceAvailable)
+        {
             int forceService = (Int32)SEBClientInfo.getSebSetting(SEBSettings.KeySebServicePolicy)[SEBSettings.KeySebServicePolicy];
             switch (forceService)
             {
                 case (int)sebServicePolicies.ignoreService:
                     break;
                 case (int)sebServicePolicies.indicateMissingService:
-                    if (!serviceAvailable)
+                    if (!isServiceAvailable)
                     {
                         //SEBClientInfo.SebWindowsClientForm.Activate();
                         SEBMessageBox.Show(SEBUIStrings.indicateMissingService, SEBUIStrings.indicateMissingServiceReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
                     }
                     break;
                 case (int)sebServicePolicies.forceSebService:
-                    if (!serviceAvailable)
+                    if (!isServiceAvailable)
                     {
                         //SEBClientInfo.SebWindowsClientForm.Activate();
                         SEBMessageBox.Show(SEBUIStrings.indicateMissingService, SEBUIStrings.forceSebServiceMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
                         Logger.AddError("SEB Windows service is not available and sebServicePolicies is set to forceSebService", null, null);
                         Logger.AddInformation("SafeExamBrowser is exiting", null, null);
-                        Application.Exit();
-
-                        return false;
+                        throw new SEBNotAllowedToRunEception("SEB Windows service is not available and sebServicePolicies is set to forceSebService");
                     }
                     break;
-                //default:
-                //    if (!serviceAvailable)
-                //    {
-                //        SEBMessageBox.Show(SEBGlobalConstants.IND_WINDOWS_SERVICE_NOT_AVAILABLE, SEBGlobalConstants.IND_MESSAGE_KIND_ERROR);
-                //    }
-                //    break;
+            }
             }
 
-            return true;
-        }
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>

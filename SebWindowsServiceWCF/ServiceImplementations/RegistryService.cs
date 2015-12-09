@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ServiceProcess;
+using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.RegistryHandler;
-using SebWindowsServiceWCF.ServiceContracts;
 using WUApiLib;
 
 namespace SebWindowsServiceWCF.ServiceImplementations
@@ -53,7 +54,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                         try
                         {
                             //If there is nothing to change, then do not change anything
-                            if (registryValue.Value == regEntry.DataValue) continue;
+                            if (object.Equals(registryValue.Value,regEntry.DataValue)) continue;
 
                             //Only store the entry in the persistent file if not already existing
                             if (!persistentRegistryFile.FileContent.RegistryValues.ContainsKey(registryValue.Key))
@@ -65,6 +66,11 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                             //Change the registry value if all operations succeeded until here
                             regEntry.DataValue = registryValue.Value;
                             Logger.Log(String.Format("Set Registry Key {0} to {1}", registryValue.Key, registryValue.Value));
+                            if (!object.Equals(regEntry.DataValue,registryValue.Value))
+                            {
+                                Logger.Log(String.Format("Registry Key {0} could not have been set to {1}",
+                                    registryValue.Key, registryValue.Value));
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -130,23 +136,52 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
         private bool SetWindowsUpdate(bool enable)
         {
+            if (OSVersion.FriendlyName().Contains("10"))
+            {
+                //Stop per Windows Service on windows 10
+                ServiceController service = new ServiceController("wuauserv");
+                try
+                {
+                    TimeSpan timeout = TimeSpan.FromMilliseconds(500);
+                    if (enable)
+                    {
+                        service.Start();
+                        //service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                    }
+                    else
+                    {
+                        service.Stop();
+                        //service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    }
+
+                    Logger.Log(String.Format("Set windows update to {0}", enable));
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            //Use Automatic Update Class
             try
             {
                 var auc = new AutomaticUpdatesClass();
 
-                if(enable)
+                if (enable)
                     auc.Resume();
                 else
                     auc.Pause();
 
-                Logger.Log(String.Format("Set windows update to {0}",enable));
+                Logger.Log(String.Format("Set windows update to {0}", enable));
 
                 return true;
             }
             catch (Exception)
             {
                 return false;
-            }
+            }            
         }
 
 

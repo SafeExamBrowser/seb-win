@@ -261,8 +261,8 @@
   <data name="restartExamDefaultTitle" xml:space="preserve">
     <value>Prüfung neu starten</value>
   </data>
-  <data name="restartExamMessage" xml:space="preserve">
-    <value>Passwort eingeben:</value>
+  <data name="restartExamEnterPassword" xml:space="preserve">
+    <value>Beenden-/Neustart-Passwort eingeben:</value>
   </data>
   <data name="sebFileTypeName" xml:space="preserve">
     <value>SEB Konfigurationsdateien</value>
@@ -338,5 +338,11 @@
   </data>
   <data name="webSocketServerNotStartedMessage" xml:space="preserve">
     <value>SEB wird beendet, versuchen Sie, SEB neu zu starten. Wenn dies nicht hilft, starten Sie Ihren Rechner neu.</value>
+  </data>
+  <data name="restartExamConfirm" xml:space="preserve">
+    <value>Sind Sie sicher?</value>
+  </data>
+  <data name="wrongQuitRestartPasswordText" xml:space="preserve">
+    <value>Falsches Beenden-/Neustart-Passwort</value>
   </data>
 </root>

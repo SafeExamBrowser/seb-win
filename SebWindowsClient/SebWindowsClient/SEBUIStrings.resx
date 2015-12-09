@@ -264,8 +264,8 @@
   <data name="restartExamDefaultTitle" xml:space="preserve">
     <value>Restart Exam</value>
   </data>
-  <data name="restartExamMessage" xml:space="preserve">
-    <value>Enter password:</value>
+  <data name="restartExamEnterPassword" xml:space="preserve">
+    <value>Enter quit/restart password:</value>
   </data>
   <data name="savingSettingsFailed" xml:space="preserve">
     <value>Saving Settings Failed</value>
@@ -380,5 +380,26 @@
   </data>
   <data name="reconfiguringLocalSettingsFailedWrongCurrentAdminPwd" xml:space="preserve">
     <value>You didn't enter the correct current SEB administrator password.</value>
+  </data>
+  <data name="savingSettingsSucceeded" xml:space="preserve">
+    <value>Saved Settings Purpose</value>
+  </data>
+  <data name="savingSettingsSucceededMessageConfigureClient" xml:space="preserve">
+    <value>Settings have been saved, use this file to configure local settings of a SEB client.</value>
+  </data>
+  <data name="savingSettingsSucceededStartExam" xml:space="preserve">
+    <value>Settings have been saved, use this file to start an exam with SEB.</value>
+  </data>
+  <data name="NoWLANInterface" xml:space="preserve">
+    <value>No WLAN Interface found</value>
+  </data>
+  <data name="WLANNotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="wrongQuitRestartPasswordText" xml:space="preserve">
+    <value>Wrong quit/restart password</value>
+  </data>
+  <data name="restartExamConfirm" xml:space="preserve">
+    <value>Are you sure?</value>
   </data>
 </root>

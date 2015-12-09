@@ -118,6 +118,8 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyShowInputLanguage            = "showInputLanguage";
         public const String KeyAllowDictionaryLookup        = "allowDictionaryLookup";
         public const String KeyEnableTouchExit              = "enableTouchExit";
+        public const String KeyOskBehavior                = "oskBehavior";
+
 
         //Touch optimized settings
         public const String KeyBrowserScreenKeyboard = "browserScreenKeyboard";
@@ -155,6 +157,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyOpenDownloads            = "openDownloads";
         public const String KeyChooseFileToUploadPolicy = "chooseFileToUploadPolicy";
         public const String KeyDownloadPDFFiles         = "downloadPDFFiles";
+        public const String KeyAllowPDFPlugIn           = "allowPDFPlugIn";
         public const String KeyDownloadAndOpenSebConfig = "downloadAndOpenSebConfig";
 
         // Group "Exam"
@@ -324,6 +327,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyInsideSebEnableShutDown          = "insideSebEnableShutDown";
         public const String KeyInsideSebEnableEaseOfAccess      = "insideSebEnableEaseOfAccess";
         public const String KeyInsideSebEnableVmWareClientShade = "insideSebEnableVmWareClientShade";
+        public const String KeyInsideSebEnableNetworkConnectionSelector = "insideSebEnableEnableNetworkConnectionSelector";
 
         // Group "Hooked Keys"
         public const String KeyHookKeys = "hookKeys";
@@ -506,10 +510,10 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Clear();
 
             // Default settings for keys not belonging to any group
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOriginatorVersion, "SEB_Win_2.1");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyOriginatorVersion, "SEB_Win_2.1.1");
 
             // Default settings for group "General"
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org/start");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebServerURL       , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedAdminPassword, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowQuit          , true);
@@ -523,7 +527,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserMessagingPingTime, 120000);
 
             // Default settings for group "Config File"
-            SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPreferencesWindow , true);
             //SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedSettingsPassword , "");
 
@@ -550,6 +554,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 0);
 
             //Touch Settings
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserScreenKeyboard       , false);
@@ -599,6 +604,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyOpenDownloads           , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyChooseFileToUploadPolicy, 0);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadPDFFiles        , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPDFPlugIn          , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadAndOpenSebConfig, true);
 
             // Default settings for group "Exam"
@@ -608,7 +614,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeySendBrowserExamKey, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyQuitURL           , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamURL, "");
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamText, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamPasswordProtected, true);
 
@@ -822,6 +828,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableShutDown         , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableEaseOfAccess     , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableVmWareClientShade, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector, false);
 
             // Default settings for group "Hooked Keys"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHookKeys, true);

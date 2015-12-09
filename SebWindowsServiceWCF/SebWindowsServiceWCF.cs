@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.ServiceProcess;
 using System.Threading;
-using SebWindowsServiceWCF.ServiceContracts;
+using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebWindowsServiceWCF
@@ -50,8 +50,10 @@ namespace SebWindowsServiceWCF
 
                 using (var service = new RegistryService())
                 {
-                    Thread.Sleep(1000);
-                    service.Reset();
+                    while (!service.Reset())
+                    {
+                        Thread.Sleep(1000);
+                    }
                 }
             }
             catch (Exception ex)

@@ -43,12 +43,13 @@ namespace SebWindowsClient.ProcessUtils
             SW_MAX = 11
         }
 
+        public static ForegroundWatchDog ForegroundWatchDog = new ForegroundWatchDog();
+
         #endregion
 
         #region Private Members
 
         private static List<IntPtr> _hiddenWindowHandles = new List<IntPtr>();
-        private static ForegroundWatchDog _foregroundChecker;
 
         #endregion
 
@@ -337,9 +338,7 @@ namespace SebWindowsClient.ProcessUtils
         /// </summary>
         public static void EnableForegroundWatchDog()
         {
-            if (_foregroundChecker == null)
-                _foregroundChecker = new ForegroundWatchDog();
-            _foregroundChecker.StartWatchDog();
+            ForegroundWatchDog.StartWatchDog();
         }
 
         /// <summary>
@@ -347,9 +346,9 @@ namespace SebWindowsClient.ProcessUtils
         /// </summary>
         public static void DisableForegroundWatchDog()
         {
-            if (_foregroundChecker != null)
+            if (ForegroundWatchDog != null)
             {
-                _foregroundChecker.StopWatchDog();
+                ForegroundWatchDog.StopWatchDog();
             }
         }
 
@@ -531,8 +530,12 @@ namespace SebWindowsClient.ProcessUtils
         #endregion
     }
 
-    class ForegroundWatchDog
+    public class ForegroundWatchDog
     {
+        public delegate void ForegroundWindowChangedEventHandler(IntPtr windowHandle);
+
+        public event ForegroundWindowChangedEventHandler OnForegroundWindowChanged;
+
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
         private WinEventDelegate dele = null;
 
@@ -572,7 +575,15 @@ namespace SebWindowsClient.ProcessUtils
 
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            //Only if running
+            if (OnForegroundWindowChanged != null)
+            {
+                if (hwnd != IntPtr.Zero)
+                {
+                    OnForegroundWindowChanged(hwnd);
+                }
+            }
+
+            //Only if watchdog handling is enabled running
             if (!running) return;
 
             Console.WriteLine(hwnd);

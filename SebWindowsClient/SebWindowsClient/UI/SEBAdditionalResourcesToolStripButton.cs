@@ -1,17 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.IO;
 using System.Windows.Forms;
-using System.Windows.Media;
-using MetroFramework;
-using MetroFramework.Controls;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.Properties;
 using SebWindowsClient.XULRunnerCommunication;
-using Color = System.Drawing.Color;
 using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
@@ -19,8 +12,8 @@ namespace SebWindowsClient.UI
 {
     public class SEBAdditionalResourcesToolStripButton : SEBToolStripButton
     {
-        private ContextMenuStrip _menu;
-        private IFileCompressor _fileCompressor;
+        private readonly ContextMenuStrip _menu;
+        private readonly IFileCompressor _fileCompressor;
 
         public SEBAdditionalResourcesToolStripButton()
         {
@@ -29,6 +22,13 @@ namespace SebWindowsClient.UI
             FileCompressor.CleanupTempDirectory();
 
             _menu = new ContextMenuStrip();
+            if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
+            {
+                _menu.Font = new Font("Segoe UI", 36F);
+                _menu.ShowImageMargin = true;
+                _menu.ImageScalingSize = new Size(48, 48);   
+            }
+
             _fileCompressor = new FileCompressor();
 
             LoadItems();
@@ -46,45 +46,45 @@ namespace SebWindowsClient.UI
 
         private void LoadItems()
         {
-            foreach (DictObj l0resource in ((ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]))
+            foreach (DictObj l0Resource in ((ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]))
             {
-                if (!(bool)l0resource[SEBSettings.KeyAdditionalResourcesActive])
+                if (!(bool)l0Resource[SEBSettings.KeyAdditionalResourcesActive])
                     continue;
 
-                var l0item = new SEBAdditionalResourceMenuItem();
-                l0item.Text = l0resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                l0item.Resource = l0resource;
-                l0item.Click += OnItemClicked;
-                AutoOpenResource(l0resource);
-                l0item.Image = GetResourceIcon(l0resource);
+                var l0Item = new SEBAdditionalResourceMenuItem();
+                l0Item.Text = l0Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
+                l0Item.Resource = l0Resource;
+                l0Item.Click += OnItemClicked;
+                AutoOpenResource(l0Resource);
+                l0Item.Image = GetResourceIcon(l0Resource);
 
-                foreach (DictObj l1resource in ((ListObj)l0resource[SEBSettings.KeyAdditionalResources]))
+                foreach (DictObj l1Resource in ((ListObj)l0Resource[SEBSettings.KeyAdditionalResources]))
                 {
-                    if (!(bool)l1resource[SEBSettings.KeyAdditionalResourcesActive])
+                    if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive])
                         continue;
 
-                    var l1item = new SEBAdditionalResourceMenuItem();
-                    l1item.Text = l1resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                    l1item.Resource = l1resource;
-                    l1item.Click += OnItemClicked;
-                    AutoOpenResource(l1resource);
+                    var l1Item = new SEBAdditionalResourceMenuItem();
+                    l1Item.Text = l1Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
+                    l1Item.Resource = l1Resource;
+                    l1Item.Click += OnItemClicked;
+                    AutoOpenResource(l1Resource);
 
-                    foreach (DictObj l2resource in ((ListObj)l1resource[SEBSettings.KeyAdditionalResources]))
+                    foreach (DictObj l2Resource in ((ListObj)l1Resource[SEBSettings.KeyAdditionalResources]))
                     {
-                        if (!(bool)l0resource[SEBSettings.KeyAdditionalResourcesActive])
+                        if (!(bool)l0Resource[SEBSettings.KeyAdditionalResourcesActive])
                             continue;
 
-                        var l2item = new SEBAdditionalResourceMenuItem();
-                        l2item.Text = l2resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                        l2item.Resource = l2resource;
-                        l2item.Click += OnItemClicked;
-                        AutoOpenResource(l2resource);
+                        var l2Item = new SEBAdditionalResourceMenuItem();
+                        l2Item.Text = l2Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
+                        l2Item.Resource = l2Resource;
+                        l2Item.Click += OnItemClicked;
+                        AutoOpenResource(l2Resource);
 
-                        l1item.DropDownItems.Add(l2item);
+                        l1Item.DropDownItems.Add(l2Item);
                     }
-                    l0item.DropDownItems.Add(l1item);
+                    l0Item.DropDownItems.Add(l1Item);
                 }
-                _menu.Items.Add(l0item);
+                _menu.Items.Add(l0Item);
             }
         }
 
@@ -169,7 +169,7 @@ namespace SebWindowsClient.UI
 
         protected override void OnClick(EventArgs e)
         {
-            _menu.Show(this.Parent,new Point(this.Bounds.X,this.Bounds.Y));
+            _menu.Show(Parent,new Point(Bounds.X,Bounds.Y));
         }
        
     }

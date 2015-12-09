@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DiagnosticsUtils;
 using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
@@ -406,6 +407,8 @@ namespace SebWindowsConfig.Sections
                 comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = false;
                 comboBoxAdditionalResourcesChooseFileToLaunch.Text = new FileInfo(openFileDialog.FileName).Name;
 
+                SetIconFromFile(openFileDialog.FileName);
+
                 treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
                 EmbeddedResourceChosen();
             }
@@ -434,12 +437,85 @@ namespace SebWindowsConfig.Sections
             }
         }
 
+        private void SetIconFromUrl(string url)
+        {
+            if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+                return;
+
+            try
+            {
+                var uri = new Uri(textBoxAdditionalResourceUrl.Text);
+                DictObj selectedResource = GetSelectedResource();
+
+                var ic = new DictObj();
+                ic[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] =
+                    _fileCompressor.CompressAndEncodeFavicon(uri);
+                ic[SEBSettings.KeyAdditionalResourcesResourceIconsFormat] = "png";
+
+                var icons = (ListObj)selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons];
+                if (icons.Count > 0)
+                {
+                    icons[0] = ic;
+                }
+                else
+                {
+                    icons.Add(ic);
+                }
+
+                var memoryStream = _fileCompressor.DeCompressAndDecode((string)ic[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]);
+                var image = Image.FromStream(memoryStream);
+                pictureBoxAdditionalResourceIcon.Image = image;
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError(string.Format("Unable to extract Icon of Url {0}", url), this, ex);
+            }
+        }
+
         private void comboBoxAdditionalResourcesChooseFileToLaunch_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxAdditionalResourcesChooseFileToLaunch.SelectedItem != null)
             {
                 DictObj selectedResource = GetSelectedResource();
-                selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = comboBoxAdditionalResourcesChooseFileToLaunch.SelectedItem;   
+                selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = comboBoxAdditionalResourcesChooseFileToLaunch.SelectedItem;
+            }
+        }
+
+        private void SetIconFromFile(string filename)
+        {
+            if (!File.Exists(filename))
+                return;
+            try
+            {
+                var icon = Icon.ExtractAssociatedIcon(filename);
+                if (icon != null)
+                {
+                    DictObj selectedResource = GetSelectedResource();
+
+                    var ic = new DictObj();
+                    ic[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] =
+                        _fileCompressor.CompressAndEncodeIcon(icon);
+                    ic[SEBSettings.KeyAdditionalResourcesResourceIconsFormat] = "png";
+
+                    var icons = (ListObj)selectedResource[SEBSettings.KeyAdditionalResourcesResourceIcons];
+                    if (icons.Count > 0)
+                    {
+                        icons[0] = ic;
+                    }
+                    else
+                    {
+                        icons.Add(ic);
+                    }
+
+                    var memoryStream = _fileCompressor.DeCompressAndDecode((string)ic[SEBSettings.KeyAdditionalResourcesResourceIconsIconData]);
+                    var image = Image.FromStream(memoryStream);
+                    pictureBoxAdditionalResourceIcon.Image = image;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError(string.Format("Unable to extract Icon of File {0}",filename),this,ex);
             }
         }
 
@@ -525,6 +601,11 @@ namespace SebWindowsConfig.Sections
                 var image = Image.FromStream(memoryStream);
                 pictureBoxAdditionalResourceIcon.Image = image;
             }
+        }
+
+        private void textBoxAdditionalResourceUrl_Leave(object sender, EventArgs e)
+        {
+            SetIconFromUrl(textBoxAdditionalResourceUrl.Text);
         }
     }
 }

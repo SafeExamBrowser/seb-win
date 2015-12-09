@@ -145,7 +145,6 @@
     <Compile Include="SebCloseDialogForm.Designer.cs">
       <DependentUpon>SebCloseDialogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Intptr.cs" />
     <Compile Include="SebApplicationChooserForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,6 +12,7 @@ namespace SebWindowsClient.ConfigurationUtils
     public class FileCompressor : IFileCompressor
     {
         private static readonly string TempDirectory = SEBClientInfo.SebClientSettingsAppDataDirectory + "temp\\";
+        private static readonly string TempIconFilename = SEBClientInfo.SebClientSettingsAppDataDirectory + "temp\\tempIcon.png";
 
         public static void CleanupTempDirectory()
         {
@@ -33,6 +36,31 @@ namespace SebWindowsClient.ConfigurationUtils
             var stream = new MemoryStream();
             zip.Save(stream);
             return base64_encode(stream.ToArray());
+        }
+
+        public string CompressAndEncodeIcon(Icon icon)
+        {
+            //Save the file first locally
+            if (File.Exists(TempIconFilename))
+            {
+                File.Delete(TempIconFilename);
+            }
+            if (!Directory.Exists(TempDirectory))
+            {
+                Directory.CreateDirectory(TempDirectory);
+            }
+            icon.ToBitmap().Save(TempIconFilename, ImageFormat.Png);
+
+            return CompressAndEncodeFile(TempIconFilename);
+        }
+
+        public string CompressAndEncodeFavicon(Uri uri)
+        {
+            var client = new System.Net.WebClient();
+            client.DownloadFile(
+                string.Format(@"http://www.google.com/s2/favicons?domain_url={0}", uri.Host),
+                TempIconFilename);
+            return CompressAndEncodeFile(TempIconFilename);
         }
 
         public string CompressAndEncodeDirectory(string path, out List<string> containingFilenames)

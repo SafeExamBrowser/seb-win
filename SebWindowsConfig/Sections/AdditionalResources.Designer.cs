@@ -299,6 +299,7 @@
             this.textBoxAdditionalResourceUrl.Size = new System.Drawing.Size(367, 22);
             this.textBoxAdditionalResourceUrl.TabIndex = 3;
             this.textBoxAdditionalResourceUrl.TextChanged += new System.EventHandler(this.textBoxAdditionalResourceUrl_TextChanged);
+            this.textBoxAdditionalResourceUrl.Leave += new System.EventHandler(this.textBoxAdditionalResourceUrl_Leave);
             // 
             // checkBoxAdditionalResourceActive
             // 

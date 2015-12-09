@@ -80,6 +80,9 @@ namespace SebWindowsClient.DiagnosticsUtils
                         : string.Format("\n\n{0}",details);
 
                     file.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
+#if DEBUG
+                    Console.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
+#endif
                 }
             }
             catch

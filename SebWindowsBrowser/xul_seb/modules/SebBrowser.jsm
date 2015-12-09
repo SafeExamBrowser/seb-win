@@ -271,6 +271,12 @@ this.SebBrowser = {
 			base.stopLoading();
 			isStarted = false;
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
+			try {
+				win.document.title = win.content.document.title;
+			}
+			catch(e) {
+				sl.debug(e);
+			}
 			if (win === seb.mainWin && su.getConfig("sebScreenshot","boolean",false)) {
 				sc.createScreenshotController(w);
 			}

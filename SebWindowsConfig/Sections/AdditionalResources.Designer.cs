@@ -34,6 +34,7 @@
             this.buttonAdditionalResourcesAdd = new System.Windows.Forms.Button();
             this.buttonadditionalResourcesRemove = new System.Windows.Forms.Button();
             this.groupBoxAdditionalResourceDetails = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.comboBoxAdditionalResourcesChooseFileToLaunch = new System.Windows.Forms.ComboBox();
             this.buttonAdditionalResourcesChooseEmbeddedFolder = new System.Windows.Forms.Button();
             this.pictureBoxAdditionalResourceIcon = new System.Windows.Forms.PictureBox();
@@ -53,7 +54,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxAdditionalResourcesTitle = new System.Windows.Forms.TextBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBoxAdditionalResourceDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAdditionalResourceIcon)).BeginInit();
             this.SuspendLayout();
@@ -143,6 +143,16 @@
             this.groupBoxAdditionalResourceDetails.TabStop = false;
             this.groupBoxAdditionalResourceDetails.Text = "Selected Resource";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 192);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(161, 17);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Filename / File to launch";
+            // 
             // comboBoxAdditionalResourcesChooseFileToLaunch
             // 
             this.comboBoxAdditionalResourcesChooseFileToLaunch.FormattingEnabled = true;
@@ -165,7 +175,7 @@
             // pictureBoxAdditionalResourceIcon
             // 
             this.pictureBoxAdditionalResourceIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(262, 322);
+            this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(262, 318);
             this.pictureBoxAdditionalResourceIcon.Name = "pictureBoxAdditionalResourceIcon";
             this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(48, 48);
             this.pictureBoxAdditionalResourceIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -328,16 +338,6 @@
             this.treeViewAdditionalResources.Size = new System.Drawing.Size(367, 706);
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 192);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(161, 17);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Filename / File to launch";
             // 
             // AdditionalResources
             // 

@@ -387,7 +387,8 @@ namespace SebWindowsConfig.Sections
 
             treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
 
-            buttonAdditionalResourceChooseEmbededResource.Enabled = string.IsNullOrEmpty(textBoxAdditionalResourceUrl.Text);
+            buttonAdditionalResourcesChooseEmbeddedFolder.Enabled = 
+                buttonAdditionalResourceChooseEmbededResource.Enabled = string.IsNullOrEmpty(textBoxAdditionalResourceUrl.Text);
         }
 
         private void buttonAdditionalResourceChooseEmbededResource_Click(object sender, EventArgs e)
@@ -547,6 +548,9 @@ namespace SebWindowsConfig.Sections
             DictObj selectedResource = GetSelectedResource();
 
             selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = "";
+            selectedResource[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] = "";
+            selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
+            selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] = "";
             
             treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
 
@@ -554,6 +558,9 @@ namespace SebWindowsConfig.Sections
             buttonAdditionalResourceEmbededResourceOpen.Visible = false;
             labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
             comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
+            comboBoxAdditionalResourcesChooseFileToLaunch.Visible = false;
+
+            pictureBoxAdditionalResourceIcon.Image = null;
 
             textBoxAdditionalResourceUrl.Enabled = true;
         }

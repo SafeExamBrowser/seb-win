@@ -402,4 +402,25 @@
   <data name="restartExamConfirm" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
+  <data name="WlanConnectionFailedMessage" xml:space="preserve">
+    <value>Connection to WLAN failed, try again.</value>
+  </data>
+  <data name="WlanConnectionFailedMessageTitle" xml:space="preserve">
+    <value>Connection failed</value>
+  </data>
+  <data name="WlanConnecting" xml:space="preserve">
+    <value>Connecting...</value>
+  </data>
+  <data name="WlanNoNetworkInterfaceFound" xml:space="preserve">
+    <value>No network interface found</value>
+  </data>
+  <data name="WlanNoNetworksFound" xml:space="preserve">
+    <value>No known networks found!</value>
+  </data>
+  <data name="WlanYouCanOnlyConnectToNetworks" xml:space="preserve">
+    <value>you can only connect to networks</value>
+  </data>
+  <data name="WlanThatYouHaveUsedBefore" xml:space="preserve">
+    <value>that you have used before.</value>
+  </data>
 </root>

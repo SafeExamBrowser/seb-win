@@ -45,6 +45,13 @@ namespace SebWindowsClient.UI
             if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamPasswordProtected)[SEBSettings.KeyRestartExamPasswordProtected] && !String.IsNullOrWhiteSpace(quitPassword))
             {
                 var password = SebPasswordDialogForm.ShowPasswordDialogForm(restartExamTitle, SEBUIStrings.restartExamEnterPassword);
+
+                //cancel button has been clicked
+                if (password == null)
+                {
+                    return;
+                }
+
                 var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
                 if (String.IsNullOrWhiteSpace(password) ||
                     String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)

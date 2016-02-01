@@ -529,7 +529,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 2);
 
             //Touch Settings
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserScreenKeyboard       , false);

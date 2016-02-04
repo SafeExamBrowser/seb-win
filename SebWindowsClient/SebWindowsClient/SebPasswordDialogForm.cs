@@ -126,11 +126,17 @@ namespace SebWindowsClient
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.txtSEBPassword.Text = "";
+            ResizeTopOpenWindow();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
             this.Visible = false;
+            ResizeTopOpenWindow();
+        }
+
+        private void ResizeTopOpenWindow()
+        {
             try
             {
                 if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
@@ -143,7 +149,7 @@ namespace SebWindowsClient
                 }
             }
             catch
-            {}
+            { }
         }
 
         // Expose the label for changing from outside of the form

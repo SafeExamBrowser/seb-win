@@ -110,8 +110,9 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                         persistentRegistryFile.Delete();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Log(ex, "Unable to Reset Registrysettings");
                 res = false;
             }
             return res;

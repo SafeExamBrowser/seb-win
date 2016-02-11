@@ -101,6 +101,10 @@
     <None Include="Resources\EmptyDll.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
+"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -105,6 +105,10 @@
     </WixExtension>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
+"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
 	Other similar extension points exist, see Wix.targets.

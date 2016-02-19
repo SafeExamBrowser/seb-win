@@ -74,9 +74,15 @@ namespace SebWindowsConfig.Sections
         {
             var node = treeViewAdditionalResources.SelectedNode;
             if (node == null)
+            {
                 MessageBox.Show("No node selected");
+                return;
+            }
             if (node.Level == 2)
+            {
                 MessageBox.Show("Maximum 3 levels");
+                return;
+            }
 
             var selectedResource = GetSelectedResource();
             ListObj resourceList = (ListObj)selectedResource[SEBSettings.KeyAdditionalResources];

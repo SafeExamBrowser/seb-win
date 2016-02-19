@@ -25,6 +25,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="WixMain.wxs" />
+    <Compile Include="XulRunner.wxs" />
+    <Compile Include="XulSeb.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SebRegistryResetter\SebRegistryResetter.csproj">
@@ -108,8 +110,8 @@
 "$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"%25WIX%25\bin\heat" dir "$(SolutionDir)\SebWindowsBrowser\xul_seb" -out "$(SolutionDir)\WixInstaller\XulSeb.wxs" -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder
-"%25WIX%25\bin\heat" dir "$(SolutionDir)\SebWindowsBrowser\xulrunner" -out "$(SolutionDir)\WixInstaller\XulRunner.wxs" -gg -cg XulRunnerComponentGroup -template fragment -sfrag -dr XulRunnerInstallFolder</PreBuildEvent>
+    <PreBuildEvent>"%25WIX%25\bin\heat" dir "$(SolutionDir)SebWindowsBrowser\xul_seb" -out "$(SolutionDir)WixInstaller\XulSeb.wxs" -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder
+"%25WIX%25\bin\heat" dir "$(SolutionDir)SebWindowsBrowser\xulrunner" -out "$(SolutionDir)WixInstaller\XulRunner.wxs" -gg -cg XulRunnerComponentGroup -template fragment -sfrag -dr XulRunnerInstallFolder</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

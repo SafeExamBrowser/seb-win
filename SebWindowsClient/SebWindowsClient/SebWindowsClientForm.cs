@@ -55,6 +55,7 @@ using SebWindowsClient.ServiceUtils;
 using SebWindowsClient.UI;
 using SebWindowsClient.XULRunnerCommunication;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using ListObj = System.Collections.Generic.List<object>;
 
 
 namespace SebWindowsClient
@@ -742,8 +743,10 @@ namespace SebWindowsClient
             }
 
             //Filling System Icons
-
-            taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton());
+            if (((ListObj) SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]).Count > 0)
+            {
+                taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton());
+            }
 
             //QuitButton
             if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAllowQuit])

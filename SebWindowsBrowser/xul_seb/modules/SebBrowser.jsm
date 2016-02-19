@@ -39,7 +39,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /* Services */
 let	wpl = Ci.nsIWebProgressListener,
-	wnav = Ci.nsIWebNavigation,
+  wnav = Ci.nsIWebNavigation,
 	ovs = Cc["@mozilla.org/security/certoverride;1"].getService(Ci.nsICertOverrideService);
 	
 
@@ -58,7 +58,7 @@ XPCOMUtils.defineLazyModuleGetter(this,"sc","resource://modules/SebScreenshot.js
 let 	base = null,
 	seb = null,
 	certdb = null,
-	nav = null,
+	certdb2 = null,
 	loadFlag = null,
 	startDocumentFlags = wpl.STATE_IS_REQUEST | wpl.STATE_IS_DOCUMENT | wpl.STATE_START,
 	stopDocumentFlags = wpl.STATE_IS_WINDOW | wpl.STATE_STOP,
@@ -77,18 +77,24 @@ let 	base = null,
 	    LOCATION_CHANGE_SAME_DOCUMENT: wpl.LOCATION_CHANGE_SAME_DOCUMENT,
 	    LOCATION_CHANGE_ERROR_PAGE: wpl.LOCATION_CHANGE_ERROR_PAGE,
 	},
-	isStarted = false;
 	mimeTypesRegs = {
 		flash : new RegExp(/^application\/x-shockwave-flash/),
 		pdf : new RegExp(/^application\/(x-)?pdf/)
 	};
 	
 const	nsIX509CertDB = Ci.nsIX509CertDB,
+	nsIX509CertDB2 = Ci.nsIX509CertDB2,
 	nsX509CertDB = "@mozilla.org/security/x509certdb;1",
-	DOCUMENT_BLOCKER = "about:document-onload-blocker";
+	DOCUMENT_BLOCKER = "about:document-onload-blocker",
+	CERT_SSL = 0,
+	CERT_CA = 1,
+	CERT_EMAIL = 2;
 
 function nsBrowserStatusHandler() {};
 nsBrowserStatusHandler.prototype = {
+	isStarted : false,
+	win : null,
+	baseurl : null,
 	onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {},
 	onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {},
 	onProgressChange : function(aWebProgress, aRequest, aCurSelfProgress,
@@ -112,87 +118,34 @@ nsBrowserStatusHandler.prototype = {
 	setOverLink : function(link) {}
 }
 
-let base = null;
-
 this.SebBrowser = {
+	//lastDocumentUrl : null,
 	init : function(obj) {
 		base = this;
 		seb = obj;
 		certdb = Cc[nsX509CertDB].getService(nsIX509CertDB);
+		//base.disableBuiltInCerts();
 		sl.out("SebBrowser initialized: " + seb);
 	},
 	
-	/*
-	browserListener : {
-		QueryInterface: XPCOMUtils.generateQI(["nsIWebProgressListener", "nsISupportsWeakReference"]),
-		
-		onStateChange: function(aWebProgress, aRequest, aFlag, aStatus) {
-		// If you use myListener for more than one tab/window, use
-		// aWebProgress.DOMWindow to obtain the tab/window which triggers the state change
-		if (aFlag) {
-			    for (var f in wplFlag) {
-				if (wplFlag[f] & aFlag) {
-				    Cu.reportError('onStateChange -> wplFlag present = ' + f);
-				}
-			    }
-			}
-		},
-
-		onLocationChange: function(aProgress, aRequest, aURI, aFlag) {
-		// This fires when the location bar changes; that is load event is confirmed
-		// or when the user switches tabs. If you use myListener for more than one tab/window,
-		// use aProgress.DOMWindow to obtain the tab/window which triggered the change.
-		if (aFlag) {
-			for (var f in wplFlag) {
-				if (wplFlag[f] & aFlag) {
-				    Cu.reportError('onLocationChange -> wplFlag present = ' + f);
-				}
-			    }
-			}
-		},
-
-		// For definitions of the remaining functions see related documentation
-		onProgressChange: function(aWebProgress, aRequest, curSelf, maxSelf, curTot, maxTot) {},
-		onStatusChange: function(aWebProgress, aRequest, aStatus, aMessage) {
-			if (aStatus) {
-			    Cu.reportError('onStatusChange -> aStatus = ' + aStatus);
-			}
-			if (aStatus) {
-			    Cu.reportError('onStatusChange -> aMessage = ' + aMessage);
-			}
-		},
-		onSecurityChange: function(aWebProgress, aRequest, aState) {}
-	},
-	*/
-	
 	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
-		/*
-		if ((aStateFlags & startNetworkFlags) == startNetworkFlags) { // start document network event
-			sl.debug("DOCUMENT NETWORK START: " + aRequest.name);
-			let win = sw.getChromeWin(aWebProgress.DOMWindow);
-			base.startLoading(win);
-		}
-		*/
-		/*
-		if ((aStateFlags & stopNetworkFlags) == stopNetworkFlags) { // stop network event 
-			sl.debug("status: " + aStatus);
-		}
-		*/
-		/*
-		if (aStateFlags) {
-			for (var f in wplFlag) {
-				if (wplFlag[f] & aStateFlags) {
-				    sl.debug('onStateChange -> wplFlag present = ' + f);
-				}
-			}
-		}
-		*/
-		
 		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
-			isStarted = true;
+			this.isStarted = true;
+			this.win = sw.getChromeWin(aWebProgress.DOMWindow);
+			this.baseurl = btoa(aRequest.name);
+			
+			//this.win = sw.lastWin;
+			
+			/*
+			if (this.win !== sw.getChromeWin(aWebProgress.DOMWindow)) {
+				sl.debug("strange: this.win != sw.getChromeWin(aWebProgress.DOMWindow");
+			}
+			*/
+			 
 			sl.debug("DOCUMENT REQUEST START: " + aRequest.name + " status: " + aStatus);
-			let win = sw.getChromeWin(aWebProgress.DOMWindow);
-			base.startLoading(win);
+			sl.debug("baseurl: " + this.baseurl);
+			//this.win.document.getElementsByTagName("window")[0].setAttribute("baseurl",baseurl);
+			base.startLoading(this.win);
 			if (seb.quitURL === aRequest.name) {
 				aRequest.cancel(aStatus);
 				base.stopLoading();
@@ -224,8 +177,7 @@ this.SebBrowser = {
 		}
 		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
 			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus); 
-			let win = sw.getChromeWin(aWebProgress.DOMWindow);
-			if (aStatus > 0) { // error: experimental!!!
+			if (aStatus > 0 && aStatus != 2152398850) { // error: experimental!!! ToDo: look at status codes!!
 				sl.debug("Error document loading: " + aStatus);
 				base.stopLoading();
 				try {
@@ -234,7 +186,7 @@ this.SebBrowser = {
 						let mimeType = aRequest.getResponseHeader("Content-Type");
 						if (mimeTypesRegs.pdf.test(mimeType) && !/\.pdf$/i.test(aRequest.name) && su.getConfig("sebPdfJsEnabled","boolean", true)) { // pdf file requests should already catched by SebBrowser
 							sl.debug("request already aborted by httpResponseObserver, no error page!");
-							isStarted = false;
+							this.isStarted = false;
 							return 0;
 						}	
 					}
@@ -248,12 +200,13 @@ this.SebBrowser = {
 						}
 					}
 					aRequest.cancel(aStatus);
-					win.setTimeout(function() {
-						if (!isStarted) { // no new start request until now (capturing double clicks on links: experimental)
+					
+					this.win.setTimeout(function() {
+						if (!this.isStarted) { // no new start request until now (capturing double clicks on links: experimental)
 							let flags = wnav.LOAD_FLAGS_BYPASS_HISTORY; // does not work??? why???
 							//win.content.document.location.assign("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name));
-							win.XulLibBrowser.webNavigation.loadURI("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name), flags, null, null, null);
-							isStarted = false;
+							this.XulLibBrowser.webNavigation.loadURI("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name), flags, null, null, null);
+							this.XULBrowserWindow.isStarted = false;
 						}
 					}, 100);
 					return 0;
@@ -263,28 +216,28 @@ this.SebBrowser = {
 				}
 				finally {
 					aRequest.cancel(aStatus);
-					isStarted = false;
+					this.isStarted = false;
 					return 1;
 				}
 			}
 			
 			base.stopLoading();
-			isStarted = false;
+			this.isStarted = false;
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
 			try {
-				win.document.title = win.content.document.title;
+				this.win.document.title = this.win.content.document.title;
 			}
 			catch(e) {
 				sl.debug(e);
 			}
-			if (win === seb.mainWin && su.getConfig("sebScreenshot","boolean",false)) {
+			if (this.win === seb.mainWin && su.getConfig("sebScreenshot","boolean",false)) {
 				sc.createScreenshotController(w);
 			}
-			if (win === seb.mainWin && su.getConfig("enableBrowserWindowToolbar","boolean",false)) {
-				base.refreshNavigation();
+			if (su.getConfig("enableBrowserWindowToolbar","boolean",false)) {
+				base.refreshNavigation(this.win);
 			}
 			if (su.getConfig("browserScreenKeyboard","boolean",false)) {
-				sh.createScreenKeyboardController(win);
+				sh.createScreenKeyboardController(this.win);
 			}
 		}
 	},
@@ -295,7 +248,7 @@ this.SebBrowser = {
 	
 	statusListener : function(aWebProgress, aRequest, aStatus, aMessage) {
 		if (aStatus) {
-			sl.debug("status: " + aStatus + " : " + aMessage);
+			//sl.debug("status: " + aStatus + " : " + aMessage);
 		}	
 	},
 	
@@ -337,12 +290,13 @@ this.SebBrowser = {
 		var interfaceRequestor = win.XulLibBrowser.docShell.QueryInterface(Ci.nsIInterfaceRequestor);
 		var webProgress = interfaceRequestor.getInterface(Ci.nsIWebProgress);
 		webProgress.addProgressListener(win.XULBrowserWindow, Ci.nsIWebProgress.NOTIFY_ALL);
-		nav = win.XulLibBrowser.webNavigation;
+		//nav = win.XulLibBrowser.webNavigation;
 		sl.debug("initBrowser");
 	},
 	
-	addCert : function(cert) {
+	addSSLCert : function(cert) {
 		try {
+			sl.debug("add SSL Cert");
 			let flags = ovs.ERROR_UNTRUSTED | ovs.ERROR_MISMATCH | ovs.ERROR_TIME;
 			let x509 = certdb.constructX509FromBase64(cert.certificateData);
 			//certlist.addCert(x509); // maybe needed for type 1 Identity Certs
@@ -356,7 +310,21 @@ this.SebBrowser = {
 			ovs.rememberValidityOverride(host,port,x509,flags,true);
 			sl.debug("add cert: " + host + ":" + port + "\n" + cert.certificateData);
 		}
-		catch (e) { sl.err(e); s}
+		catch (e) { sl.err(e); }
+	},
+	
+	addCACert : function(cert) {
+		try {
+			sl.debug("add CA Cert");
+			var cdb = Cc["@mozilla.org/security/x509certdb;1"].getService(Ci.nsIX509CertDB);
+			var certdb2 = cdb;
+			try {
+				certdb2 = Cc["@mozilla.org/security/x509certdb;1"].getService(Ci.nsIX509CertDB2);
+			} catch (e) {}
+			certdb2.addCertFromBase64(cert.certificateData, "C,C,C", cert.certificateData);
+			//certdb2.addCertFromBase64(cert.certificateData, "TCu,Cu,Tu", cert.certificateData);
+		}
+		catch (e) { sl.err(e); }
 	},
 	
 	setEmbeddedCerts : function() {
@@ -364,7 +332,14 @@ this.SebBrowser = {
 		if ( typeof certs != "object") { return; }
 		sl.debug("setEmbeddedCerts");
 		for (var i=0;i<certs.length;i++) {
-			base.addCert(certs[i]);
+			switch (certs[i].type) {
+				case CERT_SSL :
+					base.addSSLCert(certs[i]);
+					break;
+				case CERT_CA :
+					base.addCACert(certs[i]);
+					break;
+			}
 		}
 	},
 	
@@ -477,7 +452,8 @@ this.SebBrowser = {
 		}
 	}, 
 	
-	back : function() {
+	back : function(win) {
+		var nav = win.XulLibBrowser.webNavigation;
 		if (!su.getConfig("allowBrowsingBackForward","boolean",false)) {
 			sl.debug("navigation: back not allowed")
 			return; 
@@ -488,7 +464,8 @@ this.SebBrowser = {
 		}
 	},
 	
-	forward : function() {
+	forward : function(win) {
+		var nav = win.XulLibBrowser.webNavigation;
 		if (!su.getConfig("allowBrowsingBackForward","boolean",false)) { 
 			sl.debug("navigation: forward not allowed");	
 			return; 
@@ -499,29 +476,50 @@ this.SebBrowser = {
 		}		
 	},
 	
-	refreshNavigation : function() {
+	refreshNavigation : function(win) {
 		sl.debug("refreshNavigation");
+		var nav = win.XulLibBrowser.webNavigation;
 		if (su.getConfig("allowBrowsingBackForward","boolean",false)) { // should be visible
-			var back = seb.mainWin.document.getElementById("btnBack");
-			var forward = seb.mainWin.document.getElementById("btnForward");
+			var back = win.document.getElementById("btnBack");
+			var forward = win.document.getElementById("btnForward");
 			if (nav.canGoBack) {
 				sl.debug("canGoBack");
 				back.className = "tbBtn enabled";
-				back.addEventListener("click",base.back,false);
+				//back.addEventListener("click",base.back,false);
 			}
 			else {
 				back.className = "tbBtn disabled";
-				back.removeEventListener("click",base.back,false);
+				//back.removeEventListener("click",base.back,false);
 			}
 			if (nav.canGoForward) {
 				sl.debug("canGoForward");
 				forward.className = "tbBtn enabled";
-				forward.addEventListener("click",base.forward,false);
+				//forward.addEventListener("click",base.forward,false);
 			}
 			else {
 				forward.className = "tbBtn disabled";
-				forward.removeEventListener("click",base.forward,false);
+				//forward.removeEventListener("click",base.forward,false);
 			}
+		}
+	},
+	
+	disableBuiltInCerts : function () {
+		let certs = certdb.getCerts();
+		let enumerator = certs.getEnumerator();
+		while (enumerator.hasMoreElements()) {
+			let cert = enumerator.getNext().QueryInterface(Ci.nsIX509Cert);
+			//let sslTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_SSL);
+			//let emailTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_EMAIL);
+			//let objsignTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_OBJSIGN);
+			certdb.setCertTrust(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509Cert.CERT_NOT_TRUSTED);
+			/*
+			sl.debug("issuer: " + cert.issuerName + "\n");
+			sl.debug("serial: " + cert.serialNumber + "\n");
+			sl.debug("trust:\n");
+			sl.debug("  SSL:\t\t" + sslTrust + "\n");
+			sl.debug("  EMAIL:\t" + emailTrust + "\n");
+			sl.debug("  OBJSIGN:\t" + objsignTrust + "\n");
+			*/ 
 		}
 	}
 }

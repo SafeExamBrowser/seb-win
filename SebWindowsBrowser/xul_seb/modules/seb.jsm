@@ -201,7 +201,7 @@ var seb = (function() {
 							if (aRequest && aRequest.name) {
 								let win = x.getChromeWin(aWebProgress.DOMWindow);
 								//win.setCursor("-moz-spinning");
-								if (shutdownUrl === aRequest.name) {
+								if ((shutdownUrl === aRequest.name) || (shutdownUrl+"/" === aRequest.name)) {
 									aRequest.cancel(aStatus);
 									var tmpShutdown = shutdownEnabled; // store default shutdownEnabled
 									var tmpPassword = shutdownIgnorePassword; // store default shutdownIgnorePassword

@@ -32,3 +32,6 @@ pref("privacy.popups.firstTime", false);
 pref("privacy.popups.policy", 1);
 pref("security.default_personal_cert", "Select Automatically");
 pref("gecko.handlerService.allowRegisterFromDifferentHost", true);
+pref("full-screen-api.enabled", true);
+pref("gfx.direct2d.disabled", false);
+pref("layers.acceleration.disabled", false);

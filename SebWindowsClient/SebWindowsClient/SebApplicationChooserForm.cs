@@ -191,7 +191,7 @@ namespace SebWindowsClient
                     this.lWindowTitles.Add(oW.Value);
                     lRunningApplications.Add(oW.Value);
 
-                    if (oW.Key.GetProcess().ProcessName.Contains("xulrunner"))
+                    if (oW.Key.GetProcess().ProcessName.Contains("firefox"))
                     {
                         Bitmap sebIconBitmap = Icon.ExtractAssociatedIcon(Application.ExecutablePath).ToBitmap();
                         //sebIconBitmap.MakeTransparent(BackColor);

@@ -662,7 +662,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyDescription, "");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyExecutable, SEBClientInfo.XUL_RUNNER);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyPath       , "../xulrunner/");
-            SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyIdentifier , "XULRunner");
+            SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyIdentifier , "Firefox");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyWindowHandlingProcess , "");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyArguments  , new ListObj());
 
@@ -1389,27 +1389,25 @@ namespace SebWindowsClient.ConfigurationUtils
             {
                 SEBSettings.permittedProcessData = (DictObj)SEBSettings.permittedProcessList[listIndex];
 
+                //Backwards Compatibility: Use Firefox instead of Xulrunner as SEB Browser
+                if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals("xulrunner.exe"))
+                {
+                    ((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyExecutable] = SEBClientInfo.XUL_RUNNER;
+                    ((DictObj) SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyIdentifier] = "Firefox";
+                    indexOfProcessXulRunnerExe = listIndex;
+                }
+
                 // Check if XulRunner process is in Permitted Process List
                 if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals(SEBClientInfo.XUL_RUNNER))
                     indexOfProcessXulRunnerExe = listIndex;
 
-            } // next listIndex
+            }
 
             // If XulRunner process was not in Permitted Process List, add it
             if (indexOfProcessXulRunnerExe == -1)
             {
                 SEBSettings.permittedProcessList.Add(SEBSettings.permittedProcessDataXulRunner);
             }
-            // Assure that XulRunner process has correct settings:
-            // Remove XulRunner process from Permitted Process List.
-            // Add    XulRunner process to   Permitted Process List.
-            else
-            {
-              //SEBSettings.permittedProcessList.RemoveAt(indexOfProcessXulRunnerExe);
-              //SEBSettings.permittedProcessList.Insert  (indexOfProcessXulRunnerExe, SEBSettings.permittedProcessDataXulRunner);
-            }
-
-            return;
         }
 
 
@@ -1546,6 +1544,7 @@ namespace SebWindowsClient.ConfigurationUtils
             }
             // Store the new settings or use defaults if new settings were empty
             StoreSebClientSettings(settingsDict);
+
             return true;
         }
 

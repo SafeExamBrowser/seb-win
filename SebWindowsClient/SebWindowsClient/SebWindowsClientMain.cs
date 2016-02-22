@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Windows.Forms;
+using System.Windows.Ink;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.ProcessUtils;
@@ -338,8 +339,6 @@ namespace SebWindowsClient
         public static bool InitSebSettings()
         {
             Logger.AddInformation("Attempting to InitSebSettings");
-            //SebWindowsClientForm.SetVisibility(true);
-            //SEBMessageBox.Show("Test", "Test, ob das Öffnen einer Message-Box createNewDesktop verunmöglicht.", SEBGlobalConstants.IND_MESSAGE_KIND_ERROR, MessageBoxButtons.OK);
 
             // If loading of a .seb file isn't in progress and client settings aren't set yet
             if (_loadingSebFile == false && clientSettingsSet == false)

@@ -107,7 +107,7 @@ namespace SebWindowsClient.ProcessUtils
                         if (processToClose != null) // && !processToClose.HasExited)
                         {
                             Logger.AddInformation("Closing " + processToClose.ProcessName);
-                            if (processToClose.ProcessName.Contains("xulrunner"))
+                            if (processToClose.ProcessName.Contains("firefox"))
                             {
                                 Logger.AddInformation("Closing XulRunner over Socket");
                                 SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();

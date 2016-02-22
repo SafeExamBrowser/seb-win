@@ -177,7 +177,7 @@ namespace SebWindowsClient
                 try
                 {
                     Process process = hWnd.GetProcess();
-                    if (process.ProcessName.Contains("xulrunner"))
+                    if (process.ProcessName.Contains("firefox"))
                     {
                         return Icon.ExtractAssociatedIcon(Application.ExecutablePath).ToBitmap();
                     }

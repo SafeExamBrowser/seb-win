@@ -46,7 +46,7 @@ namespace SebWindowsClient
             this.ilProcessIcons.Images.SetKeyName(0, "AcrobatReader");
             this.ilProcessIcons.Images.SetKeyName(1, "calc");
             this.ilProcessIcons.Images.SetKeyName(2, "notepad");
-            this.ilProcessIcons.Images.SetKeyName(3, "xulrunner");
+            this.ilProcessIcons.Images.SetKeyName(3, "firefox");
             // 
             // taskbarToolStrip
             // 

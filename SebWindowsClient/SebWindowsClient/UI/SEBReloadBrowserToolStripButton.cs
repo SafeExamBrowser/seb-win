@@ -26,7 +26,7 @@ namespace SebWindowsClient.UI
             {
                 SEBWindowHandler.BringWindowToTop(
                     SEBWindowHandler.GetOpenWindows()
-                        .First(w => w.Key.GetProcess().GetExecutableName().Contains("xul")).Key);
+                        .First(w => w.Key.GetProcess().GetExecutableName().Contains("firefox")).Key);
 
                 if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
                 {

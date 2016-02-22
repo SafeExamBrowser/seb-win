@@ -116,6 +116,7 @@
     <Compile Include="SEBSplashScreen.Designer.cs">
       <DependentUpon>SEBSplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServiceUtils\RegistryChangeNotifier.cs" />
     <Compile Include="taskbarToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>

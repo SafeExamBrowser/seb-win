@@ -110,7 +110,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const string SEB_CLIENT_CONFIG = "SebClientSettings.seb";
         public const string SEB_CLIENT_LOG    = "SebClient.log";
         private const string XUL_RUNNER_CONFIG = "config.json";
-        public  const string XUL_RUNNER        = "xulrunner.exe";
+        public  const string XUL_RUNNER        = "firefox.exe";
         private const string XUL_RUNNER_INI    = "seb.ini";
  
         // Application path contains [MANUFACTURER]\[PRODUCT_NAME]
@@ -255,7 +255,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
             bool setSebClientConfiguration = false;
 
-           // Initialise socket properties
+            // Initialise socket properties
             IsNewOS                = false;
             ExplorerShellWasKilled = false;
             UserNameRegistryFlags  = new char[100];
@@ -268,11 +268,6 @@ namespace SebWindowsClient.ConfigurationUtils
             SendInterval           = DEFAULT_SEND_INTERVAL;
             RecvTimeout            = DEFAULT_RECV_TIMEOUT;
             NumMessages            = DEFAULT_NUM_MESSAGES;
-
-            // Initialise error messages
-            //SEBMessageBox.SetCurrentLanguage();
-            //SEBMessageBox.InitErrorMessages();
-            //SEBSettings     .CreateDefaultAndCurrentSettingsFromScratch();
 
             //Sets paths to files SEB has to save or read from the file system
             SetSebPaths();
@@ -306,23 +301,9 @@ namespace SebWindowsClient.ConfigurationUtils
                 }
             }
 
-            //// Initialize the password entry dialog form
-            //SebWindowsClient.ConfigurationUtils.SEBConfigFileManager.InitSEBConfigFileManager();
-
             // Store the decrypted configuration settings.
             if (!SEBSettings.StoreDecryptedSebClientSettings(sebClientSettings))
                 return false;
-
-            // Close the password entry form
-            //SEBConfigFileManager.sebPasswordDialogForm.Close();
-            //SEBConfigFileManager.sebPasswordDialogForm.Dispose();
-            //int i = 0;
-            //do
-            //{
-            //    Console.WriteLine("Waiting for password dialog to get disposed...");
-            //    i++;
-            //} while (SEBConfigFileManager.sebPasswordDialogForm.Disposing && i < 10000);
-            //SEBConfigFileManager.sebPasswordDialogForm = null;
 
             // Initialise Logger, if enabled
             InitializeLogger();

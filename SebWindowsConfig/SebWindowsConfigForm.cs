@@ -421,6 +421,15 @@ namespace SebWindowsConfig
             // Group AdditionalResources
             tabPageAdditionalResources.Controls.Add(new AdditionalResources());
 
+            FillStartupResourcesinCombobox();
+            foreach (KeyValuePair<string, string> item in comboBoxAdditionalResourceStartUrl.Items)
+            {
+                if (item.Key == SEBSettings.settingsCurrent[SEBSettings.KeyStartResource].ToString())
+                {
+                    comboBoxAdditionalResourceStartUrl.SelectedItem = item;
+                }
+            }
+
             // Group "Applications"
             checkBoxMonitorProcesses         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyMonitorProcesses];
             checkBoxAllowSwitchToApplications.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSwitchToApplications];
@@ -823,6 +832,13 @@ namespace SebWindowsConfig
         // ***************
         private void textBoxStartURL_TextChanged(object sender, EventArgs e)
         {
+            comboBoxAdditionalResourceStartUrl.Enabled = string.IsNullOrEmpty(textBoxStartURL.Text);
+            if (!string.IsNullOrEmpty(textBoxStartURL.Text))
+            {
+                comboBoxAdditionalResourceStartUrl.SelectedItem = null;
+                comboBoxAdditionalResourceStartUrl.Text = "Choose an embedded resource...";
+                SEBSettings.settingsCurrent[SEBSettings.KeyStartResource] = "";
+            }
             SEBSettings.settingsCurrent[SEBSettings.KeyStartURL] = textBoxStartURL.Text;
         }
 
@@ -3825,6 +3841,57 @@ namespace SebWindowsConfig
             if (radioButtonOskAutoDetect.Checked)
             {
                 SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 2;
+            }
+        }
+
+        private void comboBoxAdditionalResourceStartUrl_DropDown(object sender, EventArgs e)
+        {
+            FillStartupResourcesinCombobox();
+        }
+
+        private void AddResourceToStartupResourceDropdown(DictObj resource)
+        {
+            if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
+            {
+                //check if SEB is the launcher
+                //if (
+                //    (string)((DictObj)((ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyPermittedProcesses])[
+                //        (int)resource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher]])[SEBSettings.KeyTitle] ==
+                //    "SEB")
+                if ((int)resource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] == 0)
+                {
+                    comboBoxAdditionalResourceStartUrl.Items.Add(
+                    new KeyValuePair<string, string>((string)resource[SEBSettings.KeyAdditionalResourcesIdentifier],
+                        (string)resource[SEBSettings.KeyAdditionalResourcesTitle]));
+                }
+            }
+        }
+
+        private void FillStartupResourcesinCombobox()
+        {
+            comboBoxAdditionalResourceStartUrl.Items.Clear();
+            foreach (DictObj l0Resource in SEBSettings.additionalResourcesList)
+            {
+                AddResourceToStartupResourceDropdown(l0Resource);
+                foreach (DictObj l1Resource in (ListObj) l0Resource[SEBSettings.KeyAdditionalResources])
+                {
+                    AddResourceToStartupResourceDropdown(l1Resource);
+                    foreach (DictObj l2Resource in (ListObj) l1Resource[SEBSettings.KeyAdditionalResources])
+                    {
+                        AddResourceToStartupResourceDropdown(l2Resource);
+                    }
+                }
+            }
+        }
+
+        private void comboBoxAdditionalResourceStartUrl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxAdditionalResourceStartUrl.SelectedItem is KeyValuePair<string, string>)
+            {
+                var selectedItem = (KeyValuePair<string, string>) comboBoxAdditionalResourceStartUrl.SelectedItem;
+                textBoxStartURL.Text = "";
+                SEBSettings.settingsCurrent[SEBSettings.KeyStartResource] = selectedItem.Key;
+                SEBSettings.settingsCurrent[SEBSettings.KeyStartURL] = "";
             }
         }
 

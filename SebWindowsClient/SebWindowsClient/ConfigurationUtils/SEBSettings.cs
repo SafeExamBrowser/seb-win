@@ -81,6 +81,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
         // Group "General"
         public const String KeyStartURL             = "startURL";
+        public const String KeyStartResource        = "startResource";
         public const String KeySebServerURL         = "sebServerURL";
         public const String KeyHashedAdminPassword  = "hashedAdminPassword";
         public const String KeyAllowQuit            = "allowQuit";
@@ -514,6 +515,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
             // Default settings for group "General"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org/start");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyStartResource           , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebServerURL       , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedAdminPassword, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowQuit          , true);

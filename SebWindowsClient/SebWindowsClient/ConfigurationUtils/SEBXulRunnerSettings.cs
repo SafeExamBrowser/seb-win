@@ -149,6 +149,9 @@ namespace SebWindowsClient.ConfigurationUtils
                 xulRunnerSettings[SEBSettings.KeyBrowserURLSalt] = true;
             }
 
+            //If necessary replace the starturl with the path to the startResource
+            xulRunnerSettings[SEBSettings.KeyStartURL] = GetStartupPathOrUrl();
+
             // Eventually update setting 
             if ((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL] == true) 
             {
@@ -249,6 +252,41 @@ namespace SebWindowsClient.ConfigurationUtils
             //string base64Json = base64String.Substring(0, base64String.Length - 2);
 
             return base64Json;
+        }
+
+        private static string GetStartupPathOrUrl()
+        {
+            if (!string.IsNullOrEmpty((string)SEBSettings.settingsCurrent[SEBSettings.KeyStartResource]))
+            {
+                var resource =
+                    GetAdditionalResourceById((string)SEBSettings.settingsCurrent[SEBSettings.KeyStartResource]);
+                var filename = (string)resource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
+                var path =
+                    new FileCompressor().DecompressDecodeAndSaveFile(
+                        (string)resource[SEBSettings.KeyAdditionalResourcesResourceData], filename, resource[SEBSettings.KeyAdditionalResourcesIdentifier].ToString());
+                return new Uri(path + filename).AbsoluteUri;
+            }
+            else
+            {
+                return SEBClientInfo.getSebSetting(SEBSettings.KeyStartURL)[SEBSettings.KeyStartURL].ToString();
+            }
+        }
+
+        private static DictObj GetAdditionalResourceById(string resourceIdentifier)
+        {
+            var idPath = resourceIdentifier.Split('.');
+            var l0resource =
+                (DictObj)((ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources])[int.Parse(idPath[0])];
+            if (idPath.Count() > 1)
+            {
+                var l1resource = (DictObj)((ListObj)l0resource[SEBSettings.KeyAdditionalResources])[int.Parse(idPath[1])];
+                if (idPath.Count() > 2)
+                {
+                    return (DictObj)((ListObj)l1resource[SEBSettings.KeyAdditionalResources])[int.Parse(idPath[2])];
+                }
+                return l1resource;
+            }
+            return l0resource;
         }
 
         private static void RecursivelyRemoveAdditionalResourceData(ListObj additionalResources)

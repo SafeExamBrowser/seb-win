@@ -67,7 +67,6 @@ namespace SebWindowsClient.DesktopUtils
         {
             get
             {
-                return true;
                 return OSVersion.FriendlyName().Contains("7");
             }
         }

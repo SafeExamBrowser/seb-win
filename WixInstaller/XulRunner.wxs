@@ -3,7 +3,7 @@
     <Fragment>
         <DirectoryRef Id="XulRunnerInstallFolder">
             <Directory Id="dir2FBA944FAEE0101627FE13A288E2BA73" Name="xulrunner">
-                <Component Id="cmpE9B29BB5BD95B37CEB8B31E54520A753" Guid="{EDB8B226-75C2-4A6B-A660-51D8AF376414}">
+                <Component Id="cmpE9B29BB5BD95B37CEB8B31E54520A753" Guid="{EAB154DE-5A2F-4A0E-8C51-426FF4FBC485}">
                     <File Id="filCB57567E7D1EA177A3317B2D22CE1CDB" KeyPath="yes" Source="SourceDir\AccessibleMarshal.dll">
                         <Class Id="{0D68D6D0-D93D-4D08-A30D-F00DD1F45B24}" Context="InprocServer32" Description="PSFactoryBuffer" ThreadingModel="both" />
                     </File>
@@ -11,156 +11,156 @@
                     <Interface Id="{1814CEEB-49E2-407F-AF99-FA755A7D2607}" Name="ISimpleDOMNode" ProxyStubClassId32="{0D68D6D0-D93D-4D08-A30D-F00DD1F45B24}" NumMethods="18" />
                     <Interface Id="{4E747BE5-2052-4265-8AF0-8ECAD7AAD1C0}" Name="ISimpleDOMText" ProxyStubClassId32="{0D68D6D0-D93D-4D08-A30D-F00DD1F45B24}" NumMethods="8" />
                 </Component>
-                <Component Id="cmpBA50C72E091976B06FD0A49A3748CCE4" Guid="{2D1C6FD9-614D-49D4-A504-F08A1C59EF12}">
+                <Component Id="cmpBA50C72E091976B06FD0A49A3748CCE4" Guid="{99968E45-7787-4DD3-B01A-BADAFF95FC66}">
                     <File Id="filD8D81824909D9C895C5308DCC5BA08E9" KeyPath="yes" Source="SourceDir\application.ini" />
                 </Component>
-                <Component Id="cmpA6DF9341D936B7ED7A97BFCE4AAB17D1" Guid="{A2C62921-C043-4DB8-AD83-C0BFCF810E39}">
+                <Component Id="cmpA6DF9341D936B7ED7A97BFCE4AAB17D1" Guid="{DD9901D4-B0F4-488B-9BFF-2A2C0B62BAD0}">
                     <File Id="filA81CF3075A7D3A9A6B4175E8444F258E" KeyPath="yes" Source="SourceDir\breakpadinjector.dll" />
                 </Component>
-                <Component Id="cmp86AD362021CFCD07B34703526AD0E772" Guid="{9179CAAF-C471-48DD-90A3-BE35A40AAFE1}">
+                <Component Id="cmp86AD362021CFCD07B34703526AD0E772" Guid="{28F4C78A-6493-4F11-BF13-6DF1232A27E7}">
                     <File Id="fil2BC485AA820FB5D16D039747DA0FFB2E" KeyPath="yes" Source="SourceDir\crashreporter.exe" />
                 </Component>
-                <Component Id="cmpE76FAE3CFFB9EEA02D2254FF209669A5" Guid="{32243F4E-11C6-48EA-B176-AD5A67187554}">
+                <Component Id="cmpE76FAE3CFFB9EEA02D2254FF209669A5" Guid="{5B930F07-7768-41F1-A10E-27AC7D99BC2F}">
                     <File Id="fil96EB4ACDE6A231316016A453A6A582D0" KeyPath="yes" Source="SourceDir\crashreporter.ini" />
                 </Component>
-                <Component Id="cmpD7FF896E106B433B86BA7EB8CAA92EE8" Guid="{93512975-F82A-4AFD-AD7C-A8D53B29D81B}">
+                <Component Id="cmpD7FF896E106B433B86BA7EB8CAA92EE8" Guid="{4D32DC31-9AAD-4BCD-8015-482DDD34B628}">
                     <File Id="filC18F7FC065B5B0EE186A633FC568CB65" KeyPath="yes" Source="SourceDir\D3DCompiler_43.dll" />
                 </Component>
-                <Component Id="cmp1970AAAE0C264A6544ACF1FE0605C144" Guid="{4E56A00B-8BDB-4A75-8393-C7A75E2D82CD}">
+                <Component Id="cmp1970AAAE0C264A6544ACF1FE0605C144" Guid="{4879EB30-62CC-4C87-92EC-A76501868F86}">
                     <File Id="fil606F1F1A450DF73CDFF7041720C87586" KeyPath="yes" Source="SourceDir\d3dcompiler_47.dll" />
                 </Component>
-                <Component Id="cmpFFE2F3DD32728E458FE770A493FD0D33" Guid="{8B0366A7-FC3B-49B1-90B5-2EACBE3B037A}">
+                <Component Id="cmpFFE2F3DD32728E458FE770A493FD0D33" Guid="{CF94BB2C-CAF9-46F5-BB1C-7DB817EE4A66}">
                     <File Id="filC82F081BD0E349246CB5E0F19325C2BB" KeyPath="yes" Source="SourceDir\dependentlibs.list" />
                 </Component>
-                <Component Id="cmp8A30E86FFE7F523F8BBFAF688440A76E" Guid="{2728C489-4D7F-45A0-AA34-5A26D01629F1}">
+                <Component Id="cmp8A30E86FFE7F523F8BBFAF688440A76E" Guid="{1C3B3081-3B94-448B-8A6D-4C791A532FE1}">
                     <File Id="filDCBDC0B5B918E7660D503FBCD92B9CE6" KeyPath="yes" Source="SourceDir\firefox.exe" />
                 </Component>
-                <Component Id="cmp23ACA47CE0AFB192A4F5A5D8C9EA4AB2" Guid="{95B8CD24-1CEC-4969-A9F4-27FE66F1575F}">
+                <Component Id="cmp23ACA47CE0AFB192A4F5A5D8C9EA4AB2" Guid="{5258748C-8936-45CE-B3C1-B07DCB76895D}">
                     <File Id="fil38734659131A64E93784276C59582DE4" KeyPath="yes" Source="SourceDir\freebl3.chk" />
                 </Component>
-                <Component Id="cmp38B9A69D33AA9121E6B8F331EBC2E06B" Guid="{8C6BEE1E-9F38-457D-A306-D9169AD3F981}">
+                <Component Id="cmp38B9A69D33AA9121E6B8F331EBC2E06B" Guid="{2B5B9202-5E06-4C87-9B56-2EF91035F501}">
                     <File Id="fil7DCA533F8D5F42E99C022225637E8641" KeyPath="yes" Source="SourceDir\freebl3.dll" />
                 </Component>
-                <Component Id="cmpD2F951F77E9F91F235B6A93798D3779A" Guid="{414F74E4-B01D-455E-95F9-7E68266B8210}">
+                <Component Id="cmpD2F951F77E9F91F235B6A93798D3779A" Guid="{FF6AD612-A54F-46E2-9691-2EF64F9DFC90}">
                     <File Id="filADDF2325E37D3D9513DB9CD592B5D0AE" KeyPath="yes" Source="SourceDir\icudt55.dll" />
                 </Component>
-                <Component Id="cmpBE6DBEC215A180DD2FBE4DB194D0D8DF" Guid="{88E41AC6-3541-4F9E-88DC-3C428DB65BD1}">
+                <Component Id="cmpBE6DBEC215A180DD2FBE4DB194D0D8DF" Guid="{2DF958DF-AAA1-4113-93CD-E9C954953AE3}">
                     <File Id="filA316C0F2DE6C9EB0595B53C15831F643" KeyPath="yes" Source="SourceDir\icuin55.dll" />
                 </Component>
-                <Component Id="cmp1EB38C7661EC164FC7E788D83D85BAE6" Guid="{C66E7BFD-0A64-45E5-B8BD-8CADE3A8E21F}">
+                <Component Id="cmp1EB38C7661EC164FC7E788D83D85BAE6" Guid="{E7243355-D5C6-450C-9005-B72547FA2EB0}">
                     <File Id="fil7B1E06658AD54826F572E7591540FBB2" KeyPath="yes" Source="SourceDir\icuuc55.dll" />
                 </Component>
-                <Component Id="cmp5E832387ABB560ABE5FE049C6E00B32D" Guid="{F1EE39BF-239A-4EE7-A64B-1AF9BDF70C9D}">
+                <Component Id="cmp5E832387ABB560ABE5FE049C6E00B32D" Guid="{D641CEDA-F735-442F-B0A0-651E2A79C448}">
                     <File Id="filD210ABE90850ECCCA7B83923D4ED1DD2" KeyPath="yes" Source="SourceDir\lgpllibs.dll" />
                 </Component>
-                <Component Id="cmp79E7EB239D82897F8B00C7542F6297D8" Guid="{A0593DA4-E4A9-4831-AA7B-9D05FC121EF8}">
+                <Component Id="cmp79E7EB239D82897F8B00C7542F6297D8" Guid="{EB99E80A-DB40-4DB8-86F9-45252D428240}">
                     <File Id="fil482767FA3173DD7E8E20701B0AA58292" KeyPath="yes" Source="SourceDir\libEGL.dll" />
                 </Component>
-                <Component Id="cmp6A3196CBE79A2D1544983CDD4242FEAD" Guid="{1F902D71-8290-412D-A6CF-111C5550990E}">
+                <Component Id="cmp6A3196CBE79A2D1544983CDD4242FEAD" Guid="{B9ED84ED-E7A3-4892-9E0C-1BBF4B7E7373}">
                     <File Id="filF80DB586558944DAC6F9EEEEBBAD1397" KeyPath="yes" Source="SourceDir\libGLESv2.dll" />
                 </Component>
-                <Component Id="cmp3ECA624679DB29A97555C4942BD71A8B" Guid="{819D3F5B-6099-450F-B422-0540F5259184}">
+                <Component Id="cmp3ECA624679DB29A97555C4942BD71A8B" Guid="{57F2AC2B-CE17-47DA-960B-0E423C08E23F}">
                     <File Id="fil9ADFDB6E41AFBB0B8DF75BF03AEEFE7C" KeyPath="yes" Source="SourceDir\maintenanceservice.exe" />
                 </Component>
-                <Component Id="cmp186CB49B9BF20ED670F266AD36929A72" Guid="{12DB18B6-7911-407B-8CD2-30E95764B4E3}">
+                <Component Id="cmp186CB49B9BF20ED670F266AD36929A72" Guid="{DD1B2DCB-FA1C-4B6F-B23F-47ABE1A5B755}">
                     <File Id="fil5BA167613A802B8DEDBC0BD6E9D01969" KeyPath="yes" Source="SourceDir\maintenanceservice_installer.exe" />
                 </Component>
-                <Component Id="cmpCD2AC7B10CF0E2F66CC9E83D8E8F80F2" Guid="{C1D8105E-4119-4356-8F19-67A93ADC062D}">
+                <Component Id="cmpCD2AC7B10CF0E2F66CC9E83D8E8F80F2" Guid="{5A8CA696-321B-4961-BB4E-80EBF50985D2}">
                     <File Id="fil11EB1D3D530A3E5EC7AAA3B95A1A886B" KeyPath="yes" Source="SourceDir\mozglue.dll" />
                 </Component>
-                <Component Id="cmp52CC979C26E97905F37D318F02C9EBFF" Guid="{A4436ED9-2564-4B74-9D24-CA6EBA4A9F11}">
+                <Component Id="cmp52CC979C26E97905F37D318F02C9EBFF" Guid="{CACDC580-46E1-48A5-98CA-E4D38862E56B}">
                     <File Id="filB29D99A665CF395C9BA67694B108041A" KeyPath="yes" Source="SourceDir\msvcp120.dll" />
                 </Component>
-                <Component Id="cmpB35DFAD98D7BDED2567D0F65FB72AE1E" Guid="{F635A645-4FF8-4E3A-8803-7A0A4698464B}">
+                <Component Id="cmpB35DFAD98D7BDED2567D0F65FB72AE1E" Guid="{ACACA4AF-DE47-4274-9FB5-5418F1737CD1}">
                     <File Id="fil8AB221A918D73626DEA52690972DE418" KeyPath="yes" Source="SourceDir\msvcr120.dll" />
                 </Component>
-                <Component Id="cmp51FCBA43F12402FDCD14743859E84AE4" Guid="{C317ADA0-EC67-4FBA-8538-BD581998D5BC}">
+                <Component Id="cmp51FCBA43F12402FDCD14743859E84AE4" Guid="{90796AB8-AAF6-40C3-B4D6-8167801CD385}">
                     <File Id="fil99D5CC70791D6B5324ADC67C608442F7" KeyPath="yes" Source="SourceDir\nss3.dll" />
                 </Component>
-                <Component Id="cmp5109F961DFF443D68E78D0C1DB7AD30F" Guid="{F2002DDF-4BF7-41E0-869D-86722D5A0198}">
+                <Component Id="cmp5109F961DFF443D68E78D0C1DB7AD30F" Guid="{B3B3126B-6DA4-48F0-ACAE-599D3C52B740}">
                     <File Id="filB414039B469BB567215C1D0E5BCDF613" KeyPath="yes" Source="SourceDir\nssckbi.dll" />
                 </Component>
-                <Component Id="cmpC57D6F671A831E2CBC2DD800CECC07DC" Guid="{945CDC79-C078-410C-938F-F5C72526CA4D}">
+                <Component Id="cmpC57D6F671A831E2CBC2DD800CECC07DC" Guid="{6A48C950-A6F6-4AC1-AD7C-BB10F19E5631}">
                     <File Id="filD8119E34AA788B6283DEF424FCBFFF5B" KeyPath="yes" Source="SourceDir\nssdbm3.chk" />
                 </Component>
-                <Component Id="cmpEA4B6CD3C2E3CD8DB4ABBEBC2A4E1133" Guid="{7287FB41-96AD-48C9-98DB-29EEB2F4A534}">
+                <Component Id="cmpEA4B6CD3C2E3CD8DB4ABBEBC2A4E1133" Guid="{D446CD8F-2A24-4EBC-BAA3-60AA83E07D53}">
                     <File Id="filC1BC409AE3BD4E92F83CBCD841427B75" KeyPath="yes" Source="SourceDir\nssdbm3.dll" />
                 </Component>
-                <Component Id="cmpF11C969E354453D295C7BA43B915C6B9" Guid="{970C0DA6-4164-488A-828E-3FC412EEA88C}">
+                <Component Id="cmpF11C969E354453D295C7BA43B915C6B9" Guid="{C736EF09-F97D-4447-AC5C-CD8418254E53}">
                     <File Id="filEA4A668DC47BA242F739111A709DEB5E" KeyPath="yes" Source="SourceDir\omni.ja" />
                 </Component>
-                <Component Id="cmp0D0D447C6A35FDC77979BB21EF716B7D" Guid="{8AFB368C-FD70-453B-91B2-2282083C6AE3}">
+                <Component Id="cmp0D0D447C6A35FDC77979BB21EF716B7D" Guid="{BCF23E7C-EFE0-4AED-9494-E238463F3513}">
                     <File Id="fil626329224875350117FCE0E038737702" KeyPath="yes" Source="SourceDir\platform.ini" />
                 </Component>
-                <Component Id="cmp7CF49FAB6678F0FB870E934FE4FC771E" Guid="{D0E31649-7A32-4A5B-8847-62015B83F1E7}">
+                <Component Id="cmp7CF49FAB6678F0FB870E934FE4FC771E" Guid="{134345B8-96DB-4640-8670-0A8719DCC6FB}">
                     <File Id="fil48276C297DA97DE5BCE7F00C651DE68A" KeyPath="yes" Source="SourceDir\plugin-container.exe" />
                 </Component>
-                <Component Id="cmp5355C0F153534FFFD776E5D099D3EAF9" Guid="{D9DB02D2-3D3E-4019-8801-6C1073AEE986}">
+                <Component Id="cmp5355C0F153534FFFD776E5D099D3EAF9" Guid="{99B7560C-FC6A-4ACB-B121-EA1614055091}">
                     <File Id="filA1B6F758B9D5EFD3D1E4FB3491BF510F" KeyPath="yes" Source="SourceDir\plugin-hang-ui.exe" />
                 </Component>
-                <Component Id="cmpCD5AC9662A28B83444271E30128FBB4A" Guid="{1330F2EE-6F27-4317-8E4F-1C596A15A07A}">
+                <Component Id="cmpCD5AC9662A28B83444271E30128FBB4A" Guid="{AF07CE1A-4F08-4921-84BA-BF9AFA1B0BD4}">
                     <File Id="fil58698021366BD24B14215B835DBBB904" KeyPath="yes" Source="SourceDir\removed-files" />
                 </Component>
-                <Component Id="cmp676E3EAC2FA00701B25B3F3968B196D5" Guid="{D14B812A-4F29-4D87-9C96-22B318EACD22}">
+                <Component Id="cmp676E3EAC2FA00701B25B3F3968B196D5" Guid="{AA21B9C7-0885-47EE-ABFA-24811856F989}">
                     <File Id="fil3AFE60DFD5D50A003889407E3B6F68AF" KeyPath="yes" Source="SourceDir\sandboxbroker.dll" />
                 </Component>
-                <Component Id="cmp029790AF9153D173E923C31779AFC710" Guid="{6CD91186-C648-43A9-8F7E-4D035501D642}">
+                <Component Id="cmp029790AF9153D173E923C31779AFC710" Guid="{1DC26FB3-D070-4246-A05B-F3670695E0D6}">
                     <File Id="fil3ED143B794BBF37516FBB223B430BE52" KeyPath="yes" Source="SourceDir\softokn3.chk" />
                 </Component>
-                <Component Id="cmpF109EF8567FB1320EA35446E2B4F97F8" Guid="{5B0A62E5-3001-4C10-853A-BBF2DE92528D}">
+                <Component Id="cmpF109EF8567FB1320EA35446E2B4F97F8" Guid="{422B0234-FD9D-42AC-95E1-99070ECEEE29}">
                     <File Id="fil0FC52FC7D0A21CBB7A8451F8E8F1B946" KeyPath="yes" Source="SourceDir\softokn3.dll" />
                 </Component>
-                <Component Id="cmp1BA5013BECD339B566EF72981F71D787" Guid="{4B1EE189-742F-4D67-8D49-813CDBEA3570}">
+                <Component Id="cmp1BA5013BECD339B566EF72981F71D787" Guid="{E1BD4225-89FA-4BA0-ABA5-23B6ACCE9970}">
                     <File Id="fil6907324093AB91A7D0D9654D416F14F9" KeyPath="yes" Source="SourceDir\update-settings.ini" />
                 </Component>
-                <Component Id="cmp706FD4162C1C67FDF0312B3B8E38A016" Guid="{695649CB-27DC-48BE-B2FF-9D0702A372E3}">
+                <Component Id="cmp706FD4162C1C67FDF0312B3B8E38A016" Guid="{CDB5CD51-F8BB-4A39-9F95-E1A08C727F62}">
                     <File Id="fil835501CF42532597941729B9492C3315" KeyPath="yes" Source="SourceDir\updater.exe" />
                 </Component>
-                <Component Id="cmp7886EA724CDAEF7687A81A30695EB29A" Guid="{2AE8CCF3-BDB2-47C0-881F-886137E0C68F}">
+                <Component Id="cmp7886EA724CDAEF7687A81A30695EB29A" Guid="{62318393-319E-437F-8EFB-32861642DE7B}">
                     <File Id="fil6F3C6843B035C267A768CA9931EC39F6" KeyPath="yes" Source="SourceDir\updater.ini" />
                 </Component>
-                <Component Id="cmpA1AD32B4592658943A99CC96C0BFFD57" Guid="{1AA7A8BF-505E-4628-B729-05A1D1ACB1FE}">
+                <Component Id="cmpA1AD32B4592658943A99CC96C0BFFD57" Guid="{71BDA435-FB71-4F0A-9D42-3D57CF04E8E5}">
                     <File Id="fil09E97DDC711D869D1ED90E3AF8F6D301" KeyPath="yes" Source="SourceDir\webapp-uninstaller.exe" />
                 </Component>
-                <Component Id="cmp478965C93A2123FD58D448FA8D07C24F" Guid="{1BAF936D-528D-4695-A9FC-12C631BF4945}">
+                <Component Id="cmp478965C93A2123FD58D448FA8D07C24F" Guid="{111EDEE6-DC46-4377-A3E0-4759F70DF48D}">
                     <File Id="filF58B1C59DC37BA07A62271E747BA86EC" KeyPath="yes" Source="SourceDir\webapprt-stub.exe" />
                 </Component>
-                <Component Id="cmp7BD8377074398DADF09239F2CC026017" Guid="{9252777C-2FB8-498D-9479-9A061741E17B}">
+                <Component Id="cmp7BD8377074398DADF09239F2CC026017" Guid="{A435C41E-93E4-411A-B66A-E13EBDE5E4F8}">
                     <File Id="fil07082D9DDBA9BF4C2C9FF7EBA3330908" KeyPath="yes" Source="SourceDir\wow_helper.exe" />
                 </Component>
-                <Component Id="cmp4C024F81D7047C0ED8EC3A0F523BDBB1" Guid="{09055EF3-7B4C-4237-98ED-4E446060290F}">
+                <Component Id="cmp4C024F81D7047C0ED8EC3A0F523BDBB1" Guid="{F5023069-62B9-4985-939A-9F573046F365}">
                     <File Id="fil48FFBA4041EB2110363A94FDE91B48A0" KeyPath="yes" Source="SourceDir\xul.dll" />
                 </Component>
                 <Directory Id="dir8A77EDD904886F4BBBFE793EBA01E60C" Name="browser">
-                    <Component Id="cmp684E0126ABB463C673B90EFC16B26C76" Guid="{A38195B6-C942-432E-8130-5A83EB8729AB}">
+                    <Component Id="cmp684E0126ABB463C673B90EFC16B26C76" Guid="{1A94D95A-1639-4485-8751-DB23EC66E810}">
                         <File Id="filFE0DDFC50B94CF00370E36256B29FBA1" KeyPath="yes" Source="SourceDir\browser\blocklist.xml" />
                     </Component>
-                    <Component Id="cmp020988A5235240EE87FBF6F3C1ADC445" Guid="{1B1A940C-F3AD-435F-9C16-AA46A6943F10}">
+                    <Component Id="cmp020988A5235240EE87FBF6F3C1ADC445" Guid="{537F8227-EBF4-4B8A-9E75-CEAA728F39A9}">
                         <File Id="filE8130CCBC758677830273BF434FC2ED6" KeyPath="yes" Source="SourceDir\browser\chrome.manifest" />
                     </Component>
-                    <Component Id="cmp9850652EDB3A0D63D6110C8012A24CFD" Guid="{C8FC3EAE-28EA-4F08-853B-9B700A58BB7F}">
+                    <Component Id="cmp9850652EDB3A0D63D6110C8012A24CFD" Guid="{2BACE6A5-880E-4B69-A4E4-59C678676B33}">
                         <File Id="fil6D93CB939EAF77205A017B64E4E31620" KeyPath="yes" Source="SourceDir\browser\crashreporter-override.ini" />
                     </Component>
-                    <Component Id="cmp4DBA2A7163C30D307CCD73AD37DB9C70" Guid="{133F31E3-B740-461D-9B7D-66EF9616FD5A}">
+                    <Component Id="cmp4DBA2A7163C30D307CCD73AD37DB9C70" Guid="{CB6EA965-4EA8-4538-9912-DDAB6F4F5160}">
                         <File Id="fil1E69B51A720A14489FFD6C6B877982B7" KeyPath="yes" Source="SourceDir\browser\omni.ja" />
                     </Component>
                     <Directory Id="dirBDC9B811BC136A6BAA1C6E0025E25F22" Name="components">
-                        <Component Id="cmpF3738E7A2D177BB8C55F9CD347EA892F" Guid="{94306FC8-B8A4-4500-85D4-89601D8E4A4B}">
+                        <Component Id="cmpF3738E7A2D177BB8C55F9CD347EA892F" Guid="{E7C6D612-A01F-4E97-A26D-98AB59FD0034}">
                             <File Id="fil628D862EB28C956CEDD63B8BE47A404D" KeyPath="yes" Source="SourceDir\browser\components\browsercomps.dll" />
                         </Component>
-                        <Component Id="cmp8A403E85826527393A945D2EBDBF044A" Guid="{2F3205C1-DE40-4C59-87DA-4BE51F51F9C4}">
+                        <Component Id="cmp8A403E85826527393A945D2EBDBF044A" Guid="{B6FE8A78-39BB-439D-82C2-01EA3B59BD11}">
                             <File Id="fil9E41344B5DD1BFDB3C2AAF31227E8FB3" KeyPath="yes" Source="SourceDir\browser\components\components.manifest" />
                         </Component>
                     </Directory>
                     <Directory Id="dir3DB544AC8BD5DF35C3F1257430922616" Name="extensions">
                         <Directory Id="dirC284DDACBF61583D002D4B966956EB2D" Name="{972ce4c6-7e08-4474-a285-3208198ce6fd}">
-                            <Component Id="cmp3582944669E8D5422D2C8FB51A5075A4" Guid="{DE407DB6-8188-470C-9738-E05E149F9230}">
+                            <Component Id="cmp3582944669E8D5422D2C8FB51A5075A4" Guid="{70D6D866-A05A-452F-85BC-B91F101B9471}">
                                 <File Id="fil5F701E7F2F29FEE442ABBB7B3DF7C19B" KeyPath="yes" Source="SourceDir\browser\extensions\{972ce4c6-7e08-4474-a285-3208198ce6fd}\chrome.manifest" />
                             </Component>
-                            <Component Id="cmp06F06D993DC957B2D11DE73EC9925A10" Guid="{62097A53-026F-4543-8760-B9CA35CCA6B7}">
+                            <Component Id="cmp06F06D993DC957B2D11DE73EC9925A10" Guid="{6E311E99-52BE-462C-B22F-4CA7FE7A4EF7}">
                                 <File Id="filDC175B657006B7D86A73298D8D89C23F" KeyPath="yes" Source="SourceDir\browser\extensions\{972ce4c6-7e08-4474-a285-3208198ce6fd}\icon.png" />
                             </Component>
-                            <Component Id="cmp2D3276259EDB6347F35BC8072EDBD2F7" Guid="{259B9526-26F9-477D-A175-39E82AD9F167}">
+                            <Component Id="cmp2D3276259EDB6347F35BC8072EDBD2F7" Guid="{C85012DA-EBF1-4F39-A43D-46BA4BFCA5D1}">
                                 <File Id="filF83612E655F143DDD8292205C9EE4B7C" KeyPath="yes" Source="SourceDir\browser\extensions\{972ce4c6-7e08-4474-a285-3208198ce6fd}\install.rdf" />
                             </Component>
                         </Directory>
@@ -168,39 +168,39 @@
                 </Directory>
                 <Directory Id="dir71818450BE99ECD1819A91A0EC82A747" Name="defaults">
                     <Directory Id="dirD65471B87956CED7FEC8CF3B42C4033D" Name="pref">
-                        <Component Id="cmp2A83B65A3725A874BB0521135120447A" Guid="{435FC3FA-7C19-4B0C-8C39-989AC3D8D490}">
+                        <Component Id="cmp2A83B65A3725A874BB0521135120447A" Guid="{AF2D9B40-F669-4D95-89F6-BF9970DBF20C}">
                             <File Id="fil95744E53C9828411AE43448947208A92" KeyPath="yes" Source="SourceDir\defaults\pref\channel-prefs.js" />
                         </Component>
                     </Directory>
                 </Directory>
                 <Directory Id="dirBAB0AFEE7B3A0B96903BC1E369001545" Name="dictionaries">
-                    <Component Id="cmpE6A60419B51EA6622E18A4FA71CC9779" Guid="{6892208D-A73F-469D-A339-5528B87E4907}">
+                    <Component Id="cmpE6A60419B51EA6622E18A4FA71CC9779" Guid="{F587D41A-6FCA-4A0D-870D-EB3B5F9321FB}">
                         <File Id="filF7DB73C6B07F871A9A47B4A28DBD5824" KeyPath="yes" Source="SourceDir\dictionaries\en-US.aff" />
                     </Component>
-                    <Component Id="cmp30475D0C9DA797EBDB65E24D776BC4A5" Guid="{C6012544-D9F9-420C-BC4C-CC01E36CFB28}">
+                    <Component Id="cmp30475D0C9DA797EBDB65E24D776BC4A5" Guid="{48285DE4-1C14-49ED-883F-6AA34240D103}">
                         <File Id="filB7DD552B3A09728B67E7DF0EDBA6412F" KeyPath="yes" Source="SourceDir\dictionaries\en-US.dic" />
                     </Component>
                 </Directory>
                 <Directory Id="dirC3F6835844465ABA37E402212DD3F743" Name="gmp-clearkey">
                     <Directory Id="dirBF914ED533575CCD38299C7843F8C624" Name="0.1">
-                        <Component Id="cmpCA68803FFBFFA794DDCBFD65D598D362" Guid="{DD0E8B53-91EE-428F-8939-7FE9C514D163}">
+                        <Component Id="cmpCA68803FFBFFA794DDCBFD65D598D362" Guid="{9B15E65D-8005-4323-B447-72D3B1AE22A7}">
                             <File Id="fil7376622BE8C9E30C9B6D0A90D5806C41" KeyPath="yes" Source="SourceDir\gmp-clearkey\0.1\clearkey.dll" />
                         </Component>
-                        <Component Id="cmp23B0A9E0BE3016439C9B214775C2AEFD" Guid="{06F9A903-0F87-493D-8401-E55A48EDCDCD}">
+                        <Component Id="cmp23B0A9E0BE3016439C9B214775C2AEFD" Guid="{A9E1E261-558E-4DED-BE04-782273F8D46B}">
                             <File Id="filE96EFB78700BB9BE7685DBDAC39D6D18" KeyPath="yes" Source="SourceDir\gmp-clearkey\0.1\clearkey.info" />
                         </Component>
                     </Directory>
                 </Directory>
                 <Directory Id="dir19F18B720E89E1FD8C6DFFB258F1247A" Name="uninstall">
-                    <Component Id="cmpAC71E391C74BEFCD66F6A5220AAEE210" Guid="{A00E31AB-586D-4D88-9E90-10A11A7F1734}">
+                    <Component Id="cmpAC71E391C74BEFCD66F6A5220AAEE210" Guid="{3B5A34BB-DA28-4614-BA2A-C7635F3BAAD0}">
                         <File Id="filA439FEE97EFB23841E26D67F8B813149" KeyPath="yes" Source="SourceDir\uninstall\helper.exe" />
                     </Component>
                 </Directory>
                 <Directory Id="dir40EAF03D15695C04755E8249B13FC342" Name="webapprt">
-                    <Component Id="cmp7C2CCB118CCBAB04B51D850F6635BE11" Guid="{23ED3677-9FB8-40BD-9C01-94061467F48F}">
+                    <Component Id="cmp7C2CCB118CCBAB04B51D850F6635BE11" Guid="{5A9C1D2A-9AF8-4369-A4A9-93898F3E2859}">
                         <File Id="fil1D58E05FF4C343413CDD7931072EC969" KeyPath="yes" Source="SourceDir\webapprt\omni.ja" />
                     </Component>
-                    <Component Id="cmp662BE1AE0A2FE45B43EA761E2B7597B4" Guid="{A1B24DD3-1FC2-4247-A904-3CA4A1D877B6}">
+                    <Component Id="cmp662BE1AE0A2FE45B43EA761E2B7597B4" Guid="{D9D14D4C-3CFA-4E17-B6F4-CCB4D3C7BA9A}">
                         <File Id="fil719DE215B0247D3D47AEA3A59297BC46" KeyPath="yes" Source="SourceDir\webapprt\webapprt.ini" />
                     </Component>
                 </Directory>

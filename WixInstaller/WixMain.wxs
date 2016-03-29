@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 
-  <?define ProductName = "Safe Exam Browser" ?>
+  <?define ProductName = "SafeExamBrowser" ?>
   <?define ProductNameAbbreviation = "SEB" ?>
   <?define Manufacturer = "ETH Zuerich" ?>
   <?define BrowserShortcutName = "$(var.ProductName)" ?>

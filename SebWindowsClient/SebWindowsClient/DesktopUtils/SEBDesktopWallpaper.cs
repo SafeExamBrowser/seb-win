@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.DesktopUtils
@@ -66,13 +67,14 @@ namespace SebWindowsClient.DesktopUtils
         {
             get
             {
+                return true;
                 return OSVersion.FriendlyName().Contains("7");
             }
         }
 
         private static string GetDirectory()
         {
-            return Environment.CurrentDirectory + @"\" + WallpaperInfoFile;
+            return SEBClientInfo.SebClientSettingsAppDataDirectory + WallpaperInfoFile;
         }
 
         private static string GetWallpaper()

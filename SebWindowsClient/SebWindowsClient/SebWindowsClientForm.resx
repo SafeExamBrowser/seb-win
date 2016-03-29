@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABS
-        CwAAAk1TRnQBSQFMAgEBBAEAAQgBAgEIAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAARABAgEQAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -207,7 +207,7 @@
     <value>taskbarToolStrip</value>
   </data>
   <data name="&gt;&gt;taskbarToolStrip.Type" xml:space="preserve">
-    <value>SebWindowsClient.TaskbarToolStrip, SafeExamBrowser, Version=2.0.5256.24001, Culture=neutral, PublicKeyToken=null</value>
+    <value>SebWindowsClient.TaskbarToolStrip, SafeExamBrowser, Version=2.1.5927.27118, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;taskbarToolStrip.Parent" xml:space="preserve">
     <value>$this</value>

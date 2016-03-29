@@ -101,6 +101,7 @@
     <Compile Include="BlockShortcutsUtils\SebKeyCapture.cs" />
     <Compile Include="ConfigurationUtils\FileCompressor.cs" />
     <Compile Include="ConfigurationUtils\IFileCompressor.cs" />
+    <Compile Include="DiagnosticsUtils\OSVersion.cs" />
     <Compile Include="ProcessUtils\ProcessInfo.cs" />
     <Compile Include="ProcessUtils\SEBProcessHandler.cs" />
     <Compile Include="ProcessUtils\SEBWindowHandler.cs" />

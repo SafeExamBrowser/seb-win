@@ -55,6 +55,7 @@ namespace SebWindowsClient
             this.taskbarToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.taskbarToolStrip.Name = "taskbarToolStrip";
             this.taskbarToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.taskbarToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.taskbarToolStrip_ItemClicked);
             // 
             // SebWindowsClientForm
             // 
@@ -72,6 +73,7 @@ namespace SebWindowsClient
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SebWindowsClientForm_FormClosing);
             this.Load += new System.EventHandler(this.SebWindowsClientForm_Load);
+            this.SizeChanged += new System.EventHandler(this.SebWindowsClientForm_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

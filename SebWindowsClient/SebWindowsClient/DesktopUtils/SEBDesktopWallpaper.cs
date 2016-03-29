@@ -1,18 +1,11 @@
-﻿// -------------------------------------------------------------
-//     Viktor tomas
-//     BFH-TI, http://www.ti.bfh.ch
-//     Biel, 2012
-// -------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
+using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.DesktopUtils
 {
-    public static class SEBDesktopWallpaper
+    public class SEBDesktopWallpaper
     {
         const int SPI_SETDESKWALLPAPER = 20;
         const int SPIF_UPDATEINIFILE = 0x01;
@@ -31,18 +24,50 @@ namespace SebWindowsClient.DesktopUtils
             Tiled, Centered, Stretched
         }
 
+        private const string WallpaperInfoFile = "wallpaperinfo";
+
+
         public static void BlankWallpaper()
         {
-            //if (_currentWallpaper == null)
-            //    _currentWallpaper = GetWallpaper();
+            if (IsWindows7)
+            {
+                if (File.Exists(Environment.CurrentDirectory + WallpaperInfoFile))
+                {
+                    _currentWallpaper = File.ReadAllText(Environment.CurrentDirectory + WallpaperInfoFile);
+                }
 
-            //SetWallpaper("");
+                if (_currentWallpaper == null)
+                {
+                    _currentWallpaper = GetWallpaper();
+                    File.WriteAllText(Environment.CurrentDirectory + WallpaperInfoFile, _currentWallpaper);
+                }
+
+                SetWallpaper("");
+            }
         }
 
         public static void Reset()
         {
-            //if(_currentWallpaper != null)
-            //    SetWallpaper(_currentWallpaper);
+            if (IsWindows7)
+            {
+                if (_currentWallpaper != null)
+                {
+                    SetWallpaper(_currentWallpaper);
+                    if (File.Exists(Environment.CurrentDirectory + WallpaperInfoFile))
+                    {
+                        File.Delete(Environment.CurrentDirectory + WallpaperInfoFile);
+                    }
+                }
+            }
+        }
+
+
+        private static bool IsWindows7
+        {
+            get
+            {
+                return OSVersion.FriendlyName().Contains("7");
+            }
         }
 
         private static string GetWallpaper()

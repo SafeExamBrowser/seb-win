@@ -1755,7 +1755,7 @@ namespace SebWindowsClient
                 }
 
                 //Reset the Wallpaper
-                SEBDesktopWallpaper.Reset();
+               SEBDesktopWallpaper.Reset();
 
                 // Restart the explorer.exe shell
                 if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
@@ -1887,6 +1887,16 @@ namespace SebWindowsClient
             {
                 ShowCloseDialogForm();
             }
+        }
+
+        private void taskbarToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void SebWindowsClientForm_SizeChanged(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
         }       
     }
 

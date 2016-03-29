@@ -31,15 +31,15 @@ namespace SebWindowsClient.DesktopUtils
         {
             if (IsWindows7)
             {
-                if (File.Exists(Environment.CurrentDirectory + WallpaperInfoFile))
+                if (File.Exists(GetDirectory()))
                 {
-                    _currentWallpaper = File.ReadAllText(Environment.CurrentDirectory + WallpaperInfoFile);
+                    _currentWallpaper = File.ReadAllText(GetDirectory());
                 }
 
                 if (_currentWallpaper == null)
                 {
                     _currentWallpaper = GetWallpaper();
-                    File.WriteAllText(Environment.CurrentDirectory + WallpaperInfoFile, _currentWallpaper);
+                    File.WriteAllText(GetDirectory(), _currentWallpaper);
                 }
 
                 SetWallpaper("");
@@ -53,9 +53,9 @@ namespace SebWindowsClient.DesktopUtils
                 if (_currentWallpaper != null)
                 {
                     SetWallpaper(_currentWallpaper);
-                    if (File.Exists(Environment.CurrentDirectory + WallpaperInfoFile))
+                    if (File.Exists(GetDirectory()))
                     {
-                        File.Delete(Environment.CurrentDirectory + WallpaperInfoFile);
+                        File.Delete(GetDirectory());
                     }
                 }
             }
@@ -68,6 +68,11 @@ namespace SebWindowsClient.DesktopUtils
             {
                 return OSVersion.FriendlyName().Contains("7");
             }
+        }
+
+        private static string GetDirectory()
+        {
+            return Environment.CurrentDirectory + @"\" + WallpaperInfoFile;
         }
 
         private static string GetWallpaper()

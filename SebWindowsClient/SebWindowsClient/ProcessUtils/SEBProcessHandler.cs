@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ProcessUtils
@@ -262,9 +263,10 @@ namespace SebWindowsClient.ProcessUtils
             var processName = ((ProcessInfo) sender).ProcessName;
             foreach (var process in Process.GetProcesses().Where(p => processName.Contains(p.ProcessName)))
             {
-                SEBNotAllowedProcessController.CloseProcess(process);
-                //p.CloseMainWindow();
-                //p.Close();
+                if (!SEBNotAllowedProcessController.CloseProcess(process))
+                {
+                    ShowMessageOrPasswordDialog(processName);
+                }
             }
         }
 
@@ -274,6 +276,43 @@ namespace SebWindowsClient.ProcessUtils
                 processInfo.Dispose();
 
             _processesToWatch.Clear();
+        }
+
+        private void ShowMessageOrPasswordDialog(string processName)
+        {
+            var quitPassword = (String)SEBClientInfo.getSebSetting(SEBSettings.KeyHashedQuitPassword)[SEBSettings.KeyHashedQuitPassword];
+            if (!string.IsNullOrEmpty(quitPassword))
+            {
+                ShowPasswordDialog(processName, quitPassword);
+            }
+            else
+            {
+                SEBMessageBox.Show("Prohibited Process detected",
+                            "SEB detected a prohibited process which it was unable to exit: " + processName,
+                            MessageBoxIcon.Error, MessageBoxButtons.OK);
+            }
+        }
+
+        private void ShowPasswordDialog(string processName, string quitPassword)
+        {
+            var password = SebPasswordDialogForm.ShowPasswordDialogForm("Prohibited Process detected", "SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: " + processName);
+
+            //cancel button has been clicked
+            if (password == null)
+            {
+                ShowPasswordDialog(processName, quitPassword);
+            }
+
+            var hashedPassword = SEBProtectionController.ComputePasswordHash(password);
+            if (String.IsNullOrWhiteSpace(password) ||
+                String.Compare(quitPassword, hashedPassword, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                return;
+            }
+            else
+            {
+                ShowPasswordDialog(processName, quitPassword);
+            }
         }
     }
 }

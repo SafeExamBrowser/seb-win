@@ -1,3 +1,5 @@
+
+
 String.prototype.normalize = function () {
 	return this.replace(/\W/g, "");
 }

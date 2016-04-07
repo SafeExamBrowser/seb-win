@@ -39,12 +39,12 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /* Services */
 let	wpl = Ci.nsIWebProgressListener,
-  wnav = Ci.nsIWebNavigation,
+	wnav = Ci.nsIWebNavigation,
 	ovs = Cc["@mozilla.org/security/certoverride;1"].getService(Ci.nsICertOverrideService);
-	
 
 /* SebGlobals */
 scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","SebUtils");
@@ -52,6 +52,7 @@ XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","Seb
 XPCOMUtils.defineLazyModuleGetter(this,"sw","resource://modules/SebWin.jsm","SebWin");
 XPCOMUtils.defineLazyModuleGetter(this,"sn","resource://modules/SebNet.jsm","SebNet");
 XPCOMUtils.defineLazyModuleGetter(this,"sh","resource://modules/SebHost.jsm","SebHost");
+XPCOMUtils.defineLazyModuleGetter(this,"sg","resource://modules/SebConfig.jsm","SebConfig");
 XPCOMUtils.defineLazyModuleGetter(this,"sc","resource://modules/SebScreenshot.jsm","SebScreenshot");
 
 /* ModuleGlobals */
@@ -87,8 +88,9 @@ const	nsIX509CertDB = Ci.nsIX509CertDB,
 	nsX509CertDB = "@mozilla.org/security/x509certdb;1",
 	DOCUMENT_BLOCKER = "about:document-onload-blocker",
 	CERT_SSL = 0,
-	CERT_CA = 1,
-	CERT_EMAIL = 2;
+	CERT_USER = 1, //reserved to windows host
+	CERT_CA = 2,
+	CERT_SSL_DEBUG = 3;
 
 function nsBrowserStatusHandler() {};
 nsBrowserStatusHandler.prototype = {
@@ -129,6 +131,7 @@ this.SebBrowser = {
 	},
 	
 	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+		//sl.err(aRequest.name);
 		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
 			this.isStarted = true;
 			this.win = sw.getChromeWin(aWebProgress.DOMWindow);
@@ -177,7 +180,8 @@ this.SebBrowser = {
 		}
 		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
 			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus); 
-			if (aStatus > 0 && aStatus != 2152398850) { // error: experimental!!! ToDo: look at status codes!!
+			if (!Components.isSuccessCode(aStatus) && aStatus != 2152398850) { // heise.de with all that advertising will not load without that skipped 2152398850 status
+			//if (aStatus > 0 && aStatus != 2152398850) { // error: experimental!!! ToDo: look at status codes!!
 				sl.debug("Error document loading: " + aStatus);
 				base.stopLoading();
 				try {
@@ -294,35 +298,85 @@ this.SebBrowser = {
 		sl.debug("initBrowser");
 	},
 	
-	addSSLCert : function(cert) {
+	initSecurity : function () {
+		if (su.getConfig("sebDisableOCSP","boolean",true)) {
+			sg.setPref("security.OCSP.enabled",0);
+		}
+		else {
+			sg.setPref("security.OCSP.enabled",1);
+		}
+		switch (su.getConfig("sebSSLSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE)) {
+			case SSL_SEC_NONE : // allow mixed content
+				sg.setPref("security.mixed_content.block_active_content",false);
+				sg.setPref("security.mixed_content.block_display_content",false);
+				break;
+			case SSL_SEC_BLOCK_MIXED_ACTIVE :
+				sg.setPref("security.mixed_content.block_active_content",true);
+				sg.setPref("security.mixed_content.block_display_content",false);
+				break;
+			case SSL_SEC_BLOCK_MIXED_ALL :
+				sg.setPref("security.mixed_content.block_active_content",true);
+				sg.setPref("security.mixed_content.block_display_content",true);
+				break;
+		}
+		if (su.getConfig("pinEmbeddedCertificates","boolean",false)) {
+			base.disableBuiltInCerts();
+		}
+	},
+	
+	addSSLCert : function(cert,debug) {
 		try {
-			sl.debug("add SSL Cert");
-			let flags = ovs.ERROR_UNTRUSTED | ovs.ERROR_MISMATCH | ovs.ERROR_TIME;
+			
+			let flags = (debug) ? ovs.ERROR_UNTRUSTED | ovs.ERROR_MISMATCH | ovs.ERROR_TIME : ovs.ERROR_UNTRUSTED;
 			let x509 = certdb.constructX509FromBase64(cert.certificateData);
 			//certlist.addCert(x509); // maybe needed for type 1 Identity Certs
-			let host = cert.name;
+			let cn = (debug && cert.overrideCN) ? cert.overrideCN : x509.commonName;
+			let host = cn;
 			let port = 443;
-			let fullhost = cert.name.split(":");
+			let fullhost = cn.split(":");
 			if (fullhost.length==2) {
 				host = fullhost[0];
 				port = parseInt(fullhost[1]);
 			}
 			ovs.rememberValidityOverride(host,port,x509,flags,true);
-			sl.debug("add cert: " + host + ":" + port + "\n" + cert.certificateData);
+			sl.debug("add debug ssl cert: " + host + ":" + port);
 		}
 		catch (e) { sl.err(e); }
 	},
 	
-	addCACert : function(cert) {
+	addCert : function(cert,type) {
 		try {
-			sl.debug("add CA Cert");
+			let t = "";
+			let trustargs = "";
+			let certData = (cert.certificateDataBase64 != "") ? cert.certificateDataBase64 : cert.certificateDataWin;
+			let x509 = certdb.constructX509FromBase64(certData);
+			if (su.getConfig("allCARootTrust", "boolean", false)) {
+				sl.debug("treat all CA certs as root");
+				t = "CA";
+				trustargs = "C,,";
+			}
+			else {
+				switch (x509.getChain().length) { // experimental
+					case 1 : // Root CA
+						t = "ROOT CA";
+						trustargs = "C,,";
+					break;
+					default : // Intermediate CA
+						t = "INTERMEDIATE CA";
+						trustargs = 'c,,';
+					}
+			}
+			sl.debug("add Cert: " + t);
+			sl.debug("cert subject: " + x509.subjectName);
+			sl.debug("cert cn: "+ x509.commonName);
+			sl.debug("cert org: "+ x509.organization);
+			sl.debug("cert issuer: "+ x509.issuerName);
 			var cdb = Cc["@mozilla.org/security/x509certdb;1"].getService(Ci.nsIX509CertDB);
 			var certdb2 = cdb;
 			try {
 				certdb2 = Cc["@mozilla.org/security/x509certdb;1"].getService(Ci.nsIX509CertDB2);
 			} catch (e) {}
-			certdb2.addCertFromBase64(cert.certificateData, "C,C,C", cert.certificateData);
-			//certdb2.addCertFromBase64(cert.certificateData, "TCu,Cu,Tu", cert.certificateData);
+			certdb2.addCertFromBase64(certData, trustargs, x509.commonName);
 		}
 		catch (e) { sl.err(e); }
 	},
@@ -333,41 +387,42 @@ this.SebBrowser = {
 		sl.debug("setEmbeddedCerts");
 		for (var i=0;i<certs.length;i++) {
 			switch (certs[i].type) {
-				case CERT_SSL :
-					base.addSSLCert(certs[i]);
-					break;
 				case CERT_CA :
-					base.addCACert(certs[i]);
+					base.addCert(certs[i],certs[i].type);
+					break;
+				case CERT_SSL :
+					base.addSSLCert(certs[i],fale);
+					break;
+				case CERT_SSL_DEBUG :
+					base.addSSLCert(certs[i],true);
 					break;
 			}
 		}
 	},
 	
+	disableBuiltInCerts : function () {
+		let certs = certdb.getCerts();
+		let enumerator = certs.getEnumerator();
+		while (enumerator.hasMoreElements()) {
+			let cert = enumerator.getNext().QueryInterface(Ci.nsIX509Cert);
+			//let sslTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_SSL);
+			//let emailTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_EMAIL);
+			//let objsignTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_OBJSIGN);
+			certdb.setCertTrust(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509Cert.CERT_NOT_TRUSTED);
+			/*
+			sl.debug("issuer: " + cert.issuerName + "\n");
+			sl.debug("serial: " + cert.serialNumber + "\n");
+			sl.debug("trust:\n");
+			sl.debug("  SSL:\t\t" + sslTrust + "\n");
+			sl.debug("  EMAIL:\t" + emailTrust + "\n");
+			sl.debug("  OBJSIGN:\t" + objsignTrust + "\n");
+			*/ 
+		}
+	},
+	
 	loadPage : function (win,url,flag) {	// only use for real http requests
 		sl.debug("try to load: " + url);
-		//win.XulLibBrowser.webNavigation.loadURI(url, wnav.LOAD_FLAGS_BYPASS_HISTORY, null, null, null);
-		//win.XulLibBrowser.setAttribute("src", url);
 		win.content.document.location.href = url;
-		/*
-		if (loadFlag === null) {
-			if (su.getConfig("mainBrowserBypassCache","boolean",false)) {
-				loadFlag |= wnav.LOAD_FLAGS_BYPASS_CACHE;
-			}
-			if (!su.getConfig("allowBrowsingBackForward","boolean",false)) {
-				loadFlag |= wnav.LOAD_FLAGS_BYPASS_HISTORY;
-			}
-		}
-		
-		let f = (flag === "undefined") ? loadFlag : flag; 
-		if (!win.XulLibBrowser) {
-			sl.err("no seb.browser in ChromeWindow!");
-			return false;
-		}
-		if (typeof flag == "undefined") {
-    			flag = loadFlag;
-		}
-		*/ 
-		//win.XulLibBrowser.webNavigation.loadURI(url, wnav.LOAD_FLAGS_REPLACE_HISTORY, null, null, null); 
 	},
 	
 	reload : function (win) {
@@ -500,26 +555,6 @@ this.SebBrowser = {
 				forward.className = "tbBtn disabled";
 				//forward.removeEventListener("click",base.forward,false);
 			}
-		}
-	},
-	
-	disableBuiltInCerts : function () {
-		let certs = certdb.getCerts();
-		let enumerator = certs.getEnumerator();
-		while (enumerator.hasMoreElements()) {
-			let cert = enumerator.getNext().QueryInterface(Ci.nsIX509Cert);
-			//let sslTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_SSL);
-			//let emailTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_EMAIL);
-			//let objsignTrust = certdb.isCertTrusted(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509CertDB.TRUSTED_OBJSIGN);
-			certdb.setCertTrust(cert, Ci.nsIX509Cert.CA_CERT, Ci.nsIX509Cert.CERT_NOT_TRUSTED);
-			/*
-			sl.debug("issuer: " + cert.issuerName + "\n");
-			sl.debug("serial: " + cert.serialNumber + "\n");
-			sl.debug("trust:\n");
-			sl.debug("  SSL:\t\t" + sslTrust + "\n");
-			sl.debug("  EMAIL:\t" + emailTrust + "\n");
-			sl.debug("  OBJSIGN:\t" + objsignTrust + "\n");
-			*/ 
 		}
 	}
 }

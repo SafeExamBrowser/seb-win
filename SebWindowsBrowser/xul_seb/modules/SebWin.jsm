@@ -75,6 +75,7 @@ const	xulFrame = "seb.iframe",
 	
 this.SebWin = {
 	wins : [],
+	lasWin : null,
 	mainScreen : {},
 	popupScreen : {},
 	winTypesReg : {
@@ -96,13 +97,16 @@ this.SebWin = {
 	},
 	
 	addWin : function (win) {
+		sl.debug("addWin");
 		if (base.wins.length >= 1) { // secondary
 			base.setWinType(win,"secondary");
-			
+			//win.document.getElementsByTagName("window")[0].setAttribute("",type);
 		}
+		base.lastWin = win;
 		sb.initBrowser(win);
 		base.wins.push(win);
-		sl.debug("window added with type: " + base.getWinType(win) + " - " + win.content.location.href);
+		
+		sl.debug("window added with type: " + base.getWinType(win));
 		sl.debug("windows count: " + base.wins.length);
 	},
 	
@@ -188,9 +192,21 @@ this.SebWin = {
 	},
 	
 	openDistinctWin : function(url) {
+		sl.debug("openDistinctWin");
 		for (var i=base.wins.length-1;i>=0;i--) { 
+			//sl.debug(url + " = " + atob(base.wins[i].document.getElementsByTagName("window")[0].getAttribute("baseurl")));
+			sl.debug(url + " = " + atob(base.wins[i].XULBrowserWindow.baseurl));
 			try {
-				if (base.wins[i].content.location.href == url) {
+				let a = btoa(url);
+				let b = btoa(url+"/"); // aRequest object adds a slash to urls
+				let c = base.wins[i].XULBrowserWindow.baseurl;
+				// // pdf viewer "chrome:" url is transformed to "file:" url by aRequest, so i have to pick up the ?file=.* part to compare
+				if (base.winTypesReg.pdfViewer.test(url) && base.winTypesReg.pdfViewer.test(atob(c))) {
+					a = b = btoa(url.split('?file=')[1]); // only compare file part of pdf viewer
+					c = btoa(atob(c).split('?file=')[1]);
+				}
+				if (a == c || b == c) {
+					sl.debug("url " + url + " already open: window.focus()");
 					base.wins[i].focus();
 					return;
 				}
@@ -211,19 +227,11 @@ this.SebWin = {
 		seb.mainWin.open(url);
 	},
 	
-	/*
-	showLoading : function (win) {
-		let w = (win) ? win : base.getRecentWin();
-		sl.debug("showLoading...");
-		base.getFrameElement(w).setAttribute("src",xulLoad);
-		base.setDeckIndex(w,loadDeck);
-	},
-	*/
-	
 	setToolbar : function (win) {
 		if (su.getConfig("enableBrowserWindowToolbar", "boolean", false)) {
 			sl.debug("setToolbar visible");
-			win.document.getElementById("toolBar").className = "visible";
+			var tb = win.document.getElementById("toolBar");
+			tb.className = (su.getConfig("touchOptimized", "boolean", false)) ? "visible tbTouch" : "visible tbDesktop";			
 			if (!su.getConfig("allowBrowsingBackForward","boolean",false)) {
 				win.document.getElementById("btnBack").className = "hidden";
 				win.document.getElementById("btnForward").className = "hidden";
@@ -290,6 +298,18 @@ this.SebWin = {
 		if (base.mainScreen['initialized']) { return base.mainScreen; }	 
 		base.mainScreen['titlebarEnabled'] = su.getConfig("mainBrowserWindowTitlebarEnabled","boolean",false);
 		base.mainScreen['maximized'] = su.getConfig("mainBrowserWindowMaximized","boolean",true);
+		//template browserViewMode
+		switch (su.getConfig("browserViewMode","number",1)) {
+			case 0 :
+				base.mainScreen['titlebarEnabled'] = true;
+				base.mainScreen['maximized'] = false;
+				break;
+			case 1 :
+				base.mainScreen['titlebarEnabled'] = false;
+				base.mainScreen['maximized'] = true;
+				break;
+			break;
+		}
 		base.mainScreen['width'] = seb.config["mainBrowserWindowWidth"];
 		base.mainScreen['height'] = seb.config["mainBrowserWindowHeight"];
 		base.mainScreen['position'] = pos[su.getConfig("mainBrowserWindowPositioning","number",1)];
@@ -311,10 +331,10 @@ this.SebWin = {
 		if (su.getConfig("touchOptimized","boolean",true)) {
 			base.popupScreen['titlebarEnabled'] = false;
 			base.popupScreen['maximized'] = true;
+			
 		}
 		base.popupScreen['initialized'] = true;
-		return base.popupScreen;
-		
+		return base.popupScreen;	
 	},
 	
 	setSize : function(win) {

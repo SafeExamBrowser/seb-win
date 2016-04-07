@@ -34,15 +34,20 @@ this.EXPORTED_SYMBOLS = ["SebNet"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ appinfo, prefs } = Cu.import("resource://gre/modules/Services.jsm").Services;
+	{ appinfo, prefs, scriptloader, io } = Cu.import("resource://gre/modules/Services.jsm").Services;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 	
 /* Services */
+
+/* SebGlobals */
+scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","SebLog");
 XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","SebUtils");
 XPCOMUtils.defineLazyModuleGetter(this,"sw","resource://modules/SebWin.jsm","SebWin");
+XPCOMUtils.defineLazyModuleGetter(this,"sb","resource://modules/SebBrowser.jsm","SebBrowser");
 
 /* ModuleGlobals */
 let 	seb = null,
@@ -55,30 +60,39 @@ let 	seb = null,
 	},
 	convertReg = /[-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g,
 	wildcardReg = /\*/g,
+	httpReg = new RegExp(/^http\:/i);
 	reqHeader = "",
 	reqKey = null,
 	reqSalt = null,
-	sendBrowserExamKey = null;
+	sendBrowserExamKey = null,
+	forceHTTPS = false,
+	blockHTTP = false;
 
 this.SebNet = {
+		
 	httpRequestObserver : {
 		observe	: function(subject, topic, data) {
 			if (topic == "http-on-modify-request" && subject instanceof Ci.nsIHttpChannel) {
+				//sl.debug("http request: "+ subject.URI.spec);
 				//sl.debug(data);
 				//subject.QueryInterface(Ci.nsIHttpChannel);
 				//sl.debug(subject.getRequestHeader('Accept'));
 				//sl.debug(subject.referrer);
+				let origUrl = "";
 				let url = "";
 				try {
-					url = subject.URI.spec.split("#"); // url fragment is not transmitted to the server!
+					origUrl = subject.URI.spec;
+					url = origUrl.split("#"); // url fragment is not transmitted to the server!
 					url = url[0];
 					//sl.debug("request: " + url);
 					let urlTrusted = su.getConfig("urlFilterTrustedContent","boolean",true);
 					if (!urlTrusted) {
 						if (!base.isValidUrl(url)) {
 							subject.cancel(Cr.NS_BINDING_ABORTED);
+							return;
 						}
-					}					
+					}
+								
 					//if (sendReqHeader && /text\/html/g.test(subject.getRequestHeader('Accept'))) { // experimental
 					if (sendBrowserExamKey) {
 						var k;
@@ -90,6 +104,22 @@ this.SebNet = {
 							k = reqKey;
 						}
 						subject.setRequestHeader(reqHeader, k, false);
+					}
+					if (httpReg.test(url)) {
+						if (blockHTTP) {
+							sl.debug("block http request");
+							subject.cancel(Cr.NS_BINDING_ABORTED);
+							return;
+						}
+						if (forceHTTPS) { // non common browser behaviour, experimental
+							sl.debug("try redirecting request to https: " + origUrl);
+							try {
+								subject.redirectTo(io.newURI(origUrl.replace("http:","https:"),null,null));
+							}
+							catch(e) {
+								sl.debug(e + "\nurl: " + url);
+							}
+						}
 					}
 				}
 				catch (e) {
@@ -150,6 +180,7 @@ this.SebNet = {
 		seb = obj;
 		base.setListRegex();
 		base.setReqHeader();
+		base.setSSLSecurity();
 		sl.out("SebNet initialized: " + seb);
 	},
 	
@@ -353,5 +384,12 @@ this.SebNet = {
 	
 	getRequestValue : function (url,key) {
 		return su.getHash(url+key);
+	},
+	
+	setSSLSecurity : function () {
+		forceHTTPS = (su.getConfig("sslSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_FORCE_HTTPS);
+		blockHTTP = (su.getConfig("sslSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_BLOCK_HTTP);
+		sl.debug("forceHTTPS: " + forceHTTPS);
+		sl.debug("blockHTTP: " + blockHTTP);
 	}
 }

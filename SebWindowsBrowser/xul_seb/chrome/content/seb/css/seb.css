@@ -38,22 +38,39 @@
 	display: block;
 }
 
-#toolBar {
-	background-color : #eee;
+.tbTouch {
+	max-height: 48px;
+	min-height: 48px;
+}
+
+.tbDesktop {
 	max-height: 24px;
 	min-height: 24px;
+}
+
+#toolBar {
+	background-color : #eee;
 	white-space: nowrap;
 }
 
-.tbBtn {
-	cursor: pointer;
+.tbTouch > .tbBtn	{
+	height: 32px;
+	width: 32px;
+}
+
+.tbDesktop > .tbBtn	{
 	height: 20px;
 	width: 20px;
+}
+
+
+
+.tbBtn {
+	cursor: pointer;
 	border: none;
 	background-color: #eee;
 	margin-top: 2px;
-	margin-left: 10px;
-	
+	margin-left: 10px;	
 }
 
 #locationBar {
@@ -77,22 +94,4 @@
 .enabled {
 	opacity : 1;
 	cursor : pointer;
-}
-
-#errBody {
-	font-family: courier, system;
-	color: white;
-	font-weight: bold;
-	font-size: 120%;
-	width: 50%;
-	line-height: 2em;
-}
-
-#errForm {
-	padding-top: 20%;
-	padding-left: 20%;
-}
-
-.errBtn {
-	width: 10em;
 }

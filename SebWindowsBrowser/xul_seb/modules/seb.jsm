@@ -142,6 +142,7 @@ this.seb =  {
 		sn.init(base); // needs config on init for compiled RegEx
 		sn.initProxies();
 		sh.init(base);
+		sb.initSecurity();
 	},
 	
 	initProfile : function() {
@@ -229,11 +230,12 @@ this.seb =  {
 		base.consts = win.document.getElementById("const");
 		sw.setToolbar(win);			
 		sw.setSize(win);
-		sw.showContent(win);
+		//sw.showContent(win); still required?
 		sb.loadPage(win,base.url);
 	},
 	
 	initSecondary : function(win) {
+		sw.setToolbar(win);
 		sw.setSize(win);
 	},
 	

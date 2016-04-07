@@ -94,26 +94,31 @@ this.SebConfig =  {
 		}
 	},
 	
+	setPref : function (k,v) {
+		switch (typeof v) {
+			case "string" :
+				sl.debug("setCharPref: " + k + ":" + v);
+				prefs.setCharPref(k,v);
+			break
+			case "number" :
+				sl.debug("setIntPref: " + k + ":" + v);
+				prefs.setIntPref(k,v);
+			break;
+			case "boolean" :
+				sl.debug("setBoolPref: " + k + ":" + v);
+				prefs.setBoolPref(k,v);
+			break;
+			default :
+				sl.debug("no pref type: " + k + ":" + v);
+		}
+	},
+	
 	setPrefs : function (ps) {
 		sl.debug("setPrefs from config object");
 		for (var k in ps) {
 			var v = ps[k];
-			switch (typeof v) {
-				case "string" :
-					sl.debug("setCharPref: " + k + ":" + v);
-					prefs.setCharPref(k,v);
-				break
-				case "number" :
-					sl.debug("setIntPref: " + k + ":" + v);
-					prefs.setIntPref(k,v);
-				break;
-				case "boolean" :
-					sl.debug("setBoolPref: " + k + ":" + v);
-					prefs.setBoolPref(k,v);
-				break;
-				default :
-					sl.debug("no pref type: " + k + ":" + v);
-			}
+			sl.debug("setPref: " + k + ":" + v);
+			bsae.setPref(k, v);
 		}	
 	},
 	
@@ -133,23 +138,7 @@ this.SebConfig =  {
 			if (typeof pm[k] == "string") {
 				v = seb.config[pm[k]];
 			}
-				
-			switch (typeof v) {
-				case "string" :
-					sl.debug("setCharPref: " + k + ":" + v);
-					prefs.setCharPref(k,v);
-				break
-				case "number" :
-					sl.debug("setIntPref: " + k + ":" + v);
-					prefs.setIntPref(k,v);
-				break;
-				case "boolean" :
-					sl.debug("setBoolPref: " + k + ":" + v);
-					prefs.setBoolPref(k,v);
-				break;
-				default :
-					sl.debug("no pref type: " + k + ":" + v);
-			}
+			base.setPref(k,v);
 		}
 	},
 	

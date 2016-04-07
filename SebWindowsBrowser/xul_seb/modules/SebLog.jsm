@@ -115,6 +115,9 @@ this.SebLog = {
 	dir : function(val) { // does not work: infinite loop
 		//base.out(Object.prototype.toString.call(val));
 		//if (Object.prototype.toString.call(val) === '[object Object]') {
+		if (typeof seb === "object" && !seb.DEBUG) {
+			return;
+		}
 		if (typeof val == 'object') {
 			for (var propertyName in val) {
 				if (val.hasOwnProperty(propertyName)) {

@@ -32,7 +32,7 @@
        default configuration.  This will be renamed to SebClientSettings.seb -->
   <!-- ?define DefaultSebClientSettingsFile = ".\Resources\DefaultSebSettings.seb" ? -->
 
-  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.2.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="6191FCDD-709B-4E0C-A1FF-EA3EAAB7449E">
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.2.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

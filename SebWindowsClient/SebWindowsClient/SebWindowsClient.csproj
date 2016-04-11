@@ -370,6 +370,8 @@
     <None Include="Resources\battery.png" />
     <None Include="Resources\quit.png" />
     <Content Include="Resources\reload.png" />
+    <None Include="Resources\resource.png" />
+    <None Include="Resources\resource.bmp" />
     <Content Include="Resources\restartExam.png" />
     <Content Include="Resources\loading.gif" />
     <Content Include="Resources\SEBCloseWindowIcon.png" />

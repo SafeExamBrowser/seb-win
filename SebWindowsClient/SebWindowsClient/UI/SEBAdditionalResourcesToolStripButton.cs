@@ -41,7 +41,7 @@ namespace SebWindowsClient.UI
 
         private void InitializeComponent()
         {
-            base.Image = Resources.quit;
+            base.Image = Resources.resource;
         }
 
         private void LoadItems()
@@ -56,6 +56,7 @@ namespace SebWindowsClient.UI
                 l0Item.Resource = l0Resource;
                 l0Item.Click += OnItemClicked;
                 AutoOpenResource(l0Resource);
+                l0Item.BackColor = Color.White;
                 l0Item.Image = GetResourceIcon(l0Resource);
 
                 foreach (DictObj l1Resource in ((ListObj)l0Resource[SEBSettings.KeyAdditionalResources]))
@@ -117,7 +118,7 @@ namespace SebWindowsClient.UI
                 return Image.FromStream(memoryStream);
             }
 
-            return Resources.SebGlobalDialogImage;
+            return Resources.resource;
         }
 
         private void OpenEmbededResource(DictObj resource)

@@ -597,20 +597,20 @@ namespace SebWindowsConfig
             // Group "Network - Certificates"
 
             // Group "Network - Proxies"
-            radioButtonUseSystemProxySettings.Checked =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyProxySettingsPolicy] == 0);
-            radioButtonUseSebProxySettings   .Checked =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyProxySettingsPolicy] == 1);
+            radioButtonUseSystemProxySettings.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyProxySettingsPolicy] == 0);
+            radioButtonUseSebProxySettings.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyProxySettingsPolicy] == 1);
 
-            textBoxAutoProxyConfigurationURL .Text    =  (String)SEBSettings.proxiesData[SEBSettings.KeyAutoConfigurationURL];
-            checkBoxExcludeSimpleHostnames   .Checked = (Boolean)SEBSettings.proxiesData[SEBSettings.KeyExcludeSimpleHostnames];
-            checkBoxUsePassiveFTPMode        .Checked = (Boolean)SEBSettings.proxiesData[SEBSettings.KeyFTPPassive];
+            textBoxAutoProxyConfigurationURL.Text = (String)SEBSettings.proxiesData[SEBSettings.KeyAutoConfigurationURL];
+            checkBoxExcludeSimpleHostnames.Checked = (Boolean)SEBSettings.proxiesData[SEBSettings.KeyExcludeSimpleHostnames];
+            checkBoxUsePassiveFTPMode.Checked = (Boolean)SEBSettings.proxiesData[SEBSettings.KeyFTPPassive];
 
             // Group "Security"
-             listBoxSebServicePolicy.SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeySebServicePolicy];
-            checkBoxAllowVirtualMachine.Checked    = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVirtualMachine];
-            radioCreateNewDesktop   .Checked    = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
-            radioKillExplorerShell  .Checked    = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell];
-            radioNoKiosMode  .Checked    = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] && !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
-            checkBoxAllowUserSwitching .Checked    = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching];
+             listBoxSebServicePolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebServicePolicy];
+            checkBoxAllowVirtualMachine.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVirtualMachine];
+            radioCreateNewDesktop.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
+            radioKillExplorerShell.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell];
+            radioNoKiosMode.Checked = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] && !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
+            checkBoxAllowUserSwitching.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching];
             checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
             checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
             checkBoxEnableLogging.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableLogging];
@@ -3347,6 +3347,7 @@ namespace SebWindowsConfig
         private void radioKillExplorerShell_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] = radioKillExplorerShell.Checked;
+            checkBoxMonitorProcesses.Enabled = !radioKillExplorerShell.Checked;
         }
 
         private void checkBoxAllowWlan_CheckedChanged(object sender, EventArgs e)

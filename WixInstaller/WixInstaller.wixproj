@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -107,7 +107,7 @@
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
     <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
-"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode /d SafeExamBrowser.msi "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>"%25WIX%25\bin\heat" dir "$(SolutionDir)SebWindowsBrowser\xul_seb" -out "$(SolutionDir)WixInstaller\XulSeb.wxs" -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder

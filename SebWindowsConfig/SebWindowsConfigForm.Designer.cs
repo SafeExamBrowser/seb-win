@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1540,8 +1540,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle5;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2694,7 +2694,7 @@
             this.tabPageExam.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageExam.Name = "tabPageExam";
             this.tabPageExam.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageExam.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageExam.Size = new System.Drawing.Size(1242, 601);
             this.tabPageExam.TabIndex = 18;
             this.tabPageExam.Text = "Exam";
             this.tabPageExam.UseVisualStyleBackColor = true;
@@ -4814,11 +4814,11 @@
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageRegistry);
             this.tabControlSebWindowsConfig.Controls.Add(this.tabPageHookedKeys);
             this.tabControlSebWindowsConfig.ImageList = this.imageListTabIcons;
-            this.tabControlSebWindowsConfig.Location = new System.Drawing.Point(34, 24);
+            this.tabControlSebWindowsConfig.Location = new System.Drawing.Point(8, 22);
             this.tabControlSebWindowsConfig.Margin = new System.Windows.Forms.Padding(2);
             this.tabControlSebWindowsConfig.Name = "tabControlSebWindowsConfig";
             this.tabControlSebWindowsConfig.SelectedIndex = 0;
-            this.tabControlSebWindowsConfig.Size = new System.Drawing.Size(1100, 660);
+            this.tabControlSebWindowsConfig.Size = new System.Drawing.Size(1250, 644);
             this.tabControlSebWindowsConfig.TabIndex = 0;
             this.tabControlSebWindowsConfig.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlSebWindowsConfig_Selecting);
             // 
@@ -4849,7 +4849,7 @@
             this.useSettingsToToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1184, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -4969,7 +4969,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1184, 712);
+            this.ClientSize = new System.Drawing.Size(1264, 672);
             this.Controls.Add(this.tabControlSebWindowsConfig);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

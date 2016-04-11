@@ -10,7 +10,7 @@ using SebWindowsServiceWCF.ServiceImplementations;
 //  SEBConfigFileManager.cs
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2014 Pascal Wyss, 
+//  Copyright (c) 2010-2016 Pascal Wyss, 
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -32,7 +32,7 @@ using SebWindowsServiceWCF.ServiceImplementations;
 //
 //  The Initial Developer of the Original Code is Pascal Wyss.
 //  Portions created by Pascal Wyss
-//  are Copyright (c) 2010-2014 Pascal Wyss, 
+//  are Copyright (c) 2010-2016 Pascal Wyss, 
 //  ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.

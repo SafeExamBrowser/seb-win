@@ -25,7 +25,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 //  SebWindowsClient.cs
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2014 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
+//  Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -48,7 +48,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 //  The Initial Developers of the Original Code are Viktor Tomas, 
 //  Dirk Bauer, Daniel R. Schneider, Pascal Wyss.
 //  Portions created by Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss
-//  are Copyright (c) 2010-2014 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
+//  are Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
 //  Pascal Wyss, ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.

@@ -2,7 +2,7 @@
 //  SEBSettings.cs
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2015 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
+//  Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -25,7 +25,7 @@
 //  The Initial Developers of the Original Code are Viktor Tomas, 
 //  Dirk Bauer, Daniel R. Schneider, Pascal Wyss.
 //  Portions created by Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss
-//  are Copyright (c) 2010-2014 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
+//  are Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
 //  Pascal Wyss, ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.
@@ -556,7 +556,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 2);
 
             //Touch Settings
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserScreenKeyboard       , false);

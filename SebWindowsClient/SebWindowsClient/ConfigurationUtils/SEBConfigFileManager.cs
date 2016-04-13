@@ -99,7 +99,7 @@ namespace SebWindowsClient.ConfigurationUtils
             if ((int)sebPreferencesDict[SEBSettings.KeySebConfigPurpose] == (int)SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam)
             {
                 ///
-                /// If these SEB settings are ment to start an exam
+                /// If these SEB settings are meant to start an exam
                 ///
 
                 Logger.AddInformation("Reconfiguring to start an exam");
@@ -147,7 +147,7 @@ namespace SebWindowsClient.ConfigurationUtils
             else
             {
                 ///
-                /// If these SEB settings are ment to configure a client
+                /// If these SEB settings are meant to configure a client
                 ///
 
                 Logger.AddInformation("Reconfiguring to configure a client");

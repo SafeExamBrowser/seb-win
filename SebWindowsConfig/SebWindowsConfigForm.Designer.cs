@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -107,10 +107,13 @@
             this.btnAddWhitelistFilter = new System.Windows.Forms.Button();
             this.checkBoxEnableURLContentFilter = new System.Windows.Forms.CheckBox();
             this.tabPageCertificates = new System.Windows.Forms.TabPage();
+            this.checkBoxPinEmbeddedCertificates = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.comboBoxChooseCACertificate = new System.Windows.Forms.ComboBox();
             this.labelChooseIdentityToEmbed = new System.Windows.Forms.Label();
             this.labelChooseSSLClientCertificate = new System.Windows.Forms.Label();
             this.comboBoxChooseIdentityToEmbed = new System.Windows.Forms.ComboBox();
-            this.comboBoxChooseSSLClientCertificate = new System.Windows.Forms.ComboBox();
+            this.comboBoxChooseSSLServerCertificate = new System.Windows.Forms.ComboBox();
             this.buttonRemoveCertificate = new System.Windows.Forms.Button();
             this.dataGridViewEmbeddedCertificates = new System.Windows.Forms.DataGridView();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -477,7 +480,7 @@
             this.tabPageHookedKeys.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageHookedKeys.Name = "tabPageHookedKeys";
             this.tabPageHookedKeys.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageHookedKeys.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageHookedKeys.Size = new System.Drawing.Size(1242, 601);
             this.tabPageHookedKeys.TabIndex = 27;
             this.tabPageHookedKeys.Text = "Hooked Keys";
             this.tabPageHookedKeys.UseVisualStyleBackColor = true;
@@ -818,7 +821,7 @@
             this.tabPageRegistry.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageRegistry.Name = "tabPageRegistry";
             this.tabPageRegistry.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageRegistry.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageRegistry.Size = new System.Drawing.Size(1242, 601);
             this.tabPageRegistry.TabIndex = 25;
             this.tabPageRegistry.Text = "Registry";
             this.tabPageRegistry.UseVisualStyleBackColor = true;
@@ -1001,7 +1004,7 @@
             this.tabPageSecurity.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageSecurity.Name = "tabPageSecurity";
             this.tabPageSecurity.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageSecurity.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageSecurity.Size = new System.Drawing.Size(1242, 601);
             this.tabPageSecurity.TabIndex = 24;
             this.tabPageSecurity.Text = "Security";
             this.tabPageSecurity.UseVisualStyleBackColor = true;
@@ -1253,7 +1256,7 @@
             this.tabPageNetwork.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageNetwork.Name = "tabPageNetwork";
             this.tabPageNetwork.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageNetwork.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageNetwork.Size = new System.Drawing.Size(1242, 601);
             this.tabPageNetwork.TabIndex = 23;
             this.tabPageNetwork.Text = "Network";
             this.tabPageNetwork.UseVisualStyleBackColor = true;
@@ -1450,10 +1453,13 @@
             // 
             // tabPageCertificates
             // 
+            this.tabPageCertificates.Controls.Add(this.checkBoxPinEmbeddedCertificates);
+            this.tabPageCertificates.Controls.Add(this.label10);
+            this.tabPageCertificates.Controls.Add(this.comboBoxChooseCACertificate);
             this.tabPageCertificates.Controls.Add(this.labelChooseIdentityToEmbed);
             this.tabPageCertificates.Controls.Add(this.labelChooseSSLClientCertificate);
             this.tabPageCertificates.Controls.Add(this.comboBoxChooseIdentityToEmbed);
-            this.tabPageCertificates.Controls.Add(this.comboBoxChooseSSLClientCertificate);
+            this.tabPageCertificates.Controls.Add(this.comboBoxChooseSSLServerCertificate);
             this.tabPageCertificates.Controls.Add(this.buttonRemoveCertificate);
             this.tabPageCertificates.Controls.Add(this.dataGridViewEmbeddedCertificates);
             this.tabPageCertificates.Location = new System.Drawing.Point(4, 22);
@@ -1465,10 +1471,46 @@
             this.tabPageCertificates.Text = "Certificates";
             this.tabPageCertificates.UseVisualStyleBackColor = true;
             // 
+            // checkBoxPinEmbeddedCertificates
+            // 
+            this.checkBoxPinEmbeddedCertificates.AutoSize = true;
+            this.checkBoxPinEmbeddedCertificates.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxPinEmbeddedCertificates.Location = new System.Drawing.Point(34, 123);
+            this.checkBoxPinEmbeddedCertificates.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxPinEmbeddedCertificates.Name = "checkBoxPinEmbeddedCertificates";
+            this.checkBoxPinEmbeddedCertificates.Size = new System.Drawing.Size(148, 17);
+            this.checkBoxPinEmbeddedCertificates.TabIndex = 100;
+            this.checkBoxPinEmbeddedCertificates.Text = "Pin embedded certificates";
+            this.checkBoxPinEmbeddedCertificates.UseVisualStyleBackColor = true;
+            this.checkBoxPinEmbeddedCertificates.CheckedChanged += new System.EventHandler(this.checkBoxPinEmbeddedCertificates_CheckedChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(16, 74);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(249, 13);
+            this.label10.TabIndex = 99;
+            this.label10.Text = "Choose CA certificate to embed into configuration...";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // comboBoxChooseCACertificate
+            // 
+            this.comboBoxChooseCACertificate.FormattingEnabled = true;
+            this.comboBoxChooseCACertificate.Location = new System.Drawing.Point(19, 91);
+            this.comboBoxChooseCACertificate.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxChooseCACertificate.Name = "comboBoxChooseCACertificate";
+            this.comboBoxChooseCACertificate.Size = new System.Drawing.Size(491, 21);
+            this.comboBoxChooseCACertificate.TabIndex = 98;
+            this.toolTip1.SetToolTip(this.comboBoxChooseCACertificate, "SSL/TLS certificates from the Windows Certificate Store\r\n. This allows to distrib" +
+        "ute self-signed certificates to exam clients.");
+            this.comboBoxChooseCACertificate.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseCACertificate_SelectedIndexChanged);
+            // 
             // labelChooseIdentityToEmbed
             // 
             this.labelChooseIdentityToEmbed.AutoSize = true;
-            this.labelChooseIdentityToEmbed.Location = new System.Drawing.Point(16, 74);
+            this.labelChooseIdentityToEmbed.Location = new System.Drawing.Point(16, 157);
             this.labelChooseIdentityToEmbed.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelChooseIdentityToEmbed.Name = "labelChooseIdentityToEmbed";
             this.labelChooseIdentityToEmbed.Size = new System.Drawing.Size(219, 13);
@@ -1488,7 +1530,7 @@
             // comboBoxChooseIdentityToEmbed
             // 
             this.comboBoxChooseIdentityToEmbed.FormattingEnabled = true;
-            this.comboBoxChooseIdentityToEmbed.Location = new System.Drawing.Point(19, 91);
+            this.comboBoxChooseIdentityToEmbed.Location = new System.Drawing.Point(19, 174);
             this.comboBoxChooseIdentityToEmbed.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxChooseIdentityToEmbed.Name = "comboBoxChooseIdentityToEmbed";
             this.comboBoxChooseIdentityToEmbed.Size = new System.Drawing.Size(491, 21);
@@ -1496,24 +1538,24 @@
             this.toolTip1.SetToolTip(this.comboBoxChooseIdentityToEmbed, resources.GetString("comboBoxChooseIdentityToEmbed.ToolTip"));
             this.comboBoxChooseIdentityToEmbed.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseIdentityToEmbed_SelectedIndexChanged);
             // 
-            // comboBoxChooseSSLClientCertificate
+            // comboBoxChooseSSLServerCertificate
             // 
-            this.comboBoxChooseSSLClientCertificate.FormattingEnabled = true;
-            this.comboBoxChooseSSLClientCertificate.Location = new System.Drawing.Point(19, 41);
-            this.comboBoxChooseSSLClientCertificate.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBoxChooseSSLClientCertificate.Name = "comboBoxChooseSSLClientCertificate";
-            this.comboBoxChooseSSLClientCertificate.Size = new System.Drawing.Size(491, 21);
-            this.comboBoxChooseSSLClientCertificate.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.comboBoxChooseSSLClientCertificate, "SSL/TLS certificates from the Windows Certificate Store\r\n. This allows to distrib" +
+            this.comboBoxChooseSSLServerCertificate.FormattingEnabled = true;
+            this.comboBoxChooseSSLServerCertificate.Location = new System.Drawing.Point(19, 41);
+            this.comboBoxChooseSSLServerCertificate.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxChooseSSLServerCertificate.Name = "comboBoxChooseSSLServerCertificate";
+            this.comboBoxChooseSSLServerCertificate.Size = new System.Drawing.Size(491, 21);
+            this.comboBoxChooseSSLServerCertificate.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.comboBoxChooseSSLServerCertificate, "SSL/TLS certificates from the Windows Certificate Store\r\n. This allows to distrib" +
         "ute self-signed certificates to exam clients.");
-            this.comboBoxChooseSSLClientCertificate.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseSSLClientCertificate_SelectedIndexChanged);
+            this.comboBoxChooseSSLServerCertificate.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseSSLServerCertificate_SelectedIndexChanged);
             // 
             // buttonRemoveCertificate
             // 
-            this.buttonRemoveCertificate.Location = new System.Drawing.Point(19, 292);
+            this.buttonRemoveCertificate.Location = new System.Drawing.Point(19, 375);
             this.buttonRemoveCertificate.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRemoveCertificate.Name = "buttonRemoveCertificate";
-            this.buttonRemoveCertificate.Size = new System.Drawing.Size(22, 24);
+            this.buttonRemoveCertificate.Size = new System.Drawing.Size(22, 26);
             this.buttonRemoveCertificate.TabIndex = 3;
             this.buttonRemoveCertificate.Text = "-";
             this.toolTip1.SetToolTip(this.buttonRemoveCertificate, "Remove certificate/identity from settings");
@@ -1527,12 +1569,12 @@
             this.Type,
             this.dataGridViewTextBoxColumnName});
             this.dataGridViewEmbeddedCertificates.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dataGridViewEmbeddedCertificates.Location = new System.Drawing.Point(19, 131);
+            this.dataGridViewEmbeddedCertificates.Location = new System.Drawing.Point(19, 214);
             this.dataGridViewEmbeddedCertificates.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewEmbeddedCertificates.Name = "dataGridViewEmbeddedCertificates";
             this.dataGridViewEmbeddedCertificates.RowHeadersVisible = false;
             this.dataGridViewEmbeddedCertificates.RowTemplate.Height = 24;
-            this.dataGridViewEmbeddedCertificates.Size = new System.Drawing.Size(490, 146);
+            this.dataGridViewEmbeddedCertificates.Size = new System.Drawing.Size(490, 148);
             this.dataGridViewEmbeddedCertificates.TabIndex = 2;
             this.dataGridViewEmbeddedCertificates.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEmbeddedCertificates_CellValueChanged);
             this.dataGridViewEmbeddedCertificates.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewEmbeddedCertificates_CurrentCellDirtyStateChanged);
@@ -1540,8 +1582,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -1860,7 +1902,7 @@
             this.tabPageApplications.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageApplications.Name = "tabPageApplications";
             this.tabPageApplications.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageApplications.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageApplications.Size = new System.Drawing.Size(1242, 601);
             this.tabPageApplications.TabIndex = 21;
             this.tabPageApplications.Text = "Applications";
             this.tabPageApplications.UseVisualStyleBackColor = true;
@@ -2925,7 +2967,7 @@
             this.tabPageDownUploads.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageDownUploads.Name = "tabPageDownUploads";
             this.tabPageDownUploads.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageDownUploads.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageDownUploads.Size = new System.Drawing.Size(1242, 601);
             this.tabPageDownUploads.TabIndex = 17;
             this.tabPageDownUploads.Text = "Down/Uploads";
             this.tabPageDownUploads.UseVisualStyleBackColor = true;
@@ -3089,7 +3131,7 @@
             this.tabPageBrowser.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageBrowser.Name = "tabPageBrowser";
             this.tabPageBrowser.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageBrowser.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageBrowser.Size = new System.Drawing.Size(1242, 601);
             this.tabPageBrowser.TabIndex = 14;
             this.tabPageBrowser.Text = "Browser";
             this.tabPageBrowser.UseVisualStyleBackColor = true;
@@ -3648,7 +3690,7 @@
             this.tabPageAppearance.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageAppearance.Name = "tabPageAppearance";
             this.tabPageAppearance.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageAppearance.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageAppearance.Size = new System.Drawing.Size(1242, 601);
             this.tabPageAppearance.TabIndex = 8;
             this.tabPageAppearance.Text = "User Interface";
             this.tabPageAppearance.UseVisualStyleBackColor = true;
@@ -4160,7 +4202,7 @@
             this.tabPageConfigFile.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageConfigFile.Name = "tabPageConfigFile";
             this.tabPageConfigFile.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageConfigFile.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageConfigFile.Size = new System.Drawing.Size(1242, 601);
             this.tabPageConfigFile.TabIndex = 6;
             this.tabPageConfigFile.Text = "Config File";
             this.tabPageConfigFile.UseVisualStyleBackColor = true;
@@ -4491,7 +4533,7 @@
             this.tabPageGeneral.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageGeneral.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageGeneral.Size = new System.Drawing.Size(1242, 601);
             this.tabPageGeneral.TabIndex = 4;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
@@ -4829,7 +4871,7 @@
             this.tabPageAdditionalResources.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageAdditionalResources.Name = "tabPageAdditionalResources";
             this.tabPageAdditionalResources.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageAdditionalResources.Size = new System.Drawing.Size(1092, 617);
+            this.tabPageAdditionalResources.Size = new System.Drawing.Size(1242, 601);
             this.tabPageAdditionalResources.TabIndex = 28;
             this.tabPageAdditionalResources.Text = "Additional Resources";
             this.tabPageAdditionalResources.UseVisualStyleBackColor = true;
@@ -5288,7 +5330,7 @@
         private System.Windows.Forms.DataGridView dataGridViewEmbeddedCertificates;
         private System.Windows.Forms.Button buttonRemoveCertificate;
         private System.Windows.Forms.ComboBox comboBoxChooseIdentityToEmbed;
-        private System.Windows.Forms.ComboBox comboBoxChooseSSLClientCertificate;
+        private System.Windows.Forms.ComboBox comboBoxChooseSSLServerCertificate;
         private System.Windows.Forms.Label labelChooseIdentityToEmbed;
         private System.Windows.Forms.Label labelChooseSSLClientCertificate;
         private System.Windows.Forms.DataGridView dataGridViewProxyProtocols;
@@ -5434,6 +5476,9 @@
         private System.Windows.Forms.TabPage tabPageAdditionalResources;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBoxAdditionalResourceStartUrl;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox comboBoxChooseCACertificate;
+        private System.Windows.Forms.CheckBox checkBoxPinEmbeddedCertificates;
 
     }
 }

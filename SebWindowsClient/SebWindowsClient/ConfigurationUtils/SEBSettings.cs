@@ -235,11 +235,13 @@ namespace SebWindowsClient.ConfigurationUtils
         // Group "Network - Certificates"
         //public const String KeyEmbedSSLServerCertificate = "EmbedSSLServerCertificate";
         //public const String KeyEmbedIdentity             = "EmbedIdentity";
-        public const String KeyEmbeddedCertificates      = "embeddedCertificates";
-        public const String KeyCertificateDataWin = "certificateDataWin";
+        public const String KeyEmbeddedCertificates = "embeddedCertificates";
         public const String KeyCertificateData = "certificateData";
+        public const String KeyCertificateDataBase64 = "certificateDataBase64";
+        public const String KeyCertificateDataWin = "certificateDataWin";
         public const String KeyType = "type";
-        public const String KeyName                      = "name";
+        public const String KeyName = "name";
+        public const String KeyPinEmbeddedCertificates = "pinEmbeddedCertificates";
 
         // Group "Network - Proxies"
         public const String KeyProxySettingsPolicy       = "proxySettingsPolicy";
@@ -753,9 +755,11 @@ namespace SebWindowsClient.ConfigurationUtils
 
             SEBSettings.embeddedCertificateDataDefault.Clear();
             SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyCertificateData, new Byte[0]);
+            SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyCertificateDataBase64, "");
             SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyCertificateDataWin, "");
             SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyType, 0);
-            SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyName           , "");
+            SEBSettings.embeddedCertificateDataDefault.Add(SEBSettings.KeyName, "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyPinEmbeddedCertificates, false);
 
             // Default settings for group "Network - Proxies"
             SEBSettings.proxiesDataDefault.Clear();

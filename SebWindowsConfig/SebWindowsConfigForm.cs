@@ -527,6 +527,14 @@ namespace SebWindowsConfig
                 Int32       type                    = (Int32  )SEBSettings.embeddedCertificateData[SEBSettings.KeyType];
                 String      name                    = (String )SEBSettings.embeddedCertificateData[SEBSettings.KeyName];
                 dataGridViewEmbeddedCertificates.Rows.Add(StringCertificateType[type], name);
+
+                // For downwards compatibility of embedded SSL certs, if there is no data in the new data key certificateDataBase64
+                // we read data from the old data key certificateDataWin and save it to the new key. 
+                // Please note: The Browser Exam Key of these settings is changed by this
+                if (type == IntSSLClientCertificate && String.IsNullOrEmpty((String)SEBSettings.embeddedCertificateData[SEBSettings.KeyCertificateDataBase64])) {
+                    String base64Data = (String)SEBSettings.embeddedCertificateData[SEBSettings.KeyCertificateDataWin];
+                    SEBSettings.embeddedCertificateData[SEBSettings.KeyCertificateDataBase64] = base64Data;
+                }
             }
 /*
             // Get the "Enabled" boolean values of current "proxies" dictionary
@@ -595,6 +603,8 @@ namespace SebWindowsConfig
 
 
             // Group "Network - Certificates"
+            checkBoxPinEmbeddedCertificates.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyPinEmbeddedCertificates];
+
 
             // Group "Network - Proxies"
             radioButtonUseSystemProxySettings.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyProxySettingsPolicy] == 0);
@@ -2918,9 +2928,9 @@ namespace SebWindowsConfig
         // ******************************
         // Group "Network - Certificates"
         // ******************************
-        private void comboBoxChooseSSLClientCertificate_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxChooseSSLServerCertificate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var cert = (X509Certificate2)certificateSSLReferences[comboBoxChooseSSLClientCertificate.SelectedIndex];
+            var cert = (X509Certificate2)certificateSSLReferences[comboBoxChooseSSLServerCertificate.SelectedIndex];
             
             SEBSettings.embeddedCertificateList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyEmbeddedCertificates];
 
@@ -2928,22 +2938,55 @@ namespace SebWindowsConfig
 
             DictObj certData = new DictObj();
 
-            //certData[SEBSettings.KeyCertificateData] = cert.RawData;
+            certData[SEBSettings.KeyCertificateDataBase64] = exportToPEM(cert);
+            // We also save the certificate data into the deprecated subkey certificateDataWin (for downwards compatibility to < SEB 2.2)
             certData[SEBSettings.KeyCertificateDataWin] = exportToPEM(cert);
-            certData[SEBSettings.KeyType] = 0;
-            certData[SEBSettings.KeyName] = comboBoxChooseSSLClientCertificate.SelectedItem;
+            certData[SEBSettings.KeyType] = IntSSLClientCertificate;
+            certData[SEBSettings.KeyName] = comboBoxChooseSSLServerCertificate.SelectedItem;
 
             SEBSettings.embeddedCertificateList.Insert(SEBSettings.embeddedCertificateIndex, certData);
 
-            dataGridViewEmbeddedCertificates.Rows.Insert(SEBSettings.embeddedCertificateIndex, "SSL Certificate", comboBoxChooseSSLClientCertificate.SelectedItem);
+            dataGridViewEmbeddedCertificates.Rows.Insert(SEBSettings.embeddedCertificateIndex, StringSSLServerCertificate, comboBoxChooseSSLServerCertificate.SelectedItem);
             dataGridViewEmbeddedCertificates.Rows[SEBSettings.embeddedCertificateIndex].Selected = true;
 
-            comboBoxChooseSSLClientCertificate.BeginInvoke((Action)(() =>
+            comboBoxChooseSSLServerCertificate.BeginInvoke((Action)(() =>
             {
-                comboBoxChooseSSLClientCertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
+                comboBoxChooseSSLServerCertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
             }));
 
             dataGridViewEmbeddedCertificates.Enabled = true;
+        }
+
+        private void comboBoxChooseCACertificate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var cert = (X509Certificate2)certificateSSLReferences[comboBoxChooseCACertificate.SelectedIndex];
+
+            SEBSettings.embeddedCertificateList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyEmbeddedCertificates];
+
+            SEBSettings.embeddedCertificateIndex = SEBSettings.embeddedCertificateList.Count;
+
+            DictObj certData = new DictObj();
+
+            certData[SEBSettings.KeyCertificateDataBase64] = exportToPEM(cert);
+            certData[SEBSettings.KeyType] = IntCACertificate;
+            certData[SEBSettings.KeyName] = comboBoxChooseCACertificate.SelectedItem;
+
+            SEBSettings.embeddedCertificateList.Insert(SEBSettings.embeddedCertificateIndex, certData);
+
+            dataGridViewEmbeddedCertificates.Rows.Insert(SEBSettings.embeddedCertificateIndex, StringCACertificate, comboBoxChooseCACertificate.SelectedItem);
+            dataGridViewEmbeddedCertificates.Rows[SEBSettings.embeddedCertificateIndex].Selected = true;
+
+            comboBoxChooseCACertificate.BeginInvoke((Action)(() =>
+            {
+                comboBoxChooseCACertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
+            }));
+
+            dataGridViewEmbeddedCertificates.Enabled = true;
+        }
+
+        private void checkBoxPinEmbeddedCertificates_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyPinEmbeddedCertificates] = checkBoxPinEmbeddedCertificates.Checked;
         }
 
         private void comboBoxChooseIdentityToEmbed_SelectedIndexChanged(object sender, EventArgs e)
@@ -3051,8 +3094,10 @@ namespace SebWindowsConfig
             // Convert the selected Type ListBox entry from String to Integer
             if (column == IntColumnCertificateType)
             {
-                     if ((String)value == StringSSLClientCertificate) value = IntSSLClientCertificate;
-                else if ((String)value == StringIdentity            ) value = IntIdentity;
+                     if ((String)value == StringSSLServerCertificate) value = IntSSLClientCertificate;
+                     else if ((String)value == StringIdentity) value = IntIdentity;
+                     else if ((String)value == StringCACertificate) value = IntCACertificate;
+                     else if ((String)value == StringSSLDebugCertificate) value = IntSSLDebugCertificate;
             }
 
             // Get the data of the certificate belonging to the cell (row)
@@ -3894,6 +3939,11 @@ namespace SebWindowsConfig
                 SEBSettings.settingsCurrent[SEBSettings.KeyStartResource] = selectedItem.Key;
                 SEBSettings.settingsCurrent[SEBSettings.KeyStartURL] = "";
             }
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
         }
 
     } // end of   class     SebWindowsConfigForm

@@ -67,10 +67,14 @@ namespace SebWindowsConfig
 
         // Embedded Certificate types
         const int IntSSLClientCertificate = 0;
-        const int IntIdentity             = 1;
+        const int IntIdentity = 1;
+        const int IntCACertificate = 2;
+        const int IntSSLDebugCertificate = 3;
 
-        const String StringSSLClientCertificate = "SSL Certificate";
-        const String StringIdentity             = "Identity";
+        const String StringSSLServerCertificate = "SSL Certificate";
+        const String StringIdentity = "Identity";
+        const String StringCACertificate = "CA Certificate";
+        const String StringSSLDebugCertificate = "Debug Certificate";
 
         // Proxy Protocol types
         const int IntProxyAutoDiscovery     = 0;
@@ -213,7 +217,7 @@ namespace SebWindowsConfig
         static  String[]  StringActive                    = new  String[2];
         static  String[]  StringOS                        = new  String[2];
         static  String[]  StringAction                    = new  String[5];
-        static  String[]  StringCertificateType           = new  String[2];
+        static  String[]  StringCertificateType           = new  String[4];
         static  String[]  StringProxyProtocolTableCaption = new  String[7];
         static  String[]  StringProxyProtocolServerLabel  = new  String[7];
         static Boolean[] BooleanProxyProtocolEnabled      = new Boolean[7];
@@ -348,8 +352,10 @@ namespace SebWindowsConfig
             StringAction[IntOr   ] = StringOr;
 
             // Define the strings for the Embedded Certificates
-            StringCertificateType[IntSSLClientCertificate] = StringSSLClientCertificate;
-            StringCertificateType[IntIdentity            ] = StringIdentity;
+            StringCertificateType[IntSSLClientCertificate] = StringSSLServerCertificate;
+            StringCertificateType[IntIdentity] = StringIdentity;
+            StringCertificateType[IntCACertificate] = StringCACertificate;
+            StringCertificateType[IntSSLDebugCertificate] = StringSSLDebugCertificate;
 
             // Define the strings for the Proxy Protocol Table Captions
             StringProxyProtocolTableCaption[0] = StringTableCaptionProxyAutoDiscovery;
@@ -435,8 +441,10 @@ namespace SebWindowsConfig
 
             ArrayList certificateSSLNames = new ArrayList();
             certificateSSLReferences = SEBProtectionController.GetSSLCertificatesAndNames(ref certificateSSLNames);
-            comboBoxChooseSSLClientCertificate.Items.AddRange(certificateSSLNames.ToArray());
-            comboBoxChooseSSLClientCertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
+            comboBoxChooseSSLServerCertificate.Items.AddRange(certificateSSLNames.ToArray());
+            comboBoxChooseSSLServerCertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
+            comboBoxChooseCACertificate.Items.AddRange(certificateSSLNames.ToArray());
+            comboBoxChooseCACertificate.Text = SEBUIStrings.ChooseEmbeddedCert;
 
 
             // At program start, no file has yet been opened, so revert is not possible

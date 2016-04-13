@@ -60,10 +60,9 @@
             // 
             // buttonAdditionalResourcesAddSubResource
             // 
-            this.buttonAdditionalResourcesAddSubResource.Location = new System.Drawing.Point(239, 718);
-            this.buttonAdditionalResourcesAddSubResource.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAdditionalResourcesAddSubResource.Location = new System.Drawing.Point(179, 568);
             this.buttonAdditionalResourcesAddSubResource.Name = "buttonAdditionalResourcesAddSubResource";
-            this.buttonAdditionalResourcesAddSubResource.Size = new System.Drawing.Size(35, 32);
+            this.buttonAdditionalResourcesAddSubResource.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesAddSubResource.TabIndex = 14;
             this.buttonAdditionalResourcesAddSubResource.Text = "(+)";
             this.buttonAdditionalResourcesAddSubResource.UseVisualStyleBackColor = true;
@@ -71,10 +70,9 @@
             // 
             // buttonAdditionalResourcesMoveDown
             // 
-            this.buttonAdditionalResourcesMoveDown.Location = new System.Drawing.Point(47, 718);
-            this.buttonAdditionalResourcesMoveDown.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAdditionalResourcesMoveDown.Location = new System.Drawing.Point(35, 568);
             this.buttonAdditionalResourcesMoveDown.Name = "buttonAdditionalResourcesMoveDown";
-            this.buttonAdditionalResourcesMoveDown.Size = new System.Drawing.Size(35, 32);
+            this.buttonAdditionalResourcesMoveDown.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesMoveDown.TabIndex = 13;
             this.buttonAdditionalResourcesMoveDown.Text = "v";
             this.buttonAdditionalResourcesMoveDown.UseVisualStyleBackColor = true;
@@ -82,10 +80,9 @@
             // 
             // buttonAdditionalResourcesMoveUp
             // 
-            this.buttonAdditionalResourcesMoveUp.Location = new System.Drawing.Point(4, 718);
-            this.buttonAdditionalResourcesMoveUp.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAdditionalResourcesMoveUp.Location = new System.Drawing.Point(3, 568);
             this.buttonAdditionalResourcesMoveUp.Name = "buttonAdditionalResourcesMoveUp";
-            this.buttonAdditionalResourcesMoveUp.Size = new System.Drawing.Size(35, 32);
+            this.buttonAdditionalResourcesMoveUp.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesMoveUp.TabIndex = 12;
             this.buttonAdditionalResourcesMoveUp.Text = "^";
             this.buttonAdditionalResourcesMoveUp.UseVisualStyleBackColor = true;
@@ -93,10 +90,9 @@
             // 
             // buttonAdditionalResourcesAdd
             // 
-            this.buttonAdditionalResourcesAdd.Location = new System.Drawing.Point(295, 718);
-            this.buttonAdditionalResourcesAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAdditionalResourcesAdd.Location = new System.Drawing.Point(221, 568);
             this.buttonAdditionalResourcesAdd.Name = "buttonAdditionalResourcesAdd";
-            this.buttonAdditionalResourcesAdd.Size = new System.Drawing.Size(35, 32);
+            this.buttonAdditionalResourcesAdd.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesAdd.TabIndex = 11;
             this.buttonAdditionalResourcesAdd.Text = "+";
             this.buttonAdditionalResourcesAdd.UseVisualStyleBackColor = true;
@@ -104,10 +100,9 @@
             // 
             // buttonadditionalResourcesRemove
             // 
-            this.buttonadditionalResourcesRemove.Location = new System.Drawing.Point(338, 718);
-            this.buttonadditionalResourcesRemove.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonadditionalResourcesRemove.Location = new System.Drawing.Point(254, 568);
             this.buttonadditionalResourcesRemove.Name = "buttonadditionalResourcesRemove";
-            this.buttonadditionalResourcesRemove.Size = new System.Drawing.Size(35, 32);
+            this.buttonadditionalResourcesRemove.Size = new System.Drawing.Size(26, 26);
             this.buttonadditionalResourcesRemove.TabIndex = 10;
             this.buttonadditionalResourcesRemove.Text = "-";
             this.buttonadditionalResourcesRemove.UseVisualStyleBackColor = true;
@@ -134,11 +129,9 @@
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.checkBoxAdditionalResourceActive);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.label9);
             this.groupBoxAdditionalResourceDetails.Controls.Add(this.textBoxAdditionalResourcesTitle);
-            this.groupBoxAdditionalResourceDetails.Location = new System.Drawing.Point(380, 4);
-            this.groupBoxAdditionalResourceDetails.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBoxAdditionalResourceDetails.Location = new System.Drawing.Point(285, 3);
             this.groupBoxAdditionalResourceDetails.Name = "groupBoxAdditionalResourceDetails";
-            this.groupBoxAdditionalResourceDetails.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxAdditionalResourceDetails.Size = new System.Drawing.Size(1243, 746);
+            this.groupBoxAdditionalResourceDetails.Size = new System.Drawing.Size(932, 591);
             this.groupBoxAdditionalResourceDetails.TabIndex = 9;
             this.groupBoxAdditionalResourceDetails.TabStop = false;
             this.groupBoxAdditionalResourceDetails.Text = "Selected Resource";
@@ -146,27 +139,28 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 192);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(92, 152);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(161, 17);
+            this.label3.Size = new System.Drawing.Size(123, 13);
             this.label3.TabIndex = 18;
             this.label3.Text = "Filename / File to launch";
             // 
             // comboBoxAdditionalResourcesChooseFileToLaunch
             // 
             this.comboBoxAdditionalResourcesChooseFileToLaunch.FormattingEnabled = true;
-            this.comboBoxAdditionalResourcesChooseFileToLaunch.Location = new System.Drawing.Point(180, 185);
+            this.comboBoxAdditionalResourcesChooseFileToLaunch.Location = new System.Drawing.Point(217, 149);
+            this.comboBoxAdditionalResourcesChooseFileToLaunch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Name = "comboBoxAdditionalResourcesChooseFileToLaunch";
-            this.comboBoxAdditionalResourcesChooseFileToLaunch.Size = new System.Drawing.Size(293, 24);
+            this.comboBoxAdditionalResourcesChooseFileToLaunch.Size = new System.Drawing.Size(344, 21);
             this.comboBoxAdditionalResourcesChooseFileToLaunch.TabIndex = 17;
             this.comboBoxAdditionalResourcesChooseFileToLaunch.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesChooseFileToLaunch_SelectedIndexChanged);
             // 
             // buttonAdditionalResourcesChooseEmbeddedFolder
             // 
-            this.buttonAdditionalResourcesChooseEmbeddedFolder.Location = new System.Drawing.Point(310, 156);
+            this.buttonAdditionalResourcesChooseEmbeddedFolder.Location = new System.Drawing.Point(217, 120);
+            this.buttonAdditionalResourcesChooseEmbeddedFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Name = "buttonAdditionalResourcesChooseEmbeddedFolder";
-            this.buttonAdditionalResourcesChooseEmbeddedFolder.Size = new System.Drawing.Size(123, 23);
+            this.buttonAdditionalResourcesChooseEmbeddedFolder.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseEmbeddedFolder.TabIndex = 16;
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Text = "Choose Folder";
             this.buttonAdditionalResourcesChooseEmbeddedFolder.UseVisualStyleBackColor = true;
@@ -175,18 +169,20 @@
             // pictureBoxAdditionalResourceIcon
             // 
             this.pictureBoxAdditionalResourceIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(262, 318);
+            this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(217, 217);
+            this.pictureBoxAdditionalResourceIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBoxAdditionalResourceIcon.Name = "pictureBoxAdditionalResourceIcon";
-            this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(48, 48);
+            this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(36, 39);
             this.pictureBoxAdditionalResourceIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxAdditionalResourceIcon.TabIndex = 15;
             this.pictureBoxAdditionalResourceIcon.TabStop = false;
             // 
             // buttonAdditionalResourcesChooseIcon
             // 
-            this.buttonAdditionalResourcesChooseIcon.Location = new System.Drawing.Point(156, 316);
+            this.buttonAdditionalResourcesChooseIcon.Location = new System.Drawing.Point(95, 217);
+            this.buttonAdditionalResourcesChooseIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonAdditionalResourcesChooseIcon.Name = "buttonAdditionalResourcesChooseIcon";
-            this.buttonAdditionalResourcesChooseIcon.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourcesChooseIcon.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseIcon.TabIndex = 14;
             this.buttonAdditionalResourcesChooseIcon.Text = "Choose...";
             this.buttonAdditionalResourcesChooseIcon.UseVisualStyleBackColor = true;
@@ -195,37 +191,37 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(85, 322);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(61, 223);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 17);
+            this.label4.Size = new System.Drawing.Size(28, 13);
             this.label4.TabIndex = 13;
             this.label4.Text = "Icon";
             // 
             // labelAdditionalResourcesResourceDataLaunchWith
             // 
             this.labelAdditionalResourcesResourceDataLaunchWith.AutoSize = true;
-            this.labelAdditionalResourcesResourceDataLaunchWith.Location = new System.Drawing.Point(50, 241);
-            this.labelAdditionalResourcesResourceDataLaunchWith.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Location = new System.Drawing.Point(25, 187);
             this.labelAdditionalResourcesResourceDataLaunchWith.Name = "labelAdditionalResourcesResourceDataLaunchWith";
-            this.labelAdditionalResourcesResourceDataLaunchWith.Size = new System.Drawing.Size(82, 17);
+            this.labelAdditionalResourcesResourceDataLaunchWith.Size = new System.Drawing.Size(64, 13);
             this.labelAdditionalResourcesResourceDataLaunchWith.TabIndex = 12;
             this.labelAdditionalResourcesResourceDataLaunchWith.Text = "launch with:";
             // 
             // comboBoxAdditionalResourcesResourceDataLauncher
             // 
             this.comboBoxAdditionalResourcesResourceDataLauncher.FormattingEnabled = true;
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(156, 241);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(95, 184);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(293, 24);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(263, 21);
             this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
             this.comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged);
             // 
             // buttonAdditionalResourceRemoveResourceData
             // 
-            this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(500, 221);
+            this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(565, 179);
+            this.buttonAdditionalResourceRemoveResourceData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonAdditionalResourceRemoveResourceData.Name = "buttonAdditionalResourceRemoveResourceData";
-            this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(56, 29);
             this.buttonAdditionalResourceRemoveResourceData.TabIndex = 10;
             this.buttonAdditionalResourceRemoveResourceData.Text = "Remove";
             this.buttonAdditionalResourceRemoveResourceData.UseVisualStyleBackColor = true;
@@ -233,9 +229,10 @@
             // 
             // buttonAdditionalResourceEmbededResourceOpen
             // 
-            this.buttonAdditionalResourceEmbededResourceOpen.Location = new System.Drawing.Point(500, 192);
+            this.buttonAdditionalResourceEmbededResourceOpen.Location = new System.Drawing.Point(565, 146);
+            this.buttonAdditionalResourceEmbededResourceOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonAdditionalResourceEmbededResourceOpen.Name = "buttonAdditionalResourceEmbededResourceOpen";
-            this.buttonAdditionalResourceEmbededResourceOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdditionalResourceEmbededResourceOpen.Size = new System.Drawing.Size(56, 25);
             this.buttonAdditionalResourceEmbededResourceOpen.TabIndex = 9;
             this.buttonAdditionalResourceEmbededResourceOpen.Text = "Open";
             this.buttonAdditionalResourceEmbededResourceOpen.UseVisualStyleBackColor = true;
@@ -243,9 +240,10 @@
             // 
             // buttonAdditionalResourceChooseEmbededResource
             // 
-            this.buttonAdditionalResourceChooseEmbededResource.Location = new System.Drawing.Point(201, 156);
+            this.buttonAdditionalResourceChooseEmbededResource.Location = new System.Drawing.Point(95, 120);
+            this.buttonAdditionalResourceChooseEmbededResource.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonAdditionalResourceChooseEmbededResource.Name = "buttonAdditionalResourceChooseEmbededResource";
-            this.buttonAdditionalResourceChooseEmbededResource.Size = new System.Drawing.Size(92, 23);
+            this.buttonAdditionalResourceChooseEmbededResource.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourceChooseEmbededResource.TabIndex = 8;
             this.buttonAdditionalResourceChooseEmbededResource.Text = "Choose File";
             this.buttonAdditionalResourceChooseEmbededResource.UseVisualStyleBackColor = true;
@@ -254,28 +252,29 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(287, 130);
+            this.label2.Location = new System.Drawing.Point(199, 126);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 17);
+            this.label2.Size = new System.Drawing.Size(16, 13);
             this.label2.TabIndex = 7;
             this.label2.Text = "or";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 148);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(20, 120);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 34);
+            this.label1.Size = new System.Drawing.Size(69, 26);
             this.label1.TabIndex = 6;
             this.label1.Text = "Embedded\r\nResource (E)";
             // 
             // checkBoxAdditionalResourceAutoOpen
             // 
             this.checkBoxAdditionalResourceAutoOpen.AutoSize = true;
-            this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(201, 36);
+            this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(151, 29);
+            this.checkBoxAdditionalResourceAutoOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxAdditionalResourceAutoOpen.Name = "checkBoxAdditionalResourceAutoOpen";
-            this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(121, 21);
+            this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(93, 17);
             this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
             this.checkBoxAdditionalResourceAutoOpen.Text = "Auto Open (A)";
             this.checkBoxAdditionalResourceAutoOpen.UseVisualStyleBackColor = true;
@@ -284,19 +283,17 @@
             // labelAdditionalResourceUrl
             // 
             this.labelAdditionalResourceUrl.AutoSize = true;
-            this.labelAdditionalResourceUrl.Location = new System.Drawing.Point(59, 107);
-            this.labelAdditionalResourceUrl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAdditionalResourceUrl.Location = new System.Drawing.Point(44, 87);
             this.labelAdditionalResourceUrl.Name = "labelAdditionalResourceUrl";
-            this.labelAdditionalResourceUrl.Size = new System.Drawing.Size(60, 17);
+            this.labelAdditionalResourceUrl.Size = new System.Drawing.Size(46, 13);
             this.labelAdditionalResourceUrl.TabIndex = 4;
             this.labelAdditionalResourceUrl.Text = "URL (U)";
             // 
             // textBoxAdditionalResourceUrl
             // 
-            this.textBoxAdditionalResourceUrl.Location = new System.Drawing.Point(127, 104);
-            this.textBoxAdditionalResourceUrl.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxAdditionalResourceUrl.Location = new System.Drawing.Point(95, 84);
             this.textBoxAdditionalResourceUrl.Name = "textBoxAdditionalResourceUrl";
-            this.textBoxAdditionalResourceUrl.Size = new System.Drawing.Size(367, 22);
+            this.textBoxAdditionalResourceUrl.Size = new System.Drawing.Size(526, 20);
             this.textBoxAdditionalResourceUrl.TabIndex = 3;
             this.textBoxAdditionalResourceUrl.TextChanged += new System.EventHandler(this.textBoxAdditionalResourceUrl_TextChanged);
             this.textBoxAdditionalResourceUrl.Leave += new System.EventHandler(this.textBoxAdditionalResourceUrl_Leave);
@@ -304,9 +301,10 @@
             // checkBoxAdditionalResourceActive
             // 
             this.checkBoxAdditionalResourceActive.AutoSize = true;
-            this.checkBoxAdditionalResourceActive.Location = new System.Drawing.Point(127, 36);
+            this.checkBoxAdditionalResourceActive.Location = new System.Drawing.Point(95, 29);
+            this.checkBoxAdditionalResourceActive.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxAdditionalResourceActive.Name = "checkBoxAdditionalResourceActive";
-            this.checkBoxAdditionalResourceActive.Size = new System.Drawing.Size(68, 21);
+            this.checkBoxAdditionalResourceActive.Size = new System.Drawing.Size(56, 17);
             this.checkBoxAdditionalResourceActive.TabIndex = 2;
             this.checkBoxAdditionalResourceActive.Text = "Active";
             this.checkBoxAdditionalResourceActive.UseVisualStyleBackColor = true;
@@ -315,34 +313,31 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(83, 67);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(62, 54);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(35, 17);
+            this.label9.Size = new System.Drawing.Size(27, 13);
             this.label9.TabIndex = 1;
             this.label9.Text = "Title";
             // 
             // textBoxAdditionalResourcesTitle
             // 
-            this.textBoxAdditionalResourcesTitle.Location = new System.Drawing.Point(127, 64);
-            this.textBoxAdditionalResourcesTitle.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxAdditionalResourcesTitle.Location = new System.Drawing.Point(95, 52);
             this.textBoxAdditionalResourcesTitle.Name = "textBoxAdditionalResourcesTitle";
-            this.textBoxAdditionalResourcesTitle.Size = new System.Drawing.Size(367, 22);
+            this.textBoxAdditionalResourcesTitle.Size = new System.Drawing.Size(263, 20);
             this.textBoxAdditionalResourcesTitle.TabIndex = 0;
             this.textBoxAdditionalResourcesTitle.TextChanged += new System.EventHandler(this.textBoxAdditionalResourcesTitle_TextChanged);
             // 
             // treeViewAdditionalResources
             // 
-            this.treeViewAdditionalResources.Location = new System.Drawing.Point(4, 4);
-            this.treeViewAdditionalResources.Margin = new System.Windows.Forms.Padding(4);
+            this.treeViewAdditionalResources.Location = new System.Drawing.Point(3, 3);
             this.treeViewAdditionalResources.Name = "treeViewAdditionalResources";
-            this.treeViewAdditionalResources.Size = new System.Drawing.Size(367, 706);
+            this.treeViewAdditionalResources.Size = new System.Drawing.Size(276, 559);
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
             // 
             // AdditionalResources
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.buttonAdditionalResourcesAddSubResource);
             this.Controls.Add(this.buttonAdditionalResourcesMoveDown);
@@ -351,8 +346,9 @@
             this.Controls.Add(this.buttonadditionalResourcesRemove);
             this.Controls.Add(this.groupBoxAdditionalResourceDetails);
             this.Controls.Add(this.treeViewAdditionalResources);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AdditionalResources";
-            this.Size = new System.Drawing.Size(1630, 757);
+            this.Size = new System.Drawing.Size(1222, 600);
             this.groupBoxAdditionalResourceDetails.ResumeLayout(false);
             this.groupBoxAdditionalResourceDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAdditionalResourceIcon)).EndInit();

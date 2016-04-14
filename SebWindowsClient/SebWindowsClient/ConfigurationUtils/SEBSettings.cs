@@ -166,7 +166,8 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyBrowserExamKey     = "browserExamKey";
         public const String KeyBrowserURLSalt     = "browserURLSalt";
         public const String KeySendBrowserExamKey = "sendBrowserExamKey";
-        public const String KeyQuitURL            = "quitURL";
+        public const String KeyQuitURL = "quitURL";
+        public const String KeyQuitURLConfirm = "quitURLConfirm";
         public const String KeyRestartExamText = "restartExamText";
         public const String KeyRestartExamURL = "restartExamURL";
         public const String KeyRestartExamUseStartURL = "restartExamUseStartURL";
@@ -617,6 +618,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserURLSalt    , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeySendBrowserExamKey, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyQuitURL           , "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyQuitURLConfirm, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamURL, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamUseStartURL, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamText, "");

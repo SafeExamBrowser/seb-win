@@ -410,8 +410,9 @@ namespace SebWindowsConfig
 
             // Group "Exam"
            //textBoxBrowserExamKey    .Text    =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserExamKey];
-            textBoxQuitURL           .Text    =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL];
             checkBoxSendBrowserExamKey.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey];
+            textBoxQuitURL.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL];
+            checkBoxQuitURLConfirm.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURLConfirm];
             checkBoxUseStartURL.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL];
             textBoxRestartExamLink.Enabled = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL];
             checkBoxRestartExamPasswordProtected.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamPasswordProtected];
@@ -1856,6 +1857,11 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL] = textBoxQuitURL.Text;
         }
 
+        private void checkBoxQuitURLConfirm_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyQuitURLConfirm] = checkBoxQuitURLConfirm.Checked;
+        }
+
         private void checkBoxUseStartURL_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL] = checkBoxUseStartURL.Checked;
@@ -2938,15 +2944,27 @@ namespace SebWindowsConfig
 
             DictObj certData = new DictObj();
 
+            String stringSSLCertificateType;
+
             certData[SEBSettings.KeyCertificateDataBase64] = exportToPEM(cert);
-            // We also save the certificate data into the deprecated subkey certificateDataWin (for downwards compatibility to < SEB 2.2)
-            certData[SEBSettings.KeyCertificateDataWin] = exportToPEM(cert);
-            certData[SEBSettings.KeyType] = IntSSLClientCertificate;
+            if (checkBoxDebugCertificate.Checked)
+            {
+                certData[SEBSettings.KeyType] = IntSSLDebugCertificate;
+                stringSSLCertificateType = StringSSLDebugCertificate;
+                checkBoxDebugCertificate.Checked = false;
+            }
+            else
+            {
+                // We also save the certificate data into the deprecated subkey certificateDataWin (for downwards compatibility to < SEB 2.2)
+                certData[SEBSettings.KeyCertificateDataWin] = exportToPEM(cert);
+                certData[SEBSettings.KeyType] = IntSSLClientCertificate;
+                stringSSLCertificateType = StringSSLServerCertificate;
+            }
             certData[SEBSettings.KeyName] = comboBoxChooseSSLServerCertificate.SelectedItem;
 
             SEBSettings.embeddedCertificateList.Insert(SEBSettings.embeddedCertificateIndex, certData);
 
-            dataGridViewEmbeddedCertificates.Rows.Insert(SEBSettings.embeddedCertificateIndex, StringSSLServerCertificate, comboBoxChooseSSLServerCertificate.SelectedItem);
+            dataGridViewEmbeddedCertificates.Rows.Insert(SEBSettings.embeddedCertificateIndex, stringSSLCertificateType, comboBoxChooseSSLServerCertificate.SelectedItem);
             dataGridViewEmbeddedCertificates.Rows[SEBSettings.embeddedCertificateIndex].Selected = true;
 
             comboBoxChooseSSLServerCertificate.BeginInvoke((Action)(() =>
@@ -3092,7 +3110,7 @@ namespace SebWindowsConfig
             object value = dataGridViewEmbeddedCertificates.CurrentCell.EditedFormattedValue;
 
             // Convert the selected Type ListBox entry from String to Integer
-            if (column == IntColumnCertificateType)
+           if (column == IntColumnCertificateType)
             {
                      if ((String)value == StringSSLServerCertificate) value = IntSSLClientCertificate;
                      else if ((String)value == StringIdentity) value = IntIdentity;

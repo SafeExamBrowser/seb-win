@@ -1517,6 +1517,11 @@ namespace SebWindowsClient
         private bool closeDialogConfirmationIsOpen;
         public void ShowCloseDialogFormConfirmation()
         {
+            if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURLConfirm] == false)
+            {
+                ExitApplication();
+            }
+
             if (closeDialogConfirmationIsOpen)
                 return;
 

@@ -391,7 +391,7 @@ this.SebBrowser = {
 					base.addCert(certs[i],certs[i].type);
 					break;
 				case CERT_SSL :
-					base.addSSLCert(certs[i],fale);
+					base.addSSLCert(certs[i],false);
 					break;
 				case CERT_SSL_DEBUG :
 					base.addSSLCert(certs[i],true);

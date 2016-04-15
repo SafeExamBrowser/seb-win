@@ -14,12 +14,15 @@ namespace SebWindowsClient.UI
     {
         private readonly ContextMenuStrip _menu;
         private readonly IFileCompressor _fileCompressor;
+        private DictObj L0Resource;
 
-        public SEBAdditionalResourcesToolStripButton()
+        public SEBAdditionalResourcesToolStripButton(DictObj l0Resource)
         {
-            InitializeComponent();
+            this.L0Resource = l0Resource;
 
-            FileCompressor.CleanupTempDirectory();
+            _fileCompressor = new FileCompressor();
+
+            InitializeComponent();
 
             _menu = new ContextMenuStrip();
             if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
@@ -28,8 +31,6 @@ namespace SebWindowsClient.UI
                 _menu.ShowImageMargin = true;
                 _menu.ImageScalingSize = new Size(48, 48);   
             }
-
-            _fileCompressor = new FileCompressor();
 
             LoadItems();
         }
@@ -41,52 +42,39 @@ namespace SebWindowsClient.UI
 
         private void InitializeComponent()
         {
-            base.Image = Resources.resource;
+            AutoOpenResource(L0Resource);
+            base.Image = GetResourceIcon(L0Resource);
+            this.ToolTipText = L0Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
         }
 
         private void LoadItems()
         {
-            foreach (DictObj l0Resource in ((ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]))
+            foreach (DictObj l1Resource in ((ListObj)L0Resource[SEBSettings.KeyAdditionalResources]))
             {
-                if (!(bool)l0Resource[SEBSettings.KeyAdditionalResourcesActive])
+                if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive])
                     continue;
 
-                var l0Item = new SEBAdditionalResourceMenuItem();
-                l0Item.Text = l0Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                l0Item.Resource = l0Resource;
-                l0Item.Click += OnItemClicked;
-                AutoOpenResource(l0Resource);
-                l0Item.BackColor = Color.White;
-                l0Item.Image = GetResourceIcon(l0Resource);
+                var l1Item = new SEBAdditionalResourceMenuItem();
+                l1Item.Text = l1Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
+                l1Item.Resource = l1Resource;
+                l1Item.Click += OnItemClicked;
+                AutoOpenResource(l1Resource);
 
-                foreach (DictObj l1Resource in ((ListObj)l0Resource[SEBSettings.KeyAdditionalResources]))
+                foreach (DictObj l2Resource in ((ListObj)l1Resource[SEBSettings.KeyAdditionalResources]))
                 {
-                    if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive])
+                    if (!(bool)l2Resource[SEBSettings.KeyAdditionalResourcesActive])
                         continue;
 
-                    var l1Item = new SEBAdditionalResourceMenuItem();
-                    l1Item.Text = l1Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                    l1Item.Resource = l1Resource;
-                    l1Item.Click += OnItemClicked;
-                    AutoOpenResource(l1Resource);
+                    var l2Item = new SEBAdditionalResourceMenuItem();
+                    l2Item.Text = l2Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
+                    l2Item.Resource = l2Resource;
+                    l2Item.Click += OnItemClicked;
+                    AutoOpenResource(l2Resource);
 
-                    foreach (DictObj l2Resource in ((ListObj)l1Resource[SEBSettings.KeyAdditionalResources]))
-                    {
-                        if (!(bool)l0Resource[SEBSettings.KeyAdditionalResourcesActive])
-                            continue;
-
-                        var l2Item = new SEBAdditionalResourceMenuItem();
-                        l2Item.Text = l2Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                        l2Item.Resource = l2Resource;
-                        l2Item.Click += OnItemClicked;
-                        AutoOpenResource(l2Resource);
-
-                        l1Item.DropDownItems.Add(l2Item);
-                    }
-                    l0Item.DropDownItems.Add(l1Item);
+                    l1Item.DropDownItems.Add(l2Item);
                 }
-                _menu.Items.Add(l0Item);
-            }
+                _menu.Items.Add(l1Item);
+            }   
         }
 
         private void OnItemClicked(object sender, EventArgs e)
@@ -95,14 +83,19 @@ namespace SebWindowsClient.UI
 
             if (item != null && item.Resource != null)
             {
-                if (!string.IsNullOrEmpty((string) item.Resource[SEBSettings.KeyAdditionalResourcesResourceData]))
-                {
-                    OpenEmbededResource(item.Resource);
-                }
-                else if (!string.IsNullOrEmpty((string)item.Resource[SEBSettings.KeyAdditionalResourcesUrl]))
-                {
-                    SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = item.Resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
-                }
+                OpenResource(item.Resource);
+            }
+        }
+
+        private void OpenResource(DictObj resource)
+        {
+            if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
+            {
+                OpenEmbededResource(resource);
+            }
+            else if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]))
+            {
+                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
             }
         }
 
@@ -170,7 +163,14 @@ namespace SebWindowsClient.UI
 
         protected override void OnClick(EventArgs e)
         {
-            _menu.Show(Parent,new Point(Bounds.X,Bounds.Y));
+            if (_menu.Items.Count > 0)
+            {
+                _menu.Show(Parent, new Point(Bounds.X, Bounds.Y));
+            }
+            else
+            {
+                OpenResource(L0Resource);   
+            }
         }
        
     }

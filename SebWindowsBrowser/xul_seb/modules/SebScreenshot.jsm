@@ -36,7 +36,8 @@ this.EXPORTED_SYMBOLS = ["SebScreenshot"];
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
 	{ scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-Cu.importGlobalProperties(["Blob"]);
+//Cu.importGlobalProperties(["Blob"]);
+/* Services */
 /* Services */
 
 /* SebGlobals */

@@ -12,7 +12,7 @@
 	"plugin.state.java"		: { "cb" : "pluginEnableJava" },
 	"layout.spellcheckDefault" 	: { "cb" : "spellcheckDefault" }
 },
-"sebServerEnabled":true,
+"sebServerEnabled":false,
 "sebServer": {
 	"url"    : "https://www.simple.org:8442/websocket/index.html",
 	"socket" : "wss://www.simple.org:8442"
@@ -22,12 +22,12 @@
 "sebScreenshotSound":false,
 "sebSSlSecurityPolicy": 1,
 "sebDisableOCSP": true,
-"browserUserAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0 SEB 2.2",
+"browserUserAgent":"Mozilla/5.0 (Windows NT 6.3; rv:37.0) Gecko/20100101 Firefox/37.0 SEB 2.1",
 "startURL":"https://www.simple.org",
 "sendBrowserExamKey":true,
 "browserRequestHeader":"X-SafeExamBrowser-RequestHash",
 "browserExamKey":"SEBKEY",
-"browserURLSalt":true,
+"browserURLSalt":false,
 "urlFilterRegex":true,
 "urlFilterTrustedContent":true,
 "blacklistURLFilter":[],
@@ -35,9 +35,9 @@
 "removeProfile":true,
 "allowQuit":true,
 "showReloadWarning" : true,
-"quitURL":"http://www.simple.org/quit",
+"quitURL":"http://seb/quit.html",
 "hashedQuitPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d85e",
-"pinEmbeddedCertificates":false,
+"pinEmbeddedCertificates":true,
 "allCARootTrust":false,
 "embeddedCertificates":
 [
@@ -48,14 +48,29 @@
 	{
 	"certificateDataBase64":"MIIDzzCCAregAwIBAgIBAjANBgkqhkiG9w0BAQUFADB0MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRcwFQYDVQQLDA5TaW1wbGUgUm9vdCBDQTEXMBUGA1UEAwwOU2ltcGxlIFJvb3QgQ0EwHhcNMTYwMjI1MTE1OTMzWhcNMjYwMjI0MTE1OTMzWjB6MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEaMBgGA1UEAwwRU2ltcGxlIFNpZ25pbmcgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQChUuZY3T9oejngaeY+5UuQHu08HgcW1VUKXqGqlOLcxt6wfQLrlr4LXRPpr4Pvvo7zOFLecDNGIuUmIPJHqeWj3IKNWR+yBd1SvvW7p4YwwQZNJMi5Q44UIGburtTuogF17+ubCMzpCubY/0TYjZrjV880rQyAnWDybciy2VoUxymnIMvLA7KAGBDy9E60yZF1mqwzjVuRSUBh1+Qwp+NzczWI7TmKCvGNQp5/Ur7Bw6fSSi3GjmV3u/Kl0ubC2NA91ztQgHwA2eUWfoZ+NC+8yrTc3d/I0ZjYxh+/FENhEa0zCvoFV9UmjOWwo4LLizuKmza3j0R807tNjF4Vm0VnAgMBAAGjZjBkMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSRsefgr5ObEo1C/jsHyxTW+f+PsTAfBgNVHSMEGDAWgBSLbNfHC9FqchN35i2TtFljhmvrKjANBgkqhkiG9w0BAQUFAAOCAQEAN6cx4ZvNzY8oG+QEfKOOLGlJKIh7k1M2rCZVq8VKShxRVkxltvM6TCh4hPJbuf9Lz9RCFz3R4dZUTFd6xs/AzGiHoZAo06Qqqe3E3I4Cy9Tk960WswNGyuKalX0xeRV/kdgjW/BCiiQlBnI2Mv1ueAyOhvozanse3ZnpWmJ1qUy0nvvNacEiPYW40SfCz5OMXWpgUlmRiQsFHDwtswEd0sU7ppHQ3y/TP1kAAcUgtaDPd6tk3uxO/Ch9uNQBgiFUqHolq8jeraEO6cIXWuR+sob7Q6IMSVWqLNOQHf3okiaQ7CjjGUrAEJMPEjuENfTflr6ZO3UGMrSwTAzB2i35xA==",
 	"type":2
+	},
+	{
+	"certificateDataBase64":"MIIEATCCAumgAwIBAgIBAjANBgkqhkiG9w0BAQUFADB6MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEaMBgGA1UEAwwRU2ltcGxlIFNpZ25pbmcgQ0EwHhcNMTYwMjI1MTMxOTU4WhcNMjYwMjI0MTMxOTU4WjB1MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEVMBMGA1UEAwwMKi5zaW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0B68T77a9p4fF4qtCSmCiCb40Ep93g+3u7tVhMa/wdSReQBxFQl/76ZwGwTeyMlJdkKh2mBzEZNfiwPjqOaQgsDUwhDEynDalOFShbC/ta+vepB6mvAd54WOmAqZYrHIEEu2yeUCdou77bcP7Haa0OPm/ADh/c97oZ3mK7tAh5y+wx17VP0xY6UXfS5fST1HQpyY52KKrtPIf8opV96MxlhZF4RqQ61hdtLL308wOTz0t2e2DKkG47JxSuNyLNkkayeSur4nPZlpRbmKPEem3TEtqWf46kxe67L6AN1K+yo0Y9YZcpXEYTLtmzAE50s9jRCU1ZVIqkT3VBWo1HZ6DwIDAQABo4GWMIGTMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAdBgNVHQ4EFgQUQdZbScKlZLu94/+Zp/VZRlgJYpQwHwYDVR0jBBgwFoAUkbHn4K+TmxKNQv47B8sU1vn/j7EwFwYDVR0RBBAwDoIMKi5zaW1wbGUub3JnMA0GCSqGSIb3DQEBBQUAA4IBAQAbXyQppN5JnBbFdhBF/zE50ycg3JVoC1Rn6sYhX2UfvfuO21QzkKZNG0d2kLbSyNyNAQIns7Gmn2SUF4B87qfXjshEGjr9ZPsmT0mYZE/CeT0Lj9H1KgZdL0COwCShj93mUcXMFiCcCbBGaGJjBIHA2GWJn/PX8GKroXtDrHEQlnZter8NmwKvsaVpy9W+d5UPobgxkKCj2rymrZqWF0T56ZjjeR+ct3/qZiU3XSDd7l7DRvV4mB/sGWjfLW1CORiKvXDC4M6s/W1NspENcKY2L4alHFyyrocFDRsKqIc1VR3qrgRZkiy4VJDnhcGiLkuKSnPHL9oDWxR8k6rBenYh",
+	"type":0,
+	"name":"www.simple.org" 
+	},
+	{
+	"certificateDataBase64":"MIIEATCCAumgAwIBAgIBAjANBgkqhkiG9w0BAQUFADB6MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEaMBgGA1UEAwwRU2ltcGxlIFNpZ25pbmcgQ0EwHhcNMTYwMjI1MTMxOTU4WhcNMjYwMjI0MTMxOTU4WjB1MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEVMBMGA1UEAwwMKi5zaW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0B68T77a9p4fF4qtCSmCiCb40Ep93g+3u7tVhMa/wdSReQBxFQl/76ZwGwTeyMlJdkKh2mBzEZNfiwPjqOaQgsDUwhDEynDalOFShbC/ta+vepB6mvAd54WOmAqZYrHIEEu2yeUCdou77bcP7Haa0OPm/ADh/c97oZ3mK7tAh5y+wx17VP0xY6UXfS5fST1HQpyY52KKrtPIf8opV96MxlhZF4RqQ61hdtLL308wOTz0t2e2DKkG47JxSuNyLNkkayeSur4nPZlpRbmKPEem3TEtqWf46kxe67L6AN1K+yo0Y9YZcpXEYTLtmzAE50s9jRCU1ZVIqkT3VBWo1HZ6DwIDAQABo4GWMIGTMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAdBgNVHQ4EFgQUQdZbScKlZLu94/+Zp/VZRlgJYpQwHwYDVR0jBBgwFoAUkbHn4K+TmxKNQv47B8sU1vn/j7EwFwYDVR0RBBAwDoIMKi5zaW1wbGUub3JnMA0GCSqGSIb3DQEBBQUAA4IBAQAbXyQppN5JnBbFdhBF/zE50ycg3JVoC1Rn6sYhX2UfvfuO21QzkKZNG0d2kLbSyNyNAQIns7Gmn2SUF4B87qfXjshEGjr9ZPsmT0mYZE/CeT0Lj9H1KgZdL0COwCShj93mUcXMFiCcCbBGaGJjBIHA2GWJn/PX8GKroXtDrHEQlnZter8NmwKvsaVpy9W+d5UPobgxkKCj2rymrZqWF0T56ZjjeR+ct3/qZiU3XSDd7l7DRvV4mB/sGWjfLW1CORiKvXDC4M6s/W1NspENcKY2L4alHFyyrocFDRsKqIc1VR3qrgRZkiy4VJDnhcGiLkuKSnPHL9oDWxR8k6rBenYh",
+	"type":0,
+	"name":"www.simple.org:8442" 
+	},
+	{
+	"certificateDataBase64":"MIIEATCCAumgAwIBAgIBAjANBgkqhkiG9w0BAQUFADB6MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEaMBgGA1UEAwwRU2ltcGxlIFNpZ25pbmcgQ0EwHhcNMTYwMjI1MTMxOTU4WhcNMjYwMjI0MTMxOTU4WjB1MRMwEQYKCZImiZPyLGQBGRYDb3JnMRYwFAYKCZImiZPyLGQBGRYGc2ltcGxlMRMwEQYDVQQKDApTaW1wbGUgSW5jMRowGAYDVQQLDBFTaW1wbGUgU2lnbmluZyBDQTEVMBMGA1UEAwwMKi5zaW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0B68T77a9p4fF4qtCSmCiCb40Ep93g+3u7tVhMa/wdSReQBxFQl/76ZwGwTeyMlJdkKh2mBzEZNfiwPjqOaQgsDUwhDEynDalOFShbC/ta+vepB6mvAd54WOmAqZYrHIEEu2yeUCdou77bcP7Haa0OPm/ADh/c97oZ3mK7tAh5y+wx17VP0xY6UXfS5fST1HQpyY52KKrtPIf8opV96MxlhZF4RqQ61hdtLL308wOTz0t2e2DKkG47JxSuNyLNkkayeSur4nPZlpRbmKPEem3TEtqWf46kxe67L6AN1K+yo0Y9YZcpXEYTLtmzAE50s9jRCU1ZVIqkT3VBWo1HZ6DwIDAQABo4GWMIGTMA4GA1UdDwEB/wQEAwIFoDAJBgNVHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAdBgNVHQ4EFgQUQdZbScKlZLu94/+Zp/VZRlgJYpQwHwYDVR0jBBgwFoAUkbHn4K+TmxKNQv47B8sU1vn/j7EwFwYDVR0RBBAwDoIMKi5zaW1wbGUub3JnMA0GCSqGSIb3DQEBBQUAA4IBAQAbXyQppN5JnBbFdhBF/zE50ycg3JVoC1Rn6sYhX2UfvfuO21QzkKZNG0d2kLbSyNyNAQIns7Gmn2SUF4B87qfXjshEGjr9ZPsmT0mYZE/CeT0Lj9H1KgZdL0COwCShj93mUcXMFiCcCbBGaGJjBIHA2GWJn/PX8GKroXtDrHEQlnZter8NmwKvsaVpy9W+d5UPobgxkKCj2rymrZqWF0T56ZjjeR+ct3/qZiU3XSDd7l7DRvV4mB/sGWjfLW1CORiKvXDC4M6s/W1NspENcKY2L4alHFyyrocFDRsKqIc1VR3qrgRZkiy4VJDnhcGiLkuKSnPHL9oDWxR8k6rBenYh",
+	"type":0,
+	"name":"www.simple.org:8443" 
 	}
+	
 ],
 "browserMessagingSocketEnabled":false,
 "browserMessagingSocket":"ws://localhost:8706",
-"browserMessagingSocket.net":"ws://www.simple.org:8706",
 "browserMessagingPingTime":120000,
 "proxies": {},
-"browserViewMode":0,
+"browserViewMode":1,
 "showTaskBar":true,
 "taskBarHeight":0,
 "touchOptimized":false,
@@ -65,8 +80,8 @@
 "mainBrowserWindowHeight":"100%",
 "mainBrowserWindowPositioning":1,
 "mainBrowserRestart":true,
-"mainBrowserLoad":"",
-"mainBrowserLoadReferrerInString":"",
+"mainBrowserLoad":"https://duckduckgo.com",
+"mainBrowserLoadReferrerInString":"end.html",
 "allowBrowsingBackForward":true,
 "mainBrowserBypassCache":true,
 "newBrowserWindowByLinkTitlebarEnabled":true,
@@ -74,7 +89,6 @@
 "newBrowserWindowByLinkWidth":"800",
 "newBrowserWindowByLinkHeight":"600",
 "newBrowserWindowByLinkPositioning":1,
-"browserWindowTitleSuffix": "Suffix",
 "browserScreenKeyboard":false,
 "enableJava":false,
 "enableJavaScript":true,

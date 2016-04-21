@@ -81,7 +81,8 @@ let 	base = null,
 	mimeTypesRegs = {
 		flash : new RegExp(/^application\/x-shockwave-flash/),
 		pdf : new RegExp(/^application\/(x-)?pdf/)
-	};
+	},
+	windowTitleSuffix = "";
 	
 const	nsIX509CertDB = Ci.nsIX509CertDB,
 	nsIX509CertDB2 = Ci.nsIX509CertDB2,
@@ -229,7 +230,7 @@ this.SebBrowser = {
 			this.isStarted = false;
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
 			try {
-				this.win.document.title = this.win.content.document.title;
+				this.win.document.title = this.win.content.document.title + " - " + windowTitleSuffix;
 			}
 			catch(e) {
 				sl.debug(e);
@@ -299,6 +300,7 @@ this.SebBrowser = {
 	},
 	
 	initSecurity : function () {
+		windowTitleSuffix = su.getConfig("browserWindowTitleSuffix","string","");
 		if (su.getConfig("sebDisableOCSP","boolean",true)) {
 			sg.setPref("security.OCSP.enabled",0);
 		}
@@ -326,11 +328,11 @@ this.SebBrowser = {
 	
 	addSSLCert : function(cert,debug) {
 		try {
-			
 			let flags = (debug) ? ovs.ERROR_UNTRUSTED | ovs.ERROR_MISMATCH | ovs.ERROR_TIME : ovs.ERROR_UNTRUSTED;
-			let x509 = certdb.constructX509FromBase64(cert.certificateData);
+			let certData = (cert.certificateDataBase64 != "") ? cert.certificateDataBase64 : cert.certificateDataWin;
+			let x509 = certdb.constructX509FromBase64(certData);
 			//certlist.addCert(x509); // maybe needed for type 1 Identity Certs
-			let cn = (debug && cert.overrideCN) ? cert.overrideCN : x509.commonName;
+			let cn = (cert.name) ? cert.name : x509.commonName; // don't ommit the name Attribut in the config file!
 			let host = cn;
 			let port = 443;
 			let fullhost = cn.split(":");
@@ -338,8 +340,8 @@ this.SebBrowser = {
 				host = fullhost[0];
 				port = parseInt(fullhost[1]);
 			}
-			ovs.rememberValidityOverride(host,port,x509,flags,true);
-			sl.debug("add debug ssl cert: " + host + ":" + port);
+			ovs.rememberValidityOverride(host,port,x509,flags,false);
+			sl.debug("add ssl cert: " + host + ":" + port);
 		}
 		catch (e) { sl.err(e); }
 	},
@@ -353,17 +355,17 @@ this.SebBrowser = {
 			if (su.getConfig("allCARootTrust", "boolean", false)) {
 				sl.debug("treat all CA certs as root");
 				t = "CA";
-				trustargs = "C,,";
+				trustargs = "C,C,C";
 			}
 			else {
 				switch (x509.getChain().length) { // experimental
 					case 1 : // Root CA
 						t = "ROOT CA";
-						trustargs = "C,,";
+						trustargs = "C,C,C";
 					break;
 					default : // Intermediate CA
 						t = "INTERMEDIATE CA";
-						trustargs = 'c,,';
+						trustargs = 'c,c,c';
 					}
 			}
 			sl.debug("add Cert: " + t);
@@ -426,7 +428,7 @@ this.SebBrowser = {
 	},
 	
 	reload : function (win) {
-		sl.debug("try reload...");
+		sl.debug("try reload in browser ...");
 		if (!win.XulLibBrowser) {
 			sl.err("no xullib.browser in ChromeWindow!");
 			return false;

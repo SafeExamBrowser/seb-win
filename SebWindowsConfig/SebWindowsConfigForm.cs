@@ -422,6 +422,7 @@ namespace SebWindowsConfig
             textBoxRestartExamText.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamText];
 
             // Group AdditionalResources
+            tabPageAdditionalResources.Controls.Clear();
             tabPageAdditionalResources.Controls.Add(new AdditionalResources());
 
             FillStartupResourcesinCombobox();

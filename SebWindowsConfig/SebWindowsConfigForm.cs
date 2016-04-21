@@ -398,6 +398,8 @@ namespace SebWindowsConfig
             textBoxUserAgentTouchModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH;
             textBoxUserAgentTouchModeIPad.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD;
 
+            textBoxBrowserSuffix.Text = ((string) SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowTitleSuffix]);
+
             // Group "Down/Uploads"
             checkBoxAllowDownUploads.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDownUploads];
             checkBoxOpenDownloads   .Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOpenDownloads];
@@ -3962,6 +3964,11 @@ namespace SebWindowsConfig
         private void label10_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBoxBrowserSuffix_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowTitleSuffix] = textBoxBrowserSuffix.Text;
         }
 
     } // end of   class     SebWindowsConfigForm

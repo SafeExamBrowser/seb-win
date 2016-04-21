@@ -1,4 +1,4 @@
-﻿namespace SebWindowsConfig
+namespace SebWindowsConfig
 {
     partial class SebWindowsConfigForm
     {
@@ -391,6 +391,8 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBoxBrowserSuffix = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -3147,6 +3149,8 @@
             // 
             // tabPageBrowser
             // 
+            this.tabPageBrowser.Controls.Add(this.label11);
+            this.tabPageBrowser.Controls.Add(this.textBoxBrowserSuffix);
             this.tabPageBrowser.Controls.Add(this.groupBox14);
             this.tabPageBrowser.Controls.Add(this.groupBox13);
             this.tabPageBrowser.Controls.Add(this.groupBox12);
@@ -5037,6 +5041,31 @@
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
+            // textBoxBrowserSuffix
+            // 
+            this.textBoxBrowserSuffix.AcceptsReturn = true;
+            this.textBoxBrowserSuffix.AcceptsTab = true;
+            this.textBoxBrowserSuffix.AllowDrop = true;
+            this.textBoxBrowserSuffix.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBrowserSuffix.Location = new System.Drawing.Point(542, 572);
+            this.textBoxBrowserSuffix.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxBrowserSuffix.Name = "textBoxBrowserSuffix";
+            this.textBoxBrowserSuffix.Size = new System.Drawing.Size(214, 19);
+            this.textBoxBrowserSuffix.TabIndex = 123;
+            this.toolTip1.SetToolTip(this.textBoxBrowserSuffix, "This text is displayed as the title of the confirmation alert and as tool tip on " +
+        "the icon");
+            this.textBoxBrowserSuffix.TextChanged += new System.EventHandler(this.textBoxBrowserSuffix_TextChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(539, 555);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(217, 13);
+            this.label11.TabIndex = 124;
+            this.label11.Text = "Suffix to be added to every Browser Window";
+            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5515,6 +5544,8 @@
         private System.Windows.Forms.CheckBox checkBoxPinEmbeddedCertificates;
         private System.Windows.Forms.CheckBox checkBoxDebugCertificate;
         private System.Windows.Forms.CheckBox checkBoxQuitURLConfirm;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBoxBrowserSuffix;
 
     }
 }

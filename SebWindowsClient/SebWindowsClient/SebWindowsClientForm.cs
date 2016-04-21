@@ -751,9 +751,12 @@ namespace SebWindowsClient
             }
 
             //Filling System Icons
-            if (((ListObj) SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]).Count > 0)
+
+            //Additional Resources Icons
+            FileCompressor.CleanupTempDirectory();
+            foreach (DictObj l0resource in ((ListObj) SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]))
             {
-                taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton());
+                taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton(l0resource));
             }
 
             //QuitButton

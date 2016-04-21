@@ -41,6 +41,13 @@ namespace SebWindowsClient.ConfigurationUtils
         public string CompressAndEncodeIcon(Icon icon)
         {
             //Save the file first locally
+            icon.ToBitmap().Save(TempIconFilename, ImageFormat.Png);
+
+            return CompressAndEncodeFile(TempIconFilename);
+        }
+
+        public string CompressAndEncodeFavicon(Uri uri)
+        {
             if (File.Exists(TempIconFilename))
             {
                 File.Delete(TempIconFilename);
@@ -49,13 +56,7 @@ namespace SebWindowsClient.ConfigurationUtils
             {
                 Directory.CreateDirectory(TempDirectory);
             }
-            icon.ToBitmap().Save(TempIconFilename, ImageFormat.Png);
 
-            return CompressAndEncodeFile(TempIconFilename);
-        }
-
-        public string CompressAndEncodeFavicon(Uri uri)
-        {
             var client = new System.Net.WebClient();
             client.DownloadFile(
                 string.Format(@"http://www.google.com/s2/favicons?domain_url={0}", uri.Host),

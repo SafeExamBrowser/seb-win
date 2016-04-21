@@ -128,19 +128,7 @@
           <Extension Id="seb" ContentType="seb/configuration" Advertise="no">
             <Verb Id="sebopen" Command="Open" TargetFile="ClientExecutable" Argument='"%1"'/>
           </Extension>
-          <Extension Id="sebs" ContentType="seb/configuration" Advertise="no">
-            <Verb Id="sebsopen" Command="Open" TargetFile="ClientExecutable" Argument='"%1"'/>
-          </Extension>
         </ProgId>
-           <RegistryKey Root="HKCR"
-                 Key="seb"
-                 Action="createAndRemoveOnUninstall">
-             <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-             <RegistryValue Type="string" Value="URL:Safe Exam Browser protocol"/>
-             <RegistryKey Key="shell\open\command">
-               <RegistryValue Type="string" Value="&quot;[INSTALLFOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
-             </RegistryKey>
-           </RegistryKey>
         <File Id="SebDocumentIcon" Source="$(var.SEBDocumentIconFile)" Name="SEBDocumentIcon.ico" />
       </Component>
       <?ifdef InstallConfigTool ?>
@@ -246,5 +234,6 @@
       </Component>
       <?endif?>
     </ComponentGroup>
+
   </Fragment>
 </Wix>

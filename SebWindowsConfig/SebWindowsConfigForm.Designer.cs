@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -107,6 +107,7 @@
             this.btnAddWhitelistFilter = new System.Windows.Forms.Button();
             this.checkBoxEnableURLContentFilter = new System.Windows.Forms.CheckBox();
             this.tabPageCertificates = new System.Windows.Forms.TabPage();
+            this.checkBoxDebugCertificate = new System.Windows.Forms.CheckBox();
             this.checkBoxPinEmbeddedCertificates = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.comboBoxChooseCACertificate = new System.Windows.Forms.ComboBox();
@@ -221,6 +222,7 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.checkBoxQuitURLConfirm = new System.Windows.Forms.CheckBox();
             this.textBoxQuitURL = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -389,8 +391,8 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxDebugCertificate = new System.Windows.Forms.CheckBox();
-            this.checkBoxQuitURLConfirm = new System.Windows.Forms.CheckBox();
+            this.textBoxBrowserSuffix = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1474,6 +1476,21 @@
             this.tabPageCertificates.Text = "Certificates";
             this.tabPageCertificates.UseVisualStyleBackColor = true;
             // 
+            // checkBoxDebugCertificate
+            // 
+            this.checkBoxDebugCertificate.AutoSize = true;
+            this.checkBoxDebugCertificate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDebugCertificate.Location = new System.Drawing.Point(524, 43);
+            this.checkBoxDebugCertificate.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxDebugCertificate.Name = "checkBoxDebugCertificate";
+            this.checkBoxDebugCertificate.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxDebugCertificate.TabIndex = 101;
+            this.checkBoxDebugCertificate.Text = "Debug certificate";
+            this.toolTip1.SetToolTip(this.checkBoxDebugCertificate, "Debug certificates allow changing the DNS name, so a server with a wrong domain n" +
+        "ame is accepted if its domain is entered in the certificate name. Experied certi" +
+        "ficates are also accepted.");
+            this.checkBoxDebugCertificate.UseVisualStyleBackColor = true;
+            // 
             // checkBoxPinEmbeddedCertificates
             // 
             this.checkBoxPinEmbeddedCertificates.AutoSize = true;
@@ -1585,8 +1602,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2853,6 +2870,21 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Link to quit SEB after exam";
             // 
+            // checkBoxQuitURLConfirm
+            // 
+            this.checkBoxQuitURLConfirm.AutoSize = true;
+            this.checkBoxQuitURLConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxQuitURLConfirm.Location = new System.Drawing.Point(15, 88);
+            this.checkBoxQuitURLConfirm.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxQuitURLConfirm.Name = "checkBoxQuitURLConfirm";
+            this.checkBoxQuitURLConfirm.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxQuitURLConfirm.TabIndex = 114;
+            this.checkBoxQuitURLConfirm.Text = "Ask user to confirm quitting";
+            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "Indicates if the user is asked to confirm quitting SEB after the quit URL has bee" +
+        "n detected by SEB. If disabled, SEB quits without displaying any dialog.");
+            this.checkBoxQuitURLConfirm.UseVisualStyleBackColor = true;
+            this.checkBoxQuitURLConfirm.CheckedChanged += new System.EventHandler(this.checkBoxQuitURLConfirm_CheckedChanged);
+            // 
             // textBoxQuitURL
             // 
             this.textBoxQuitURL.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -3117,6 +3149,8 @@
             // 
             // tabPageBrowser
             // 
+            this.tabPageBrowser.Controls.Add(this.label11);
+            this.tabPageBrowser.Controls.Add(this.textBoxBrowserSuffix);
             this.tabPageBrowser.Controls.Add(this.groupBox14);
             this.tabPageBrowser.Controls.Add(this.groupBox13);
             this.tabPageBrowser.Controls.Add(this.groupBox12);
@@ -5007,35 +5041,30 @@
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
-            // checkBoxDebugCertificate
+            // textBoxBrowserSuffix
             // 
-            this.checkBoxDebugCertificate.AutoSize = true;
-            this.checkBoxDebugCertificate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDebugCertificate.Location = new System.Drawing.Point(524, 43);
-            this.checkBoxDebugCertificate.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxDebugCertificate.Name = "checkBoxDebugCertificate";
-            this.checkBoxDebugCertificate.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxDebugCertificate.TabIndex = 101;
-            this.checkBoxDebugCertificate.Text = "Debug certificate";
-            this.toolTip1.SetToolTip(this.checkBoxDebugCertificate, "Debug certificates allow changing the DNS name, so a server with a wrong domain n" +
-        "ame is accepted if its domain is entered in the certificate name. Experied certi" +
-        "ficates are also accepted.");
-            this.checkBoxDebugCertificate.UseVisualStyleBackColor = true;
+            this.textBoxBrowserSuffix.AcceptsReturn = true;
+            this.textBoxBrowserSuffix.AcceptsTab = true;
+            this.textBoxBrowserSuffix.AllowDrop = true;
+            this.textBoxBrowserSuffix.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBrowserSuffix.Location = new System.Drawing.Point(542, 572);
+            this.textBoxBrowserSuffix.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxBrowserSuffix.Name = "textBoxBrowserSuffix";
+            this.textBoxBrowserSuffix.Size = new System.Drawing.Size(214, 19);
+            this.textBoxBrowserSuffix.TabIndex = 123;
+            this.toolTip1.SetToolTip(this.textBoxBrowserSuffix, "This text is displayed as the title of the confirmation alert and as tool tip on " +
+        "the icon");
+            this.textBoxBrowserSuffix.TextChanged += new System.EventHandler(this.textBoxBrowserSuffix_TextChanged);
             // 
-            // checkBoxQuitURLConfirm
+            // label11
             // 
-            this.checkBoxQuitURLConfirm.AutoSize = true;
-            this.checkBoxQuitURLConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxQuitURLConfirm.Location = new System.Drawing.Point(15, 88);
-            this.checkBoxQuitURLConfirm.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxQuitURLConfirm.Name = "checkBoxQuitURLConfirm";
-            this.checkBoxQuitURLConfirm.Size = new System.Drawing.Size(153, 17);
-            this.checkBoxQuitURLConfirm.TabIndex = 114;
-            this.checkBoxQuitURLConfirm.Text = "Ask user to confirm quitting";
-            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "Indicates if the user is asked to confirm quitting SEB after the quit URL has bee" +
-        "n detected by SEB. If disabled, SEB quits without displaying any dialog.");
-            this.checkBoxQuitURLConfirm.UseVisualStyleBackColor = true;
-            this.checkBoxQuitURLConfirm.CheckedChanged += new System.EventHandler(this.checkBoxQuitURLConfirm_CheckedChanged);
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(539, 555);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(217, 13);
+            this.label11.TabIndex = 124;
+            this.label11.Text = "Suffix to be added to every Browser Window";
             // 
             // SebWindowsConfigForm
             // 
@@ -5515,6 +5544,8 @@
         private System.Windows.Forms.CheckBox checkBoxPinEmbeddedCertificates;
         private System.Windows.Forms.CheckBox checkBoxDebugCertificate;
         private System.Windows.Forms.CheckBox checkBoxQuitURLConfirm;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBoxBrowserSuffix;
 
     }
 }

@@ -149,7 +149,7 @@
             // 
             this.comboBoxAdditionalResourcesChooseFileToLaunch.FormattingEnabled = true;
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Location = new System.Drawing.Point(217, 149);
-            this.comboBoxAdditionalResourcesChooseFileToLaunch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxAdditionalResourcesChooseFileToLaunch.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Name = "comboBoxAdditionalResourcesChooseFileToLaunch";
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Size = new System.Drawing.Size(344, 21);
             this.comboBoxAdditionalResourcesChooseFileToLaunch.TabIndex = 17;
@@ -158,7 +158,7 @@
             // buttonAdditionalResourcesChooseEmbeddedFolder
             // 
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Location = new System.Drawing.Point(217, 120);
-            this.buttonAdditionalResourcesChooseEmbeddedFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdditionalResourcesChooseEmbeddedFolder.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Name = "buttonAdditionalResourcesChooseEmbeddedFolder";
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseEmbeddedFolder.TabIndex = 16;
@@ -170,9 +170,9 @@
             // 
             this.pictureBoxAdditionalResourceIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxAdditionalResourceIcon.Location = new System.Drawing.Point(217, 217);
-            this.pictureBoxAdditionalResourceIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBoxAdditionalResourceIcon.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBoxAdditionalResourceIcon.Name = "pictureBoxAdditionalResourceIcon";
-            this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(36, 39);
+            this.pictureBoxAdditionalResourceIcon.Size = new System.Drawing.Size(48, 48);
             this.pictureBoxAdditionalResourceIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxAdditionalResourceIcon.TabIndex = 15;
             this.pictureBoxAdditionalResourceIcon.TabStop = false;
@@ -180,7 +180,7 @@
             // buttonAdditionalResourcesChooseIcon
             // 
             this.buttonAdditionalResourcesChooseIcon.Location = new System.Drawing.Point(95, 217);
-            this.buttonAdditionalResourcesChooseIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdditionalResourcesChooseIcon.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAdditionalResourcesChooseIcon.Name = "buttonAdditionalResourcesChooseIcon";
             this.buttonAdditionalResourcesChooseIcon.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseIcon.TabIndex = 14;
@@ -210,7 +210,7 @@
             // 
             this.comboBoxAdditionalResourcesResourceDataLauncher.FormattingEnabled = true;
             this.comboBoxAdditionalResourcesResourceDataLauncher.Location = new System.Drawing.Point(95, 184);
-            this.comboBoxAdditionalResourcesResourceDataLauncher.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxAdditionalResourcesResourceDataLauncher.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
             this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(263, 21);
             this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
@@ -219,7 +219,7 @@
             // buttonAdditionalResourceRemoveResourceData
             // 
             this.buttonAdditionalResourceRemoveResourceData.Location = new System.Drawing.Point(565, 179);
-            this.buttonAdditionalResourceRemoveResourceData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdditionalResourceRemoveResourceData.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAdditionalResourceRemoveResourceData.Name = "buttonAdditionalResourceRemoveResourceData";
             this.buttonAdditionalResourceRemoveResourceData.Size = new System.Drawing.Size(56, 29);
             this.buttonAdditionalResourceRemoveResourceData.TabIndex = 10;
@@ -230,7 +230,7 @@
             // buttonAdditionalResourceEmbededResourceOpen
             // 
             this.buttonAdditionalResourceEmbededResourceOpen.Location = new System.Drawing.Point(565, 146);
-            this.buttonAdditionalResourceEmbededResourceOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdditionalResourceEmbededResourceOpen.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAdditionalResourceEmbededResourceOpen.Name = "buttonAdditionalResourceEmbededResourceOpen";
             this.buttonAdditionalResourceEmbededResourceOpen.Size = new System.Drawing.Size(56, 25);
             this.buttonAdditionalResourceEmbededResourceOpen.TabIndex = 9;
@@ -241,7 +241,7 @@
             // buttonAdditionalResourceChooseEmbededResource
             // 
             this.buttonAdditionalResourceChooseEmbededResource.Location = new System.Drawing.Point(95, 120);
-            this.buttonAdditionalResourceChooseEmbededResource.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdditionalResourceChooseEmbededResource.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAdditionalResourceChooseEmbededResource.Name = "buttonAdditionalResourceChooseEmbededResource";
             this.buttonAdditionalResourceChooseEmbededResource.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourceChooseEmbededResource.TabIndex = 8;
@@ -272,7 +272,7 @@
             // 
             this.checkBoxAdditionalResourceAutoOpen.AutoSize = true;
             this.checkBoxAdditionalResourceAutoOpen.Location = new System.Drawing.Point(151, 29);
-            this.checkBoxAdditionalResourceAutoOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxAdditionalResourceAutoOpen.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAdditionalResourceAutoOpen.Name = "checkBoxAdditionalResourceAutoOpen";
             this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(93, 17);
             this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
@@ -302,7 +302,7 @@
             // 
             this.checkBoxAdditionalResourceActive.AutoSize = true;
             this.checkBoxAdditionalResourceActive.Location = new System.Drawing.Point(95, 29);
-            this.checkBoxAdditionalResourceActive.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxAdditionalResourceActive.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAdditionalResourceActive.Name = "checkBoxAdditionalResourceActive";
             this.checkBoxAdditionalResourceActive.Size = new System.Drawing.Size(56, 17);
             this.checkBoxAdditionalResourceActive.TabIndex = 2;
@@ -346,7 +346,7 @@
             this.Controls.Add(this.buttonadditionalResourcesRemove);
             this.Controls.Add(this.groupBoxAdditionalResourceDetails);
             this.Controls.Add(this.treeViewAdditionalResources);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AdditionalResources";
             this.Size = new System.Drawing.Size(1222, 600);
             this.groupBoxAdditionalResourceDetails.ResumeLayout(false);

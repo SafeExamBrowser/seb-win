@@ -1,4 +1,4 @@
-﻿namespace SebWindowsConfig
+namespace SebWindowsConfig
 {
     partial class SebWindowsConfigForm
     {
@@ -1487,8 +1487,8 @@
             this.checkBoxDebugCertificate.TabIndex = 101;
             this.checkBoxDebugCertificate.Text = "Debug certificate";
             this.toolTip1.SetToolTip(this.checkBoxDebugCertificate, "Debug certificates allow changing the DNS name, so a server with a wrong domain n" +
-        "ame is accepted if its domain is entered in the certificate name. Experied certi" +
-        "ficates are also accepted.");
+        "ame is accepted if its domain is entered in the certificate name field. Expired " +
+        "certificates are also accepted.");
             this.checkBoxDebugCertificate.UseVisualStyleBackColor = true;
             // 
             // checkBoxPinEmbeddedCertificates
@@ -2880,8 +2880,8 @@
             this.checkBoxQuitURLConfirm.Size = new System.Drawing.Size(153, 17);
             this.checkBoxQuitURLConfirm.TabIndex = 114;
             this.checkBoxQuitURLConfirm.Text = "Ask user to confirm quitting";
-            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "Indicates if the user is asked to confirm quitting SEB after the quit URL has bee" +
-        "n detected by SEB. If disabled, SEB quits without displaying any dialog.");
+            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "The user is asked to confirm quitting SEB after the quit URL has been detected by" +
+        " SEB. If disabled, SEB quits without displaying any dialog.");
             this.checkBoxQuitURLConfirm.UseVisualStyleBackColor = true;
             this.checkBoxQuitURLConfirm.CheckedChanged += new System.EventHandler(this.checkBoxQuitURLConfirm_CheckedChanged);
             // 

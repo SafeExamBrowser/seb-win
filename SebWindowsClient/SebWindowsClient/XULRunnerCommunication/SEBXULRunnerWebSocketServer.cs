@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Fleck;
 using Newtonsoft.Json;
@@ -60,6 +62,8 @@ namespace SebWindowsClient.XULRunnerCommunication
         private static int port = 8706;
         private static WebSocketServer server;
 
+        private static List<SEBXULMessage> messageQueue = new List<SEBXULMessage>();
+
         /// <summary>
         /// Start the server if not already running
         /// </summary>
@@ -112,6 +116,10 @@ namespace SebWindowsClient.XULRunnerCommunication
         {
             Logger.AddInformation("WebSocket: Client Connectedon port:" + socket.ConnectionInfo.ClientPort);
             XULRunner = socket;
+            foreach (var sebxulMessage in messageQueue)
+            {
+                SendMessage(sebxulMessage);
+            }
         }
 
         public static void SendMessage(SEBXULMessage message)
@@ -123,6 +131,11 @@ namespace SebWindowsClient.XULRunnerCommunication
                     Console.WriteLine(JsonConvert.SerializeObject(message));
                     Logger.AddInformation("WebSocket: Send message: " + JsonConvert.SerializeObject(message));
                     XULRunner.Send(JsonConvert.SerializeObject(message));
+                }
+                else
+                {
+                    Logger.AddInformation("WebSocket: Added message to queue: " + JsonConvert.SerializeObject(message));
+                    messageQueue.Add(message);
                 }
             }
             catch (Exception)
@@ -155,86 +168,30 @@ namespace SebWindowsClient.XULRunnerCommunication
             }
         }
 
+        [Obsolete("Window gets resized by SEB not seb")]
         public static void SendDisplaySettingsChanged()
         {
-            try
-            {
-                if (XULRunner != null)
-                {
-                    Console.WriteLine("SEB.displaySettingsChanged");
-                    Logger.AddInformation("WebSocket: Send message: SEB.displaySettingsChanged");
-                    XULRunner.Send("SEB.displaySettingsChanged");
-                }
-            }
-            catch (Exception)
-            {
-            }
+            SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.DisplaySettingsChanged));
         }
 
         public static void SendKeyboardShown()
         {
-            try
-            {
-                if (XULRunner != null)
-                {
-                    Console.WriteLine("SEB.keyboardShown");
-                    Logger.AddInformation("WebSocket: Send message: SEB.keyboardShown");
-                    XULRunner.Send("SEB.keyboardShown");
-                }
-            }
-            catch (Exception)
-            {
-            }
+            SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.KeyboardShown));
         }
 
         public static void SendAllowCloseToXulRunner()
         {
-            try
-            {
-                if (XULRunner != null)
-                {
-                    Console.WriteLine("SEB.Close sent");
-                    Logger.AddInformation("WebSocket: Send message: SEB.close");
-                    XULRunner.Send("SEB.close");
-                }
-            }
-            catch (Exception)
-            {
-            }
+            SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Close));
         }
 
         public static void SendRestartExam()
         {
-            try
-            {
-                if (XULRunner != null &&
-                    (!string.IsNullOrEmpty((String)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamURL)[SEBSettings.KeyRestartExamURL])
-                    || (bool)SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamUseStartURL)[SEBSettings.KeyRestartExamUseStartURL]))
-                {
-                    Console.WriteLine("SEB.Restart Exam sent");
-                    Logger.AddInformation("WebSocket: Send message: SEB.restartExam");
-                    XULRunner.Send("SEB.restartExam");
-                }
-            }
-            catch (Exception)
-            {
-            }
+            SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.RestartExam));
         }
 
         public static void SendReloadPage()
         {
-            try
-            {
-                if (XULRunner != null)
-                {
-                    Console.WriteLine("SEB.Reload Sent");
-                    Logger.AddInformation("WebSocket: Send message: SEB.reload");
-                    XULRunner.Send("SEB.reload");
-                }
-            }
-            catch (Exception)
-            {
-            }
+            SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reload));
         }
     }
 }

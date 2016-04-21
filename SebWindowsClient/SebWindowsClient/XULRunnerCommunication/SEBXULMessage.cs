@@ -7,7 +7,12 @@ namespace SebWindowsClient.XULRunnerCommunication
     {
         public enum SEBXULHandler
         {
-            AdditionalResources
+            AdditionalResources,
+            DisplaySettingsChanged,
+            Reload,
+            RestartExam,
+            Close,
+            KeyboardShown
         }
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)

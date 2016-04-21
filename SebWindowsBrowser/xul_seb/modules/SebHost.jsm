@@ -73,7 +73,13 @@ this.SebHost = {
 		socketlog = su.getBool(su.getCmd("socketlog"));
 		this.os = appinfo.OS.toUpperCase();
 		base.msgHandler = {
-			"AdditionalResources" : base.handleArs
+			"AdditionalResources" : base.handleArs,
+			"DisplaySettingsChanged" : base.handleDisplaySettingsChanged,
+			"Reload" : base.handleReload,
+			"RestartExam" : base.handleRestartExam,
+			"Close" : base.handleClose,
+			"KeyboardShown" : base.handleKeyboardShown,
+			"Shutdown" : base.handleShutdown
 		};
 		base.initAdditionalResources();
 		sl.out("SebHost initialized: " + seb);
@@ -144,31 +150,30 @@ this.SebHost = {
 		messageSocket.onmessage = function(evt) { 
 			// ToDo: message handling !!
 			if (/^SEB\./.test(evt.data)) { // old string messages
-			
 				switch (evt.data) {
 					case "SEB.close" :
-						sl.debug("messageSocket handled: " + evt.data); 
+						sl.debug("obsolet messageSocket handled: " + evt.data); 
 						seb.hostForceQuit = true;
 						sl.debug("seb.hostForceQuit: " + seb.hostForceQuit);
 						break;
 					case "SEB.shutdown" :  // only for socket debugging
-						sl.debug("messageSocket handled: " + evt.data);
+						sl.debug("obsolet messageSocket handled: " + evt.data);
 						base.shutdown();
 						break;
 					case "SEB.restartExam" :
-						sl.debug("messageSocket handled: " + evt.data);
+						sl.debug("obsolet messageSocket handled: " + evt.data);
 						sb.hostRestartUrl();
 						break;
 					case "SEB.displaySettingsChanged" :
-						sl.debug("messageSocket handled: " + evt.data);
+						sl.debug("obsolet messageSocket handled: " + evt.data);
 						sw.hostDisplaySettingsChanged();
 						break;
 					case "SEB.reload" :
-						sl.debug("messageSocket handled: " + evt.data);
+						sl.debug("obsolet messageSocket handled: " + evt.data);
 						seb.reload(null);
 						break;
 					case "SEB.keyboardShown" :
-						sl.debug("messageSocket handled: " + evt.data);
+						sl.debug("obsolet messageSocket handled: " + evt.data);
 						if (base.elToScrollIntoView != null) {
 							try {
 								base.elToScrollIntoView.scrollIntoView(false);
@@ -179,13 +184,14 @@ this.SebHost = {
 						}
 						break;
 					default :
-						sl.debug("messageSocket: not handled msg: " + evt.data); 
+						sl.debug("obsolet messageSocket: not handled msg: " + evt.data); 
 				}
 			}
 			else { // new object handler
 				try {
 					var msgObj = JSON.parse(evt.data);
 					if (typeof msgObj === "object") {
+						//sl.debug(msgObj);
 						try {
 							//sl.debug(JSON.stringify(msgObj)); 
 							base.msgHandler[msgObj["Handler"]].call(base,msgObj["Opts"]);
@@ -195,11 +201,11 @@ this.SebHost = {
 						}
 					}
 					else {
-						sl.debug("messageSocket: not handled msg: " + evt.data); 
+						sl.debug("1 messageSocket: not handled msg: " + evt.data); 
 					}
 				}
 				catch(e) {
-					sl.debug("messageSocket: not handled msg: " + evt.data); 
+					sl.debug("2 messageSocket: not handled msg: " + evt.data); 
 				}
 			}
 		};
@@ -258,6 +264,44 @@ this.SebHost = {
 		catch(e) {
 			sl.err(e);
 		}
+	},
+	
+	handleDisplaySettingsChanged : function(opts) {
+		sl.debug("messageSocket handled: " + opt);
+		sw.hostDisplaySettingsChanged();
+	},
+	
+	handleReload : function(opt) {
+		sl.debug("messageSocket handled: " + opt);
+		seb.reload(null);
+	},
+	
+	handleRestartExam : function(opt) {
+		sl.debug("messageSocket handled: " + opt);
+		sb.hostRestartUrl();
+	},
+	
+	handleClose : function(opt) {
+		sl.debug("messageSocket handled: " + opt); 
+		seb.hostForceQuit = true;
+		sl.debug("seb.hostForceQuit: " + seb.hostForceQuit);
+	},
+	
+	handleKeyboardShown : function(opt) {
+		sl.debug("messageSocket handled: " + opt);
+		if (base.elToScrollIntoView != null) {
+			try {
+				base.elToScrollIntoView.scrollIntoView(false);
+			}
+			catch (e) { 
+				sl.err(e);
+			}
+		}
+	},
+	
+	handleShutdown : function(opt) {
+		sl.debug("messageSocket handled: " + opt);
+		base.shutdown();
 	},
 	
 	quitFromHost : function () {

@@ -75,7 +75,7 @@ const	xulFrame = "seb.iframe",
 	
 this.SebWin = {
 	wins : [],
-	lasWin : null,
+	lastWin : null,
 	mainScreen : {},
 	popupScreen : {},
 	winTypesReg : {
@@ -261,7 +261,7 @@ this.SebWin = {
 		base.showDeck(win,fromkey,messageDeck);
 	},
 	
-	showDeck(win,fromkey,index)  {
+	showDeck : function(win,fromkey,index)  {
 		if (fromkey && ! seb.DEBUG) { return; }
 		let w = (win) ? win : base.getRecentWin();
 		//sl.debug("showContent..." + base.getWinType(w));

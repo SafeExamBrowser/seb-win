@@ -113,7 +113,7 @@ this.seb =  {
 		su.init(base);
 		sg.init(base);
 		base.DEBUG = su.getBool(su.getCmd("debug"));
-		sl.init(base); 
+		sl.init(base);
 		base.initProfile();
 		sw.init(base);
 		sb.init(base);
@@ -121,6 +121,7 @@ this.seb =  {
 		sc.init(base);
 		base.initDebug();
 		sg.initConfig(base.initAfterConfig);
+		sl.out("initCmdLine finished");
 	},
 	
 	initDebug : function() {
@@ -146,6 +147,7 @@ this.seb =  {
 	},
 	
 	initProfile : function() {
+		sl.out("initProfile");
 		try {
 			base.profile["dirs"] = [];
 			let profilePath = OS.Constants.Path.profileDir;
@@ -278,7 +280,7 @@ this.seb =  {
 		sl.debug("onclose secondary win");
 	},
 	
-	sizeModeChange(e) {
+	sizeModeChange : function (e) {
 		sl.debug("sizemodechange: " + e);
 		e.preventDefault();
 		e.stopPropagation();
@@ -296,7 +298,7 @@ this.seb =  {
 			}
 		}
 		else {
-			br.reload(win);
+			sb.reload(win);
 		}
 	},
 	

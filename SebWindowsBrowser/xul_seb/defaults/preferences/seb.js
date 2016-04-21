@@ -35,3 +35,4 @@ pref("gecko.handlerService.allowRegisterFromDifferentHost", true);
 pref("full-screen-api.enabled", true);
 pref("gfx.direct2d.disabled", false);
 pref("layers.acceleration.disabled", false);
+pref("general.useragent.locale", "de-DE");

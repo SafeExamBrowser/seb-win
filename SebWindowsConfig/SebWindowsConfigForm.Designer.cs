@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -107,6 +107,7 @@
             this.btnAddWhitelistFilter = new System.Windows.Forms.Button();
             this.checkBoxEnableURLContentFilter = new System.Windows.Forms.CheckBox();
             this.tabPageCertificates = new System.Windows.Forms.TabPage();
+            this.checkBoxDebugCertificate = new System.Windows.Forms.CheckBox();
             this.checkBoxPinEmbeddedCertificates = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.comboBoxChooseCACertificate = new System.Windows.Forms.ComboBox();
@@ -221,6 +222,7 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.checkBoxQuitURLConfirm = new System.Windows.Forms.CheckBox();
             this.textBoxQuitURL = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -389,8 +391,6 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxDebugCertificate = new System.Windows.Forms.CheckBox();
-            this.checkBoxQuitURLConfirm = new System.Windows.Forms.CheckBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1474,6 +1474,21 @@
             this.tabPageCertificates.Text = "Certificates";
             this.tabPageCertificates.UseVisualStyleBackColor = true;
             // 
+            // checkBoxDebugCertificate
+            // 
+            this.checkBoxDebugCertificate.AutoSize = true;
+            this.checkBoxDebugCertificate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDebugCertificate.Location = new System.Drawing.Point(524, 43);
+            this.checkBoxDebugCertificate.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxDebugCertificate.Name = "checkBoxDebugCertificate";
+            this.checkBoxDebugCertificate.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxDebugCertificate.TabIndex = 101;
+            this.checkBoxDebugCertificate.Text = "Debug certificate";
+            this.toolTip1.SetToolTip(this.checkBoxDebugCertificate, "Debug certificates allow changing the DNS name, so a server with a wrong domain n" +
+        "ame is accepted if its domain is entered in the certificate name field. Expired " +
+        "certificates are also accepted.");
+            this.checkBoxDebugCertificate.UseVisualStyleBackColor = true;
+            // 
             // checkBoxPinEmbeddedCertificates
             // 
             this.checkBoxPinEmbeddedCertificates.AutoSize = true;
@@ -1585,8 +1600,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2852,6 +2867,21 @@
             this.groupBox8.TabIndex = 120;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Link to quit SEB after exam";
+            // 
+            // checkBoxQuitURLConfirm
+            // 
+            this.checkBoxQuitURLConfirm.AutoSize = true;
+            this.checkBoxQuitURLConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxQuitURLConfirm.Location = new System.Drawing.Point(15, 88);
+            this.checkBoxQuitURLConfirm.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxQuitURLConfirm.Name = "checkBoxQuitURLConfirm";
+            this.checkBoxQuitURLConfirm.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxQuitURLConfirm.TabIndex = 114;
+            this.checkBoxQuitURLConfirm.Text = "Ask user to confirm quitting";
+            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "The user is asked to confirm quitting SEB after the quit URL has been detected by" +
+        " SEB. If disabled, SEB quits without displaying any dialog.");
+            this.checkBoxQuitURLConfirm.UseVisualStyleBackColor = true;
+            this.checkBoxQuitURLConfirm.CheckedChanged += new System.EventHandler(this.checkBoxQuitURLConfirm_CheckedChanged);
             // 
             // textBoxQuitURL
             // 
@@ -5006,36 +5036,6 @@
             this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
-            // 
-            // checkBoxDebugCertificate
-            // 
-            this.checkBoxDebugCertificate.AutoSize = true;
-            this.checkBoxDebugCertificate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDebugCertificate.Location = new System.Drawing.Point(524, 43);
-            this.checkBoxDebugCertificate.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxDebugCertificate.Name = "checkBoxDebugCertificate";
-            this.checkBoxDebugCertificate.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxDebugCertificate.TabIndex = 101;
-            this.checkBoxDebugCertificate.Text = "Debug certificate";
-            this.toolTip1.SetToolTip(this.checkBoxDebugCertificate, "Debug certificates allow changing the DNS name, so a server with a wrong domain n" +
-        "ame is accepted if its domain is entered in the certificate name. Experied certi" +
-        "ficates are also accepted.");
-            this.checkBoxDebugCertificate.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxQuitURLConfirm
-            // 
-            this.checkBoxQuitURLConfirm.AutoSize = true;
-            this.checkBoxQuitURLConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxQuitURLConfirm.Location = new System.Drawing.Point(15, 88);
-            this.checkBoxQuitURLConfirm.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxQuitURLConfirm.Name = "checkBoxQuitURLConfirm";
-            this.checkBoxQuitURLConfirm.Size = new System.Drawing.Size(153, 17);
-            this.checkBoxQuitURLConfirm.TabIndex = 114;
-            this.checkBoxQuitURLConfirm.Text = "Ask user to confirm quitting";
-            this.toolTip1.SetToolTip(this.checkBoxQuitURLConfirm, "Indicates if the user is asked to confirm quitting SEB after the quit URL has bee" +
-        "n detected by SEB. If disabled, SEB quits without displaying any dialog.");
-            this.checkBoxQuitURLConfirm.UseVisualStyleBackColor = true;
-            this.checkBoxQuitURLConfirm.CheckedChanged += new System.EventHandler(this.checkBoxQuitURLConfirm_CheckedChanged);
             // 
             // SebWindowsConfigForm
             // 

@@ -132,10 +132,6 @@
             <Verb Id="sebsopen" Command="Open" TargetFile="ClientExecutable" Argument='"%1"'/>
           </Extension>
         </ProgId>
-        <File Id="SebDocumentIcon" Source="$(var.SEBDocumentIconFile)" Name="SEBDocumentIcon.ico" />
-      </Component>
-      <Component Id="ProductComponent" Guid="{206C911C-56EF-44B8-9257-5FD214427965}">
-           <File Source="$(var.SebWindowsClient.TargetPath)" />
            <RegistryKey Root="HKCR"
                  Key="seb"
                  Action="createAndRemoveOnUninstall">
@@ -145,7 +141,8 @@
                <RegistryValue Type="string" Value="&quot;[INSTALLFOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
              </RegistryKey>
            </RegistryKey>
-         </Component>
+        <File Id="SebDocumentIcon" Source="$(var.SEBDocumentIconFile)" Name="SEBDocumentIcon.ico" />
+      </Component>
       <?ifdef InstallConfigTool ?>
       <Component Id="SebConfigComponent" Guid="{CB8E7910-9172-4605-9104-B5FE12D7CCE4}">
         <File Source="$(var.SebWindowsConfig.TargetPath)" />

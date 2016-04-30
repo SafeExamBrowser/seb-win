@@ -98,6 +98,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioUtils\AudioControl.cs" />
     <Compile Include="BlockShortcutsUtils\SebKeyCapture.cs" />
     <Compile Include="ConfigurationUtils\FileCompressor.cs" />
     <Compile Include="ConfigurationUtils\IFileCompressor.cs" />

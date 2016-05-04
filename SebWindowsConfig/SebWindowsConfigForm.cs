@@ -400,6 +400,11 @@ namespace SebWindowsConfig
 
             textBoxBrowserSuffix.Text = ((string) SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowTitleSuffix]);
 
+            checkBoxEnableAudioControl.Checked = ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyAudioControlEnabled]);
+            checkBoxMuteAudio.Checked = ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyAudioMute]);
+            checkBoxSetVolumeLevel.Checked = ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyAudioSetVolumeLevel]);
+            trackBarVolumeLevel.Value = ((int) SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel]);
+
             // Group "Down/Uploads"
             checkBoxAllowDownUploads.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDownUploads];
             checkBoxOpenDownloads   .Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyOpenDownloads];
@@ -3970,6 +3975,26 @@ namespace SebWindowsConfig
         private void textBoxBrowserSuffix_TextChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowTitleSuffix] = textBoxBrowserSuffix.Text;
+        }
+
+        private void checkBoxEnableAudioControl_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAudioControlEnabled] = checkBoxEnableAudioControl.Checked;
+        }
+
+        private void checkBoxMuteAudio_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAudioMute] = checkBoxMuteAudio.Checked;
+        }
+
+        private void checkBoxSetVolumeLevel_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAudioSetVolumeLevel] = checkBoxSetVolumeLevel.Checked;
+        }
+
+        private void trackBarVolumeLevel_Scroll(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
         }
 
     } // end of   class     SebWindowsConfigForm

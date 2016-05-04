@@ -121,6 +121,10 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyEnableTouchExit              = "enableTouchExit";
         public const String KeyOskBehavior                = "oskBehavior";
 
+        public const string KeyAudioMute = "audioMute";
+        public const string KeyAudioControlEnabled = "audioControlEnabled";
+        public const string KeyAudioVolumeLevel = "audioVolumeLevel";
+        public const string KeyAudioSetVolumeLevel = "audioSetVolumeLevel";
 
         //Touch optimized settings
         public const String KeyBrowserScreenKeyboard = "browserScreenKeyboard";
@@ -561,6 +565,10 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 2);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAudioControlEnabled             , true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAudioMute             , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAudioVolumeLevel             , 25);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAudioSetVolumeLevel             , false);
 
             //Touch Settings
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserScreenKeyboard       , false);

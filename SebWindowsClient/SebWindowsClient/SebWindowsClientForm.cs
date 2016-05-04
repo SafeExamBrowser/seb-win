@@ -42,6 +42,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using SebWindowsClient.AudioUtils;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.DesktopUtils;
@@ -765,6 +766,28 @@ namespace SebWindowsClient
                 var quitButton = new SEBQuitToolStripButton();
                 quitButton.Click += (x, y) => ShowCloseDialogForm();
                 taskbarToolStrip.Items.Add(quitButton);
+            }
+
+            //Audio Control
+            try
+            {
+                if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAudioSetVolumeLevel])
+                {
+                    int volume = (int)SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel];
+                    new AudioControl().SetVolumeScalar((float)volume / 100);
+                }
+                if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAudioMute])
+                {
+                    new AudioControl().Mute(true);
+                }
+                if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyAudioControlEnabled)[SEBSettings.KeyAudioControlEnabled])
+                {
+                    taskbarToolStrip.Items.Add(new SEBAudioToolStripButton());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to add AudioControl", this, ex);
             }
 
             //Wlan Control

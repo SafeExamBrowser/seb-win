@@ -71,6 +71,10 @@
       <HintPath>DotNetZip\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>NAudio\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>JSONNet\Newtonsoft.Json.dll</HintPath>
@@ -99,6 +103,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioUtils\AudioControl.cs" />
+    <Compile Include="AudioUtils\SEBAudioControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AudioUtils\SEBAudioControl.Designer.cs">
+      <DependentUpon>SEBAudioControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="BlockShortcutsUtils\SebKeyCapture.cs" />
     <Compile Include="ConfigurationUtils\FileCompressor.cs" />
     <Compile Include="ConfigurationUtils\IFileCompressor.cs" />
@@ -202,6 +212,9 @@
     <Compile Include="UI\SEBAdditionalResourcesToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\SEBAudioToolStripButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\SEBWlanToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -225,6 +238,13 @@
       <DependentUpon>SEBWlanNetworkSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="WlanUtils\WlanApi.cs" />
+    <EmbeddedResource Include="AudioUtils\SEBAudioControl.de.resx">
+      <DependentUpon>SEBAudioControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AudioUtils\SEBAudioControl.resx">
+      <DependentUpon>SEBAudioControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="SebCloseDialogForm.de.resx">
       <DependentUpon>SebCloseDialogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -300,6 +320,9 @@
     <EmbeddedResource Include="UI\SEBAdditionalResourcesToolStripButton.resx">
       <DependentUpon>SEBAdditionalResourcesToolStripButton.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\SEBAudioToolStripButton.resx">
+      <DependentUpon>SEBAudioToolStripButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\SEBWlanToolStripButton.resx">
       <DependentUpon>SEBWlanToolStripButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -370,6 +393,13 @@
     <None Include="Resources\AboutSEB.png" />
     <None Include="Resources\battery.png" />
     <None Include="Resources\quit.png" />
+    <None Include="Resources\audioControl0.png" />
+    <None Include="Resources\audioControl1.png" />
+    <None Include="Resources\audioControl50.png" />
+    <None Include="Resources\audioControl100.png" />
+    <None Include="Resources\audioControlmute.png" />
+    <None Include="Resources\audioControlunmute.png" />
+    <Content Include="NAudio.dll" />
     <Content Include="Resources\reload.png" />
     <None Include="Resources\resource.png" />
     <None Include="Resources\resource.bmp" />

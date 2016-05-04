@@ -1,44 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
+using NAudio.CoreAudioApi;
 
 namespace SebWindowsClient.AudioUtils
 {
     public class AudioControl
     {
-        private const int APPCOMMAND_VOLUME_MUTE = 0x80000;
-        private const int APPCOMMAND_VOLUME_UP = 0xA0000;
-        private const int APPCOMMAND_VOLUME_DOWN = 0x90000;
-        private const int WM_APPCOMMAND = 0x319;
-        private IntPtr Handle;
+        private readonly MMDeviceCollection DevCol;
 
-        public AudioControl(IntPtr handle)
+        public AudioControl()
         {
-            this.Handle = handle;
+            //Instantiate an Enumerator to find audio devices
+            MMDeviceEnumerator mmde = new MMDeviceEnumerator();
+            //Get all the devices, no matter what condition or status
+            DevCol = mmde.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active);
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg,
-            IntPtr wParam, IntPtr lParam);
-
-        public void Mute()
+        public float GetVolumeScalar()
         {
-            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle,
-                (IntPtr)APPCOMMAND_VOLUME_MUTE);
+            try
+            {
+                //Loop through all devices
+                foreach (MMDevice dev in DevCol)
+                {
+                    try
+                    {
+                        //Mute it
+                        return dev.AudioEndpointVolume.MasterVolumeLevelScalar;
+                    }
+                    catch (Exception ex)
+                    {
+                        //Do something with exception when an audio endpoint could not be muted
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //When something happend that prevent us to iterate through the devices
+            }
+            return 0;
         }
 
-        public void VolDown()
+        public void Mute(bool mute)
         {
-            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle,
-                (IntPtr)APPCOMMAND_VOLUME_DOWN);
+            try
+            {
+                //Loop through all devices
+                foreach (MMDevice dev in DevCol)
+                {
+                    try
+                    {
+                        //Mute it
+                        dev.AudioEndpointVolume.Mute = mute;
+                    }
+                    catch (Exception ex)
+                    {
+                        //Do something with exception when an audio endpoint could not be muted
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //When something happend that prevent us to iterate through the devices
+            }
         }
 
-        public void VolUp()
+        public bool GetMute()
         {
-            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle,
-                (IntPtr)APPCOMMAND_VOLUME_UP);
+            try
+            {
+                //Loop through all devices
+                foreach (MMDevice dev in DevCol)
+                {
+                    try
+                    {
+                        return dev.AudioEndpointVolume.Mute;
+                    }
+                    catch (Exception ex)
+                    {
+                        //Do something with exception when an audio endpoint could not be muted
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //When something happend that prevent us to iterate through the devices
+            }
+            return false;
         }
 
+        public void SetVolumeScalar(float volume)
+        {
+            try
+            {
+                //Loop through all devices
+                foreach (NAudio.CoreAudioApi.MMDevice dev in DevCol)
+                {
+                    try
+                    {
+                        //Mute it
+                        dev.AudioEndpointVolume.MasterVolumeLevelScalar = volume;
+                    }
+                    catch (Exception ex)
+                    {
+                        //Do something with exception when an audio endpoint could not be muted
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //When something happend that prevent us to iterate through the devices
+            }
+        }
     }
 }

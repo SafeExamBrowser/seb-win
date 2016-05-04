@@ -71,10 +71,6 @@
       <HintPath>DotNetZip\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>NAudio\NAudio.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>JSONNet\Newtonsoft.Json.dll</HintPath>
@@ -424,6 +420,10 @@
     <ProjectReference Include="IconLib\IconLib\IconLib.csproj">
       <Project>{ce53747f-d2e6-4e1e-9ef4-a0ae02671b1d}</Project>
       <Name>IconLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="NAudio\NAudio.csproj">
+      <Project>{da4f02e3-0b5e-42cd-b8d9-5583fa51d66e}</Project>
+      <Name>NAudio</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

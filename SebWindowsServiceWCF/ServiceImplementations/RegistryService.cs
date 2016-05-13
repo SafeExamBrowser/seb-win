@@ -19,15 +19,24 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         /// Sets the registry values
         /// </summary>
         /// <param name="registryValues">The registry values to set</param>
+        /// <param name="sid">The sid of the currently logged in user - needed to identify the correct registry key path</param>
         /// <param name="username">The username of the currently logged in user - needed to identify the correct registry key path</param>
         /// <returns>true if all operations succeeded, false if something went wrong. See the logfile for details then.</returns>
-        public bool SetRegistryEntries(Dictionary<RegistryIdentifiers, object> registryValues, string username)
+        public bool SetRegistryEntries(Dictionary<RegistryIdentifiers, object> registryValues, string sid, string username)
         {
             bool res = true;
             try
             {
-                using (var persistentRegistryFile = new PersistentRegistryFile(username))
+                using (var persistentRegistryFile = new PersistentRegistryFile(username, sid))
                 {
+                    Logger.Log("SID: " + sid);
+                    Logger.Log("Username: " + sid);
+                    if (string.IsNullOrWhiteSpace(sid))
+                    {
+                        sid = SIDHandler.GetSIDFromUsername(username);
+                    }
+                    Logger.Log("SID2: " + sid);
+
                     foreach (var registryValue in registryValues)
                     {
                         RegistryEntry regEntry;
@@ -39,7 +48,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                             //Use Reflection
                             var type = Type.GetType(String.Format("SebWindowsServiceWCF.RegistryHandler.Reg{0}", registryValue.Key));
                             if (type == null) continue;
-                            regEntry = (RegistryEntry)Activator.CreateInstance(type, SIDHandler.GetSIDFromUsername(username));
+                            regEntry = (RegistryEntry)Activator.CreateInstance(type, sid);
                         }
                         catch (Exception ex)
                         {
@@ -101,7 +110,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                 using (var persistentRegistryFile = new PersistentRegistryFile())
                 {
                     //Reset the registry values
-                    res = this.SetRegistryEntries(persistentRegistryFile.FileContent.RegistryValues, persistentRegistryFile.FileContent.Username);
+                    res = this.SetRegistryEntries(persistentRegistryFile.FileContent.RegistryValues, persistentRegistryFile.FileContent.SID, persistentRegistryFile.FileContent.Username);
                     //Enable the windows Service if necessary
                     if (persistentRegistryFile.FileContent.EnableWindowsUpdate)
                         SetWindowsUpdate(true);

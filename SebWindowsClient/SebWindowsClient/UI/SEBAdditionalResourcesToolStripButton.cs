@@ -54,9 +54,8 @@ namespace SebWindowsClient.UI
                 if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive])
                     continue;
 
-                var l1Item = new SEBAdditionalResourceMenuItem();
-                l1Item.Text = l1Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                l1Item.Resource = l1Resource;
+                var l1Item = new SEBAdditionalResourceMenuItem(l1Resource);
+                l1Item.Image = GetResourceIcon(l1Resource);
                 l1Item.Click += OnItemClicked;
                 AutoOpenResource(l1Resource);
 
@@ -65,9 +64,8 @@ namespace SebWindowsClient.UI
                     if (!(bool)l2Resource[SEBSettings.KeyAdditionalResourcesActive])
                         continue;
 
-                    var l2Item = new SEBAdditionalResourceMenuItem();
-                    l2Item.Text = l2Resource[SEBSettings.KeyAdditionalResourcesTitle].ToString();
-                    l2Item.Resource = l2Resource;
+                    var l2Item = new SEBAdditionalResourceMenuItem(l2Resource);
+                    l2Item.Image = GetResourceIcon(l2Resource);
                     l2Item.Click += OnItemClicked;
                     AutoOpenResource(l2Resource);
 

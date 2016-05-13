@@ -17,6 +17,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         { get; set; }
         public string Username
         { get; set; }
+        public string SID
+        { get; set; }
         public bool EnableWindowsUpdate
         { get; set; }
     }
@@ -28,7 +30,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         {
             EnableWindowsUpdate = false, 
             RegistryValues = new Dictionary<RegistryIdentifiers, object>(), 
-            Username = ""
+            Username = "",
+            SID = ""
         };
 
         /// <summary>
@@ -36,7 +39,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         /// If a file is existing it gets automatically loaded into memory
         /// </summary>
         /// <param name="username">The username of the currently logged in user - needed to identify the correct registry key path</param>
-        public PersistentRegistryFile(string username = null)
+        /// <param name="sid">The sid of the currently logged in user - needed to identify the correct registry key path</param>
+        public PersistentRegistryFile(string username = null, string sid = null)
         {
             try
             {
@@ -52,6 +56,9 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
             if (username != null)
                 this.FileContent.Username = username;
+
+            if (sid != null)
+                this.FileContent.SID = sid;
 
             if (File.Exists(_filePath))
             {

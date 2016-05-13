@@ -13,7 +13,7 @@ namespace SEBWindowsServiceContracts
         bool TestServiceConnetcion();
 
         [OperationContract]
-        bool SetRegistryEntries(Dictionary<RegistryIdentifiers, object> registryValues, string username);
+        bool SetRegistryEntries(Dictionary<RegistryIdentifiers, object> registryValues, string sid, string username);
 
         [OperationContract]
         bool Reset();

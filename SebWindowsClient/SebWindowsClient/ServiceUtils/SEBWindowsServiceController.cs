@@ -19,6 +19,7 @@ namespace SebWindowsClient.ServiceUtils
     {
         private static bool _initialized = false;
         private static string _username;
+        private static string _sid;
         private static IRegistryServiceContract _sebWindowsServicePipeProxy;
 
         private static void Initialize()
@@ -34,46 +35,50 @@ namespace SebWindowsClient.ServiceUtils
 
                 _sebWindowsServicePipeProxy = pipeFactory.CreateChannel();
                 
-                //Get the current username - without the username the registry entries cannot be set
+                //Get the current sid or/and username - without the sid or username the registry entries cannot be set
                 if (String.IsNullOrEmpty(_username))
                 {
                     _username = GetCurrentUsername();
                 }
+                if (String.IsNullOrEmpty(_sid))
+                {
+                    _sid = GetCurrentUserSID();
+                }
+
+                if(string.IsNullOrEmpty(_sid) && string.IsNullOrEmpty(_username))
+                    throw new Exception("Unable to get SID & Username");
 
                 _initialized = true;
             }
         }
 
-        private static string GetCurrentUsername()
+        private static string GetCurrentUserSID()
         {
-            string username = null;
-            //Get Username by WindowsIdentity
             try
             {
                 var windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
-                if (windowsIdentity != null)
+                if (windowsIdentity != null && windowsIdentity.User != null)
                 {
-                    //username = windowsIdentity.Name;
-                    if (!String.IsNullOrEmpty(username))
-                    {
-                        Logger.AddInformation("Username from WindowsIdentity = " + username);
-                        return username;
-                    }
+                    return windowsIdentity.User.Value;
                 }
                 else
                 {
-                    Logger.AddWarning("Unable to get Username from WindowsIdentity", null, null);
+                    Logger.AddWarning("Unable to get SID from WindowsIdentity", null, null);
                 }
             }
             catch (Exception ex)
             {
-                Logger.AddWarning("Unable to get Username from WindowsIdentity", null, ex);
+                Logger.AddWarning("Unable to get SID from WindowsIdentity", null, ex);
             }
+            return null;
+        }
 
+        private static string GetCurrentUsername()
+        {
             //Get Username by Environment
             try
             {
-                username = Environment.UserName;
+                string username = Environment.UserName;
                 if (String.IsNullOrEmpty(username))
                 {
                     Logger.AddWarning("Unable to get Username from Environment", null, null);
@@ -89,7 +94,7 @@ namespace SebWindowsClient.ServiceUtils
                 Logger.AddWarning("Unable to get Username from Environment", null, ex);
             }
 
-            throw new Exception("unable to get Username");
+            return null;
         }
 
         /// <summary>
@@ -119,7 +124,7 @@ namespace SebWindowsClient.ServiceUtils
         public static bool SetRegistryAccordingToConfiguration(Dictionary<RegistryIdentifiers, object> valuesToSet)
         {
             Initialize();
-            return _sebWindowsServicePipeProxy.SetRegistryEntries(valuesToSet, _username);
+            return _sebWindowsServicePipeProxy.SetRegistryEntries(valuesToSet, _sid, _username);
         }
 
         /// <summary>

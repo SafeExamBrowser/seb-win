@@ -148,7 +148,10 @@
       <Component Id="MetroFramework" Guid="{1565CAB5-6C9B-4503-ABE9-7A922C92B5E2}">
         <File Source="$(var.MetroFramework.TargetPath)" />
       </Component>
-      <Component Id="SEBWindowsServiceContractsDLL" Guid="{97686074-6AD1-4771-9268-E89984D73993}">
+      <Component Id="SEBWindowsServiceContractsDLL" Guid="{89b3249d-6ff3-4e9e-b305-5dc1c5df4b94}">
+        <File Source="$(var.NAudio.TargetPath)" />
+      </Component>
+      <Component Id="NAudioDLL" Guid="{97686074-6AD1-4771-9268-E89984D73993}">
         <File Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
       </Component>
       <Component Id="Ionic.Zip" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4743}">

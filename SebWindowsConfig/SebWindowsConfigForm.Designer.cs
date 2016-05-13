@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1536,8 +1536,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2672,9 +2672,7 @@
             this.checkBoxMonitorProcesses.Size = new System.Drawing.Size(211, 17);
             this.checkBoxMonitorProcesses.TabIndex = 0;
             this.checkBoxMonitorProcesses.Text = "Monitor processes while SEB is running";
-            this.toolTip1.SetToolTip(this.checkBoxMonitorProcesses, "SEB monitors which processes/applications are running during an exam. Those which" +
-        " are not permitted are hiddden, those which are prohibited will be closed/killed" +
-        ".");
+            this.toolTip1.SetToolTip(this.checkBoxMonitorProcesses, resources.GetString("checkBoxMonitorProcesses.ToolTip"));
             this.checkBoxMonitorProcesses.UseVisualStyleBackColor = true;
             this.checkBoxMonitorProcesses.CheckedChanged += new System.EventHandler(this.checkBoxMonitorProcesses_CheckedChanged);
             // 

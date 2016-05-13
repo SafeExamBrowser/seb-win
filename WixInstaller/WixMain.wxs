@@ -35,7 +35,6 @@
   <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.2.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="SebInstaller" Level="1">
@@ -77,6 +76,20 @@
     <!-- This is the icon that appears in the Install/Uninstall/Programs and Features list -->
     <Icon Id="InstallerIcon" SourceFile="$(var.SEBInstallIconFile)" />
     <Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
+  
+    <Property Id='PREVIOUSVERSIONSINSTALLED' Secure='yes' />
+    <Upgrade Id='97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB'>  
+      <UpgradeVersion Minimum='2.2.0.0'
+                      Maximum='99.0.0.0'
+                      Property='PREVIOUSVERSIONSINSTALLED'
+                      IncludeMinimum='yes'
+                      IncludeMaximum='no' />
+    </Upgrade>
+    
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before='InstallInitialize' />
+    </InstallExecuteSequence>
+  
   </Product>
 
   <Fragment>
@@ -149,10 +162,10 @@
         <File Source="$(var.MetroFramework.TargetPath)" />
       </Component>
       <Component Id="SEBWindowsServiceContractsDLL" Guid="{89b3249d-6ff3-4e9e-b305-5dc1c5df4b94}">
-        <File Source="$(var.NAudio.TargetPath)" />
+        <File Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
       </Component>
       <Component Id="NAudioDLL" Guid="{97686074-6AD1-4771-9268-E89984D73993}">
-        <File Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
+        <File Source="$(var.NAudio.TargetPath)" />
       </Component>
       <Component Id="Ionic.Zip" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4743}">
         <File Source="$(var.SebWindowsClient.TargetDir)\Ionic.Zip.dll" Name="Ionic.Zip.dll" />

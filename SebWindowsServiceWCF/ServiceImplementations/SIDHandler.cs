@@ -25,7 +25,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
             catch (Exception ex)
             {
                 Logger.Log(ex, String.Format("Unable to get SID for username {0}",username));
-                throw;
+                return "";
             }
         }
     }

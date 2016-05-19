@@ -30,12 +30,12 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                 using (var persistentRegistryFile = new PersistentRegistryFile(username, sid))
                 {
                     Logger.Log("SID: " + sid);
-                    Logger.Log("Username: " + sid);
-                    if (string.IsNullOrWhiteSpace(sid))
+                    Logger.Log("Username: " + username);
+                    if (string.IsNullOrEmpty(sid))
                     {
                         sid = SIDHandler.GetSIDFromUsername(username);
+                        Logger.Log("SID from Username: " + sid);
                     }
-                    Logger.Log("SID2: " + sid);
 
                     foreach (var registryValue in registryValues)
                     {

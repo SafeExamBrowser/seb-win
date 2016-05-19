@@ -153,9 +153,9 @@ namespace SebWindowsClient.UI
 
         private void AutoOpenResource(DictObj resource)
         {
-            if ((bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] && !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
+            if ((bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen])
             {
-                OpenEmbededResource(resource);
+                OpenResource(resource);
             }
         }
 

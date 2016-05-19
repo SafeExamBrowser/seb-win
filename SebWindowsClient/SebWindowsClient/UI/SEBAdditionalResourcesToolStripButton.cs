@@ -161,15 +161,28 @@ namespace SebWindowsClient.UI
 
         protected override void OnClick(EventArgs e)
         {
+            //if (_menu.Items.Count > 0)
+            //{
+            //    _menu.Show(Parent, new Point(Bounds.X, Bounds.Y));
+            //}
+            //else
+            //{
+            //    OpenResource(L0Resource);   
+            //}
+            OpenResource(L0Resource);
+        }
+
+        protected override void OnMouseHover(EventArgs e)
+        {
             if (_menu.Items.Count > 0)
             {
                 _menu.Show(Parent, new Point(Bounds.X, Bounds.Y));
             }
             else
             {
-                OpenResource(L0Resource);   
+                base.OnMouseHover(e);    
             }
-        }
+        } 
        
     }
 

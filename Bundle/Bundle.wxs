@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+  
+  <?define ProductName = "SafeExamBrowser" ?>
+  <?define ProductNameAbbreviation = "SEB" ?>
+  <?define Manufacturer = "ETH Zuerich" ?>
+  <?define BrowserShortcutName = "$(var.ProductName)" ?>
+  <?define LicenseFile = "$(var.SolutionDir)SebWindowsInstallLicence.rtf" ?>
+    
+  <!-- SEB configuration file icon - will be renamed to SEBDocumentIcon.ico -->
+  <?define SEBDocumentIconFile = "$(var.SolutionDir)SEBDocumentIcon.ico" ?>
+  <!-- SEB application icon - Will be renamed to SEBIcon.ico -->
+  <?define SEBIconFile = "$(var.SebWindowsClient.ProjectDir)SEBIcon.ico" ?>
+  <!-- SEB installer icon -->
+  <?define SEBInstallIconFile = "$(var.SEBIconFile)" ?>
+  <!-- SEB installer banner -->
+  <?define SEBInstallBannerFile = "$(var.SebWindowsClient.ProjectDir)Resources/SebGlobalDialogImage.bmp" ?>
+  <!-- SEB installer dialog image -->
+  <?define SEBInstallDialogFile = "$(var.SEBInstallBannerFile)" ?>
+    
+	<Bundle Name="$(var.ProductName)" Version="2.2.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" >
+      <bal:WixStandardBootstrapperApplication
+            LicenseFile="$(var.LicenseFile)"
+            LogoFile="$(var.SEBInstallBannerFile)" LogoSideFile="$(var.SEBInstallBannerFile)"
+            />
+    </BootstrapperApplicationRef>
+
+		<Chain>
+      <PackageGroupRef Id="NetFx45Web"/>
+      <MsiPackage Id="SafeExamBrowser" SourceFile="$(var.WixInstaller.TargetPath)"/>
+		</Chain>
+	</Bundle>
+</Wix>

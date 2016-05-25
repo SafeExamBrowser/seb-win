@@ -240,6 +240,10 @@ var winctrl = (function() {
 		if (!config["proxies"]) {
 			return null;
 		}
+		// system proxy
+		if (config["proxies"]["proxySettingsPolicy"] == 0) {
+			return 5;
+		}
 		// autodetect proxy
 		if (config["proxies"]["AutoDiscoveryEnabled"]) {
 			return 4;

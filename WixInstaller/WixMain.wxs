@@ -143,6 +143,29 @@
           </Extension>
         </ProgId>
         <File Id="SebDocumentIcon" Source="$(var.SEBDocumentIconFile)" Name="SEBDocumentIcon.ico" />
+        
+        <RegistryKey Root="HKCR" Key="seb">
+          <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+          <RegistryValue Type="string" Value="URL:Safe Exam Browser"/>
+          <RegistryKey Key="DefaultIcon">
+            <RegistryValue Type="string" Value="[INSTALL_FOLDER]SafeExamBrowser.exe,6" />
+          </RegistryKey>
+          <RegistryKey Key="shell\open\command">
+            <RegistryValue Type="string" Value="&quot;[INSTALL_FOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
+          </RegistryKey>
+        </RegistryKey>
+          
+        <RegistryKey Root="HKCR" Key="sebs">
+          <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+          <RegistryValue Type="string" Value="URL:Safe Exam Browser Secure"/>
+          <RegistryKey Key="DefaultIcon">
+	          <RegistryValue Type="string" Value="[INSTALL_FOLDER]SafeExamBrowser.exe,6" />
+          </RegistryKey>
+          <RegistryKey Key="shell\open\command">
+	          <RegistryValue Type="string" Value="&quot;[INSTALL_FOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
+          </RegistryKey>
+        </RegistryKey>
+				 
       </Component>
       <?ifdef InstallConfigTool ?>
       <Component Id="SebConfigComponent" Guid="{CB8E7910-9172-4605-9104-B5FE12D7CCE4}">

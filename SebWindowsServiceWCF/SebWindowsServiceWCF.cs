@@ -24,14 +24,10 @@ namespace SebWindowsServiceWCF
                 try
                 {
                     host = new ServiceHost(
-                    typeof(RegistryService),
-                    new Uri[]
-                    {
-                        new Uri("net.pipe://localhost")
-                    });
+                    typeof(RegistryService));
                     host.AddServiceEndpoint(typeof(IRegistryServiceContract),
-                        new NetNamedPipeBinding(),
-                        "SebWindowsService");
+                        new NetNamedPipeBinding(NetNamedPipeSecurityMode.Transport),
+                        "net.pipe://localhost/SebWindowsServiceWCF/service");
                 }
                 catch (Exception ex)
                 {

@@ -31,7 +31,7 @@ namespace SebWindowsClient.ServiceUtils
                     new ChannelFactory<IRegistryServiceContract>(
                         new NetNamedPipeBinding(NetNamedPipeSecurityMode.Transport),
                         new EndpointAddress(
-                            "net.pipe://localhost/SebWindowsService"));
+                            "net.pipe://localhost/SebWindowsServiceWCF/service"));
 
                 _sebWindowsServicePipeProxy = pipeFactory.CreateChannel();
                 

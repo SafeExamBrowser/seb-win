@@ -1554,7 +1554,7 @@ namespace SebWindowsClient
                 PlaceFormOnDesktop(false, true);
             }
 
-            // Check if VM and SEB Windows Service available and required
+            // Check if VM and SEB Windows Service are available and forbidden/required
             try
             {
                 SebWindowsClientMain.CheckIfInsideVirtualMachine();
@@ -1587,13 +1587,13 @@ namespace SebWindowsClient
                 //Disable windows update service (with SEBWindowsServiceWCF)
                 try
                 {
-                    Logger.AddInformation("disabling windows update");
+                    Logger.AddInformation("Disabling Windows update");
                     if (SebWindowsServiceHandler.IsServiceAvailable && !SebWindowsServiceHandler.DisableWindowsUpdate())
-                        Logger.AddWarning("Unable to disable windows upate service", this, null);
+                        Logger.AddWarning("Unable to disable Windows update service", this, null);
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to disable windows update service", this, ex);
+                    Logger.AddError("Unable to disable Windows update service", this, ex);
                 }
 
                 try
@@ -1713,7 +1713,7 @@ namespace SebWindowsClient
                     }
                     catch (Exception ex)
                     {
-                        Logger.AddError("Unable to Shutdown Process",null, ex);
+                        Logger.AddError("Unable to shutdown process",null, ex);
                     }
                     
                 }
@@ -1747,9 +1747,9 @@ namespace SebWindowsClient
                     {
                         try
                         {
-                            Logger.AddInformation("Attempting to start explorer shell");
+                            Logger.AddInformation("Attempting to start Explorer Shell");
                             SEBProcessHandler.StartExplorerShell();
-                            Logger.AddInformation("Successfully started explorer shell");
+                            Logger.AddInformation("Successfully started Explorer Shell");
                         }
                         catch (Exception ex)
                         {

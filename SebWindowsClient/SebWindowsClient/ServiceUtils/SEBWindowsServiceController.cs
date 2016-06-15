@@ -98,7 +98,7 @@ namespace SebWindowsClient.ServiceUtils
         }
 
         /// <summary>
-        /// Calls the windows service to set the registry values to the insideSeb Settings
+        /// Calls the windows service to set registry values to the insideSeb settings
         /// Throws Exception
         /// </summary>
         /// <returns>succeded or not</returns>
@@ -128,7 +128,7 @@ namespace SebWindowsClient.ServiceUtils
         }
 
         /// <summary>
-        /// Resets the registry values to what it was before
+        /// Resets registry values to the values before SEB was running
         /// Throws Exception
         /// </summary>
         /// <returns>succeded or not</returns>

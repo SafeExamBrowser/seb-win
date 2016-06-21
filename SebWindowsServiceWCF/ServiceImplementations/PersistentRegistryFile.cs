@@ -62,7 +62,12 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
             if (File.Exists(_filePath))
             {
+                Logger.Log("Loading persistent registry file");
                 Load();
+            }
+            else
+            {
+                Logger.Log("Persistent registry file doesn't exist at path "+_filePath);
             }
         }
 

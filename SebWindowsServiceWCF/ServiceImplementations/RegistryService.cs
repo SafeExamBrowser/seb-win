@@ -59,7 +59,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
                         //If the registry value could not have been set correctly or something went wrong with the persistent registry file
                         //don't interrupt the whole process but set the return value to false to indicate a possible error
-                        //but never change a registry key without successfully write the persistent registry file
+                        //but never change a registry key without successfully writing the persistent registry file
                         try
                         {
                             //If there is nothing to change, then do not change anything
@@ -77,7 +77,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                             Logger.Log(String.Format("Set Registry Key {0} to {1}", registryValue.Key, registryValue.Value));
                             if (!object.Equals(regEntry.DataValue,registryValue.Value))
                             {
-                                Logger.Log(String.Format("Registry Key {0} could not have been set to {1}",
+                                Logger.Log(String.Format("Registry Key {0} could not been set to {1}",
                                     registryValue.Key, registryValue.Value));
                             }
                         }

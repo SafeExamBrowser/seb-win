@@ -37,6 +37,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
@@ -335,7 +336,8 @@ namespace SebWindowsClient
         /// ----------------------------------------------------------------------------------------
         private bool StartXulRunner(string userDefinedArguments)
         {
-            //xulRunnerExitEventHandled = false;
+            deleteXulRunnerProfileOnNewVersionOfSEB();
+
             string xulRunnerPath = "";
             string desktopName = "";
             if (userDefinedArguments == null) userDefinedArguments="";
@@ -391,6 +393,32 @@ namespace SebWindowsClient
                 Logger.AddError("An error occurred starting XULRunner, path: "+xulRunnerPath+" desktop name: "+desktopName+" ", this, ex, ex.Message);
                 return false;
             }
+        }
+
+        private void deleteXulRunnerProfileOnNewVersionOfSEB()
+        {
+            var xulRunnerProfileFolder = string.Format(@"{0}\Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
+            var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + @"\SEBVersion";
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            if (File.Exists(versionFile) && File.ReadAllText(versionFile) == version)
+            {
+                return;
+            }
+
+            Directory.Delete(xulRunnerProfileFolder, true);
+
+            if (!Directory.Exists(xulRunnerProfileFolder))
+            {
+                Directory.CreateDirectory(xulRunnerProfileFolder);
+            }
+
+            File.WriteAllText(versionFile, version);
+        }
+
+        private void deleteXulRunnerProfileFolder()
+        {
+            
         }
 
         /// ----------------------------------------------------------------------------------------

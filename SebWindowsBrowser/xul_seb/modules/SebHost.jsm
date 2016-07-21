@@ -64,8 +64,8 @@ this.SebHost = {
 	
 	messageServer : false,
 	os : "",
-	ars : {},
 	msgHandler : {},
+	sendHandler : {},
 
 	init : function(obj) {
 		base = this;
@@ -79,41 +79,16 @@ this.SebHost = {
 			"RestartExam" : base.handleRestartExam,
 			"Close" : base.handleClose,
 			"KeyboardShown" : base.handleKeyboardShown,
-			"Shutdown" : base.handleShutdown
+			"Shutdown" : base.handleShutdown,
+			"SebFileTransfer" : base.handleSebFileTransfer,
+			"Reconfigure" : base.handleReconfigure,
+			"ClearSession" : base.handleClearSession
 		};
-		base.initAdditionalResources();
+		base.sendHandler = {
+			"SebFile" : base.sendSebFile,
+			"ReconfigureAborted" : base.sendReconfigureAborted
+		};
 		sl.out("SebHost initialized: " + seb);
-	},
-	
-	initAdditionalResources : function (obj) {
-		//var ar = {};
-		if (obj === undefined) { // initial load
-			obj = su.getConfig("additionalResources","object",null);
-			if (obj !== undefined && obj !== null) {
-				base.initAdditionalResources(obj);
-				return;
-			}
-			
-		}
-		else { // object param
-			for (var i=0;i<obj.length;i++) { // ars array
-				var ar = obj[i];
-				var data = {};
-				var sub = null;
-				for (var key in ar) { // plain object structure without hierarchy
-					if (key !== "additionalResources") {
-						data[key] = ar[key];
-					}
-					else {
-						
-						if (ar[key] !== undefined && ar[key] !== null) {
-							base.initAdditionalResources(ar[key]);
-						}
-					}
-				}
-				base.ars[data["identifier"]] = data;
-			}
-		}
 	},
 	
 	messageSocketListener : function (e) {
@@ -123,6 +98,7 @@ this.SebHost = {
 		
 		try {
 			messageSocket = new WebSocket(socket);
+			messageSocket.binaryType = "blob";
 			sl.debug("messageSocket: " + typeof messageSocket)
 		}
 		catch (e) {
@@ -149,6 +125,7 @@ this.SebHost = {
 		
 		messageSocket.onmessage = function(evt) { 
 			// ToDo: message handling !!
+			sl.debug("socket message type: " + evt.type);
 			if (/^SEB\./.test(evt.data)) { // old string messages
 				switch (evt.data) {
 					case "SEB.close" :
@@ -193,19 +170,24 @@ this.SebHost = {
 					if (typeof msgObj === "object") {
 						//sl.debug(msgObj);
 						try {
-							//sl.debug(JSON.stringify(msgObj)); 
-							base.msgHandler[msgObj["Handler"]].call(base,msgObj["Opts"]);
+							//sl.debug(JSON.stringify(msgObj));
+							if (typeof base.msgHandler[msgObj["Handler"]] == "function") {
+								base.msgHandler[msgObj["Handler"]].call(base,msgObj["Opts"]);
+							}
+							else {
+								sl.debug("not handled msg: " + msgObj["Handler"]);
+							}
 						}
 						catch(e) {
 							sl.err(e);
 						}
 					}
 					else {
-						sl.debug("1 messageSocket: not handled msg: " + evt.data); 
+						sl.debug("messageSocket(1): not handled msg: " + evt.data); 
 					}
 				}
 				catch(e) {
-					sl.debug("2 messageSocket: not handled msg: " + evt.data); 
+					sl.debug("messageSocket(2): not handled msg: " + evt.data); 
 				}
 			}
 		};
@@ -245,11 +227,11 @@ this.SebHost = {
 	handleArs : function(opts) {
 		try {
 			var url = "";
-			if (base.ars[opts.id].url) {
-				url = base.ars[opts.id].url;
+			if (seb.ars[opts.id].url) {
+				url = seb.ars[opts.id].url;
 			}
 			else {
-				url = "file://" + opts.path + base.ars[opts.id].resourceDataFilename.replace("\\\\","/");
+				url = "file://" + opts.path + seb.ars[opts.id].resourceDataFilename.replace("\\\\","/");
 			}
 			if (url != "") {
 				sl.debug("try to open additional resource: " + url);
@@ -304,6 +286,31 @@ this.SebHost = {
 		base.shutdown();
 	},
 	
+	handleSebFileTransfer : function (opts) {
+		sl.debug("handleSebFileTransfer handled: " + opts);
+		sb.dialogHandler("SebFile transfer succeeded. Waiting for decrypted seb config...");
+	},
+	
+	handleReconfigure : function (opts) {
+		sl.debug("handleReconfigure handled");
+		seb.reconfigure(opts.configBase64.trim());
+	},
+	
+	handleClearSession : function (opts) {
+		sl.debug("handleClearSession handled");
+		sb.clearSession();
+	},
+	
+	sendSebFile : function (base64) {
+		let msg = {Handler:"SebFile",Opts:{"fileBase64":base64}};
+		base.sendMessage(JSON.stringify(msg));
+	},
+	
+	sendReconfigureAborted : function () {
+		let msg = {Handler:"ReconfigureAborted",Opts:{}};
+		base.sendMessage(JSON.stringify(msg));
+	},
+	
 	quitFromHost : function () {
 		seb.hostForceQuit = true;
 		seb.quitIgnoreWarning = true;
@@ -328,7 +335,8 @@ this.SebHost = {
 			// called process terminates.
 			// Second and third params are used to pass command-line arguments
 			// to the process.
-			var args = ["/sbin/halt"];
+			// var args = ["/sbin/halt"];
+			var args = ["/sbin/poweroff"];
 			process.run(false, args, args.length);
 		}
 		catch(e) {

@@ -33,10 +33,12 @@
 this.EXPORTED_SYMBOLS = ["SebBrowser"];
 
 /* Modules */
-const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ prompt, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services;
+const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu, Constructor: CC } = Components,
+	{ prompt, scriptloader, obs } = Cu.import("resource://gre/modules/Services.jsm").Services;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
+Cu.import("resource://gre/modules/NetUtil.jsm");
+Cu.import("resource://gre/modules/FileUtils.jsm");
+Cu.importGlobalProperties(['Blob']);
 /* Services */
 let	wpl = Ci.nsIWebProgressListener,
 	wnav = Ci.nsIWebNavigation,
@@ -57,6 +59,9 @@ XPCOMUtils.defineLazyModuleGetter(this,"sc","resource://modules/SebScreenshot.js
 
 /* ModuleGlobals */
 let 	base = null,
+	authMgr = null,
+	cookieMgr = null,
+	historySrv = null,
 	seb = null,
 	certdb = null,
 	certdb2 = null,
@@ -82,6 +87,8 @@ let 	base = null,
 		flash : new RegExp(/^application\/x-shockwave-flash/),
 		pdf : new RegExp(/^application\/(x-)?pdf/)
 	},
+	sebReg = new RegExp(/.*?\.seb/i),
+	httpReg = new RegExp(/^http\:/i),
 	windowTitleSuffix = "";
 	
 const	nsIX509CertDB = Ci.nsIX509CertDB,
@@ -123,51 +130,79 @@ nsBrowserStatusHandler.prototype = {
 
 this.SebBrowser = {
 	//lastDocumentUrl : null,
+	dialogHandler : null,
+	linkURLS : {},
+	quitURLRefererFilter : "",
 	init : function(obj) {
 		base = this;
 		seb = obj;
 		certdb = Cc[nsX509CertDB].getService(nsIX509CertDB);
 		//base.disableBuiltInCerts();
+		authMgr = Cc["@mozilla.org/network/http-auth-manager;1"].getService(Ci.nsIHttpAuthManager); // clearAll
+		cookieMgr = Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager); // removeAll
+		historySrv = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsIBrowserHistory); // removeAllPages
+		
 		sl.out("SebBrowser initialized: " + seb);
 	},
 	
 	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
 		//sl.err(aRequest.name);
+		if (aRequest instanceof Ci.nsIHttpChannel) {
+			aRequest.QueryInterface(Ci.nsIHttpChannel);
+		}
 		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
 			this.isStarted = true;
 			this.win = sw.getChromeWin(aWebProgress.DOMWindow);
 			this.baseurl = btoa(aRequest.name);
-			
-			//this.win = sw.lastWin;
-			
-			/*
-			if (this.win !== sw.getChromeWin(aWebProgress.DOMWindow)) {
-				sl.debug("strange: this.win != sw.getChromeWin(aWebProgress.DOMWindow");
-			}
-			*/
-			 
 			sl.debug("DOCUMENT REQUEST START: " + aRequest.name + " status: " + aStatus);
 			sl.debug("baseurl: " + this.baseurl);
-			//this.win.document.getElementsByTagName("window")[0].setAttribute("baseurl",baseurl);
+			
 			base.startLoading(this.win);
 			if (seb.quitURL === aRequest.name) {
+				if (base.quitURLRefererFilter != "") {
+					let filter = base.quitURLRefererFilter;
+					let referer = this.win.content.document.location.href;
+					if (referer.indexOf(filter) < 0) {
+						sl.debug("quitURL \"" + seb.quitURL + "\" is only allowed if string in referrer: \"" + filter + "\"");
+						aRequest.cancel(aStatus);
+						base.stopLoading(this.win);
+						return;
+					}
+				}
 				aRequest.cancel(aStatus);
-				base.stopLoading();
+				base.stopLoading(this.win);
 				var tmpQuit = seb.allowQuit; // store default shutdownEnabled
 				var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
 				seb.allowQuit = true; // set to true
 				seb.quitIgnorePassword = true;
-				seb.quit();									
+				seb.quit();				
 				seb.allowQuit = tmpQuit; // set default shutdownEnabled
 				seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
 				return;
 			}
+			
+			if (base.linkURLS[aRequest.name] || base.linkURLS[aRequest.name.replace(/\/$/),""]) {
+				aRequest.cancel(aStatus);
+				base.stopLoading(this.win);
+				seb.loadAR(this.win, base.linkURLS[aRequest.name]);
+				return;
+			}
+			
 			if (!sn.isValidUrl(aRequest.name)) {
 				aRequest.cancel(aStatus);
-				base.stopLoading();
+				base.stopLoading(this.win);
 				prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 				return 1; // 0?
 			}
+			if (httpReg.test(aRequest.name)) {
+				if (sn.blockHTTP) {
+					sl.debug("block http request");
+					aRequest.cancel( Cr.NS_BINDING_ABORTED );
+					base.stopLoading(this.win);
+					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
+				}
+			}
+			
 			// PDF Handling
 			// don't trigger if pdf is part of the query string: infinite loop
 			// don't trigger from pdfViewer itself: infinite loop
@@ -175,19 +210,19 @@ this.SebBrowser = {
 				sl.debug("pdf start request");
 				aRequest.cancel(aStatus);
 				sw.openPdfViewer(aRequest.name);
-				base.stopLoading();
+				base.stopLoading(this.win);
 				return;
-			} 
+			}
 		}
 		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
-			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus); 
+			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus);
+			//this.win = sw.getChromeWin(aWebProgress.DOMWindow);
 			if (!Components.isSuccessCode(aStatus) && aStatus != 2152398850) { // heise.de with all that advertising will not load without that skipped 2152398850 status
 			//if (aStatus > 0 && aStatus != 2152398850) { // error: experimental!!! ToDo: look at status codes!!
 				sl.debug("Error document loading: " + aStatus);
-				base.stopLoading();
+				base.stopLoading(this.win);
 				try {
 					try {
-						aRequest.QueryInterface(Ci.nsIHttpChannel); // no pdf mimetype handling
 						let mimeType = aRequest.getResponseHeader("Content-Type");
 						if (mimeTypesRegs.pdf.test(mimeType) && !/\.pdf$/i.test(aRequest.name) && su.getConfig("sebPdfJsEnabled","boolean", true)) { // pdf file requests should already catched by SebBrowser
 							sl.debug("request already aborted by httpResponseObserver, no error page!");
@@ -226,7 +261,7 @@ this.SebBrowser = {
 				}
 			}
 			
-			base.stopLoading();
+			base.stopLoading(this.win);
 			this.isStarted = false;
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
 			try {
@@ -279,6 +314,7 @@ this.SebBrowser = {
 	},
 	
 	initBrowser : function (win) {
+		
 		if (!win) {
 			sl.err("wrong arguments for initBrowser(win)");
 			return false;
@@ -295,12 +331,12 @@ this.SebBrowser = {
 		var interfaceRequestor = win.XulLibBrowser.docShell.QueryInterface(Ci.nsIInterfaceRequestor);
 		var webProgress = interfaceRequestor.getInterface(Ci.nsIWebProgress);
 		webProgress.addProgressListener(win.XULBrowserWindow, Ci.nsIWebProgress.NOTIFY_ALL);
-		//nav = win.XulLibBrowser.webNavigation;
 		sl.debug("initBrowser");
 	},
 	
 	initSecurity : function () {
 		windowTitleSuffix = su.getConfig("browserWindowTitleSuffix","string","");
+		base.quitURLRefererFilter = su.getConfig("quitURLRefererFilter","string","");
 		if (su.getConfig("sebDisableOCSP","boolean",true)) {
 			sg.setPref("security.OCSP.enabled",0);
 		}
@@ -324,6 +360,118 @@ this.SebBrowser = {
 		if (su.getConfig("pinEmbeddedCertificates","boolean",false)) {
 			base.disableBuiltInCerts();
 		}
+		// set proxy auth
+		if (seb.config.proxies && seb.config.proxies.Auth) {
+			let authType = seb.config.proxies.AuthType;
+			let realm = seb.config.proxies.Realm;
+			let host = seb.config.proxies.HTTPProxy;
+			let port = seb.config.proxies.HTTPPort;
+			let usr = seb.config.proxies.User;
+			let pwd = seb.config.proxies.Password;
+			sl.debug("set proxies auth: " + host + "://" + usr + ":" + pwd + "@" + host + ":" + port);
+			if (!seb.config.proxies.User || !seb.config.proxies.Password) {
+				sl.debug("No proxy user or password defined");
+				return;
+			}
+			if (!seb.config.proxies.HTTPEnable || !seb.config.proxies.HTTPSEnable) {
+				sl.debug("No http proxy enabled");
+				return;
+			}
+			if (!seb.config.proxies.HTTPProxy || !seb.config.proxies.HTTPPort) {
+				sl.debug("No http proxy or port defined");
+				return;
+			}
+			try {
+				authMgr.setAuthIdentity("http",host,port,authType,realm,null,null,usr,pwd);
+			}
+			catch(e) {
+				sl.err(e);
+			}
+		}	
+	},
+	
+	initSpellChecker : function() {
+		
+		var spellclass = "@mozilla.org/spellchecker/myspell;1";
+		if ("@mozilla.org/spellchecker/hunspell;1" in Cc) {
+			spellclass = "@mozilla.org/spellchecker/hunspell;1";
+		}
+		if ("@mozilla.org/spellchecker/engine;1" in Cc) {
+			spellclass = "@mozilla.org/spellchecker/engine;1";
+		}
+
+		spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
+		let dicsDir = FileUtils.getDir("ProfD", ["dictionaries"],false,false); // should only be one dic inside
+		sl.debug("dictionaries directory exists: " + dicsDir.exists());
+		if (dicsDir.exists()) {
+			spe.addDirectory(dicsDir);
+		}
+		
+		let dics = [];
+		spe.getDictionaryList(dics,{});
+		sl.debug("available dictionaries: " + dics.value);
+		
+		/*
+		let dic = su.getConfig("allowSpellCheckDictionary","string","");
+		if (dic == "") {
+			sl.debug("no dictionary defined");
+			return;
+		}
+		if (dics.value.indexOf(dic) < 0) {
+			sl.debug("dictionary " + dic + " not available");
+			return;
+		}
+		sl.debug("using dictionary " + dic);
+		spe.dictionary = dic;
+		*/
+		/*
+		gSpellCheckEngine.dictionary = 'en-US';
+
+		if (gSpellCheckEngine.check("kat")) {
+			sl.debug("X");
+			// It's spelled correctly
+		}
+		else {
+			// It's spelled incorrectly but check if the user has added "kat" as a correct word..
+			var mPersonalDictionary = Cc["@mozilla.org/spellchecker/personaldictionary;1"].getService(Ci.mozIPersonalDictionary);
+			if (mPersonalDictionary.check("kat", gSpellCheckEngine.dictionary)) {
+				sl.debug("XX");
+				// It's spelled correctly accourdly to user personal dictionary
+			}
+			else {
+				sl.debug("XXX");
+				// It's spelled incorrectly
+			}
+		}
+		*/ 
+	},
+	
+	initReconf : function(win,url,handler) {
+		sl.debug("reconfigure started");
+		base.initBrowser(win);
+		seb.reconfState = RECONF_START;
+		base.dialogHandler = handler;
+		base.setBrowserHandler(win);
+		base.loadPage(win,url);
+	},
+	
+	abortReconf : function(win) {
+		sl.debug("reconfigure aborted");
+		seb.reconfState = RECONF_ABORTED;
+		sh.sendReconfigureAborted();
+		win.close();
+	},
+	
+	resetReconf : function() {
+		//base.dialogHandler("reconfigure succeeded");
+		base.dialogHandler("closeDialog");
+		seb.reconfState = RECONF_SUCCESS;
+	},
+	
+	openSebFileDialog : function(url) { // original request is canceled by SebNet.jsm requestObserver
+		sl.debug("openSebFileDialog");
+		seb.reconfState = RECONF_START;
+		seb.mainWin.openDialog(RECONFIG_URL,"",RECONFIG_FEATURES,url,base.initReconf,base.abortReconf).focus();
 	},
 	
 	addSSLCert : function(cert,debug) {
@@ -352,7 +500,7 @@ this.SebBrowser = {
 			let trustargs = "";
 			let certData = (cert.certificateDataBase64 != "") ? cert.certificateDataBase64 : cert.certificateDataWin;
 			let x509 = certdb.constructX509FromBase64(certData);
-			if (su.getConfig("allCARootTrust", "boolean", false)) {
+			if (su.getConfig("sebAllCARootTrust", "boolean", false)) {
 				sl.debug("treat all CA certs as root");
 				t = "CA";
 				trustargs = "C,C,C";
@@ -460,34 +608,18 @@ this.SebBrowser = {
 		base.loadPage(seb.mainWin,url);
 	},
 	
-	load : function() {
-		//mainBrowserLoad
-		//mainBrowserLoadReferrer
-		sl.debug("try to load from command...");
-		let loadUrl = su.getConfig("mainBrowserLoad","string","");
-		let loadReferrerInString = su.getConfig("mainBrowserLoadReferrerInString","string","");
-		if (loadUrl == "") {
-			sl.debug("no mainBrowserLoad defined.");
-			return;
+	clearSession : function() { // what about localStorage?
+		sl.debug("clearSession");
+		authMgr.clearAll();
+		cookieMgr.removeAll();
+		try {
+			historySrv.removeAllPages(); // does not work...we should start firefox in private modus
 		}
-		let doc = seb.mainWin.content.document;
-		let loadReferrer = doc.location.href;
-		if (loadReferrerInString != "") {
-			if (loadReferrer.indexOf(loadReferrerInString) > -1) {
-				base.loadPage(seb.mainWin,loadUrl);
-			}
-			else {
-					
-				sl.debug("loading \"" + loadUrl + "\" is only allowed if string in referrer: \"" + loadReferrerInString + "\"");
-				return false;
-			}
-		}
-		else {
-			sl.debug("load from command " + loadUrl);
-			base.loadPage(seb.mainWin,loadUrl);
+		catch(e) {
+			//sl.err("error remove history pages: " + e + "\n typeof removeAllPages " + typeof(historySrv.removeAllPages));
 		}
 	},
-	
+		
 	startLoading : function(win) {
 		try {
 			win = (win) ? win : seb.mainWin;
@@ -498,8 +630,11 @@ this.SebBrowser = {
 		}
 	},
 	
-	stopLoading : function() { // stop loading on all windows 
+	stopLoading : function(win) { // stop loading on all windows 
 		try {
+			if (win) {
+				win.document.getElementById('loadingBox').className = "hidden";
+			}
 			for (var i=0;i<sw.wins.length;i++) {
 				sw.wins[i].document.getElementById('loadingBox').className = "hidden";
 			}	
@@ -536,7 +671,8 @@ this.SebBrowser = {
 	refreshNavigation : function(win) {
 		sl.debug("refreshNavigation");
 		var nav = win.XulLibBrowser.webNavigation;
-		if (su.getConfig("allowBrowsingBackForward","boolean",false)) { // should be visible
+		var visible = (win === seb.mainWin) ? su.getConfig("allowBrowsingBackForward","boolean",false) : su.getConfig("newBrowserWindowByLinkNavigation","boolean",false);		
+		if (visible) { // if not visible do nothing 
 			var back = win.document.getElementById("btnBack");
 			var forward = win.document.getElementById("btnForward");
 			if (nav.canGoBack) {

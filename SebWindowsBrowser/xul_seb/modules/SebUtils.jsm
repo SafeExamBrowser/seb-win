@@ -47,6 +47,7 @@ XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","Seb
 
 /* SebGlobals */
 scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* ModuleGlobals */
 let	base = null,
@@ -88,6 +89,13 @@ this.SebUtils =  {
 		else {
 			return t;
 		}		
+	},
+	
+	isBase64 : function (str) {
+		if (!str) {
+			return false;
+		} 
+		return base.checkBase64.test(str);
 	},
 	
 	getJSON : function (data,callback) {	
@@ -165,6 +173,25 @@ this.SebUtils =  {
 			}
 		}, null);
 	},
+	
+	mergeJSON : function (source1,source2) {
+		var mergedJSON = Object.create(source2);// Copying Source2 to a new Object
+
+		for (var attrname in source1) {
+			if(mergedJSON.hasOwnProperty(attrname)) {
+				if ( source1[attrname]!=null && source1[attrname].constructor==Object ) {
+					mergedJSON[attrname] = base.mergeJSON(source1[attrname], mergedJSON[attrname]);
+				} 
+
+			} 
+			else {
+				//else copy the property from source1
+				mergedJSON[attrname] = source1[attrname];
+
+			}
+		}
+		return mergedJSON;
+	},
 		
 	getUrl : function () {
 		let url = base.getCmd("url");
@@ -203,17 +230,30 @@ this.SebUtils =  {
 	
 	getBool : function (b) {
 		var ret;
-		switch (b) {
-			case "1":
-			case 1:
-			case "true":
-			case true :
-				ret = true;
-			break;
-			default: 
+		switch (typeof(b)) {
+			case "string" :
+				ret = (b == "false" || b == "undefined") ? false : true;
+				break;
+			case "number" :
+				ret = (b > 0) ? true : false;
+				break;
+			case "boolean" :
+				ret = b;
+				break;
+			case "object" :
+				ret = (b === null) ? false : true;
+				break;
+			case "undefined" :
 				ret = false;
+				break;
+			default :
+				ret = true;
 		}
 		return ret;
+	},
+	
+	getNumber : function (x) {
+		return parseInt(x,10);
 	},
 	
 	getLocStr : function (k) {
@@ -237,14 +277,14 @@ this.SebUtils =  {
 	
 	decodeBase64 : function (data,charset) {
 		if (base.isUTF8(charset)) {
-			return decodeURIComponent(escape(atob(data)))
+			return decodeURIComponent(escape(atob(data)));
 		}
 		return atob(data);
 	},
 	
 	encodeBase64 : function (data,charset) {
 		if (base.isUTF8(charset)) {
-			return btoa(unescape(encodeURIComponent(data)))
+			return btoa(unescape(encodeURIComponent(data)));
 		}
 		return btoa(data);
 	},
@@ -256,17 +296,106 @@ this.SebUtils =  {
 		var cv = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
 		var ch = Cc["@mozilla.org/security/hash;1"].createInstance(Ci.nsICryptoHash);
 		cv.charset = "UTF-8";
+		
 		//var arrUrl = {};
 		var strKey = str;
 		var arrKey = {};
 		//var urlData = cv.convertToByteArray(url, arrUrl);
 		var keyData = cv.convertToByteArray(strKey, arrKey);
 		ch.init(ch.SHA256);
+		
 		//ch.update(urlData, urlData.length);
 		ch.update(keyData, keyData.length);
 		var hash = ch.finish(false);
-		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+		var s = "";
+		for (var i=0; i<hash.length; i++) {
+			s += toHexString(hash.charCodeAt(i));
+		};
 		return s;
+		/*
+		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join(""); does not work anymore??
+		return s;
+		*/ 
+	},
+	
+	UintToString : function(array) {
+		var out, i, len, c;
+		var char2, char3;
+
+		out = "";
+		len = array.length;
+		i = 0;
+		while(i < len) {
+			c = array[i++];
+			switch(c >> 4) { 
+				case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+					// 0xxxxxxx
+					out += String.fromCharCode(c);
+					break;
+				case 12: case 13:
+					// 110x xxxx   10xx xxxx
+					char2 = array[i++];
+					out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+					break;
+				case 14:
+					// 1110 xxxx  10xx xxxx  10xx xxxx
+					char2 = array[i++];
+					char3 = array[i++];
+					out += String.fromCharCode(((c & 0x0F) << 12) |
+					       ((char2 & 0x3F) << 6) |
+					       ((char3 & 0x3F) << 0));
+				break;
+			}
+		}
+
+		return out;
+	},
+	
+	getEndianness : function () {
+		var a = new ArrayBuffer(4);
+		var b = new Uint8Array(a);
+		var c = new Uint32Array(a);
+		b[0] = 0xa1;
+		b[1] = 0xb2;
+		b[2] = 0xc3;
+		b[3] = 0xd4;
+		if (c[0] === 0xd4c3b2a1) {
+			return LITTLE_ENDIAN;
+		}
+		if (c[0] === 0xa1b2c3d4) {
+			return BIG_ENDIAN;
+		} 
+		else {
+			throw new Error('Unrecognized endianness');
+		}
+	},
+	
+	swapBytes : function (buf, size) {
+		var bytes = Uint8Array(buf);
+		var len = bytes.length;
+		if(size == 'WORD') {
+			var holder;
+			for(var i =0; i<len; i+=2) {
+				holder = bytes[i];
+				bytes[i] = bytes[i+1];
+				bytes[i+1] = holder;
+			}
+		}
+		else if(size == 'DWORD') {
+			var holder;
+			for(var i =0; i<len; i+=4) {
+				holder = bytes[i];
+				bytes[i] = bytes[i+3];
+				bytes[i+3] = holder;
+				holder = bytes[i+1];
+				bytes[i+1] = bytes[i+2];
+				bytes[i+2] = holder;
+			}
+		}
+	},
+	
+	escapeRegExp : function (str) {
+		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 	},
 	
 	isEmpty : function (obj) {
@@ -287,5 +416,4 @@ this.SebUtils =  {
 	isObject : function(obj) {
 		return obj === Object(obj);
 	}
-	
 }

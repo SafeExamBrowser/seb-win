@@ -87,7 +87,7 @@ namespace SebWindowsClient.ConfigurationUtils
             // Reset SEB, close third party applications
             SEBClientInfo.SebWindowsClientForm.closeSebClient = false;
             Logger.AddInformation("Attempting to CloseSEBForm for reconfiguration");
-            SEBClientInfo.SebWindowsClientForm.CloseSEBForm();
+            SEBClientInfo.SebWindowsClientForm.CloseSEBForm(true);
             Logger.AddInformation("Succesfully CloseSEBForm for reconfiguration");
             SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
             //SEBClientInfo.SebWindowsClientForm.Close();

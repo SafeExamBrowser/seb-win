@@ -5,7 +5,6 @@ using System.Drawing.IconLib;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Automation.Peers;
 using System.Windows.Forms;
 
 namespace SebWindowsClient.UI

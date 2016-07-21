@@ -34,8 +34,9 @@ this.EXPORTED_SYMBOLS = ["SebNet"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ appinfo, prefs, scriptloader, io } = Cu.import("resource://gre/modules/Services.jsm").Services;
+	{ appinfo, prefs, scriptloader, io, obs, prompt } = Cu.import("resource://gre/modules/Services.jsm").Services;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import("resource://gre/modules/NetUtil.jsm");
 	
 /* Services */
 
@@ -48,6 +49,7 @@ XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","Seb
 XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","SebUtils");
 XPCOMUtils.defineLazyModuleGetter(this,"sw","resource://modules/SebWin.jsm","SebWin");
 XPCOMUtils.defineLazyModuleGetter(this,"sb","resource://modules/SebBrowser.jsm","SebBrowser");
+XPCOMUtils.defineLazyModuleGetter(this,"sh","resource://modules/SebHost.jsm","SebHost");
 
 /* ModuleGlobals */
 let 	seb = null,
@@ -60,120 +62,232 @@ let 	seb = null,
 	},
 	convertReg = /[-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g,
 	wildcardReg = /\*/g,
-	httpReg = new RegExp(/^http\:/i);
+	httpReg = new RegExp(/^http\:/i),
+	sebFileReg = new RegExp(/.*?\.seb$/i),
+	sebFileAttachmentReg = new RegExp(/.*?filename\=.*?\.seb/i),
+	pdfFileAttachmentReg = new RegExp(/.*?filename\=.*?\.pdf/i),
+	contentTypeReg = new RegExp(/content\-type/i),
+	contentDispositionReg = new RegExp(/content\-disposition/i),
+	sebMimetypeReg = new RegExp(SEB_MIME_TYPE,"i"),
+	sendBrowserExamKey = null,
 	reqHeader = "",
 	reqKey = null,
 	reqSalt = null,
-	sendBrowserExamKey = null,
-	forceHTTPS = false,
-	blockHTTP = false;
+	urlTrusted = true,
+	pdfJsEnabled = false,
+	blockObs = false;
 
-this.SebNet = {
+/* request Observer */
+
+requestHeaderVisitor = function () {
+        this._isSebRequest = false;
+};
+
+requestHeaderVisitor.prototype.visitHeader = function ( h, v ) {
+	sl.info(h+" : "+v);
+	if (contentTypeReg.test(h)) {
+		if (sebMimetypeReg.test(v)) {
+			this._isSebRequest = true;
+		}
+	}
+};
+
+requestHeaderVisitor.prototype.isSebRequest = function () {
+	return this._isSebRequest;
+};
+
+
+requestObserver = function () {
+        this.register();
+        this.aborted = Cr.NS_BINDING_ABORTED;
+        this.nsIHttpChannel = Ci.nsIHttpChannel;
+        this.nsIChannel = Ci.nsIChannel;
+        this.nsIRequest = Ci.nsIRequest;
+};
+
+requestObserver.prototype.observe = function ( subject, topic, data ) {
+	if (blockObs) {
+		return;
+	}			
+	var url, origUrl, aVisitor;
+	if ( subject instanceof this.nsIHttpChannel ) {
+		sl.info("");
+		sl.info("-> http request modify: " + subject.name);
+		origUrl = subject.URI.spec;
+		url = origUrl.split("#"); // url fragment is not transmitted to the server!
+		url = url[0];
 		
-	httpRequestObserver : {
-		observe	: function(subject, topic, data) {
-			if (topic == "http-on-modify-request" && subject instanceof Ci.nsIHttpChannel) {
-				//sl.debug("http request: "+ subject.URI.spec);
-				//sl.debug(data);
-				//subject.QueryInterface(Ci.nsIHttpChannel);
-				//sl.debug(subject.getRequestHeader('Accept'));
-				//sl.debug(subject.referrer);
-				let origUrl = "";
-				let url = "";
+		if (!urlTrusted) {
+			if (!base.isValidUrl(url)) {
+				subject.cancel( this.aborted );
+				return;
+			}
+		}
+		sl.info("request header:");
+		sl.info("*****************");
+		aVisitor = new requestHeaderVisitor();
+		subject.visitRequestHeaders(aVisitor);
+		sl.info("");
+		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) { // Check if RECONF_SUCCESS!
+			sl.debug("abort seb request");
+			if (seb.reconfState == RECONF_SUCCESS && !seb.allowLoadSettings) {
+				sl.debug("abort seb reconfigure request: Already reconfigured!");
+				subject.cancel( this.aborted );
+				//prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.already.reconfigured"));
+				return;
+			}
+			else {
+				subject.cancel( this.aborted );
+				seb.reconfState = RECONF_NO;
+				sb.openSebFileDialog(subject.name);
+				return;
+			}
+		}
+		if (httpReg.test(url)) {
+			if (base.blockHTTP) {
+				sl.debug("block http request");
+				subject.cancel( this.abort );
+				return;
+			}
+			if (base.forceHTTPS) { // non common browser behaviour, experimental
+				sl.debug("try redirecting request to https: " + origUrl);
 				try {
-					origUrl = subject.URI.spec;
-					url = origUrl.split("#"); // url fragment is not transmitted to the server!
-					url = url[0];
-					//sl.debug("request: " + url);
-					let urlTrusted = su.getConfig("urlFilterTrustedContent","boolean",true);
-					if (!urlTrusted) {
-						if (!base.isValidUrl(url)) {
-							subject.cancel(Cr.NS_BINDING_ABORTED);
-							return;
-						}
-					}
-								
-					//if (sendReqHeader && /text\/html/g.test(subject.getRequestHeader('Accept'))) { // experimental
-					if (sendBrowserExamKey) {
-						var k;
-						if (reqSalt) {								
-							k = base.getRequestValue(url, reqKey);
-							//sl.debug("get req value: " + url + " : " + reqKey + " = " + k);
-						}
-						else {
-							k = reqKey;
-						}
-						subject.setRequestHeader(reqHeader, k, false);
-					}
-					if (httpReg.test(url)) {
-						if (blockHTTP) {
-							sl.debug("block http request");
-							subject.cancel(Cr.NS_BINDING_ABORTED);
-							return;
-						}
-						if (forceHTTPS) { // non common browser behaviour, experimental
-							sl.debug("try redirecting request to https: " + origUrl);
-							try {
-								subject.redirectTo(io.newURI(origUrl.replace("http:","https:"),null,null));
-							}
-							catch(e) {
-								sl.debug(e + "\nurl: " + url);
-							}
-						}
-					}
+					subject.redirectTo(io.newURI(origUrl.replace("http:","https:"),null,null));
 				}
-				catch (e) {
+				catch(e) {
 					sl.debug(e + "\nurl: " + url);
 				}
 			}
-		},
-
-		get observerService() {  
-			return Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);  
-		},
-	  
-		register: function() {  
-			this.observerService.addObserver(this, "http-on-modify-request", false);  
-		},  
-	  
-		unregister: function()  {  
-			this.observerService.removeObserver(this, "http-on-modify-request");  
-		}  
-	},
-	
-	httpResponseObserver : { // experimental
-		observe	: function(subject, topic, data) {
-			if (topic == ("http-on-examine-response" || "http-on-examine-cached-response") && subject instanceof Ci.nsIHttpChannel) {
-				let mimeType = "";
-				let url = "";
-				try {
-					url = subject.URI.spec;
-					mimeType = subject.getResponseHeader("Content-Type");
-					if (mimeTypesRegs.pdf.test(mimeType) && !/\.pdf$/i.test(url) && su.getConfig("sebPdfJsEnabled","boolean", true)) { // pdf file requests should already be captured by SebBrowser
-						subject.cancel(Cr.NS_BINDING_ABORTED);
-						sw.openPdfViewer(url);
-					}
-				}
-				catch (e) {
-					//sl.debug(e + "\nurl: " + url + "\nmimetype: " + mimeType);
-				} 
-			} 
-		},
-
-		get observerService() {  
-			return Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);  
-		},
-	  
-		register: function() {  
-			this.observerService.addObserver(this, "http-on-examine-response", false);
-			this.observerService.addObserver(this, "http-on-examine-cached-response", false);
-		},  
-	  
-		unregister: function()  { 
-			this.observerService.removeObserver(this, "http-on-examine-response", false);
-			this.observerService.removeObserver(this, "http-on-examine-cached-response", false); 
 		}
-	},
+	}
+};
+
+requestObserver.prototype.register = function ( ) {
+        var observerService = Cc[ "@mozilla.org/observer-service;1" ].getService( Ci.nsIObserverService );
+        observerService.addObserver(this, "http-on-modify-request", false);
+};
+
+requestObserver.prototype.unregister = function ( ) {
+        var observerService = Cc[ "@mozilla.org/observer-service;1" ].getService( Ci.nsIObserverService );
+        observerService.removeObserver( this, "http-on-modify-request" );
+};
+
+/* response Observer */
+
+responseHeaderVisitor = function () {
+        this._isSebResponse = false;
+        this._isPdfResponse = false;
+};
+
+responseHeaderVisitor.prototype.visitHeader = function ( h, v ) {
+	sl.info(h+" : "+v);
+	if (contentTypeReg.test(h)) {
+		if (sebMimetypeReg.test(v)) {
+			this._isSebResponse = true;
+			return;
+		}
+		if (mimeTypesRegs.pdf.test(v)) {
+			this._isPdfResponse = true;
+			return;
+		}
+	}
+	if ( contentDispositionReg.test(h) ) {
+		if ( sebFileAttachmentReg.test(v)) {
+			this._isSebResponse = true;
+			return;
+		}
+		if ( pdfFileAttachmentReg.test(v)) {
+			this._isPdfResponse = true;
+			return;
+		}
+	}
+};
+
+responseHeaderVisitor.prototype.isSebResponse = function () {
+	return this._isSebResponse;
+};
+
+responseHeaderVisitor.prototype.isPdfResponse = function () {
+	return this._isPdfResponse;
+};
+
+responseObserver = function () {
+        this.register();
+        this.aborted = Cr.NS_BINDING_ABORTED;
+        this.nsIHttpChannel = Ci.nsIHttpChannel;
+        this.nsIChannel = Ci.nsIChannel;
+        this.nsIRequest = Ci.nsIRequest;
+};
+
+responseObserver.prototype.observe = function ( subject, topic, data ) {
+	if (blockObs) {
+		return;
+	}
+	var url, origUrl, aVisitor;
+	if ( subject instanceof this.nsIHttpChannel ) {
+		sl.info("");
+		sl.info("<- http response examine: " + subject.name);
+		origUrl = subject.URI.spec;
+		url = origUrl.split("#"); // url fragment is not transmitted to the server!
+		url = url[0];
+		
+		// check seb file if seb.reconfigState = RECONF_START
+		if (seb.reconfState == RECONF_START) {
+			if (sebFileReg.test(subject.name)) { // direct seb file
+				sl.debug("abort seb response: direct seb file download");
+				subject.cancel( this.aborted );
+				base.downloadSebFile(url);
+				return;
+			}
+			
+			sl.info("response header:");
+			sl.info("*****************");
+			aVisitor = new responseHeaderVisitor();
+			subject.visitResponseHeaders(aVisitor);
+			sl.info("");
+			if ( aVisitor.isSebResponse() ) {
+				//uri = subject.URI;
+				sl.debug("abort seb response: seb file attachment");
+				subject.cancel( this.aborted );
+				base.downloadSebFile(subject.name);
+				return;
+			}
+		}
+		if (pdfJsEnabled) {
+			sl.info("response header:");
+			sl.info("*****************");
+			aVisitor = new responseHeaderVisitor();
+			subject.visitResponseHeaders(aVisitor);
+			sl.info("");
+			if (aVisitor.isPdfResponse() && !/\.pdf$/i.test(subject.name)) {
+				sl.debug("redirect pdf response mimetype");
+				subject.cancel( this.aborted );
+				sw.openPdfViewer(subject.name);
+				return;
+			}
+		}
+	}
+};
+
+responseObserver.prototype.register = function ( ) {
+        var observerService = Cc[ "@mozilla.org/observer-service;1" ].getService( Ci.nsIObserverService );
+        observerService.addObserver(this, "http-on-examine-response", false);
+        observerService.addObserver(this, "http-on-examine-cached-response", false);
+};
+
+responseObserver.prototype.unregister = function ( ) {
+        var observerService = Cc[ "@mozilla.org/observer-service;1" ].getService( Ci.nsIObserverService );
+        observerService.removeObserver( this, "http-on-examine-response" );
+        observerService.removeObserver(this, "http-on-examine-cached-response");
+};
+
+
+this.SebNet = {
+	reqObs : null,
+	respObs : null,
+	forceHTTPS : false,
+	blockHTTP : false,
+	
 	
 	init : function(obj) {
 		base = this;
@@ -181,6 +295,10 @@ this.SebNet = {
 		base.setListRegex();
 		base.setReqHeader();
 		base.setSSLSecurity();
+		pdfJsEnabled = su.getConfig("sebPdfJsEnabled","boolean", true);
+		sl.debug("pdfJsEnabled:" + pdfJsEnabled);
+		base.respObs = new responseObserver();
+		base.reqObs = new requestObserver();
 		sl.out("SebNet initialized: " + seb);
 	},
 	
@@ -239,7 +357,7 @@ this.SebNet = {
 		}
 		p = proxies["ExceptionsList"];
 		if (typeof p === "object" && p != null) {
-			p = p.join(",") + ",localhost,127.0.0.1";
+			//p = p.join(",") + ",localhost,127.0.0.1";
 			prefs.setCharPref("network.proxy.no_proxies_on",p);
 			sl.debug("network.proxy.no_proxies_on:"+p);
 		}
@@ -250,10 +368,15 @@ this.SebNet = {
 		if ( (typeof p === "boolean") && p) {
 			return 4;
 		}
-		p = proxies["AutoConfigurationEnabled"];
+		p = proxies["AutoConfigurationEnabledWas "];
 		// auto config url
 		if ( (typeof p === "boolean") && p) {
 			return 2;
+		}
+		// system proxy
+		p = proxies["proxySettingsPolicy"];
+		if ( (typeof p === "number") && p == 0) {
+			return 5;
 		}
 		// http(s) proxy
 		p = proxies["HTTPEnable"];
@@ -266,6 +389,7 @@ this.SebNet = {
 	
 	setListRegex : function() { // for better performance compile RegExp objects and push them into arrays
 		sl.debug("setListRegex"); 
+		urlTrusted = su.getConfig("urlFilterTrustedContent","boolean",true);
 		//sl.debug(typeof seb.config["urlFilterRegex"]);
 		let is_regex = (typeof seb.config["urlFilterRegex"] === "boolean") ? seb.config["urlFilterRegex"] : false;
 		sl.debug("urlFilterRegex: " + is_regex);
@@ -371,7 +495,7 @@ this.SebNet = {
 		sl.debug("setReqHeader");
 		sendBrowserExamKey = su.getConfig("sendBrowserExamKey","boolean",false);
 		if (!sendBrowserExamKey) { return; }
-		let rh = su.getConfig("browserRequestHeader","string","");
+		let rh = su.getConfig("sebBrowserRequestHeader","string","");
 		let rk = su.getConfig("browserExamKey","string","");
 		let rs = su.getConfig("browserURLSalt","boolean",true);
 		
@@ -387,9 +511,51 @@ this.SebNet = {
 	},
 	
 	setSSLSecurity : function () {
-		forceHTTPS = (su.getConfig("sslSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_FORCE_HTTPS);
-		blockHTTP = (su.getConfig("sslSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_BLOCK_HTTP);
-		sl.debug("forceHTTPS: " + forceHTTPS);
-		sl.debug("blockHTTP: " + blockHTTP);
+		base.forceHTTPS = (su.getConfig("sebSSLSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_FORCE_HTTPS);
+		base.blockHTTP = (su.getConfig("sebSSLSecurityPolicy","number",SSL_SEC_BLOCK_MIXED_ACTIVE) == SSL_SEC_BLOCK_HTTP);
+		sl.debug("forceHTTPS: " + base.forceHTTPS);
+		sl.debug("blockHTTP: " + base.blockHTTP);
+	},
+	
+	downloadSebFile : function(url) {
+		var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+		sb.dialogHandler("seb file download");
+		xhr.onload = function() {
+			if (xhr.readyState === 4) {
+				sl.debug("async get request done: " + xhr.status);
+				if (xhr.status === 200) {
+					sl.debug(xhr.response);
+					var blob = xhr.response;
+					sl.debug(blob.size);
+					sb.dialogHandler("seb file downloaded: " + blob.size);
+					sh.sendMessage(blob);
+					blockObs = false;
+				}
+				else {
+					sl.debug("could not load seb file url: " + "\status: " + xhr.status);
+					sb.dialogHandler("could not load seb file: " + xhr.status);
+					blockObs = false;
+				}
+			}
+		}
+		xhr.onerror = function() {
+			blockObs = false;
+		}
+		xhr.responseType = "blob";
+		xhr.open("GET", url, true);
+		if (sendBrowserExamKey) {
+			var k;
+			if (reqSalt) {								
+				k = base.getRequestValue(url, reqKey);
+				sl.info("seb file download: get req value: " + url + " : " + reqKey + " = " + k);
+			}
+			else {
+				k = reqKey;
+			}
+			xhr.setRequestHeader(reqHeader, k);
+		}
+		blockObs = true;
+		xhr.send(null);
 	}
+	
 }

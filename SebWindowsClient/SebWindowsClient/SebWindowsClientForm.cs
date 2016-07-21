@@ -38,7 +38,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -71,49 +70,12 @@ namespace SebWindowsClient
         [DllImport("user32.dll")]
         static extern IntPtr GetDesktopWindow();
 
-         [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
-           int Y, int cx, int cy, uint uFlags);
-
-        [DllImport("user32.dll")]
-        private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern bool EnumThreadWindows(int threadId, EnumThreadProc pfnEnum, IntPtr lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern System.IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr FindWindowEx(IntPtr parentHwnd, IntPtr childAfterHwnd, IntPtr className, string windowText);
-
-        [DllImport("User32.dll")]
-        private static extern bool IsIconic(IntPtr handle);
-
-        [DllImport("user32.dll")]
-        private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
-
         [DllImportAttribute("User32.dll")]
         private static extern IntPtr SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out int lpdwProcessId);
-
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 5;
-        private const int SW_RESTORE = 9;
-
-        private const string VistaStartMenuCaption = "Start";
-        private static IntPtr vistaStartMenuWnd = IntPtr.Zero;
-        private static IntPtr processWindowHandle = IntPtr.Zero;
         private delegate bool EnumThreadProc(IntPtr hwnd, IntPtr lParam);
 
         private int taskbarHeight = 0;
-
-        //private SebApplicationChooserForm SebApplicationChooser = null;
 
         public bool closeSebClient = true;
         public string sebPassword = null;
@@ -123,8 +85,6 @@ namespace SebWindowsClient
 
         public Process xulRunner = new Process();
         private int xulRunnerExitCode;
-        private DateTime xulRunnerExitTime;
-        //private bool xulRunnerExitEventHandled;
 
         public List<string> permittedProcessesCalls = new List<string>();
         public List<Process> permittedProcessesReferences = new List<Process>();
@@ -132,9 +92,6 @@ namespace SebWindowsClient
 
         private List<Process> runningProcessesToClose = new List<Process>();
         private List<string> runningApplicationsToClose = new List<string>();
-
-
-        //public OpenFileDialog openFileDialog;
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
@@ -195,6 +152,7 @@ namespace SebWindowsClient
                 }
             }
         }
+
         public bool LoadFile(string file)
         {
             Logger.AddInformation("Attempting to read new configuration file");
@@ -297,36 +255,44 @@ namespace SebWindowsClient
                     return false;
                 }
                 Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
-                // Decrypt, parse and store new settings and restart SEB if this was successfull
-                Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 
-                if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings))
-                {
-                    Logger.AddInformation("StoreDecryptedSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
-                    Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
-                    SebWindowsClientMain.LoadingSebFile(false);
-                    return false;
-                }
-
-                //Show splashscreen
-                var splashThread = new Thread(SEBSplashScreen.StartSplash);
-
-
-                if (!SEBXULRunnerWebSocketServer.Started)
-                {
-                    Logger.AddInformation("SEBXULRunnerWebSocketServer.Started returned false, this means the WebSocketServer communicating with the SEB XULRunner browser couldn't be started, exiting");
-                    SEBMessageBox.Show(SEBUIStrings.webSocketServerNotStarted, SEBUIStrings.webSocketServerNotStartedMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
-                    ExitApplication();
-                    return false;
-                }
-                SEBSplashScreen.CloseSplash();
-
-                Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
-                SebWindowsClientMain.LoadingSebFile(false);
-
-                return true;
+                ReconfigureWithSettings(sebSettings);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Decrypt, parse and store new settings and restart SEB if this was successfull
+        /// </summary>
+        /// <param name="sebSettings"></param>
+        /// <returns></returns>
+        public bool ReconfigureWithSettings(byte[] sebSettings)
+        {
+            Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
+            if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings))
+            {
+                Logger.AddInformation("StoreDecryptedSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
+                Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
+                SebWindowsClientMain.LoadingSebFile(false);
+                return false;
+            }
+
+            //Show splashscreen
+            var splashThread = new Thread(SEBSplashScreen.StartSplash);
+
+            if (!SEBXULRunnerWebSocketServer.Started)
+            {
+                Logger.AddInformation("SEBXULRunnerWebSocketServer.Started returned false, this means the WebSocketServer communicating with the SEB XULRunner browser couldn't be started, exiting");
+                SEBMessageBox.Show(SEBUIStrings.webSocketServerNotStarted, SEBUIStrings.webSocketServerNotStartedMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                ExitApplication();
+                return false;
+            }
+            SEBSplashScreen.CloseSplash();
+
+            Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
+            SebWindowsClientMain.LoadingSebFile(false);
+
+            return true;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -411,26 +377,11 @@ namespace SebWindowsClient
                 string xulRunnerArguments = xulRunnerArgumentsBuilder.ToString();
                 xulRunnerPathBuilder.Append(xulRunnerArguments);
                 xulRunnerPath = xulRunnerPathBuilder.ToString();
-                //Logger.AddError("Starting XULRunner with call: " + xulRunnerPath, this, null);
 
                 desktopName = SEBClientInfo.DesktopName;
                 xulRunner = SEBDesktopController.CreateProcess(xulRunnerPath, desktopName);
                 xulRunner.EnableRaisingEvents = true;
-                //if(!SEBXULRunnerWebSocketServer.IsXULRunnerConnected)
                 xulRunner.Exited += xulRunner_Exited;
-
-                //Maximize the Windows of the XulRunner if touch mode is enabled
-                //if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
-                //{
-                //    while (!xulRunner.GetOpenWindows().Any())
-                //    {
-                //        Thread.Sleep(1000);
-                //    }
-                //    foreach (var oW in xulRunner.GetOpenWindows())
-                //    {
-                //        oW.Key.MaximizeWindow();
-                //    }
-                //}
 
                 return true;
 
@@ -459,7 +410,6 @@ namespace SebWindowsClient
                 {
                     // Read the exit code. Strange enough this often fails in Windows 8.1
                     xulRunnerExitCode = xulRunner.ExitCode;
-                    xulRunnerExitTime = xulRunner.ExitTime;
                 }
                 catch (Exception ex)
                 {
@@ -472,14 +422,11 @@ namespace SebWindowsClient
             {
                 // The XULRunner process didn't exist anymore
                 xulRunnerExitCode = 0;
-               // xulRunnerExitTime = ;
             }
             if (xulRunnerExitCode != 0)
             {
                 // An error occured when exiting XULRunner, maybe it crashed?
                 Logger.AddError("An error occurred when exiting XULRunner. Exit code: " + xulRunnerExitCode.ToString(), this, null);
-                // Restart XULRunner
-                //StartXulRunner();
             }
             else
             {
@@ -645,10 +592,6 @@ namespace SebWindowsClient
                         {
                             var toolStripButton = new SEBToolStripButton();
 
-                            //Do not add processes that are meant to run in background
-                            //if ((Boolean) SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyRunInBackground))
-                            //    toolStripButton.Visible = false;
-
                             //Do not add processes that do not have an Icon in Taskbar
                             if (!(Boolean)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyIconInTaskbar))
                                 toolStripButton.Visible = false;
@@ -743,7 +686,6 @@ namespace SebWindowsClient
                             {
                                 // Permitted application has not been found: Set its call entry to null
                                 permittedProcessesCalls.Add(null);
-                                //SEBClientInfo.SebWindowsClientForm.Activate();
                                 SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s",title), MessageBoxIcon.Error, MessageBoxButtons.OK);
                             }
                         }
@@ -896,26 +838,6 @@ namespace SebWindowsClient
             SEBToForeground();
         }
 
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Get icon for a running process.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        private Icon GetProcessIcon(Process process)
-        {
-            Icon processIcon;
-            try
-            {
-                string processExecutableFileName = process.MainModule.FileName;
-                processIcon = Icon.ExtractAssociatedIcon(processExecutableFileName);
-            }
-            catch (Exception)
-            {
-                processIcon = null;
-            }
-            return processIcon;
-        }
-
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
@@ -964,17 +886,6 @@ namespace SebWindowsClient
 
             using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, ""))
             {
-                //// Get all paths from the PATH environement variable
-                //// This code didn't get the results expected, just left here for reference
-                //string RegKeyName = @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment";
-                //string pathVariableString = (string)Microsoft.Win32.Registry.LocalMachine.OpenSubKey(RegKeyName).GetValue
-                //    ("Path", "", Microsoft.Win32.RegistryValueOptions.DoNotExpandEnvironmentNames);
-                //string[] paths = pathVariableString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                //foreach (string subPath in paths)
-                //{
-                //    Console.WriteLine(subPath);
-                //}
-
                 string subKeyName = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\" + executable;
                 using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subKeyName))
                 {
@@ -1080,10 +991,6 @@ namespace SebWindowsClient
                         processReference.Refresh();
 
                         new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
-
-                        //IntPtr handle = processReference.MainWindowHandle;
-                        //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
-                        //SetForegroundWindow(handle);
                     }
                 }
                 catch (Exception)  // XULRunner wasn't running anymore
@@ -1129,20 +1036,6 @@ namespace SebWindowsClient
                             processReference = SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
 
                         new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
-
-                        //IntPtr handle = processReference.MainWindowHandle;
-                        //if (handle == IntPtr.Zero)
-                        //{
-                        //    //Try open by window name comparing with title set in config which then is set to the tooltip of the button :)
-                        //    foreach(var windowHandle in SEBWindowHandler.GetWindowHandlesByTitle(toolStripButton.Identifier))
-                        //    {
-                        //        if (IsIconic(windowHandle)) ShowWindow(windowHandle, SW_RESTORE);
-                        //        SetForegroundWindow(windowHandle);
-                        //    }
-                        //}
-
-                        //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
-                        //SetForegroundWindow(handle);
                     }
                 }
                 catch (Exception ex)
@@ -1150,17 +1043,6 @@ namespace SebWindowsClient
                     Logger.AddError("Error when trying to start permitted process by clicking in SEB taskbar: ", null, ex);
                 }
             }
-            //if (SebKeyCapture.SebApplicationChooser == null)
-            //    SebKeyCapture.SebApplicationChooser = new SebApplicationChooserForm();
-            //SebKeyCapture.SebApplicationChooser.fillListApplications();
-            //SebKeyCapture.SebApplicationChooser.Visible = true;
-        }
-
-        static bool EnumThreadCallback(IntPtr hWnd, IntPtr lParam)
-        {
-            if (IsIconic(hWnd)) ShowWindow(hWnd, SW_RESTORE);
-            SetForegroundWindow(hWnd);
-            return true;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -1175,24 +1057,6 @@ namespace SebWindowsClient
             //newProcess.Exited += new EventHandler(permittedProcess_Exited);
 
             return newProcess;
-        }
-
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Handle xulRunner_Exited event and display process information.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        private void permittedProcess_Exited(object sender, System.EventArgs e)
-        {
-            Process permittedProcess = (Process)sender;
-            //int permittedProcessExitCode = permittedProcess.ExitCode;
-            //DateTime permittedProcessExitTime = permittedProcess.ExitTime;
-            //if (permittedProcessExitCode != 0)
-            //{
-            //    // An error occured when exiting the permitted process, maybe it crashed?
-            //    Logger.AddError("An error occurred when exiting a permitted process. Exit code: " + permittedProcessExitCode.ToString() + ". Exit time: " + permittedProcess.ExitTime.ToString(), this, null);
-            //}
         }
 
         private float scaleFactor = 1;
@@ -1236,11 +1100,13 @@ namespace SebWindowsClient
             SEBWorkingAreaHandler.SetTaskBarSpaceHeight(taskbarHeight);
 
             this.FormBorderStyle = FormBorderStyle.None;
+
             // sezt das formular auf die Taskbar
             SetParent(this.Handle, GetDesktopWindow());
             //this.BackColor = Color.Red;
 
             this.TopMost = true;
+            
             PlaceFormOnDesktop(false, true);            
 
             return true;
@@ -1298,120 +1164,7 @@ namespace SebWindowsClient
                 }
             }
         }
-
-        /// <summary>
-        /// Returns the handle of the active window of a process
-        /// </summary>
-        /// <param name="taskBarWnd">window handle of taskbar</param>
-        /// <returns>window handle of start menu</returns>
-        private static IntPtr GetActiveWindowOfProcess(Process proc)
-        {
-            //if (proc != null)
-            //{
-            //    // enumerate all threads of that process...
-            //    foreach (ProcessThread thread in proc.Threads)
-            //    {
-            //        if (EnumThreadWindows(thread.Id, MyEnumThreadWindowsForProcess, IntPtr.Zero)) break;
-            //    }
-            //}
-            return vistaStartMenuWnd;
-        }
-
-        /// <summary>
-        /// Callback method that is called from 'EnumThreadWindows' in 'GetVistaStartMenuWnd'.
-        /// </summary>
-        /// <param name="hWnd">window handle</param>
-        /// <param name="lParam">parameter</param>
-        /// <returns>true to continue enumeration, false to stop it</returns>
-        private static bool MyEnumThreadWindowsForProcess(int pid, IntPtr lParam)
-        {
-                //if (pid ==)
-                //{
-                //    vistaStartMenuWnd = hWnd;
-                //    return false;
-                //}
-            return true;
-        }
-
-
-        /// <summary>
-        /// Hide or show the Windows taskbar and startmenu.
-        /// </summary>
-        /// <param name="show">true to show, false to hide</param>
-        public static void SetVisibility(bool show)
-        {
-            // get taskbar window
-            IntPtr taskBarWnd = FindWindow("Shell_TrayWnd", null);
-
-            // try it the WinXP way first...
-            IntPtr startWnd = FindWindowEx(taskBarWnd, IntPtr.Zero, "Button", "Start");
-
-            if (startWnd == IntPtr.Zero)
-            {
-                // try an alternate way, as mentioned on CodeProject by Earl Waylon Flinn
-                startWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, "Start");
-            }
-
-            if (startWnd == IntPtr.Zero)
-            {
-                // ok, let's try the Vista easy way...
-                startWnd = FindWindow("Button", null);
-
-                if (startWnd == IntPtr.Zero)
-                {
-                    // no chance, we need to to it the hard way...
-                    startWnd = GetVistaStartMenuWnd(taskBarWnd);
-                }
-            }
-
-            ShowWindow(taskBarWnd, show ? SW_SHOW : SW_HIDE);
-            ShowWindow(startWnd, show ? SW_SHOW : SW_HIDE);
-        }
-
-        /// <summary>
-        /// Returns the window handle of the Vista start menu orb.
-        /// </summary>
-        /// <param name="taskBarWnd">windo handle of taskbar</param>
-        /// <returns>window handle of start menu</returns>
-        private static IntPtr GetVistaStartMenuWnd(IntPtr taskBarWnd)
-        {
-            // get process that owns the taskbar window
-            int procId;
-            GetWindowThreadProcessId(taskBarWnd, out procId);
-
-            Process p = Process.GetProcessById(procId);
-            if (p != null)
-            {
-                // enumerate all threads of that process...
-                foreach (ProcessThread t in p.Threads)
-                {
-                    EnumThreadWindows(t.Id, MyEnumThreadWindowsProc, IntPtr.Zero);
-                }
-            }
-            return vistaStartMenuWnd;
-        }
-
-        /// <summary>
-        /// Callback method that is called from 'EnumThreadWindows' in 'GetVistaStartMenuWnd'.
-        /// </summary>
-        /// <param name="hWnd">window handle</param>
-        /// <param name="lParam">parameter</param>
-        /// <returns>true to continue enumeration, false to stop it</returns>
-        private static bool MyEnumThreadWindowsProc(IntPtr hWnd, IntPtr lParam)
-        {
-            StringBuilder buffer = new StringBuilder(256);
-            if (GetWindowText(hWnd, buffer, buffer.Capacity) > 0)
-            {
-                Console.WriteLine(buffer);
-                if (buffer.ToString() == VistaStartMenuCaption)
-                {
-                    vistaStartMenuWnd = hWnd;
-                    return false;
-                }
-            }
-            return true;
-        }
-
+        
         /// ----------------------------------------------------------------------------------------
         /// <summary>
         /// Set registry values and close prohibited processes.
@@ -1591,11 +1344,9 @@ namespace SebWindowsClient
             else
             {
                 Logger.AddInformation("hiding the taskbar");
-                //this.Hide();
                 this.Visible = false;
                 this.Height = 1;
                 this.Width = 1;
-                //this.BackColor = Color.Transparent;
                 this.Location = new System.Drawing.Point(-50000, -50000);
 
                 taskbarHeight = 0;
@@ -1699,7 +1450,7 @@ namespace SebWindowsClient
         /// Close SEB Form.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        public void CloseSEBForm()
+        public void CloseSEBForm(bool reconfiguring = false)
         {
             {
                 //Restore Registry Values
@@ -1741,11 +1492,13 @@ namespace SebWindowsClient
                 xulRunner.Exited -= xulRunner_Exited;
 
                 Logger.AddInformation("closing processes that where started by seb");
+
                 for(int i = 0; i < permittedProcessesReferences.Count; i++)
                 {
                     try
                     {
                         var proc = permittedProcessesReferences[i];
+
                         if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
                         {
                             //Get Process from WindowHandle by Name
@@ -1756,6 +1509,10 @@ namespace SebWindowsClient
                         }
                         if (proc != null && !proc.HasExited)
                         {
+                            if (reconfiguring && proc.ProcessName.Contains("firefox"))
+                            {
+                                continue;
+                            }
                             Logger.AddInformation("attempting to close " + proc.ProcessName);
                             SEBNotAllowedProcessController.CloseProcess(proc);   
                         }
@@ -1819,37 +1576,6 @@ namespace SebWindowsClient
             }
         }
 
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Load form.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// ----------------------------------------------------------------------------------------
-        public void SebWindowsClientForm_Load(object sender, EventArgs e)
-        {
-            //if (SebWindowsClientMain.InitSebSettings())
-            //{
-                //OpenSEBForm();
-            //}
-            //else {
-            //    Application.Exit();
-            //}
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Close form, if Quit Password is correct.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// ----------------------------------------------------------------------------------------
-        public void SebWindowsClientForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //moved code -> call ExitApplication()
-        }
-
         /// <summary>
         /// Central code to exit the application
         /// Closes the form and asks for a quit password if necessary
@@ -1906,21 +1632,6 @@ namespace SebWindowsClient
             Environment.Exit(0);
         }
 
-
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Show dialog asking whether SEB should be closed
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        private void noSelectButton1_Click(object sender, EventArgs e)
-        {
-            if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAllowQuit] == true)
-            {
-                ShowCloseDialogForm();
-            }
-        }
-
         private void taskbarToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -1931,19 +1642,4 @@ namespace SebWindowsClient
             this.WindowState = FormWindowState.Normal;
         }       
     }
-
-    /// ----------------------------------------------------------------------------------------
-    /// <summary>
-    /// Button subclass which makes the button-not-selectable. 
-    /// Why this isn't a default attribute of a button???.
-    /// </summary>
-    /// ----------------------------------------------------------------------------------------
-    class NoSelectButton : Button
-    {
-        public NoSelectButton()
-        {
-            SetStyle(ControlStyles.Selectable, false);
-        }
-    }
-
 }

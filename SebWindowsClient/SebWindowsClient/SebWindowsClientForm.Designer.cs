@@ -71,8 +71,6 @@ namespace SebWindowsClient
             this.Name = "SebWindowsClientForm";
             this.ShowIcon = false;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SebWindowsClientForm_FormClosing);
-            this.Load += new System.EventHandler(this.SebWindowsClientForm_Load);
             this.SizeChanged += new System.EventHandler(this.SebWindowsClientForm_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();

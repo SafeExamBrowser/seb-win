@@ -55,20 +55,11 @@
     <ApplicationIcon>SEBConfigToolIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SebWindowsClient\SebWindowsClient\DotNetZip\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PermittedApplicationInformation.cs" />
@@ -143,10 +134,6 @@
     <Content Include="SEBConfigToolIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SebWindowsClient\MetroFramework\MetroFramework\MetroFramework.csproj">
-      <Project>{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}</Project>
-      <Name>MetroFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SebWindowsClient\SebWindowsClient\SebWindowsClient.csproj">
       <Project>{eff410a4-2656-4426-8489-89b1232ea0f0}</Project>
       <Name>SebWindowsClient</Name>
@@ -155,7 +142,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
-"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /fd sha256 /tr http://timestamp.comodoca.com/?td=sha256 /td sha256 /as /v "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

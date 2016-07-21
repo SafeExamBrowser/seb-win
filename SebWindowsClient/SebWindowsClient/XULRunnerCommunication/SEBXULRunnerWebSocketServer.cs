@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Threading;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using Fleck;
 using Newtonsoft.Json;
@@ -96,6 +95,7 @@ namespace SebWindowsClient.XULRunnerCommunication
                     socket.OnOpen = () => OnClientConnected(socket);
                     socket.OnClose = OnClientDisconnected;
                     socket.OnMessage = OnClientMessage;
+                    socket.OnBinary = OnClientMessageBinary;
                 });
                 Logger.AddInformation("Started WebSocketServer on " + ServerAddress);
                 Started = true;
@@ -104,6 +104,11 @@ namespace SebWindowsClient.XULRunnerCommunication
             {
                 Logger.AddError("Unable to start WebSocketsServer for communication with XULRunner", null, ex);
             }
+        }
+
+        private static void OnClientMessageBinary(byte[] obj)
+        {
+            SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj);
         }
 
         private static void OnClientDisconnected()
@@ -145,6 +150,7 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         private static void OnClientMessage(string message)
         {
+            
             Console.WriteLine("RECV: " + message);
             Logger.AddInformation("WebSocket: Received message: " + message);
             switch (message)

@@ -16,8 +16,10 @@ xulApplication.prototype = {
 	QueryInterface: XPCOMUtils.generateQI([Ci.nsICommandLineHandler]),
 	handle : function clh_handle(cmdLine) {		
 		try {	
-			seb.initCmdLine(cmdLine);	
-			cmdLine.preventDefault = false;	 // what about p2pdf or apps without a main window event loop? 
+			if (cmdLine.findFlag("silent",false) < 0) {
+                                seb.initCmdLine(cmdLine);
+                                cmdLine.preventDefault = false;
+                        }
 		}
 		catch (e) { dump(e+"\n"); }			
 	},

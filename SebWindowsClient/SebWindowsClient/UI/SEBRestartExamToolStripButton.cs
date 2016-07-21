@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Threading;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ProcessUtils;

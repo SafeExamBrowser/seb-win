@@ -34,7 +34,7 @@ this.EXPORTED_SYMBOLS = ["SebLog"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ appinfo } = Cu.import("resource://gre/modules/Services.jsm").Services,
+	{ appinfo, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services,
 	{ OS } = Cu.import("resource://gre/modules/osfile.jsm");
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 /* Services */
@@ -43,6 +43,10 @@ let console = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleServic
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","SebUtils");
 XPCOMUtils.defineLazyModuleGetter(this,"sh","resource://modules/SebHost.jsm","SebHost");
+
+/* SebGlobals */
+scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* ModuleGlobals */
 let 	seb = null,
@@ -101,6 +105,21 @@ this.SebLog = {
 		catch(e){}
 		sh.sendLog(str);
 	},
+	
+	info : function(msg) {
+		if (typeof seb === "object" && !seb.INFO) {
+			return;
+		}
+		let str = appinfo.name + " info : " + msg;
+		console.logStringMessage(str);
+		dump(str + lf);
+		try { 
+			base.writeLogfile(str);
+		} 
+		catch(e){}
+		sh.sendLog(str);
+	},
+	
 	err : function(msg) {
 		let str = appinfo.name + " err : " + msg;
 		Cu.reportError(str);

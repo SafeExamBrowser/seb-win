@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Serialization;
 using SebWindowsClient;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ConfigurationUtils;
-using PlistCS;
-
 
 
 namespace SebWindowsConfig

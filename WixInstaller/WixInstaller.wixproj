@@ -114,12 +114,12 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
-"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /t http://timestamp.comodoca.com/authenticode /d SafeExamBrowser.msi "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PreBuildEvent>"%25WIX%25\bin\heat" dir "$(SolutionDir)SebWindowsBrowser\xul_seb" -out "$(SolutionDir)WixInstaller\XulSeb.wxs" -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder
 "%25WIX%25\bin\heat" dir "$(SolutionDir)SebWindowsBrowser\xulrunner" -out "$(SolutionDir)WixInstaller\XulRunner.wxs" -gg -cg XulRunnerComponentGroup -template fragment -sfrag -dr XulRunnerInstallFolder</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
+"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /fd sha256 /tr http://timestamp.comodoca.com/%3ftd=sha256 /td sha256 /d "Safe Exam Browser" "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

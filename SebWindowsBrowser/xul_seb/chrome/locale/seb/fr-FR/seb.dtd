@@ -1,1 +1,5 @@
 <!ENTITY seb.title "Safe Exam Browser (FR)">
+<!ENTITY seb.reconf.title "Safe Exam Browser - Reconfiguration">
+<!ENTITY seb.toolbar.reload "Page reload">
+<!ENTITY seb.toolbar.back "back">
+<!ENTITY seb.toolbar.forward "forward">

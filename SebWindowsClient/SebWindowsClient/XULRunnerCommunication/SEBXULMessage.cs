@@ -12,7 +12,10 @@ namespace SebWindowsClient.XULRunnerCommunication
             Reload,
             RestartExam,
             Close,
-            KeyboardShown
+            KeyboardShown,
+            ClearSession,
+            Reconfigure,
+            SebFileTransfer
         }
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)

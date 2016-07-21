@@ -12,6 +12,8 @@
 	windowtype="main" 
 	baseurl=""
 	sizemode="maximized"
+	width="1"
+	height="1"
 	accelerated="true"
 	onload="seb.onload(this);" 
 	onunload="seb.onunload(this);" 
@@ -31,8 +33,7 @@
 	<!-- commands -->
 	<commandset id="sebCommandSet">	
 		<command id="sebCmdQuit" oncommand="seb.quit();"/>
-		<command id="sebCmdReload" oncommand="sb.reload(window);"/>
-		<command id="sebCmdLoad" oncommand="sb.load();"/>
+		<command id="sebCmdReload" oncommand="seb.reload(window);"/>
 		<command id="sebCmdRestart" oncommand="sb.restart();"/>
 		<command id="sebCmdBack" oncommand="sb.back(window);"/>
 		<command id="sebCmdForward" oncommand="sb.forward(window);"/>
@@ -46,7 +47,6 @@
 	<keyset id="sebKeySet">
 		<key id="seb.quit" keycode="VK_F4" modifiers="control shift" command="sebCmdQuit"/>
 		<key id="seb.reload" keycode="VK_F5" modifiers="control shift" command="sebCmdReload"/>
-		<key id="seb.load" keycode="VK_F6" modifiers="control shift" command="sebCmdLoad"/>
 		<key id="seb.restart" keycode="VK_F9" modifiers="control shift" command="sebCmdRestart"/>
 		<key id="seb.back" keycode="VK_LEFT" modifiers="control shift" command="sebCmdBack"/>
 		<key id="seb.forward" keycode="VK_RIGHT" modifiers="control shift" command="sebCmdForward"/>
@@ -57,13 +57,19 @@
 	</keyset>
 	<stack id="browser.stack" flex="1">
 		<vbox flex="1">
-			<hbox id="toolBar" class="hidden tbDesktop">
+			<hbox id="toolBar" class="tbHidden">
+				<!--
 				<image class="tbBtn" id="btnQuit" src="chrome://seb/content/images/quit.png" onclick="seb.quit();" />
 				<image class="tbBtn" id="btnRestart" src="chrome://seb/content/images/restart.png" onclick="sb.restart();" />
-				<image class="tbBtn" id="btnReload" src="chrome://seb/content/images/reload.png" onclick="sb.reload(window);"/>
-				<image class="tbBtn disabled" id="btnBack" src="chrome://seb/content/images/back.png" onclick="sb.back(window)" />
-				<image class="tbBtn disabled" id="btnForward" src="chrome://seb/content/images/forward.png" onclick="sb.forward(window)" />
+				-->
+				<hbox id="imageBox" class="tbHidden">
+					<image tooltiptext="&seb.toolbar.reload;" class="tbBtn" id="btnReload" src="chrome://seb/content/images/reload.png" onclick="seb.reload(window);"/>
+					<image tooltiptext="&seb.toolbar.back;" class="tbBtn" id="btnBack" src="chrome://seb/content/images/back.png" onclick="sb.back(window)" />
+					<image tooltiptext="&seb.toolbar.forward;" class="tbBtn" id="btnForward" src="chrome://seb/content/images/forward.png" onclick="sb.forward(window)" />
+				</hbox>
+				<!--
 				<textbox class="hidden" id="locationBar" type="autocomplete" flex="1" placeholder="location" autocompletesearch="history"></textbox>
+				-->
 			</hbox>
 			<spacer></spacer>
 			<deck id="deckContents" selectedIndex="0" flex="1">
@@ -72,7 +78,7 @@
 				<browser flex="1" id="message.socket" src="about:blank" type="content-targetable"></browser>
 			</deck>
 		</vbox>
-		<vbox id="loadingBox" class="hidden">
+		<vbox id="loadingBox" class="hidden loadingBox">
 			<hbox>
 				<spacer></spacer>
 				<image id="loadingImage" src="chrome://seb/content/images/loading.gif" />

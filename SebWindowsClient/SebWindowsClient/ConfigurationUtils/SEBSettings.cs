@@ -827,8 +827,8 @@ namespace SebWindowsClient.ConfigurationUtils
             // Default settings for group "Security"
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebServicePolicy   , 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVirtualMachine, false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , true);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyKillExplorerShell  , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyKillExplorerShell  , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowUserSwitching, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAppSwitcherCheck, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyForceAppFolderInstall, true);

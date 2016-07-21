@@ -776,8 +776,7 @@ namespace SebWindowsClient
 
             //Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
 
-            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] ==
-                true && !(Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
             {
                 var sebOnScreenKeyboardToolStripButton = new SEBOnScreenKeyboardToolStripButton();
                 taskbarToolStrip.Items.Add(sebOnScreenKeyboardToolStripButton);
@@ -1575,7 +1574,7 @@ namespace SebWindowsClient
                SEBDesktopWallpaper.Reset();
 
                 // Restart the explorer.exe shell
-                if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
+               if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell] || (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
                 {
                     if (SEBClientInfo.ExplorerShellWasKilled)
                     {
@@ -1610,12 +1609,6 @@ namespace SebWindowsClient
         /// </summary>
         public void ExitApplication(bool showLoadingScreen = true)
         {
-            //Only show the loading screen when not in CreateNewDesktop-Mode
-            if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
-            {
-                showLoadingScreen = false;
-            }
-
             Thread loadingThread = null;
             if (showLoadingScreen)
             {

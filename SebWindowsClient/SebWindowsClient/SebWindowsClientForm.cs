@@ -400,19 +400,23 @@ namespace SebWindowsClient
             var xulRunnerProfileFolder = string.Format(@"{0}\Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
             var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + @"\SEBVersion";
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+            
+            //If it's not a new version of SEB, skip this
             if (File.Exists(versionFile) && File.ReadAllText(versionFile) == version)
             {
                 return;
             }
 
-            Directory.Delete(xulRunnerProfileFolder, true);
-
-            if (!Directory.Exists(xulRunnerProfileFolder))
+            //Delete the old profile directory if it exists
+            if (Directory.Exists(xulRunnerProfileFolder))
             {
-                Directory.CreateDirectory(xulRunnerProfileFolder);
+                Directory.Delete(xulRunnerProfileFolder, true);
             }
 
+            //Create the profile directory
+            Directory.CreateDirectory(xulRunnerProfileFolder);
+            
+            //Write the version file
             File.WriteAllText(versionFile, version);
         }
 

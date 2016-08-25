@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SEBWindowsServiceContracts")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2016 ETH Zurich")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

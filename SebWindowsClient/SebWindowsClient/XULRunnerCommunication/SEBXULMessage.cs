@@ -14,6 +14,9 @@ namespace SebWindowsClient.XULRunnerCommunication
             Close,
             KeyboardShown,
             ClearSession,
+            // 1. wenn der SEB File übertragen wurde: {Handler:"SebFileTransfer",Opts:false | true}
+            // und danach
+            // 2. die decryptisierte config Datei: {Handler:"Reconfigure",Opts:{configBase64:"BASE64STRING....."}}
             Reconfigure,
             SebFileTransfer
         }

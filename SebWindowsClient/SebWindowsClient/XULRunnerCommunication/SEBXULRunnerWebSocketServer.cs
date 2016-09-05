@@ -7,6 +7,8 @@ using Fleck;
 using Newtonsoft.Json;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SebWindowsClient.XULRunnerCommunication
 {
@@ -50,6 +52,8 @@ namespace SebWindowsClient.XULRunnerCommunication
                 return false;
             }
         }
+
+        public static bool HasBeenReconfiguredByMessage = false;
 
         public static event EventHandler OnXulRunnerCloseRequested;
         public static event EventHandler OnXulRunnerQuitLinkClicked;
@@ -108,7 +112,28 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         private static void OnClientMessageBinary(byte[] obj)
         {
+            HasBeenReconfiguredByMessage = true;
+            SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.SebFileTransfer, true));
             SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj);
+
+            // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
+            var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
+            string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
+
+            SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reconfigure, new { configBase64 = XULRunnerParameters }));
+
+        }
+
+        private static T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
         }
 
         private static void OnClientDisconnected()

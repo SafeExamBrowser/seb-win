@@ -269,6 +269,7 @@ namespace SebWindowsClient
         /// <returns></returns>
         public bool ReconfigureWithSettings(byte[] sebSettings)
         {
+            var x = SEBXULRunnerWebSocketServer.IsRunning;
             Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
             if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings))
             {
@@ -279,7 +280,7 @@ namespace SebWindowsClient
             }
 
             //Show splashscreen
-            var splashThread = new Thread(SEBSplashScreen.StartSplash);
+            //var splashThread = new Thread(SEBSplashScreen.StartSplash);
 
             if (!SEBXULRunnerWebSocketServer.Started)
             {
@@ -288,7 +289,7 @@ namespace SebWindowsClient
                 ExitApplication();
                 return false;
             }
-            SEBSplashScreen.CloseSplash();
+            //SEBSplashScreen.CloseSplash();
 
             Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
             SebWindowsClientMain.LoadingSebFile(false);
@@ -481,10 +482,31 @@ namespace SebWindowsClient
         private void addPermittedProcessesToTS()
         {
             // First clear the permitted processes toolstrip/lists in case of a SEB restart
-            taskbarToolStrip.Items.Clear();
-            permittedProcessesCalls.Clear();
-            permittedProcessesReferences.Clear();
-            permittedProcessesIconImages.Clear();
+
+            var start = 0;
+            if(!SEBXULRunnerWebSocketServer.HasBeenReconfiguredByMessage)
+            {
+                taskbarToolStrip.Items.Clear();
+                permittedProcessesCalls.Clear();
+                permittedProcessesReferences.Clear();
+                permittedProcessesIconImages.Clear();
+            }
+            else
+            {
+                var tS = taskbarToolStrip.Items[0];
+                var cpPC = permittedProcessesCalls[0];
+                var cpPR = permittedProcessesReferences[0];
+                var cpPII = permittedProcessesIconImages[0];
+                taskbarToolStrip.Items.Clear();
+                permittedProcessesCalls.Clear();
+                permittedProcessesReferences.Clear();
+                permittedProcessesIconImages.Clear();
+                taskbarToolStrip.Items.Add(tS);
+                permittedProcessesCalls.Add(cpPC);
+                permittedProcessesReferences.Add(cpPR);
+                permittedProcessesIconImages.Add(cpPII);
+                start = 1;
+            }
 
             List<object> permittedProcessList = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
             if (permittedProcessList.Count > 0)
@@ -493,7 +515,7 @@ namespace SebWindowsClient
                 List<Process> runningApplications = new List<Process>();
                 runningApplications = Process.GetProcesses().ToList();
                 //Process[] runningApplications = Process.GetProcesses();
-                for (int i = 0; i < permittedProcessList.Count; i++)
+                for (int i = start; i < permittedProcessList.Count; i++)
                 {
                     Dictionary<string, object> permittedProcess = (Dictionary<string, object>)permittedProcessList[i];
                     
@@ -513,7 +535,7 @@ namespace SebWindowsClient
                         {
                             // Check if the process is already running
                             //runningApplications = Process.GetProcesses();
-                            int j = 0;
+                            int j = start;
                             while (j < runningApplications.Count())
                             {
                                 try
@@ -601,7 +623,7 @@ namespace SebWindowsClient
             // So if there are any permitted processes, we add them to the SEB task bar
             if (permittedProcessList.Count > 0)
             {
-                for (int i = 0; i < permittedProcessList.Count; i++)
+                for (int i = start; i < permittedProcessList.Count; i++)
                 {
                     Dictionary<string, object> permittedProcess = (Dictionary<string, object>)permittedProcessList[i];
 
@@ -823,7 +845,7 @@ namespace SebWindowsClient
 
             // Start permitted processes
             int permittedProcessesIndex = 0;
-            for (int i = 0; i < permittedProcessList.Count; i++)
+            for (int i = start; i < permittedProcessList.Count; i++)
             //foreach (string processCallToStart in permittedProcessesCalls)
             {
                 Dictionary<string, object> permittedProcess = (Dictionary<string, object>)permittedProcessList[i];
@@ -1555,7 +1577,7 @@ namespace SebWindowsClient
                     
                 }
                 Logger.AddInformation("clearing running processes list");
-                permittedProcessesReferences.Clear();
+                //permittedProcessesReferences.Clear();
 
                 //Disable Watchdogs
                 Logger.AddInformation("disabling foreground watchdog");

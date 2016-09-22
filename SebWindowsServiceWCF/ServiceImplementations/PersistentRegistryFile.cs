@@ -73,7 +73,6 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
         /// <summary>
         /// Loads the content of a saved file into memory
-        /// Throws Exception if something goes wrong
         /// </summary>
         private void Load()
         {
@@ -90,7 +89,6 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                 if (stream != null)
                     stream.Close();
                 Logger.Log(ex, String.Format("Unable to open persistent registry file:{0}",_filePath));
-                throw;
             }
         }
 

@@ -336,7 +336,7 @@ this.SebHost = {
 			// Second and third params are used to pass command-line arguments
 			// to the process.
 			// var args = ["/sbin/halt"];
-			var args = ["/sbin/poweroff"];
+			var args = ["/usr/local/bin/shutdown_system"];
 			process.run(false, args, args.length);
 		}
 		catch(e) {

@@ -19,15 +19,15 @@
  *
  * Contributor(s):
  *   Stefan Schneider <schneider@hrz.uni-marburg.de>
- *   
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /* ***** GLOBAL seb SINGLETON *****
 
-* *************************************/ 
+* *************************************/
 
 /* 	for javascript module import
-	see: https://developer.mozilla.org/en/Components.utils.import 
+	see: https://developer.mozilla.org/en/Components.utils.import
 */
 this.EXPORTED_SYMBOLS = ["seb"];
 
@@ -70,7 +70,7 @@ this.seb =  {
 	url : "",
 	mainWin : null,
 	profile: {},
-	locs : null,	
+	locs : null,
 	consts : null,
 	ars : {},
 	allowQuit : false,
@@ -80,11 +80,11 @@ this.seb =  {
 	hostForceQuit : false,
 	reconfState : RECONF_NO,
 	arsKeys : {},
-	
+
 	toString : function() {
 		return appinfo.name;
 	},
-	
+
 	quitObserver : {
 		observe	: function(subject, topic, data) {
 			if (topic == "xpcom-shutdown") {
@@ -93,8 +93,8 @@ this.seb =  {
 					for (var i=0;i<base.profile.dirs.length;i++) { // don't delete data folder
 						sl.debug("try to remove everything from profile folder: " + base.profile.dirs[i].path);
 						let entries = base.profile.dirs[i].directoryEntries;
-						while(entries.hasMoreElements()) {  
-							let entry = entries.getNext();  
+						while(entries.hasMoreElements()) {
+							let entry = entries.getNext();
 							entry.QueryInterface(Ci.nsIFile);
 							try {
 								sl.debug("remove: " + entry.path);
@@ -104,20 +104,20 @@ this.seb =  {
 						}
 					}
 				}
-			}	  
+			}
 		},
-		get observerService() {  
-			return Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);  
+		get observerService() {
+			return Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 		},
-		register: function() {  
-			this.observerService.addObserver(this, "xpcom-shutdown", false);  
+		register: function() {
+			this.observerService.addObserver(this, "xpcom-shutdown", false);
 			sl.debug("quitObserver registered");
-		},  
-		unregister: function()  {  
-			this.observerService.removeObserver(this, "xpcom-shutdown");  
-		}  
+		},
+		unregister: function()  {
+			this.observerService.removeObserver(this, "xpcom-shutdown");
+		}
 	},
-	
+
 	initCmdLine : function(cl) {
 		base = this;
 		base.cmdline = cl;
@@ -136,12 +136,12 @@ this.seb =  {
 		sg.initConfig(base.initAfterConfig);
 		sl.out("initCmdLine finished");
 	},
-	
+
 	initDebug : function() {
 		let prefFile = (base.DEBUG) ? FileUtils.getFile("CurProcD",["debug_prefs.js"], null) : FileUtils.getFile("CurProcD",["debug_reset_prefs.js"], null);
 		if (prefFile.exists()) {
 			sl.debug("found " + prefFile.path);
-			try { 
+			try {
 				prefs.readUserPrefs(prefFile);
 				prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)
 				prefs.savePrefFile(null);
@@ -150,7 +150,7 @@ this.seb =  {
 		}
 		else { sl.err("could not find: " + prefFile.path); }
 	},
-	
+
 	initAfterConfig : function() {
 		base.initLocale();
 		base.initAdditionalResources();
@@ -161,7 +161,7 @@ this.seb =  {
 		sb.initSecurity();
 		sb.initSpellChecker();
 	},
-	
+
 	initProfile : function() {
 		sl.out("initProfile");
 		try {
@@ -185,10 +185,10 @@ this.seb =  {
 				}
 			}
 			if (defaultProfile.exists()) {
-				let entries = defaultProfile.directoryEntries; 
+				let entries = defaultProfile.directoryEntries;
 				base.profile["customFiles"] = [];
-				while(entries.hasMoreElements()) {  
-					let entry = entries.getNext();  
+				while(entries.hasMoreElements()) {
+					let entry = entries.getNext();
 					entry.QueryInterface(Components.interfaces.nsIFile);
 					// don't copy .svn
 					if (/^\..*/.test(entry.leafName)) { // no hidden files like .svn .DS_Store
@@ -207,16 +207,16 @@ this.seb =  {
 					if (!cf.exists()) {
 						entry.copyTo(base.profile.dirs[0],entry.leafName);
 						sl.debug("copy " + entry.leafName + " to " + base.profile.dirs[0].path);
-					}														
+					}
 				}
 			}
 			else {
 				sl.debug("no default profile: " + defaultProfile.path);
-			}		
+			}
 		}
 		catch (e) { sl.err(e); return false; }
 	},
-	
+
 	initLocale : function() {
 		let loc = "en-US";
 		let osLoc = locale.getLocaleComponentForUserAgent();
@@ -237,7 +237,7 @@ this.seb =  {
 		sl.debug("locale: " + loc);
 		prefs.setCharPref("general.useragent.locale",loc);
 	},
-	
+
 	initMain : function(win) {
 		sl.debug("initMain");
 		base.url = su.getUrl();
@@ -248,21 +248,21 @@ this.seb =  {
 		base.setQuitHandler(win);
 		sh.setMessageSocketHandler(win);
 		ss.setSebserverSocketHandler(win);
-		base.locs = win.document.getElementById("locale");	
+		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
-		sw.setToolbar(win);			
+		sw.setToolbar(win);
 		sw.setSize(win);
 		//sw.showContent(win); still required?
 		sb.loadPage(win,base.url);
 	},
-	
+
 	initSecondary : function(win) {
 		sl.debug("initSecondary");
 		base.initArsKeys(win);
 		sw.setToolbar(win);
 		sw.setSize(win);
 	},
-	
+
 	initAdditionalResources : function (obj) {
 		//var ar = {};
 		if (obj === undefined) { // initial load
@@ -272,7 +272,7 @@ this.seb =  {
 				base.initAdditionalResources(obj);
 				return;
 			}
-			
+
 		}
 		else { // object param
 			for (var i=0;i<obj.length;i++) { // ars array
@@ -284,7 +284,7 @@ this.seb =  {
 						data[key] = ar[key];
 					}
 					else {
-						
+
 						if (ar[key] !== undefined && ar[key] !== null) {
 							base.initAdditionalResources(ar[key]);
 						}
@@ -294,7 +294,7 @@ this.seb =  {
 			}
 		}
 	},
-	
+
 	getArsLinksAndKeys : function () {
 		sl.debug("getArsLinksAndKeys");
 		for (k in base.ars) {
@@ -313,7 +313,7 @@ this.seb =  {
 		}
 		//sl.debug(JSON.stringify(sb.linkURLS));
 	},
-	
+
 	initArsKeys : function (win) {
 		let keySet = win.document.getElementById("sebKeySet");
 		for (k in base.arsKeys) {
@@ -332,20 +332,20 @@ this.seb =  {
 		}
 		keySet.parentNode.appendChild(keySet);
 	},
-	
+
 	/* handler */
 	setQuitHandler : function(win) {
 		sl.debug("setQuitHandler");
 		win.addEventListener("close", base.quit, true); // controlled shutdown for main window
 		base.quitObserver.register();
 	},
-	
+
 	removeQuitHandler : function(win) {
 		sl.debug("removeQuitHandler");
 		win.removeEventListener("close", base.quit); // controlled shutdown for main window
 		base.quitObserver.unregister();
 	},
-	
+
 	/* events */
 	onload : function (win) {
 		sl.debug("onload");
@@ -359,7 +359,7 @@ this.seb =  {
 			base.initSecondary(win);
 		}
 	},
-	
+
 	onunload : function(win) {
 		sl.debug("onunload");
 		if (sw.getWinType(win) == "main") {
@@ -370,20 +370,20 @@ this.seb =  {
 			sw.removeWin(win);
 		}
 	},
-	
+
 	onclose : function (win) {
 		sl.debug("onclose");
 		if (sw.getWinType(win) == "main") { return; }
 		sl.debug("onclose secondary win");
 	},
-	
+
 	sizeModeChange : function (e) {
 		sl.debug("sizemodechange: " + e);
 		e.preventDefault();
 		e.stopPropagation();
 		return;
 	},
-	
+
 	reload: function(win) {
 		sl.debug("try reload...");
 		win = (win === null) ? sw.getRecentWin() : win;
@@ -398,7 +398,7 @@ this.seb =  {
 			sb.reload(win);
 		}
 	},
-	
+
 	reconfigure: function(config) {
 		sl.debug("reconfigure");
 		sl.info("reconfigure config: " + config);
@@ -406,7 +406,7 @@ this.seb =  {
 			sl.debug("aborted!");
 			return;
 		}
-		
+
 		if (!su.isBase64(config)) {
 			var msg = "no base64 config recieved: aborted!";
 			sl.debug(msg);
@@ -417,13 +417,11 @@ this.seb =  {
 		if (base.reconfState == RECONF_START) { // started by link and dialog
 			sb.resetReconf();
 		}
-		 
 		sg.initCustomConfig(config);
 		sw.resetWindows();
 		base.mainWin.document.location.reload(true);
-		base.reconfState = RECONF_SUCCESS;
 	},
-	
+
 	loadAR: function(win, id) {
 		sl.debug("try to load additional ressource:" + id);
 		let ar = base.ars[id];
@@ -436,7 +434,7 @@ this.seb =  {
 			sl.debug("no url to load!");
 			return;
 		}
-		
+
 		// first check referrer
 		if (filter && filter != "") {
 			let w = (win) ? win : sw.getRecentWin();
@@ -446,25 +444,25 @@ this.seb =  {
 				return false;
 			}
 		}
-		
+
 		// check confirmation
 		if (confirm) {
 			var result = prompt.confirm(null, su.getLocStr("seb.load.warning.title"), confirmText);
 			if (!result) {
 				sl.debug("loadURL aborted by user");
-				return;	
+				return;
 			}
 		}
-		if (reset) {		
+		if (reset) {
 			sb.clearSession();
 		}
-		sb.loadPage(base.mainWin,url); 
+		sb.loadPage(base.mainWin,url);
 	},
-	
+
 	quit: function(e) {
 		sl.debug("try to quit...");
 		var w = base.mainWin;
-		
+
 		if (base.hostForceQuit) {
 			sl.debug("host force quit");
 			if (e != null) {
@@ -472,7 +470,7 @@ this.seb =  {
 			}
 			else {
 				sw.closeAllWin();
-				sl.debug("quit"); 
+				sl.debug("quit");
 				return;
 			}
 		}
@@ -480,16 +478,16 @@ this.seb =  {
 			if (e != null) {
 				e.preventDefault();
 				e.stopPropagation();
-			}				
+			}
 		}
-		
+
 		if (sh.messageServer) {
 			sl.debug("quit should be handled by host");
 			var msg = (e) ? "seb.beforeclose.manual" : "seb.beforeclose.quiturl";
 			sh.sendMessage(msg);
 			return;
 		}
-		
+
 		if (!base.allowQuit) { // on shutdown url the global variable "shutdownEnabled" is set to true
 			sl.out("no way! seb is locked :-)");
 		}
@@ -497,15 +495,15 @@ this.seb =  {
 			if (e) { // close window event: user action
 				// first look for warning
 				let passwd = su.getConfig("hashedQuitPassword","string","");
-				
+
 				if (!base.quitIgnoreWarning && !passwd) {
 					var result = prompt.confirm(null, su.getLocStr("seb.quit.warning.title"), su.getLocStr("seb.quit.warning"));
 					if (!result) {
 						return;
 					}
-				}							
-				
-				if (passwd && !base.quitIgnorePassword) {				
+				}
+
+				if (passwd && !base.quitIgnorePassword) {
 					var password = {value: ""}; // default the password to pass
 					var check = {value: true}; // default the checkbox to true
 					var result = prompt.promptPassword(null, su.getLocStr("seb.password.title"), su.getLocStr("seb.password.text"), password, null, check);
@@ -529,10 +527,10 @@ this.seb =  {
 						return;
 					}
 				}
-				
+
 				let passwd = su.getConfig("hashedQuitPassword","string","");
-				
-				if (passwd && !base.quitIgnorePassword) {				
+
+				if (passwd && !base.quitIgnorePassword) {
 					var password = {value: ""}; // default the password to pass
 					var check = {value: true}; // default the checkbox to true
 					var result = prompt.promptPassword(null, su.getLocStr("seb.password.title"), su.getLocStr("seb.password.text"), password, null, check);
@@ -548,9 +546,9 @@ this.seb =  {
 					}
 				}
 			}
-			
+
 			sw.closeAllWin();
-			sl.debug("quit"); 
-		}		
+			sl.debug("quit");
+		}
 	}
 }

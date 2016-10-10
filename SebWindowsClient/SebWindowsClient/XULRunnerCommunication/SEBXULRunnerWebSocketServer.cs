@@ -114,14 +114,18 @@ namespace SebWindowsClient.XULRunnerCommunication
         {
             HasBeenReconfiguredByMessage = true;
             SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.SebFileTransfer, true));
-            SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj);
+            if(SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj))
+            {
+                // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
+                var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
+                string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
 
-            // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
-            var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
-            string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
-
-            SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reconfigure, new { configBase64 = XULRunnerParameters }));
-
+                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reconfigure, new { configBase64 = XULRunnerParameters }));
+            }
+            else
+            {
+                //send abort message
+            }
         }
 
         private static T DeepClone<T>(T obj)

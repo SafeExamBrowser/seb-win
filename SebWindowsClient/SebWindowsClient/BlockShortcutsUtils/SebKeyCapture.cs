@@ -141,7 +141,7 @@ namespace SebWindowsClient.BlockShortcutsUtils
         private static IntPtr ptrMouseHook;
         private static LowLevelProc objKeyboardProcess;
         private static LowLevelProc objMouseProcess;
-        private static bool _FilterKeys = true;
+        private static bool _FilterKeys = false;
         private static Keys exitKey1;
         private static Keys exitKey2;
         private static Keys exitKey3;
@@ -166,15 +166,16 @@ namespace SebWindowsClient.BlockShortcutsUtils
             get { return SebKeyCapture._FilterKeys; }
             set 
             { 
-                SebKeyCapture._FilterKeys = value; 
-                if(value)
+                
+                if (value && !SebKeyCapture._FilterKeys)
                 {
                     UnregisterKeyboardHookMethod();
                     RegisterKeyboardHookMethod();
-                } else 
+                } else if (!value) 
                 {
                     UnregisterKeyboardHookMethod();
                 }
+                SebKeyCapture._FilterKeys = value;
             }
         }
         /// <summary>

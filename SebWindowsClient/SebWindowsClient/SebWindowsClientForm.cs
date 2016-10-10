@@ -1621,12 +1621,14 @@ namespace SebWindowsClient
                 }
 
                 // Clean clipboard
+               SEBClipboard.CleanClipboard();
+               Logger.AddInformation("Clipboard deleted.", null, null);
 
-                SEBClipboard.CleanClipboard();
-                Logger.AddInformation("Clipboard deleted.", null, null);
-
-                Logger.AddInformation("disabling filtered keys");
-                SebKeyCapture.FilterKeys = false;
+               if (!reconfiguring)
+               {
+                   Logger.AddInformation("disabling filtered keys");
+                   SebKeyCapture.FilterKeys = false;
+               }
 
                 Logger.AddInformation("returning from closesebform");
             }

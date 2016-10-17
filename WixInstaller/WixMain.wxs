@@ -228,10 +228,10 @@
       <Component Id="SebWindowsServiceWCFExecutable" Guid="{FDCE5852-0974-4E8B-B1F2-A0DDAE3AE35E}">
         <File Source="$(var.SebWindowsServiceWCF.TargetPath)" />
         <ServiceInstall Id="SebWindowsServiceWCFServiceInstall" Type="ownProcess"
-                        Name="SEBWindowsService" DisplayName="$(var.ProductNameAbbreviation) Windows Service" Description="$(var.ProductNameAbbreviation) Windows Service which needs to be running"
+                        Name="SebWindowsServiceWCF" DisplayName="$(var.ProductNameAbbreviation) Windows Service" Description="$(var.ProductNameAbbreviation) Windows Service which needs to be running"
                         Start="auto" ErrorControl="ignore" Interactive="no" Account="LocalSystem" />
         <ServiceControl Id="SebWindowsServiceWCFServiceControl" Start="install" Stop="both" Remove="uninstall"
-                        Name="SEBWindowsService" Wait="yes" />
+                        Name="SebWindowsServiceWCF" Wait="yes" />
       </Component>
       <Component Id="SebWindowsServiceWCFExeConfig" Guid="{25BEB96C-08AD-4C63-9C4A-8B2A961C7627}">
         <File Source="$(var.SebWindowsServiceWCF.TargetPath).config" />

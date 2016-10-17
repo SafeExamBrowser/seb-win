@@ -665,14 +665,14 @@ namespace SebWindowsClient.ConfigurationUtils
             //SEBSettings.permittedArgumentListXulRunner.Add(SEBSettings.permittedArgumentDataXulRunner1);
             //SEBSettings.permittedArgumentListXulRunner.Add(SEBSettings.permittedArgumentDataXulRunner2);
 
-            // Create a XulRunner process with the XulRunner argument list
+            // Create a Firefox process with the SEB argument list
             SEBSettings.permittedProcessDataXulRunner.Clear();
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyActive     , true);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyAutostart  , true);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyIconInTaskbar  , true);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyRunInBackground   , false);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyAllowUser  , false);
-            SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyStrongKill , true);
+            SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyStrongKill , false);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyOS         , IntWin);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyTitle      , "SEB");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyDescription, "");

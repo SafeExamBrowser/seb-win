@@ -527,10 +527,10 @@ namespace SebWindowsClient
                     bool permittedProcessActive = (bool)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyActive);
                     if (permittedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && permittedProcessActive)
                     {
-                        string title = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyTitle);
-                        string executable = (string)permittedProcess[SEBSettings.KeyExecutable];
+                        string title = ((string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyTitle));
+                        string executable = ((string)permittedProcess[SEBSettings.KeyExecutable]).ToLower();
                         if (String.IsNullOrEmpty(title)) title = executable;
-                        string identifier = (string)permittedProcess[SEBSettings.KeyIdentifier];
+                        string identifier = ((string)permittedProcess[SEBSettings.KeyIdentifier]).ToLower();
                         if (!(executable.Contains(SEBClientInfo.XUL_RUNNER) && !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser)))
                         {
                             // Check if the process is already running
@@ -542,7 +542,7 @@ namespace SebWindowsClient
                                 {
                                     // Get the name of the running process. This might fail if the process has terminated in between, we have to catch this case
                                     string name = runningApplications[j].ProcessName;
-                                    if (executable.Contains(name))
+                                    if (executable.Contains(name.ToLower()))
                                     {
                                         //Define the running process
                                         var proc = runningApplications[j];

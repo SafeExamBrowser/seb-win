@@ -26,5 +26,13 @@ namespace SebWindowsClient.DiagnosticsUtils
             }
             return "";
         }
+
+        public static bool IsWindows7
+        {
+            get
+            {
+                return OSVersion.FriendlyName().Contains("7");
+            }
+        }
     }
 }

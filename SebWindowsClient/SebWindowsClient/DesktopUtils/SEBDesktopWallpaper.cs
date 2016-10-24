@@ -30,7 +30,7 @@ namespace SebWindowsClient.DesktopUtils
 
         public static void BlankWallpaper()
         {
-            if (IsWindows7)
+            if (OSVersion.IsWindows7)
             {
                 if (File.Exists(GetDirectory()))
                 {
@@ -49,7 +49,7 @@ namespace SebWindowsClient.DesktopUtils
 
         public static void Reset()
         {
-            if (IsWindows7)
+            if (OSVersion.IsWindows7)
             {
                 if (_currentWallpaper != null)
                 {
@@ -62,14 +62,6 @@ namespace SebWindowsClient.DesktopUtils
             }
         }
 
-
-        private static bool IsWindows7
-        {
-            get
-            {
-                return OSVersion.FriendlyName().Contains("7");
-            }
-        }
 
         private static string GetDirectory()
         {

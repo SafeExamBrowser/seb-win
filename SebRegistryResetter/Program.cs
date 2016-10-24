@@ -112,12 +112,8 @@ namespace SebRegistryResetter
 
             Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
             var username = Console.ReadLine();
-            var sid = "";
-            try
-            {
-                sid = SIDHandler.GetSIDFromUsername(username);
-            }
-            catch (Exception ex)
+            var sid = SIDHandler.GetSIDFromUsername(username);
+            if (sid == "")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("User not found in the registry!");

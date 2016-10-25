@@ -193,6 +193,14 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyAdditionalResourcesResourceIconsResolution = "resolution";
         public const String KeyAdditionalResourcesResourceIconsIconData = "iconData";
         public const String KeyAdditionalResourcesIdentiﬁerCounter = "additionalResourcesIdentiﬁerCounter";
+        public const String KeyAdditionalResourcesLinkUrl = "linkURL";
+        public const String KeyAdditionalResourcesRefererFilter = "refererFilter";
+        public const String KeyAdditionalResourcesResetSession = "resetSession";
+        public const String KeyAdditionalResourcesKey = "key";
+        public const String KeyAdditionalResourcesModifiers = "modifiers";
+        public const String KeyAdditionalResourcesConfirm = "confirm";
+        public const String KeyAdditionalResourcesConfirmText = "confirmText";
+        public const String KeyAdditionalResourcesShowButton = "showButton";
 
         // Group "Applications"
         public const String KeyMonitorProcesses = "monitorProcesses";

@@ -47,6 +47,7 @@ namespace SebWindowsConfig.Sections
                 resource[SEBSettings.KeyAdditionalResourcesTitle],
                 (bool) resource[SEBSettings.KeyAdditionalResourcesActive] ? "" : " (inactive)",
                 (bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen] ? " (A)" : "",
+                resource.ContainsKey(SEBSettings.KeyAdditionalResourcesShowButton) ? (bool) resource[SEBSettings.KeyAdditionalResourcesShowButton] ? " (B)" : "" : "",
                 !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]) ? " (E)" : "",
                 !string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]) ? " (U)" : "");
         }
@@ -110,6 +111,18 @@ namespace SebWindowsConfig.Sections
                 checkBoxAdditionalResourceActive.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesActive];
                 textBoxAdditionalResourceUrl.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesUrl];
                 checkBoxAdditionalResourceAutoOpen.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesAutoOpen];
+                textBoxLinkURL.Text = (string)selectedResource[SEBSettings.KeyAdditionalResourcesLinkUrl];
+                textBoxRefererFilter.Text = (string) selectedResource[SEBSettings.KeyAdditionalResourcesRefererFilter];
+                checkBoxResetSession.Checked = (bool) selectedResource[SEBSettings.KeyAdditionalResourcesResetSession];
+                textBoxKey.Text = (string) selectedResource[SEBSettings.KeyAdditionalResourcesKey];
+                checkBoxConfirm.Checked = (bool)selectedResource[SEBSettings.KeyAdditionalResourcesConfirm];
+                textBoxConfirmBoxText.Text = (string) selectedResource[SEBSettings.KeyAdditionalResourcesConfirmText];
+                checkBoxShowButton.Checked = (bool) selectedResource[SEBSettings.KeyAdditionalResourcesShowButton];
+
+                comboBoxModifiers.SelectedItem = string.IsNullOrEmpty((string) selectedResource[SEBSettings.KeyAdditionalResourcesModifiers]) ? null : (string)selectedResource[SEBSettings.KeyAdditionalResourcesModifiers];
+                
+
+                
 
                 if (!string.IsNullOrEmpty((string)selectedResource[SEBSettings.KeyAdditionalResourcesResourceData]))
                 {
@@ -222,6 +235,22 @@ namespace SebWindowsConfig.Sections
                 resourceData[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
             if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceDataLauncher))
                 resourceData[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] = 0;
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesLinkUrl))
+                resourceData[SEBSettings.KeyAdditionalResourcesLinkUrl] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesRefererFilter))
+                resourceData[SEBSettings.KeyAdditionalResourcesRefererFilter] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResetSession))
+                resourceData[SEBSettings.KeyAdditionalResourcesResetSession] = false;
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesKey))
+                resourceData[SEBSettings.KeyAdditionalResourcesKey] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesModifiers))
+                resourceData[SEBSettings.KeyAdditionalResourcesModifiers] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesConfirm))
+                resourceData[SEBSettings.KeyAdditionalResourcesConfirm] = false;
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesConfirmText))
+                resourceData[SEBSettings.KeyAdditionalResourcesConfirmText] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesShowButton))
+                resourceData[SEBSettings.KeyAdditionalResourcesShowButton] = true;
 
             return resourceData;
         }
@@ -556,7 +585,7 @@ namespace SebWindowsConfig.Sections
             selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = "";
             selectedResource[SEBSettings.KeyAdditionalResourcesResourceIconsIconData] = "";
             selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
-            selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] = "";
+            selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher] = 0;
             
             treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
 
@@ -619,6 +648,56 @@ namespace SebWindowsConfig.Sections
         private void textBoxAdditionalResourceUrl_Leave(object sender, EventArgs e)
         {
             SetIconFromUrl(textBoxAdditionalResourceUrl.Text);
+        }
+
+        private void checkBoxShowButton_CheckedChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesShowButton] = checkBoxShowButton.Checked;
+
+            treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+        }
+
+        private void textBoxLinkURL_TextChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesLinkUrl] = textBoxLinkURL.Text;
+        }
+
+        private void checkBoxResetSession_CheckedChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesResetSession] = checkBoxResetSession.Checked;
+        }
+
+        private void textBoxRefererFilter_TextChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesRefererFilter] = textBoxRefererFilter.Text;
+        }
+
+        private void textBoxKey_TextChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesKey] = textBoxKey.Text;
+        }
+
+        private void comboBoxModifiers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesModifiers] = comboBoxModifiers.SelectedItem;
+        }
+
+        private void checkBoxConfirm_CheckedChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesConfirm] = checkBoxConfirm.Checked;
+        }
+
+        private void textBoxConfirmBoxText_TextChanged(object sender, EventArgs e)
+        {
+            DictObj selectedResource = GetSelectedResource();
+            selectedResource[SEBSettings.KeyAdditionalResourcesConfirmText] = textBoxConfirmBoxText.Text;
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using SebWindowsClient.AdditionalResourcesUtils;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.Properties;
-using SebWindowsClient.XULRunnerCommunication;
 using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
@@ -14,6 +13,7 @@ namespace SebWindowsClient.UI
     {
         private readonly ContextMenuStrip _menu;
         private readonly IFileCompressor _fileCompressor;
+        private readonly IAdditionalResourceHandler _additionalResourceHandler;
         private DictObj L0Resource;
 
         public SEBAdditionalResourcesToolStripButton(DictObj l0Resource)
@@ -21,6 +21,7 @@ namespace SebWindowsClient.UI
             this.L0Resource = l0Resource;
 
             _fileCompressor = new FileCompressor();
+            _additionalResourceHandler = new AdditionalResourceHandler();
 
             InitializeComponent();
 
@@ -81,19 +82,7 @@ namespace SebWindowsClient.UI
 
             if (item != null && item.Resource != null)
             {
-                OpenResource(item.Resource);
-            }
-        }
-
-        private void OpenResource(DictObj resource)
-        {
-            if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
-            {
-                OpenEmbededResource(resource);
-            }
-            else if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]))
-            {
-                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
+                _additionalResourceHandler.OpenAdditionalResource(item.Resource);
             }
         }
 
@@ -112,64 +101,17 @@ namespace SebWindowsClient.UI
             return Resources.resource;
         }
 
-        private void OpenEmbededResource(DictObj resource)
-        {
-            var launcher = (int) resource[SEBSettings.KeyAdditionalResourcesResourceDataLauncher];
-            var filename = (string) resource[SEBSettings.KeyAdditionalResourcesResourceDataFilename];
-            var path =
-                _fileCompressor.DecompressDecodeAndSaveFile(
-                    (string)resource[SEBSettings.KeyAdditionalResourcesResourceData], filename, resource[SEBSettings.KeyAdditionalResourcesIdentifier].ToString());
-            //XulRunner
-            if (launcher == 0)
-            {
-                SEBXULRunnerWebSocketServer.SendMessage(
-                    new SEBXULMessage(
-                        SEBXULMessage.SEBXULHandler.AdditionalResources, new
-                        {
-                            id = resource[SEBSettings.KeyAdditionalResourcesIdentifier], 
-                            path = path
-                        }
-                    )
-                );
-            }
-            else
-            {
-                var permittedProcess = (DictObj)SEBSettings.permittedProcessList[launcher];
-                var fullPath = SEBClientInfo.SebWindowsClientForm.GetPermittedApplicationPath(permittedProcess);
-                try
-                {
-                    Process process = SEBClientInfo.SebWindowsClientForm.CreateProcessWithExitHandler(string.Join(" ", fullPath, "\"" + path + filename + "\""));
-                    if (SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] == null)
-                    {
-                        SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] = process;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    SEBMessageBox.Show("Error", ex.Message, MessageBoxIcon.Error, MessageBoxButtons.OK);
-                }
-            }
-        }
-
         private void AutoOpenResource(DictObj resource)
         {
             if ((bool) resource[SEBSettings.KeyAdditionalResourcesAutoOpen])
             {
-                OpenResource(resource);
+                _additionalResourceHandler.OpenAdditionalResource(resource);
             }
         }
 
         protected override void OnClick(EventArgs e)
         {
-            //if (_menu.Items.Count > 0)
-            //{
-            //    _menu.Show(Parent, new Point(Bounds.X, Bounds.Y));
-            //}
-            //else
-            //{
-            //    OpenResource(L0Resource);   
-            //}
-            OpenResource(L0Resource);
+            _additionalResourceHandler.OpenAdditionalResource(L0Resource);
         }
 
         protected override void OnMouseHover(EventArgs e)

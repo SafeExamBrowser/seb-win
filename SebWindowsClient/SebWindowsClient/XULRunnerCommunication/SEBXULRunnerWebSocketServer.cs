@@ -9,6 +9,7 @@ using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using SebWindowsClient.AdditionalResourcesUtils;
 
 namespace SebWindowsClient.XULRunnerCommunication
 {
@@ -66,6 +67,8 @@ namespace SebWindowsClient.XULRunnerCommunication
         private static WebSocketServer server;
 
         private static List<SEBXULMessage> messageQueue = new List<SEBXULMessage>();
+
+        private static IAdditionalResourceHandler additionalResourceHandler = new AdditionalResourceHandler();
 
         /// <summary>
         /// Start the server if not already running
@@ -189,7 +192,7 @@ namespace SebWindowsClient.XULRunnerCommunication
                 switch (sebxulMessage.Handler)
                 {
                     case SEBXULMessage.SEBXULHandler.AdditionalResourceTriggered:
-                        //TODO: Open AdditionalResource with ID sebxulMessage.Opts["Id"]
+                        additionalResourceHandler.OpenAdditionalResourceById(sebxulMessage.Opts["id"]);
                         break;
                 }
             }

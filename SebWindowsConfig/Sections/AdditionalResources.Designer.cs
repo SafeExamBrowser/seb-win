@@ -174,7 +174,7 @@
             this.textBoxRefererFilter.Location = new System.Drawing.Point(102, 77);
             this.textBoxRefererFilter.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxRefererFilter.Name = "textBoxRefererFilter";
-            this.textBoxRefererFilter.Size = new System.Drawing.Size(472, 22);
+            this.textBoxRefererFilter.Size = new System.Drawing.Size(536, 22);
             this.textBoxRefererFilter.TabIndex = 22;
             this.textBoxRefererFilter.TextChanged += new System.EventHandler(this.textBoxRefererFilter_TextChanged);
             // 
@@ -205,7 +205,7 @@
             this.textBoxLinkURL.Location = new System.Drawing.Point(102, 47);
             this.textBoxLinkURL.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLinkURL.Name = "textBoxLinkURL";
-            this.textBoxLinkURL.Size = new System.Drawing.Size(472, 22);
+            this.textBoxLinkURL.Size = new System.Drawing.Size(536, 22);
             this.textBoxLinkURL.TabIndex = 19;
             this.textBoxLinkURL.TextChanged += new System.EventHandler(this.textBoxLinkURL_TextChanged);
             // 
@@ -404,7 +404,7 @@
             this.textBoxAdditionalResourcesTitle.Location = new System.Drawing.Point(55, 25);
             this.textBoxAdditionalResourcesTitle.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxAdditionalResourcesTitle.Name = "textBoxAdditionalResourcesTitle";
-            this.textBoxAdditionalResourcesTitle.Size = new System.Drawing.Size(573, 22);
+            this.textBoxAdditionalResourcesTitle.Size = new System.Drawing.Size(503, 22);
             this.textBoxAdditionalResourcesTitle.TabIndex = 0;
             this.textBoxAdditionalResourcesTitle.TextChanged += new System.EventHandler(this.textBoxAdditionalResourcesTitle_TextChanged);
             // 
@@ -498,9 +498,9 @@
             this.groupBox1.Controls.Add(this.buttonAdditionalResourcesChooseIcon);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.pictureBoxAdditionalResourceIcon);
-            this.groupBox1.Location = new System.Drawing.Point(601, 339);
+            this.groupBox1.Location = new System.Drawing.Point(12, 47);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(635, 156);
+            this.groupBox1.Size = new System.Drawing.Size(565, 156);
             this.groupBox1.TabIndex = 31;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Appearance";
@@ -523,7 +523,7 @@
             this.groupBox2.Controls.Add(this.buttonAdditionalResourceEmbededResourceOpen);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.buttonAdditionalResourceChooseEmbededResource);
-            this.groupBox2.Location = new System.Drawing.Point(12, 48);
+            this.groupBox2.Location = new System.Drawing.Point(12, 203);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1224, 275);
             this.groupBox2.TabIndex = 32;
@@ -542,9 +542,9 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.textBoxRefererFilter);
-            this.groupBox3.Location = new System.Drawing.Point(12, 339);
+            this.groupBox3.Location = new System.Drawing.Point(585, 47);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(583, 156);
+            this.groupBox3.Size = new System.Drawing.Size(645, 156);
             this.groupBox3.TabIndex = 33;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Activation";

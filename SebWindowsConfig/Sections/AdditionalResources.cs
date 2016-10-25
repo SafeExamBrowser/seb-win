@@ -129,6 +129,7 @@ namespace SebWindowsConfig.Sections
                     buttonAdditionalResourceRemoveResourceData.Visible = true;
                     buttonAdditionalResourceEmbededResourceOpen.Visible = true;
                     labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
+                    labelAdditionalResourcesFilename.Visible = true;
                     comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
                     textBoxAdditionalResourceUrl.Enabled = false;
                     comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true;
@@ -145,6 +146,7 @@ namespace SebWindowsConfig.Sections
                     buttonAdditionalResourceRemoveResourceData.Visible = false;
                     buttonAdditionalResourceEmbededResourceOpen.Visible = false;
                     labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
+                    labelAdditionalResourcesFilename.Visible = false;
                     comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
                     textBoxAdditionalResourceUrl.Enabled = true;
                     comboBoxAdditionalResourcesChooseFileToLaunch.Visible = false;
@@ -560,6 +562,7 @@ namespace SebWindowsConfig.Sections
             buttonAdditionalResourceRemoveResourceData.Visible = true;
             buttonAdditionalResourceEmbededResourceOpen.Visible = true;
             labelAdditionalResourcesResourceDataLaunchWith.Visible = true;
+            labelAdditionalResourcesFilename.Visible = true;
             comboBoxAdditionalResourcesResourceDataLauncher.Visible = true;
 
             textBoxAdditionalResourceUrl.Text = "";
@@ -592,6 +595,7 @@ namespace SebWindowsConfig.Sections
             buttonAdditionalResourceRemoveResourceData.Visible = false;
             buttonAdditionalResourceEmbededResourceOpen.Visible = false;
             labelAdditionalResourcesResourceDataLaunchWith.Visible = false;
+            labelAdditionalResourcesFilename.Visible = false;
             comboBoxAdditionalResourcesResourceDataLauncher.Visible = false;
             comboBoxAdditionalResourcesChooseFileToLaunch.Visible = false;
 

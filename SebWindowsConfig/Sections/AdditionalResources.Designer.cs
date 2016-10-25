@@ -40,7 +40,7 @@
             this.checkBoxShowButton = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxLinkURL = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelAdditionalResourcesFilename = new System.Windows.Forms.Label();
             this.comboBoxAdditionalResourcesChooseFileToLaunch = new System.Windows.Forms.ComboBox();
             this.buttonAdditionalResourcesChooseEmbeddedFolder = new System.Windows.Forms.Button();
             this.pictureBoxAdditionalResourceIcon = new System.Windows.Forms.PictureBox();
@@ -209,15 +209,15 @@
             this.textBoxLinkURL.TabIndex = 19;
             this.textBoxLinkURL.TextChanged += new System.EventHandler(this.textBoxLinkURL_TextChanged);
             // 
-            // label3
+            // labelAdditionalResourcesFilename
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(99, 138);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 34);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Filename / \r\nFile to launch";
+            this.labelAdditionalResourcesFilename.AutoSize = true;
+            this.labelAdditionalResourcesFilename.Location = new System.Drawing.Point(99, 138);
+            this.labelAdditionalResourcesFilename.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAdditionalResourcesFilename.Name = "labelAdditionalResourcesFilename";
+            this.labelAdditionalResourcesFilename.Size = new System.Drawing.Size(92, 34);
+            this.labelAdditionalResourcesFilename.TabIndex = 18;
+            this.labelAdditionalResourcesFilename.Text = "Filename / \r\nFile to launch";
             // 
             // comboBoxAdditionalResourcesChooseFileToLaunch
             // 
@@ -510,7 +510,7 @@
             this.groupBox2.Controls.Add(this.textBoxConfirmBoxText);
             this.groupBox2.Controls.Add(this.checkBoxConfirm);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.labelAdditionalResourcesFilename);
             this.groupBox2.Controls.Add(this.checkBoxResetSession);
             this.groupBox2.Controls.Add(this.comboBoxAdditionalResourcesChooseFileToLaunch);
             this.groupBox2.Controls.Add(this.buttonAdditionalResourcesChooseEmbeddedFolder);
@@ -603,7 +603,7 @@
         private System.Windows.Forms.Button buttonAdditionalResourcesChooseEmbeddedFolder;
         private System.Windows.Forms.ComboBox comboBoxAdditionalResourcesChooseFileToLaunch;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelAdditionalResourcesFilename;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxLinkURL;
         private System.Windows.Forms.CheckBox checkBoxShowButton;

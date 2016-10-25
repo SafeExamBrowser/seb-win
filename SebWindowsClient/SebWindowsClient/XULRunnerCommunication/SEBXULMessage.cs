@@ -18,7 +18,8 @@ namespace SebWindowsClient.XULRunnerCommunication
             // und danach
             // 2. die decryptisierte config Datei: {Handler:"Reconfigure",Opts:{configBase64:"BASE64STRING....."}}
             Reconfigure,
-            SebFileTransfer
+            SebFileTransfer,
+            AdditionalResourceTriggered
         }
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)

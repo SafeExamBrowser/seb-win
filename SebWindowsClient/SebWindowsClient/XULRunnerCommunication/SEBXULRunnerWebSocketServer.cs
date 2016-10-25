@@ -182,25 +182,41 @@ namespace SebWindowsClient.XULRunnerCommunication
             
             Console.WriteLine("RECV: " + message);
             Logger.AddInformation("WebSocket: Received message: " + message);
-            switch (message)
+
+            try
             {
-                case "seb.beforeclose.manual":
-                    if (OnXulRunnerCloseRequested != null)
-                        OnXulRunnerCloseRequested(null, EventArgs.Empty);
-                    break;
-                case "seb.beforeclose.quiturl":
-                    if (OnXulRunnerQuitLinkClicked != null)
-                        OnXulRunnerQuitLinkClicked(null, EventArgs.Empty);
-                    break;
-                case "seb.input.focus":
-                    if (OnXulRunnerTextFocus != null)
-                        OnXulRunnerTextFocus(null, EventArgs.Empty);
-                    break;
-                case "seb.input.blur":
-                    if (OnXulRunnerTextBlur != null)
-                        OnXulRunnerTextBlur(null, EventArgs.Empty);
-                    break;
+                var sebxulMessage = JsonConvert.DeserializeObject<SEBXULMessage>(message);
+                switch (sebxulMessage.Handler)
+                {
+                    case SEBXULMessage.SEBXULHandler.AdditionalResourceTriggered:
+                        //TODO: Open AdditionalResource with ID sebxulMessage.Opts["Id"]
+                        break;
+                }
             }
+            //Fallback to old message format
+            catch (Exception)
+            {
+                switch (message)
+                {
+                    case "seb.beforeclose.manual":
+                        if (OnXulRunnerCloseRequested != null)
+                            OnXulRunnerCloseRequested(null, EventArgs.Empty);
+                        break;
+                    case "seb.beforeclose.quiturl":
+                        if (OnXulRunnerQuitLinkClicked != null)
+                            OnXulRunnerQuitLinkClicked(null, EventArgs.Empty);
+                        break;
+                    case "seb.input.focus":
+                        if (OnXulRunnerTextFocus != null)
+                            OnXulRunnerTextFocus(null, EventArgs.Empty);
+                        break;
+                    case "seb.input.blur":
+                        if (OnXulRunnerTextBlur != null)
+                            OnXulRunnerTextBlur(null, EventArgs.Empty);
+                        break;
+                }
+            }
+                
         }
 
         [Obsolete("Window gets resized by SEB not seb")]

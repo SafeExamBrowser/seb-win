@@ -271,7 +271,7 @@
     <value>SEB neu konfiguriert</value>
   </data>
   <data name="sebReconfiguredQuestion" xml:space="preserve">
-    <value>Die lokalen Client-Einstellungen von SEB wurden neu konfiguriert. Wollen Sie mit nun mit SEB arbeiten? ("Nein" beendet SEB)</value>
+    <value>Neue Konfiguration wurde gespeichert, diese wird benutzt, wenn SEB das nächste Mal gestartet wird. Wollen Sie jetzt mit SEB arbeiten oder beenden?</value>
   </data>
   <data name="sebReconfiguredRestartNeeded" xml:space="preserve">
     <value>SEB muss neu gestartet werden</value>

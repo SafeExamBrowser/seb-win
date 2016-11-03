@@ -259,7 +259,7 @@ namespace SebWindowsClient
 
                 ReconfigureWithSettings(sebSettings);
             }
-            return false;
+            return true;
         }
 
         /// <summary>

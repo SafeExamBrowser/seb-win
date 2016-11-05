@@ -127,7 +127,7 @@ namespace SebWindowsClient.XULRunnerCommunication
             }
             else
             {
-                //send abort message
+                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.ReconfigureAborted));
             }
         }
 
@@ -191,8 +191,8 @@ namespace SebWindowsClient.XULRunnerCommunication
                 var sebxulMessage = JsonConvert.DeserializeObject<SEBXULMessage>(message);
                 switch (sebxulMessage.Handler)
                 {
-                    case SEBXULMessage.SEBXULHandler.AdditionalResourceTriggered:
-                        additionalResourceHandler.OpenAdditionalResourceById(sebxulMessage.Opts["id"]);
+                    case SEBXULMessage.SEBXULHandler.AdditionalRessourceTriggered:
+                        additionalResourceHandler.OpenAdditionalResourceById(sebxulMessage.Opts["Id"].ToString());
                         break;
                 }
             }

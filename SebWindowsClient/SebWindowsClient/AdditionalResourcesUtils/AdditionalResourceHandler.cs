@@ -38,9 +38,17 @@ namespace SebWindowsClient.AdditionalResourcesUtils
             foreach (DictObj resource in resources)
             {
                 if ((string) resource[SEBSettings.KeyAdditionalResourcesIdentifier] == id)
+                {
                     return resource;
+                }
                 else if (((ListObj) resource[SEBSettings.KeyAdditionalResources]).Count > 0)
-                    return FindResourceById(id, (ListObj) resource[SEBSettings.KeyAdditionalResources]);
+                {
+                    var res = FindResourceById(id, (ListObj) resource[SEBSettings.KeyAdditionalResources]);
+                    if (res != null)
+                    {
+                        return res;
+                    }
+                } 
             }
             return null;
         }

@@ -456,7 +456,7 @@ this.SebNet = {
 	getRegex : function (p) {
 		var reg = p.replace(convertReg, "\\$&");
 		reg = reg.replace(wildcardReg,".*?");
-		return reg;
+		return '^'+reg+'$';
 	},
 	
 	isValidUrl : function (url) {
@@ -479,6 +479,7 @@ this.SebNet = {
 			return true;
 		}
 		for (var i=0;i<whiteListRegs.length;i++) {
+			sl.debug(whiteListRegs[i]);
 			if (whiteListRegs[i].test(url)) {
 				m = true;
 				break;

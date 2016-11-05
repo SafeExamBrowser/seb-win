@@ -181,19 +181,20 @@ this.SebBrowser = {
 				return;
 			}
 			
-			if (base.linkURLS[aRequest.name] || base.linkURLS[aRequest.name.replace(/\/$/),""]) {
+			if (base.linkURLS[aRequest.name] || base.linkURLS[aRequest.name.replace(/\/$/,"")]) {
 				aRequest.cancel(aStatus);
 				base.stopLoading(this.win);
 				seb.loadAR(this.win, base.linkURLS[aRequest.name]);
 				return;
 			}
 			
-			if (!sn.isValidUrl(aRequest.name)) {
+			if (!sn.isValidUrl(aRequest.name) || !sn.isValidUrl(aRequest.name.replace(/\/$/,""))) {
 				aRequest.cancel(aStatus);
 				base.stopLoading(this.win);
 				prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 				return 1; // 0?
 			}
+			
 			if (httpReg.test(aRequest.name)) {
 				if (sn.blockHTTP) {
 					sl.debug("block http request");

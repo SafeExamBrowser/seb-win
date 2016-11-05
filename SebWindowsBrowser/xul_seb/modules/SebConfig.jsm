@@ -19,15 +19,15 @@
  *
  * Contributor(s):
  *   Stefan Schneider <schneider@hrz.uni-marburg.de>
- *   
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /* ***** GLOBAL seb SINGLETON *****
 
-* *************************************/ 
+* *************************************/
 
 /* 	for javascript module import
-	see: https://developer.mozilla.org/en/Components.utils.import 
+	see: https://developer.mozilla.org/en/Components.utils.import
 */
 this.EXPORTED_SYMBOLS = ["SebConfig"];
 
@@ -52,7 +52,7 @@ let	base = null,
 this.SebConfig =  {
 	prefsMap : {},
 	callback : null,
-	
+
 	init : function(obj) {
 		base = this;
 		seb = obj;
@@ -64,15 +64,15 @@ this.SebConfig =  {
 		base.prefsMap["pluginEnableJava"] = base.pluginEnableJava;
 		base.prefsMap["spellcheckDefault"] = base.spellcheckDefault;
 	},
-	
+
 	initConfig : function(callback) {
 		base.callback = callback;
 		base.initDefaultConfig();
 	},
-	
+
 	initDefaultConfig : function() {
 		sl.debug("initDefaultConfig");
-		
+
 		function cb(obj) {
 			if (typeof obj == "object") {
 				sl.debug("default config object found");
@@ -81,15 +81,15 @@ this.SebConfig =  {
 			}
 		}
 		let defaultFile = FileUtils.getFile("CurProcD",["default.json"], null);
-		if (defaultFile.exists()) { 
-			su.getJSON(defaultFile.path,cb); 
+		if (defaultFile.exists()) {
+			su.getJSON(defaultFile.path,cb);
 		}
-		else { 
+		else {
 				sl.err("no default config found!");
 		}
 	},
-	
-	
+
+
 	initCustomConfig : function (config) {
 		sl.debug("initCustomConfig");
 		function cb(obj) {
@@ -97,12 +97,12 @@ this.SebConfig =  {
 				sl.debug("custom config object found");
 				seb.config = su.mergeJSON(obj, seb.defaultConfig);
 				sl.debug(JSON.stringify(seb.config));
-				
-				if (!su.isEmpty(seb.config.sebPrefs)) {		
+
+				if (!su.isEmpty(seb.config.sebPrefs)) {
 					base.setPrefs(seb.config.sebPrefs);
 				}
-				
-				if (!su.isEmpty(seb.config.sebPrefsMap)) {		
+
+				if (!su.isEmpty(seb.config.sebPrefsMap)) {
 					base.setPrefsMap(seb.config.sebPrefsMap);
 				}
 				base.callback.call(null);
@@ -117,19 +117,19 @@ this.SebConfig =  {
 			let configFile = FileUtils.getFile("CurProcD",["config.json"], null);
 			if (configParam != null) {
 				sl.debug("config param found: " + configParam);
-				su.getJSON(configParam.trim(), cb); 
+				su.getJSON(configParam.trim(), cb);
 			}
 			else {
-				if (configFile.exists()) { 
-					su.getJSON(configFile.path.trim(),cb); 
+				if (configFile.exists()) {
+					su.getJSON(configFile.path.trim(),cb);
 				}
-				else { 
+				else {
 					sl.err("no config param and no default config.json!");
 				}
 			}
 		}
 	},
-	
+
 	setPref : function (k,v) {
 		switch (typeof v) {
 			case "string" :
@@ -148,16 +148,16 @@ this.SebConfig =  {
 				sl.debug("no pref type: " + k + ":" + v);
 		}
 	},
-	
+
 	setPrefs : function (ps) {
 		sl.debug("setPrefs from config object");
 		for (var k in ps) {
 			var v = ps[k];
 			sl.debug("setPref: " + k + ":" + v);
 			base.setPref(k, v);
-		}	
+		}
 	},
-	
+
 	setPrefsMap : function (pm) {
 		sl.debug("setPrefsMap from config object");
 		for (var k in pm) {
@@ -177,32 +177,32 @@ this.SebConfig =  {
 			base.setPref(k,v);
 		}
 	},
-	
+
 	browserZoomFull : function(param) {
 		var ret = (seb.config["zoomMode"] == 0) ? true : false;
 		return ret;
 	},
-	
+
 	zoomMaxPercent : function(param) {
 		var ret = (seb.config["enableZoomPage"] == false && seb.config["enableZoomText"] == false) ? 100 : 300;
 		return ret;
 	},
-	
+
 	zoomMinPercent : function(param) {
 		var ret = (seb.config["enableZoomPage"] == false && seb.config["enableZoomText"] == false) ? 100 : 30;
 		return ret;
 	},
-	
+
 	pluginEnableFlash : function(param) {
 		var ret = (seb.config["enablePlugIns"] == true) ? 2 : 0;
 		return ret;
 	},
-	
+
 	pluginEnableJava : function(param) {
 		var ret = (seb.config["enableJava"] == true) ? 2 : 0;
 		return ret;
 	},
-	
+
 	spellcheckDefault : function(param) {
 		var ret = (seb.config["allowSpellCheck"] == true) ? 2 : 0;
 		return ret;

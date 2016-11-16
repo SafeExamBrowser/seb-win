@@ -181,7 +181,7 @@ namespace SebWindowsClient
             string[] args = Environment.GetCommandLineArgs();
 
             string es = string.Join(", ", args);
-            Logger.AddError("OnLoad EventArgs: " + es, null, null);
+            Logger.AddInformation("OnLoad EventArgs: " + es, null, null);
 
             if (args.Length > 1)
             {

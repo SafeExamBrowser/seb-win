@@ -244,7 +244,7 @@ namespace SebWindowsClient
                     return false;
                 }
                 clientSettingsSet = true;
-                Logger.AddError("SEB client configuration set in InitSebSettings().", null, null);
+                Logger.AddInformation("SEB client configuration set in InitSebSettings().", null, null);
             }
 
             // Check system version

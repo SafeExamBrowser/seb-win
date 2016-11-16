@@ -143,7 +143,7 @@ namespace SebWindowsClient
             string[] args = Environment.GetCommandLineArgs();
 
             string es = string.Join(", ", args);
-            Logger.AddError("OnLoad EventArgs: " + es, null, null);
+            Logger.AddInformation("OnLoad EventArgs: " + es, null, null);
 
             if (args.Length > 1)
             {
@@ -167,7 +167,7 @@ namespace SebWindowsClient
                     if (SEBClientInfo.SetSebClientConfiguration())
                     {
                         SebWindowsClientMain.clientSettingsSet = true;
-                        Logger.AddError("SEB client configuration set in LoadFile(URI).", null, null);
+                        Logger.AddInformation("SEB client configuration set in LoadFile(URI).", null, null);
                     }
                 }
                 byte[] sebSettings = null;

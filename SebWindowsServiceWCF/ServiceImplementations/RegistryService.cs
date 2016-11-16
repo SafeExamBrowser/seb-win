@@ -176,7 +176,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
             //Use Automatic Update Class
             try
             {
-                var auc = new AutomaticUpdatesClass();
+                var auc = new AutomaticUpdates();
 
                 if (enable)
                     auc.Resume();

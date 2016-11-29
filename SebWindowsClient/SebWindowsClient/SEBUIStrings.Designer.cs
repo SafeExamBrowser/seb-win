@@ -700,7 +700,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Local client settings of SEB have been reconfigured. Do you want to start working with SEB now? (clicking &quot;No&quot; will quit SEB).
+        ///   Looks up a localized string similar to New settings have been saved, they will be used when you start SEB next time again. Do you want to start working with SEB or quit for now?.
         /// </summary>
         public static string sebReconfiguredQuestion {
             get {

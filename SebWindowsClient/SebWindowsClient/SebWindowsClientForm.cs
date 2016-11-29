@@ -1689,7 +1689,10 @@ namespace SebWindowsClient
                 // ShutDown Processes
 
                 //Deregister SEB closed Event
-                xulRunner.Exited -= xulRunner_Exited;
+                if (xulRunner != null)
+                {
+                    xulRunner.Exited -= xulRunner_Exited;   
+                }
 
                 Logger.AddInformation("closing processes that where started by seb");
                 for(int i = 0; i < permittedProcessesReferences.Count; i++)

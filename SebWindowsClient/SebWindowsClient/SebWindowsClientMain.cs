@@ -121,6 +121,7 @@ namespace SebWindowsClient
             Application.SetCompatibleTextRenderingDefault(false);
 
             string[] arguments = Environment.GetCommandLineArgs();
+            Logger.InitLogger();
             Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
             Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
 

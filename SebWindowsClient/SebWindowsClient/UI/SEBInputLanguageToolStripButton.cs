@@ -45,21 +45,23 @@ namespace SebWindowsClient.UI
                     throw new NotSupportedException("There is only one keyboard layout available");
                 }
 
-                SEBWindowHandler.ForegroundWatchDog.OnForegroundWindowChanged += handle => SetKeyboardLayoutAccordingToIndex();
-
-                languages = new IntPtr[InputLanguage.InstalledInputLanguages.Count];
-                for (int i = 0; i < InputLanguage.InstalledInputLanguages.Count; i++)
+                if (OSVersion.IsWindows7)
                 {
-                    languages[i] =
-                        LoadKeyboardLayout(
-                            InputLanguage.InstalledInputLanguages[i].Culture.KeyboardLayoutId.ToString("X8"), 1);
-                }
+                    SEBWindowHandler.ForegroundWatchDog.OnForegroundWindowChanged += handle => SetKeyboardLayoutAccordingToIndex();
+                    languages = new IntPtr[InputLanguage.InstalledInputLanguages.Count];
+                    for (int i = 0; i < InputLanguage.InstalledInputLanguages.Count; i++)
+                    {
+                        languages[i] =
+                            LoadKeyboardLayout(
+                                InputLanguage.InstalledInputLanguages[i].Culture.KeyboardLayoutId.ToString("X8"), 1);
+                    }
 
-                //Start the update timer
-                timer = new Timer();
-                timer.Tick += (x, y) => UpdateDisplayText();
-                timer.Interval = 1000;
-                timer.Start();
+                    //Start the update timer
+                    timer = new Timer();
+                    timer.Tick += (x, y) => UpdateDisplayText();
+                    timer.Interval = 1000;
+                    timer.Start();
+                }
             }
             catch (Exception ex)
             {
@@ -74,17 +76,18 @@ namespace SebWindowsClient.UI
             {
                 InputLanguage.CurrentInputLanguage = InputLanguage.InstalledInputLanguages[currentIndex];
 
-                var threadIdOfCurrentForegroundWindow = GetWindowThreadProcessId(SEBWindowHandler.GetForegroundWindow(), IntPtr.Zero);
-                var currentKeyboardLayout = GetKeyboardLayout(threadIdOfCurrentForegroundWindow);
-
-                //This is for Windows 7
-                if (languages[currentIndex].ToInt32() != currentKeyboardLayout)
+                if (OSVersion.IsWindows7)
                 {
-                    PostMessage(SEBWindowHandler.GetForegroundWindow(),
-                        WM_INPUTLANGCHANGEREQUEST,
-                        IntPtr.Zero,
-                        languages[currentIndex]
-                    );
+                    var threadIdOfCurrentForegroundWindow = GetWindowThreadProcessId(SEBWindowHandler.GetForegroundWindow(), IntPtr.Zero);
+                    var currentKeyboardLayout = GetKeyboardLayout(threadIdOfCurrentForegroundWindow);
+                    if (languages[currentIndex].ToInt32() != currentKeyboardLayout)
+                    {
+                        PostMessage(SEBWindowHandler.GetForegroundWindow(),
+                            WM_INPUTLANGCHANGEREQUEST,
+                            IntPtr.Zero,
+                            languages[currentIndex]
+                        );
+                    }
                 }
             }
             catch (Exception ex)

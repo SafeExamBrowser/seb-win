@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockShortcutsUtils\SebKeyCapture.cs" />
+    <Compile Include="DiagnosticsUtils\OSVersion.cs" />
     <Compile Include="ProcessUtils\ProcessInfo.cs" />
     <Compile Include="ProcessUtils\SEBProcessHandler.cs" />
     <Compile Include="ProcessUtils\SEBWindowHandler.cs" />

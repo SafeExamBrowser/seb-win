@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace SebWindowsServiceWCF
+namespace SebWindowsClient.DiagnosticsUtils
 {
     public static class OSVersion
     {

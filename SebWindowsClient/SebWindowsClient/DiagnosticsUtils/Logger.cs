@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using SebWindowsClient.ConfigurationUtils;
 
 namespace SebWindowsClient.DiagnosticsUtils
@@ -51,8 +52,10 @@ namespace SebWindowsClient.DiagnosticsUtils
             }
             catch (Exception)
             {
-                LogFilePath = String.Format(@"{0}\{1}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SEBClientInfo.MANUFACTURER_LOCAL);
+                LogFilePath = String.Format(@"{0}\{1}\{2}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SEBClientInfo.MANUFACTURER_LOCAL, SEBClientInfo.SEB_CLIENT_LOG);
             }
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Logger.AddInformation(String.Format("SEB version: {0}",version));
         }
 
         private static string LogFilePath { get; set; }

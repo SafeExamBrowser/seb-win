@@ -1711,7 +1711,7 @@ namespace SebWindowsClient
                         if (proc != null && !proc.HasExited)
                         {
                             Logger.AddInformation("attempting to close " + proc.ProcessName);
-                            SEBNotAllowedProcessController.CloseProcess(proc);   
+                            SEBNotAllowedProcessController.CloseProcess(proc);
                         }
                     }
                     catch (Exception ex)

@@ -592,13 +592,19 @@ namespace SebWindowsConfig
             checkBoxUsePassiveFTPMode.Checked = (Boolean)SEBSettings.proxiesData[SEBSettings.KeyFTPPassive];
 
             // Group "Security"
-             listBoxSebServicePolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebServicePolicy];
+            listBoxSebServicePolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebServicePolicy];
             checkBoxAllowVirtualMachine.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVirtualMachine];
             radioCreateNewDesktop.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
             radioKillExplorerShell.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell];
             radioNoKiosMode.Checked = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] && !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
+
+            listBoxMinMacOSVersion.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion];
             checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
             checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
+            checkBoxAllowDisplayMirroring.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDisplayMirroring];
+            comboBoxMainBrowserWindowWidth.Text = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber]).ToString();
+            checkBoxUseBuiltInDisplay.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplayBuiltin];
+
             checkBoxEnableLogging.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableLogging];
             textBoxLogDirectoryWin.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyLogDirectoryWin];
             if (String.IsNullOrEmpty(textBoxLogDirectoryWin.Text))
@@ -3842,10 +3848,19 @@ namespace SebWindowsConfig
 
         private void comboBoxMaxNumberDisplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SEBSettings.intArrayCurrent[SEBSettings.ValMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.SelectedIndex;
-            SEBSettings.strArrayCurrent[SEBSettings.ValMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.Text;
+            SEBSettings.intArrayCurrent[SEBSettings.ValMaxNumberDisplays] = comboBoxMaxNumberDisplays.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValMaxNumberDisplays] = comboBoxMaxNumberDisplays.Text;
             //SEBSettings.settingsCurrent[SEBSettings.KeyMainBrowserWindowWidth] = comboBoxMainBrowserWindowWidth.SelectedIndex;
-            SEBSettings.settingsCurrent[SEBSettings.KeyMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.Text;
+            int maxNumberDisplaysInt;
+            bool isValid = int.TryParse(comboBoxMaxNumberDisplays.Text, out maxNumberDisplaysInt);
+            if (!isValid)
+            {
+                maxNumberDisplaysInt = 1;
+                comboBoxMaxNumberDisplays.SelectedIndex = 0;
+                //comboBoxMaxNumberDisplays.Text = "1";
+            }
+
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber] = maxNumberDisplaysInt;
         }
 
         private void listBoxMinMacOSVersion_SelectedIndexChanged(object sender, EventArgs e)

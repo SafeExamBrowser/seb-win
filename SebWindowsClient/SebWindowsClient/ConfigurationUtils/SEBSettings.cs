@@ -73,8 +73,9 @@ namespace SebWindowsClient.ConfigurationUtils
         public const int ValMainBrowserWindowHeight      = 3;
         public const int ValNewBrowserWindowByLinkWidth  = 4;
         public const int ValNewBrowserWindowByLinkHeight = 5;
-        public const int ValTaskBarHeight                = 6;
-        public const int ValNum = 6;
+        public const int ValTaskBarHeight = 6;
+        public const int ValMaxNumberDisplays = 7;
+        public const int ValNum = 7;
 
         // Keys not belonging to any group
         public const String KeyOriginatorVersion = "originatorVersion";
@@ -291,13 +292,18 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyAllowVirtualMachine = "allowVirtualMachine";
         public const String KeyCreateNewDesktop    = "createNewDesktop";
         public const String KeyKillExplorerShell   = "killExplorerShell";
-        public const String KeyAllowUserSwitching = "allowUserSwitching";
-        public const String KeyEnableAppSwitcherCheck = "enableAppSwitcherCheck";
-        public const String KeyForceAppFolderInstall = "forceAppFolderInstall";
         public const String KeyEnableLogging       = "enableLogging";
         public const String KeyLogDirectoryOSX     = "logDirectoryOSX";
         public const String KeyLogDirectoryWin     = "logDirectoryWin";
         public const String KeyAllowWLAN     = "allowWlan";
+
+        public const String KeyMinMacOSVersion = "minMacOSVersion";
+        public const String KeyAllowUserSwitching = "allowUserSwitching";
+        public const String KeyEnableAppSwitcherCheck = "enableAppSwitcherCheck";
+        public const String KeyForceAppFolderInstall = "forceAppFolderInstall";
+        public const String KeyAllowDisplayMirroring = "allowDisplayMirroring";
+        public const String KeyAllowedDisplaysMaxNumber = "allowedDisplaysMaxNumber";
+        public const String KeyAllowedDisplayBuiltin = "allowedDisplayBuiltin";
 
         // Group "Registry"
 
@@ -785,6 +791,10 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowUserSwitching, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAppSwitcherCheck, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyForceAppFolderInstall, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyMinMacOSVersion, 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowDisplayMirroring, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplaysMaxNumber, 1);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplayBuiltin, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableLogging, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryOSX    , "~/Documents");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryWin    , "");

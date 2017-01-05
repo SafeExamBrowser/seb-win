@@ -208,8 +208,9 @@ namespace SebWindowsConfig
         static  String[]  StringPolicyLinkOpening         = new  String[3];
         static  String[]  StringPolicyFileUpload          = new  String[3];
         static  String[]  StringPolicyProxySettings       = new  String[2];
-        static  String[]  StringPolicySebService          = new  String[3];
-        static  String[]  StringFunctionKey               = new  String[12];
+        static String[] StringPolicySebService = new String[3];
+        static String[] StringMinMacOSVersions = new String[6];
+        static String[] StringFunctionKey = new String[12];
         static  String[]  StringActive                    = new  String[2];
         static  String[]  StringOS                        = new  String[2];
         static  String[]  StringAction                    = new  String[5];
@@ -326,6 +327,15 @@ namespace SebWindowsConfig
             StringPolicySebService[0] = "allow to run SEB without service";
             StringPolicySebService[1] = "display warning when service is not running";
             StringPolicySebService[2] = "allow to use SEB only with service";
+
+            // Define the strings for the Min macOS Version
+            StringMinMacOSVersions[0] = "OS X 10.7 Lion";
+            StringMinMacOSVersions[1] = "OS X 10.8 Mountain Lion";
+            StringMinMacOSVersions[2] = "OS X 10.9 Mavericks";
+            StringMinMacOSVersions[3] = "OS X 10.10 Yosemite";
+            StringMinMacOSVersions[4] = "OS X 10.11 El Capitan";
+            StringMinMacOSVersions[5] = "macOS 10.12 Sierra";
+
 
             // Define the strings for the Function Keys F1, F2, ..., F12
             for (int i = 1; i <= 12; i++)
@@ -458,6 +468,9 @@ namespace SebWindowsConfig
              listBoxChooseFileToUploadPolicy.Items.AddRange(StringPolicyFileUpload);
              listBoxSebServicePolicy        .Items.AddRange(StringPolicySebService);
 
+
+             listBoxMinMacOSVersion.Items.AddRange(StringMinMacOSVersions);
+             
             // Initialise the DataGridViews:
             // Set "AllowUserToAddRows" to false, to avoid an initial empty first row
             // Set "RowHeadersVisible"  to false, to avoid an initial empty first column

@@ -597,7 +597,6 @@ namespace SebWindowsConfig
             radioCreateNewDesktop.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
             radioKillExplorerShell.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell];
             radioNoKiosMode.Checked = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] && !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
-            checkBoxAllowUserSwitching.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching];
             checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
             checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
             checkBoxEnableLogging.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableLogging];
@@ -3335,11 +3334,6 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyAllowWLAN] = checkboxAllowWlan.Checked;
         }
 
-        private void checkBoxAllowUserSwitching_CheckedChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching] = checkBoxAllowUserSwitching.Checked;
-        }
-
         private void checkBoxEnableAppSwitcherCheck_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck] = checkBoxEnableAppSwitcherCheck.Checked;
@@ -3412,6 +3406,17 @@ namespace SebWindowsConfig
             string path = textBoxLogDirectoryOSX.Text;
             SEBSettings.settingsCurrent[SEBSettings.KeyLogDirectoryOSX] = path;
         }
+
+
+        // ****************
+        // Sub-Group "OS Specific Settings"
+        // ****************
+
+        // ****************
+        // Tab "macOS"
+        // ****************
+
+
 
 
         // ****************
@@ -3823,6 +3828,29 @@ namespace SebWindowsConfig
             {
                 SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 2;
             }
+        }
+
+        private void checkBoxAllowDisplayMirroring_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowDisplayMirroring] = checkBoxAllowDisplayMirroring.Checked;
+        }
+
+        private void checkBoxUseBuiltInDisplay_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplayBuiltin] = checkBoxUseBuiltInDisplay.Checked;
+        }
+
+        private void comboBoxMaxNumberDisplays_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SEBSettings.intArrayCurrent[SEBSettings.ValMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.Text;
+            //SEBSettings.settingsCurrent[SEBSettings.KeyMainBrowserWindowWidth] = comboBoxMainBrowserWindowWidth.SelectedIndex;
+            SEBSettings.settingsCurrent[SEBSettings.KeyMainBrowserWindowWidth] = comboBoxMaxNumberDisplays.Text;
+        }
+
+        private void listBoxMinMacOSVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = listBoxMinMacOSVersion.SelectedIndex;
         }
 
     } // end of   class     SebWindowsConfigForm

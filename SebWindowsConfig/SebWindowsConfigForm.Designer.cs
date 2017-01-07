@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1073,6 +1073,7 @@
             this.comboBoxMaxNumberDisplays.TabIndex = 98;
             this.toolTip1.SetToolTip(this.comboBoxMaxNumberDisplays, "Window width in pixel or percentage of total screen width.");
             this.comboBoxMaxNumberDisplays.SelectedIndexChanged += new System.EventHandler(this.comboBoxMaxNumberDisplays_SelectedIndexChanged);
+            this.comboBoxMaxNumberDisplays.TextUpdate += new System.EventHandler(this.comboBoxMaxNumberDisplays_TextUpdate);
             // 
             // label11
             // 
@@ -1639,8 +1640,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;

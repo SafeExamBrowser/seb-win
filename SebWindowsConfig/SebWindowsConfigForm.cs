@@ -602,7 +602,7 @@ namespace SebWindowsConfig
             checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
             checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
             checkBoxAllowDisplayMirroring.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDisplayMirroring];
-            comboBoxMainBrowserWindowWidth.Text = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber]).ToString();
+            comboBoxMaxNumberDisplays.Text = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber]).ToString();
             checkBoxUseBuiltInDisplay.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplayBuiltin];
 
             checkBoxEnableLogging.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableLogging];
@@ -3848,9 +3848,18 @@ namespace SebWindowsConfig
 
         private void comboBoxMaxNumberDisplays_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBoxMaxNumberDisplays_updateSettings();
+        }
+
+        private void comboBoxMaxNumberDisplays_TextUpdate(object sender, EventArgs e)
+        {
+            comboBoxMaxNumberDisplays_updateSettings();
+        }
+
+        private void comboBoxMaxNumberDisplays_updateSettings()
+        {
             SEBSettings.intArrayCurrent[SEBSettings.ValMaxNumberDisplays] = comboBoxMaxNumberDisplays.SelectedIndex;
             SEBSettings.strArrayCurrent[SEBSettings.ValMaxNumberDisplays] = comboBoxMaxNumberDisplays.Text;
-            //SEBSettings.settingsCurrent[SEBSettings.KeyMainBrowserWindowWidth] = comboBoxMainBrowserWindowWidth.SelectedIndex;
             int maxNumberDisplaysInt;
             bool isValid = int.TryParse(comboBoxMaxNumberDisplays.Text, out maxNumberDisplaysInt);
             if (!isValid)

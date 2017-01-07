@@ -21,7 +21,7 @@ using PlistCS;
 //
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2016 Daniel R. Schneider, 
+//  Copyright (c) 2010-2017 Daniel R. Schneider, 
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -43,7 +43,7 @@ using PlistCS;
 //
 //  The Initial Developer of the Original Code is Daniel R. Schneider.
 //  Portions created by Daniel R. Schneider
-//  are Copyright (c) 2010-2016 Daniel R. Schneider, 
+//  are Copyright (c) 2010-2017 Daniel R. Schneider, 
 //  ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.

@@ -560,7 +560,6 @@ namespace SebWindowsClient.CryptographyUtils
 				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
 				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_SEBSERVICE),
 				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
-				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_INTEROP),
 			};
 
             var SEBBrowserDirectory = Path.Combine(SEBDirectory, SEBClientInfo.SEB_BROWSER_DIRECTORY);

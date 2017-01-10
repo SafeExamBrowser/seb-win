@@ -566,7 +566,10 @@ namespace SebWindowsClient.CryptographyUtils
             var SEBBrowserDirectory = Path.Combine(SEBDirectory, SEBClientInfo.SEB_BROWSER_DIRECTORY);
             if (Directory.Exists(SEBBrowserDirectory))
 			{
-                fileNames.AddRange(Directory.GetFiles(SEBBrowserDirectory, "*.*", SearchOption.AllDirectories));
+                List<string> browserFiles = new List<string>(Directory.GetFiles(SEBBrowserDirectory, "*.*", SearchOption.AllDirectories));
+                browserFiles = browserFiles.Where(x => !x.EndsWith(".gitignore") && !x.EndsWith(".DS_Store")).ToList();
+                browserFiles.Sort();
+                fileNames.AddRange(browserFiles);
 			}
             return ComputeHashForFiles(fileNames);
         }

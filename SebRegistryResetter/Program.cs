@@ -113,7 +113,8 @@ namespace SebRegistryResetter
             Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
             var username = Console.ReadLine();
             var sid = SIDHandler.GetSIDFromUsername(username);
-            if (sid == "")
+            Console.WriteLine("Username: {0} / Password: {1}",username, sid);
+            if (string.IsNullOrWhiteSpace(sid))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("User not found in the registry!");
@@ -144,6 +145,8 @@ namespace SebRegistryResetter
             {
                 try
                 {
+                    Console.WriteLine(@"Trying to set {0}\{1} to 0",entry.RegistryPath,entry.DataItemName);
+                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
                     if (entry.DataValue != null)
                     {
                         entry.DataValue = 0;
@@ -164,6 +167,8 @@ namespace SebRegistryResetter
             {
                 try
                 {
+                    Console.WriteLine(@"Trying to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName);
+                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
                     if (entry.DataValue != null)
                     {
                         entry.DataValue = 1;

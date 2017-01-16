@@ -23,6 +23,11 @@ namespace SebWindowsServiceWCF.ServiceImplementations
             {
                 var account = new NTAccount(username);
                 var sid = (SecurityIdentifier) account.Translate(typeof(SecurityIdentifier));
+                var sidString = sid.ToString();
+                if (string.IsNullOrWhiteSpace(sidString))
+                {
+                    throw new Exception("SID Empty");
+                }
                 return sid.ToString();
             }
             catch (Exception ex)

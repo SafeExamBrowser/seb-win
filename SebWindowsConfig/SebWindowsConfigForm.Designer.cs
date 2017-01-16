@@ -72,6 +72,17 @@
             this.checkBoxInsideSebEnableEaseOfAccess = new System.Windows.Forms.CheckBox();
             this.checkBoxInsideSebEnableVmWareClientShade = new System.Windows.Forms.CheckBox();
             this.tabPageSecurity = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tabControlOSSpecificSettings = new System.Windows.Forms.TabControl();
+            this.tabPageMacOS = new System.Windows.Forms.TabPage();
+            this.checkBoxUseBuiltInDisplay = new System.Windows.Forms.CheckBox();
+            this.comboBoxMaxNumberDisplays = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.checkBoxAllowDisplayMirroring = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.listBoxMinMacOSVersion = new System.Windows.Forms.ListBox();
+            this.checkBoxEnableAppSwitcherCheck = new System.Windows.Forms.CheckBox();
+            this.checkBoxForceAppFolderInstall = new System.Windows.Forms.CheckBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.checkBoxEnableLogging = new System.Windows.Forms.CheckBox();
             this.buttonLogDirectoryWin = new System.Windows.Forms.Button();
@@ -79,14 +90,11 @@
             this.textBoxLogDirectoryWin = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.checkBoxUseStandardDirectory = new System.Windows.Forms.CheckBox();
-            this.checkBoxEnableAppSwitcherCheck = new System.Windows.Forms.CheckBox();
-            this.checkBoxForceAppFolderInstall = new System.Windows.Forms.CheckBox();
             this.checkBoxEnableScreenCapture = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.radioNoKiosMode = new System.Windows.Forms.RadioButton();
             this.radioCreateNewDesktop = new System.Windows.Forms.RadioButton();
             this.radioKillExplorerShell = new System.Windows.Forms.RadioButton();
-            this.checkBoxAllowUserSwitching = new System.Windows.Forms.CheckBox();
             this.labelSebServicePolicy = new System.Windows.Forms.Label();
             this.listBoxSebServicePolicy = new System.Windows.Forms.ListBox();
             this.checkBoxAllowVirtualMachine = new System.Windows.Forms.CheckBox();
@@ -389,6 +397,8 @@
             this.tabPageRegistry.SuspendLayout();
             this.groupBoxInsideSeb.SuspendLayout();
             this.tabPageSecurity.SuspendLayout();
+            this.tabControlOSSpecificSettings.SuspendLayout();
+            this.tabPageMacOS.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPageNetwork.SuspendLayout();
@@ -983,12 +993,11 @@
             // 
             // tabPageSecurity
             // 
+            this.tabPageSecurity.Controls.Add(this.label9);
+            this.tabPageSecurity.Controls.Add(this.tabControlOSSpecificSettings);
             this.tabPageSecurity.Controls.Add(this.groupBox10);
-            this.tabPageSecurity.Controls.Add(this.checkBoxEnableAppSwitcherCheck);
-            this.tabPageSecurity.Controls.Add(this.checkBoxForceAppFolderInstall);
             this.tabPageSecurity.Controls.Add(this.checkBoxEnableScreenCapture);
             this.tabPageSecurity.Controls.Add(this.groupBox3);
-            this.tabPageSecurity.Controls.Add(this.checkBoxAllowUserSwitching);
             this.tabPageSecurity.Controls.Add(this.labelSebServicePolicy);
             this.tabPageSecurity.Controls.Add(this.listBoxSebServicePolicy);
             this.tabPageSecurity.Controls.Add(this.checkBoxAllowVirtualMachine);
@@ -1001,6 +1010,146 @@
             this.tabPageSecurity.TabIndex = 24;
             this.tabPageSecurity.Text = "Security";
             this.tabPageSecurity.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(602, 27);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(104, 13);
+            this.label9.TabIndex = 97;
+            this.label9.Text = "OS Specific Settings";
+            // 
+            // tabControlOSSpecificSettings
+            // 
+            this.tabControlOSSpecificSettings.Controls.Add(this.tabPageMacOS);
+            this.tabControlOSSpecificSettings.Location = new System.Drawing.Point(601, 46);
+            this.tabControlOSSpecificSettings.Name = "tabControlOSSpecificSettings";
+            this.tabControlOSSpecificSettings.SelectedIndex = 0;
+            this.tabControlOSSpecificSettings.Size = new System.Drawing.Size(464, 429);
+            this.tabControlOSSpecificSettings.TabIndex = 96;
+            // 
+            // tabPageMacOS
+            // 
+            this.tabPageMacOS.Controls.Add(this.checkBoxUseBuiltInDisplay);
+            this.tabPageMacOS.Controls.Add(this.comboBoxMaxNumberDisplays);
+            this.tabPageMacOS.Controls.Add(this.label11);
+            this.tabPageMacOS.Controls.Add(this.checkBoxAllowDisplayMirroring);
+            this.tabPageMacOS.Controls.Add(this.label10);
+            this.tabPageMacOS.Controls.Add(this.listBoxMinMacOSVersion);
+            this.tabPageMacOS.Controls.Add(this.checkBoxEnableAppSwitcherCheck);
+            this.tabPageMacOS.Controls.Add(this.checkBoxForceAppFolderInstall);
+            this.tabPageMacOS.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMacOS.Name = "tabPageMacOS";
+            this.tabPageMacOS.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMacOS.Size = new System.Drawing.Size(456, 403);
+            this.tabPageMacOS.TabIndex = 0;
+            this.tabPageMacOS.Text = "macOS";
+            this.tabPageMacOS.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUseBuiltInDisplay
+            // 
+            this.checkBoxUseBuiltInDisplay.AutoSize = true;
+            this.checkBoxUseBuiltInDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxUseBuiltInDisplay.Location = new System.Drawing.Point(331, 217);
+            this.checkBoxUseBuiltInDisplay.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxUseBuiltInDisplay.Name = "checkBoxUseBuiltInDisplay";
+            this.checkBoxUseBuiltInDisplay.Size = new System.Drawing.Size(113, 17);
+            this.checkBoxUseBuiltInDisplay.TabIndex = 100;
+            this.checkBoxUseBuiltInDisplay.Text = "Use built-in display";
+            this.toolTip1.SetToolTip(this.checkBoxUseBuiltInDisplay, "Use the built-in display (if available) when only one display is allowed or after" +
+        " switching off display mirroring");
+            this.checkBoxUseBuiltInDisplay.UseVisualStyleBackColor = true;
+            this.checkBoxUseBuiltInDisplay.CheckedChanged += new System.EventHandler(this.checkBoxUseBuiltInDisplay_CheckedChanged);
+            // 
+            // comboBoxMaxNumberDisplays
+            // 
+            this.comboBoxMaxNumberDisplays.FormattingEnabled = true;
+            this.comboBoxMaxNumberDisplays.Location = new System.Drawing.Point(387, 192);
+            this.comboBoxMaxNumberDisplays.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxMaxNumberDisplays.Name = "comboBoxMaxNumberDisplays";
+            this.comboBoxMaxNumberDisplays.Size = new System.Drawing.Size(50, 21);
+            this.comboBoxMaxNumberDisplays.TabIndex = 98;
+            this.toolTip1.SetToolTip(this.comboBoxMaxNumberDisplays, "Window width in pixel or percentage of total screen width.");
+            this.comboBoxMaxNumberDisplays.SelectedIndexChanged += new System.EventHandler(this.comboBoxMaxNumberDisplays_SelectedIndexChanged);
+            this.comboBoxMaxNumberDisplays.TextUpdate += new System.EventHandler(this.comboBoxMaxNumberDisplays_TextUpdate);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(150, 195);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(233, 13);
+            this.label11.TabIndex = 99;
+            this.label11.Text = "maximum allowed number of connected displays";
+            // 
+            // checkBoxAllowDisplayMirroring
+            // 
+            this.checkBoxAllowDisplayMirroring.AutoSize = true;
+            this.checkBoxAllowDisplayMirroring.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxAllowDisplayMirroring.Location = new System.Drawing.Point(18, 173);
+            this.checkBoxAllowDisplayMirroring.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAllowDisplayMirroring.Name = "checkBoxAllowDisplayMirroring";
+            this.checkBoxAllowDisplayMirroring.Size = new System.Drawing.Size(263, 17);
+            this.checkBoxAllowDisplayMirroring.TabIndex = 97;
+            this.checkBoxAllowDisplayMirroring.Text = "Allow display mirroring (affects also AirPlay Display)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowDisplayMirroring, "If not selected, SEB prevents to mirror the main display to another");
+            this.checkBoxAllowDisplayMirroring.UseVisualStyleBackColor = true;
+            this.checkBoxAllowDisplayMirroring.CheckedChanged += new System.EventHandler(this.checkBoxAllowDisplayMirroring_CheckedChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 13);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(162, 13);
+            this.label10.TabIndex = 96;
+            this.label10.Text = "Enforce minimum macOS version";
+            // 
+            // listBoxMinMacOSVersion
+            // 
+            this.listBoxMinMacOSVersion.FormattingEnabled = true;
+            this.listBoxMinMacOSVersion.Location = new System.Drawing.Point(18, 31);
+            this.listBoxMinMacOSVersion.Margin = new System.Windows.Forms.Padding(2);
+            this.listBoxMinMacOSVersion.Name = "listBoxMinMacOSVersion";
+            this.listBoxMinMacOSVersion.Size = new System.Drawing.Size(282, 82);
+            this.listBoxMinMacOSVersion.TabIndex = 95;
+            this.toolTip1.SetToolTip(this.listBoxMinMacOSVersion, "SEB refuses to run on an older system version");
+            this.listBoxMinMacOSVersion.SelectedIndexChanged += new System.EventHandler(this.listBoxMinMacOSVersion_SelectedIndexChanged);
+            // 
+            // checkBoxEnableAppSwitcherCheck
+            // 
+            this.checkBoxEnableAppSwitcherCheck.AutoSize = true;
+            this.checkBoxEnableAppSwitcherCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxEnableAppSwitcherCheck.Location = new System.Drawing.Point(18, 131);
+            this.checkBoxEnableAppSwitcherCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxEnableAppSwitcherCheck.Name = "checkBoxEnableAppSwitcherCheck";
+            this.checkBoxEnableAppSwitcherCheck.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxEnableAppSwitcherCheck.TabIndex = 94;
+            this.checkBoxEnableAppSwitcherCheck.Text = "Disable app switcher when starting";
+            this.toolTip1.SetToolTip(this.checkBoxEnableAppSwitcherCheck, "SEB checks for the command key being held down while SEB is starting up. This pre" +
+        "vents using the application switcher to mess with SEB\'s kiosk mode");
+            this.checkBoxEnableAppSwitcherCheck.UseVisualStyleBackColor = true;
+            this.checkBoxEnableAppSwitcherCheck.CheckedChanged += new System.EventHandler(this.checkBoxEnableAppSwitcherCheck_CheckedChanged);
+            // 
+            // checkBoxForceAppFolderInstall
+            // 
+            this.checkBoxForceAppFolderInstall.AutoSize = true;
+            this.checkBoxForceAppFolderInstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxForceAppFolderInstall.Location = new System.Drawing.Point(18, 152);
+            this.checkBoxForceAppFolderInstall.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxForceAppFolderInstall.Name = "checkBoxForceAppFolderInstall";
+            this.checkBoxForceAppFolderInstall.Size = new System.Drawing.Size(205, 17);
+            this.checkBoxForceAppFolderInstall.TabIndex = 93;
+            this.checkBoxForceAppFolderInstall.Text = "Force installation in Applications folder";
+            this.toolTip1.SetToolTip(this.checkBoxForceAppFolderInstall, "SEB enforces to be installed in an Applications folder (/Applications or ~/Applic" +
+        "ations)");
+            this.checkBoxForceAppFolderInstall.UseVisualStyleBackColor = true;
+            this.checkBoxForceAppFolderInstall.CheckedChanged += new System.EventHandler(this.checkBoxForceAppFolderInstall_CheckedChanged);
             // 
             // groupBox10
             // 
@@ -1085,36 +1234,6 @@
             this.checkBoxUseStandardDirectory.UseVisualStyleBackColor = true;
             this.checkBoxUseStandardDirectory.CheckedChanged += new System.EventHandler(this.checkBoxUseStandardDirectory_CheckedChanged);
             // 
-            // checkBoxEnableAppSwitcherCheck
-            // 
-            this.checkBoxEnableAppSwitcherCheck.AutoSize = true;
-            this.checkBoxEnableAppSwitcherCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxEnableAppSwitcherCheck.Location = new System.Drawing.Point(343, 129);
-            this.checkBoxEnableAppSwitcherCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxEnableAppSwitcherCheck.Name = "checkBoxEnableAppSwitcherCheck";
-            this.checkBoxEnableAppSwitcherCheck.Size = new System.Drawing.Size(220, 17);
-            this.checkBoxEnableAppSwitcherCheck.TabIndex = 94;
-            this.checkBoxEnableAppSwitcherCheck.Text = "Disable app switcher when starting (Mac)";
-            this.toolTip1.SetToolTip(this.checkBoxEnableAppSwitcherCheck, "SEB checks for the command key being held down while SEB is starting up. This pre" +
-        "vents using the application switcher to mess with SEB\'s kiosk mode");
-            this.checkBoxEnableAppSwitcherCheck.UseVisualStyleBackColor = true;
-            this.checkBoxEnableAppSwitcherCheck.CheckedChanged += new System.EventHandler(this.checkBoxEnableAppSwitcherCheck_CheckedChanged);
-            // 
-            // checkBoxForceAppFolderInstall
-            // 
-            this.checkBoxForceAppFolderInstall.AutoSize = true;
-            this.checkBoxForceAppFolderInstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxForceAppFolderInstall.Location = new System.Drawing.Point(343, 150);
-            this.checkBoxForceAppFolderInstall.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxForceAppFolderInstall.Name = "checkBoxForceAppFolderInstall";
-            this.checkBoxForceAppFolderInstall.Size = new System.Drawing.Size(235, 17);
-            this.checkBoxForceAppFolderInstall.TabIndex = 93;
-            this.checkBoxForceAppFolderInstall.Text = "Force installation in Applications folder (Mac)";
-            this.toolTip1.SetToolTip(this.checkBoxForceAppFolderInstall, "SEB enforces to be installed in an Applications folder (/Applications or ~/Applic" +
-        "ations)");
-            this.checkBoxForceAppFolderInstall.UseVisualStyleBackColor = true;
-            this.checkBoxForceAppFolderInstall.CheckedChanged += new System.EventHandler(this.checkBoxForceAppFolderInstall_CheckedChanged);
-            // 
             // checkBoxEnableScreenCapture
             // 
             this.checkBoxEnableScreenCapture.AutoSize = true;
@@ -1189,21 +1308,6 @@
         "the Windows onscreen keyboard.");
             this.radioKillExplorerShell.UseVisualStyleBackColor = true;
             this.radioKillExplorerShell.CheckedChanged += new System.EventHandler(this.radioKillExplorerShell_CheckedChanged);
-            // 
-            // checkBoxAllowUserSwitching
-            // 
-            this.checkBoxAllowUserSwitching.AutoSize = true;
-            this.checkBoxAllowUserSwitching.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowUserSwitching.Location = new System.Drawing.Point(23, 171);
-            this.checkBoxAllowUserSwitching.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxAllowUserSwitching.Name = "checkBoxAllowUserSwitching";
-            this.checkBoxAllowUserSwitching.Size = new System.Drawing.Size(151, 17);
-            this.checkBoxAllowUserSwitching.TabIndex = 4;
-            this.checkBoxAllowUserSwitching.Text = "Allow user switching (Mac)";
-            this.toolTip1.SetToolTip(this.checkBoxAllowUserSwitching, "Usually Fast User Switching shouldn\'t be allowed on BYOD exam clients");
-            this.checkBoxAllowUserSwitching.UseVisualStyleBackColor = true;
-            this.checkBoxAllowUserSwitching.Visible = false;
-            this.checkBoxAllowUserSwitching.CheckedChanged += new System.EventHandler(this.checkBoxAllowUserSwitching_CheckedChanged);
             // 
             // labelSebServicePolicy
             // 
@@ -4949,6 +5053,9 @@
             this.groupBoxInsideSeb.PerformLayout();
             this.tabPageSecurity.ResumeLayout(false);
             this.tabPageSecurity.PerformLayout();
+            this.tabControlOSSpecificSettings.ResumeLayout(false);
+            this.tabPageMacOS.ResumeLayout(false);
+            this.tabPageMacOS.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -5071,7 +5178,6 @@
         private System.Windows.Forms.CheckBox checkBoxInsideSebEnableEaseOfAccess;
         private System.Windows.Forms.CheckBox checkBoxInsideSebEnableVmWareClientShade;
         private System.Windows.Forms.TabPage tabPageSecurity;
-        private System.Windows.Forms.CheckBox checkBoxAllowUserSwitching;
         private System.Windows.Forms.Label labelSebServicePolicy;
         private System.Windows.Forms.ListBox listBoxSebServicePolicy;
         private System.Windows.Forms.CheckBox checkBoxEnableLogging;
@@ -5386,6 +5492,15 @@
         private System.Windows.Forms.CheckBox checkBoxInsideSebEnableNetworkConnectionSelector;
         private System.Windows.Forms.CheckBox checkBoxAllowPDFPlugIn;
         private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabControl tabControlOSSpecificSettings;
+        private System.Windows.Forms.TabPage tabPageMacOS;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ListBox listBoxMinMacOSVersion;
+        private System.Windows.Forms.CheckBox checkBoxAllowDisplayMirroring;
+        private System.Windows.Forms.CheckBox checkBoxUseBuiltInDisplay;
+        private System.Windows.Forms.ComboBox comboBoxMaxNumberDisplays;
+        private System.Windows.Forms.Label label11;
 
     }
 }

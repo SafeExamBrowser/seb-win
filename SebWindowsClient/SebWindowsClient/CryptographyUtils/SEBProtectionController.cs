@@ -88,11 +88,17 @@ namespace SebWindowsClient.CryptographyUtils
         {
             ArrayList certificates = new ArrayList();
 
-            // First search the certificate store for the current user
+            // First search the Personal (standard) certificate store for the current user
             X509Store store = new X509Store(StoreLocation.CurrentUser);
             certificates = GetCertificatesAndNamesFromStore(ref certificateNames, store);
 
-            // If the certificate wasn't found there, search the store for the local machine
+            // Also search the store for Trusted Users
+            ArrayList certificateNamesTrustedUsers = new ArrayList();
+            store = new X509Store(StoreName.TrustedPeople);
+            certificates.AddRange(GetCertificatesAndNamesFromStore(ref certificateNamesTrustedUsers, store));
+            certificateNames.AddRange(certificateNamesTrustedUsers);
+
+            // Also search the Personal store for the local machine
             ArrayList certificateNamesLocalMachine = new ArrayList();
             store = new X509Store(StoreLocation.LocalMachine);
             certificates.AddRange(GetCertificatesAndNamesFromStore(ref certificateNamesLocalMachine, store));
@@ -200,11 +206,18 @@ namespace SebWindowsClient.CryptographyUtils
         {
             X509Certificate2 sebCertificate = null;
 
-            // First search the certificate store for the current user
+            // First search the Personal certificate store for the current user
             X509Store store = new X509Store(StoreLocation.CurrentUser);
             sebCertificate = GetCertificateFromPassedStore(publicKeyHash, store);
 
-            // If the certificate wasn't found there, search the store for the local machine
+            // If the certificate wasn't found there, search the store for Trusted People
+            if (sebCertificate == null)
+            {
+                store = new X509Store(StoreName.TrustedPeople);
+                sebCertificate = GetCertificateFromPassedStore(publicKeyHash, store);
+            }
+
+            // If the certificate wasn't found there, search the Personal store for the local machine
             if (sebCertificate == null)
             {
                 store = new X509Store(StoreLocation.LocalMachine);
@@ -248,14 +261,14 @@ namespace SebWindowsClient.CryptographyUtils
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
-        ///  Store certificate into the store.
+        ///  Store certificate into the Windows Certificate Store.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
         public static void StoreCertificateIntoStore(byte[] certificateData)
         {
-            X509Certificate2 x509 = new X509Certificate2();
-            X509Store store;
+            X509Store store = null;
 
+            // Save the certificate into the Personal store
             try
             {
                 store = new X509Store(StoreLocation.CurrentUser);
@@ -264,8 +277,39 @@ namespace SebWindowsClient.CryptographyUtils
             catch (Exception storeOpenException)
             {
                 Logger.AddError("The X509 store in Windows Certificate Store could not be opened: ", null, storeOpenException, storeOpenException.Message);
+            }
+
+            if (store != null)
+            {
+                StoreCertificateIntoPassedStore(certificateData, store);
+            }
+
+            // In addition try to save the certificate into the Trusted People store for the Local Machine
+            // This will only work if SEB is run in an administrator account
+            try
+            {
+                store = new X509Store(StoreName.TrustedPeople, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+            }
+            catch (Exception storeOpenException)
+            {
+                Logger.AddError("The X509 Trusted People store in Windows Certificate Store for Local Machine could not be opened: ", null, storeOpenException, storeOpenException.Message);
                 return;
             }
+
+            StoreCertificateIntoPassedStore(certificateData, store);
+
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        ///  Store certificate into the passed, already opened store.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public static void StoreCertificateIntoPassedStore(byte[] certificateData, X509Store store)
+        {
+            X509Certificate2 x509 = new X509Certificate2();
+
 
             try
             {

@@ -23,12 +23,10 @@ namespace SebWindowsClient.UI
         [DllImport("user32.dll")]
         static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr id);
 
-
         [DllImport("user32.dll")]
         static extern uint GetKeyboardLayout(uint idThread);
 
         private const int WM_INPUTLANGCHANGEREQUEST = 0x0050;
-
 
         public SEBInputLanguageToolStripButton()
         {
@@ -66,8 +64,8 @@ namespace SebWindowsClient.UI
             catch (Exception ex)
             {
                 base.Enabled = false;
-                UpdateDisplayText();
             }
+            UpdateDisplayText();
         }
 
         private void SetKeyboardLayoutAccordingToIndex()

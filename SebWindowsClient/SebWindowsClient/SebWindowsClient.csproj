@@ -346,6 +346,7 @@
     <Content Include="Resources\restartExam.png" />
     <Content Include="Resources\loading.gif" />
     <Content Include="Resources\SEBCloseWindowIcon.png" />
+    <None Include="Resources\skipBack.png" />
     <Content Include="SEBicon.ico" />
   </ItemGroup>
   <ItemGroup>

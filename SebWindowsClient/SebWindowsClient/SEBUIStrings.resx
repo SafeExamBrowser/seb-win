@@ -262,10 +262,10 @@
     <value>Do you really want to reload the current web page?</value>
   </data>
   <data name="restartExamDefaultTitle" xml:space="preserve">
-    <value>Restart Exam</value>
+    <value>Back to Start</value>
   </data>
   <data name="restartExamEnterPassword" xml:space="preserve">
-    <value>Enter quit/restart password:</value>
+    <value>Enter quit/restart password: (This function doesn't log you out if you are logged in on a website)</value>
   </data>
   <data name="savingSettingsFailed" xml:space="preserve">
     <value>Saving Settings Failed</value>
@@ -400,7 +400,7 @@
     <value>Wrong quit/restart password</value>
   </data>
   <data name="restartExamConfirm" xml:space="preserve">
-    <value>Are you sure?</value>
+    <value>Are you sure? (This function doesn't log you out if you are logged in on a website)</value>
   </data>
   <data name="WlanConnectionFailedMessage" xml:space="preserve">
     <value>Connection to WLAN failed, try again.</value>

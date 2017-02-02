@@ -259,10 +259,10 @@
     <value>Wollen Sie die geöffnete Webseite wirklich neu laden?</value>
   </data>
   <data name="restartExamDefaultTitle" xml:space="preserve">
-    <value>Prüfung neu starten</value>
+    <value>Zurück zum Start</value>
   </data>
   <data name="restartExamEnterPassword" xml:space="preserve">
-    <value>Beenden-/Neustart-Passwort eingeben:</value>
+    <value>Beenden-/Neustart-Passwort eingeben: (Diese Funktion loggt Sie nicht aus, falls Sie sich auf einer Website eingeloggt haben)</value>
   </data>
   <data name="sebFileTypeName" xml:space="preserve">
     <value>SEB Konfigurationsdateien</value>
@@ -340,7 +340,7 @@
     <value>SEB wird beendet, versuchen Sie, SEB neu zu starten. Wenn dies nicht hilft, starten Sie Ihren Rechner neu.</value>
   </data>
   <data name="restartExamConfirm" xml:space="preserve">
-    <value>Sind Sie sicher?</value>
+    <value>Sind Sie sicher? (Diese Funktion loggt Sie nicht aus, falls Sie sich auf einer Website eingeloggt haben)</value>
   </data>
   <data name="wrongQuitRestartPasswordText" xml:space="preserve">
     <value>Falsches Beenden-/Neustart-Passwort</value>

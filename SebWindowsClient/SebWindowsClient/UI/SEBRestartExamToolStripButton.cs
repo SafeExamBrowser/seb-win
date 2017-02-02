@@ -26,7 +26,7 @@ namespace SebWindowsClient.UI
                 restartExamTitle = SEBUIStrings.restartExamDefaultTitle;
             }
             this.ToolTipText = restartExamTitle;
-            base.Image = (Bitmap)Resources.ResourceManager.GetObject("restartExam");
+            base.Image = (Bitmap)Resources.ResourceManager.GetObject("skipBack");
             this.Alignment = ToolStripItemAlignment.Right;
         }
 

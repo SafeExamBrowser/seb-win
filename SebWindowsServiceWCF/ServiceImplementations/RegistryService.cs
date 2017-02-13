@@ -109,14 +109,18 @@ namespace SebWindowsServiceWCF.ServiceImplementations
             {
                 using (var persistentRegistryFile = new PersistentRegistryFile())
                 {
-                    //Reset the registry values
-                    res = this.SetRegistryEntries(persistentRegistryFile.FileContent.RegistryValues, persistentRegistryFile.FileContent.SID, persistentRegistryFile.FileContent.Username);
-                    //Enable the windows Service if necessary
-                    if (persistentRegistryFile.FileContent.EnableWindowsUpdate)
-                        SetWindowsUpdate(true);
+                    if (persistentRegistryFile.FileContent.Username != null)
+                    {
+                        //Reset the registry values
+                        res = this.SetRegistryEntries(persistentRegistryFile.FileContent.RegistryValues,
+                            persistentRegistryFile.FileContent.SID, persistentRegistryFile.FileContent.Username);
+                        //Enable the windows Service if necessary
+                        if (persistentRegistryFile.FileContent.EnableWindowsUpdate)
+                            SetWindowsUpdate(true);
 
-                    if(res)
-                        persistentRegistryFile.Delete();
+                        if (res)
+                            persistentRegistryFile.Delete();
+                    }
                 }
             }
             catch (Exception ex)

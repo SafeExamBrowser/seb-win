@@ -21,8 +21,8 @@
 	"layout.spellcheckDefault" 	: { "cb" : "spellcheckDefault" }
 },
 "sebServer": {
-	"url"    : "https://localhost:8442/websocket/index.html",
-	"socket" : "wss://localhost:8442"
+	"url"    : "https://www.simple.org:8442/websocket/index.html",
+	"socket" : "wss://www.simple.org:8442"
 },
 "sebScreenshot":false,
 "sebScreenshotImageType":"image/jpeg",
@@ -39,7 +39,7 @@
 "blockPopUpWindows":false,
 "browserExamKey":"SEBKEY",
 "browserMessagingPingTime":120000,
-"browserMessagingSocket":"ws://localhost:8706",
+"browserMessagingSocket":"ws://www.simple.org:8706",
 "browserMessagingSocketEnabled":true,
 "browserScreenKeyboard":false,
 "browserURLSalt":true,
@@ -76,7 +76,7 @@
 "sendBrowserExamKey":true,
 "showReloadWarning" : true,
 "showTaskBar":false,
-"startURL":"https://localhost:8443/demo/test.html",
+"startURL":"https://www.simple.org:8443/demo/test.html",
 "taskBarHeight":0,
 "touchOptimized":false,
 "urlFilterTrustedContent":true,

@@ -103,13 +103,13 @@
       </Directory>
 
       <!-- Reference to the ProgramData directory -->
-      <Directory Id="CommonAppDataFolder">
-        <!-- Hard coded to SafeExamBrowser, because that's what the binary looks for.
+      <!--<Directory Id="CommonAppDataFolder">
+        --><!-- Hard coded to SafeExamBrowser, because that's what the binary looks for.
              If the name gets changed as part of the customisation, then this will also
              need to be changed.
-        -->
+        --><!--
         <Directory Id="ProgramDataFolder" Name="SafeExamBrowser" />
-      </Directory>
+      </Directory>-->
 
       <!-- Directory structure looks like:
         Program Files
@@ -178,9 +178,6 @@
       <Component Id="IconLibDLL" Guid="{F797C5AE-87C5-455E-9A32-C6B4BB181FDF}">
         <File Source="$(var.IconLib.TargetPath)" />
       </Component>
-      <Component Id="InteropWUApiLibDLL" Guid="{9BC9EB33-9432-4CB5-9632-8A13DD2CCB6D}">
-        <File Source="$(var.SebRegistryResetter.TargetDir)/Interop.WUApiLib.dll" />
-      </Component>
       <Component Id="MetroFramework" Guid="{1565CAB5-6C9B-4503-ABE9-7A922C92B5E2}">
         <File Source="$(var.MetroFramework.TargetPath)" />
       </Component>
@@ -216,9 +213,6 @@
     </ComponentGroup>
 
     <ComponentGroup Id="SebWindowsServiceWCFComponent" Directory="InstallSebWindowsServiceWcfFolder">
-      <Component Id="InteropWUApiLibDLL_1" Guid="{B608ED2C-0195-4599-85CE-C8D42477F245}">
-        <File Id="InteropWUApiLibDLL_1" Source="$(var.SebRegistryResetter.TargetDir)/Interop.WUApiLib.dll" />
-      </Component>
       <Component Id="SEBWindowsServiceContractsDLL_1" Guid="{A567EC1B-D703-47BA-8E32-FCA19E131C24}">
         <File Id="SEBWindowsServiceContractsDLL_1" Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
       </Component>
@@ -258,13 +252,13 @@
       <?endif?>
     </ComponentGroup>
 
-    <ComponentGroup Id="DesktopShortcutComponents" Directory="DesktopFolder">
+    <!--<ComponentGroup Id="DesktopShortcutComponents" Directory="DesktopFolder">
       <Component Id="SebDesktopShortcutComponent" Guid="{BD3857EC-64AC-4923-BB56-A5E1E0420D22}">
         <Shortcut Id="SebDesktopShortcut" Name="$(var.BrowserShortcutName)" Description="$(var.ProductName)"
                   Target="[INSTALL_FOLDER]/$(var.SebWindowsClient.TargetFileName)" WorkingDirectory="INSTALL_FOLDER" />
         <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
-    </ComponentGroup>
+    </ComponentGroup>-->
 
     <ComponentGroup Id="ProgramDataComponents" Directory="ProgramDataFolder">
       <?ifdef DefaultSebClientSettingsFile?>

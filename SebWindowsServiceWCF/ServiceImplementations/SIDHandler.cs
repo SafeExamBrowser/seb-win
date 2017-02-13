@@ -21,20 +21,21 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         {
             try
             {
-                var account = new NTAccount(username);
-                var sid = (SecurityIdentifier) account.Translate(typeof(SecurityIdentifier));
-                var sidString = sid.ToString();
-                if (string.IsNullOrWhiteSpace(sidString))
-                {
-                    throw new Exception("SID Empty");
-                }
-                return sid.ToString();
+                return GetSid(username);
             }
             catch (Exception ex)
             {
                 try
                 {
-                    return GetSid(username);
+                    //Alternative Method
+                    var account = new NTAccount(username);
+                    var sid = (SecurityIdentifier)account.Translate(typeof(SecurityIdentifier));
+                    var sidString = sid.ToString();
+                    if (string.IsNullOrWhiteSpace(sidString))
+                    {
+                        throw new Exception("SID Empty");
+                    }
+                    return sid.ToString();
                 }
                 catch (Exception)
                 {

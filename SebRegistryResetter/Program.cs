@@ -113,7 +113,7 @@ namespace SebRegistryResetter
             Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
             var username = Console.ReadLine();
             var sid = SIDHandler.GetSIDFromUsername(username);
-            Console.WriteLine("Username: {0} / Password: {1}",username, sid);
+            Console.WriteLine("Username: {0} / SID: {1}",username, sid);
             if (string.IsNullOrWhiteSpace(sid))
             {
                 Console.ForegroundColor = ConsoleColor.Red;

@@ -1057,22 +1057,21 @@ namespace SebWindowsClient
                 {
                     if (processReference == null || processReference.HasExited == true)
                     {
-                        string permittedProcessCall = (string)permittedProcessesCalls[i];
-                        Process newProcess = CreateProcessWithExitHandler(permittedProcessCall);
-                        permittedProcessesReferences[i] = newProcess;
+                        StartPermittedProcessById(i);
                     }
                     else
                     {
                         processReference.Refresh();
 
                         //If the process has no mainWindowHandle try to find the window that belongs to the WindowHandlingProcess of the process (defined in config) which then is set to the tooltip of the button :)
-                        if (processReference.MainWindowHandle == IntPtr.Zero && !String.IsNullOrWhiteSpace(toolStripButton.WindowHandlingProcess))
+                        if (processReference.MainWindowHandle == IntPtr.Zero &&
+                            !String.IsNullOrWhiteSpace(toolStripButton.WindowHandlingProcess))
                         {
                             foreach (var oW in SEBWindowHandler.GetOpenWindows())
                             {
                                 var proc = oW.Key.GetProcess();
                                 if (toolStripButton.WindowHandlingProcess.ToLower()
-                                    .Contains(proc.GetExecutableName().ToLower())
+                                        .Contains(proc.GetExecutableName().ToLower())
                                     ||
                                     proc.GetExecutableName()
                                         .ToLower()
@@ -1081,21 +1080,34 @@ namespace SebWindowsClient
                                     processReference = proc;
                                     break;
                                 }
-                            }                            
+                            }
                         }
 
                         //If the process still ha no mainWindowHandle try open by window name comparing with title set in config which then is set to the tooltip of the button :)
-                        if(processReference.MainWindowHandle == IntPtr.Zero)
-                            processReference = SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
+                        if (processReference.MainWindowHandle == IntPtr.Zero)
+                            processReference =
+                                SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
 
-                        new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
+                        new WindowChooser(processReference, ((ToolStripButton) sender).Bounds.X,
+                            Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
                     }
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    StartPermittedProcessById(i);
                 }
                 catch (Exception ex)
                 {
                     Logger.AddError("Error when trying to start permitted process by clicking in SEB taskbar: ", null, ex);
                 }
             }
+        }
+
+        private void StartPermittedProcessById(int id)
+        {
+            string permittedProcessCall = (string)permittedProcessesCalls[id];
+            Process newProcess = CreateProcessWithExitHandler(permittedProcessCall);
+            permittedProcessesReferences[id] = newProcess;
         }
 
         /// ----------------------------------------------------------------------------------------

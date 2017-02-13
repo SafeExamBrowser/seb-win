@@ -43,7 +43,7 @@
       <ComponentGroupRef Id="SebWindowsResourcesComponent" />
       <ComponentGroupRef Id="SebWindowsServiceWCFComponent" />
       <ComponentGroupRef Id="StartMenuShortcutComponents" />
-      <ComponentGroupRef Id="DesktopShortcutComponents" />
+      <!--<ComponentGroupRef Id="DesktopShortcutComponents" />-->
       <ComponentGroupRef Id="ProgramDataComponents" />
 
       <!-- The xul components were auto generated via heat:
@@ -103,13 +103,13 @@
       </Directory>
 
       <!-- Reference to the ProgramData directory -->
-      <!--<Directory Id="CommonAppDataFolder">
-        --><!-- Hard coded to SafeExamBrowser, because that's what the binary looks for.
+      <Directory Id="CommonAppDataFolder">
+        <!-- Hard coded to SafeExamBrowser, because that's what the binary looks for.
              If the name gets changed as part of the customisation, then this will also
              need to be changed.
-        --><!--
+        -->
         <Directory Id="ProgramDataFolder" Name="SafeExamBrowser" />
-      </Directory>-->
+      </Directory>
 
       <!-- Directory structure looks like:
         Program Files

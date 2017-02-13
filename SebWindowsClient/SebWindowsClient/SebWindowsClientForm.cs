@@ -1046,22 +1046,21 @@ namespace SebWindowsClient
                 {
                     if (processReference == null || processReference.HasExited == true)
                     {
-                        string permittedProcessCall = (string)permittedProcessesCalls[i];
-                        Process newProcess = CreateProcessWithExitHandler(permittedProcessCall);
-                        permittedProcessesReferences[i] = newProcess;
+                        StartPermittedProcessById(i);
                     }
                     else
                     {
                         processReference.Refresh();
 
                         //If the process has no mainWindowHandle try to find the window that belongs to the WindowHandlingProcess of the process (defined in config) which then is set to the tooltip of the button :)
-                        if (processReference.MainWindowHandle == IntPtr.Zero && !String.IsNullOrWhiteSpace(toolStripButton.WindowHandlingProcess))
+                        if (processReference.MainWindowHandle == IntPtr.Zero &&
+                            !String.IsNullOrWhiteSpace(toolStripButton.WindowHandlingProcess))
                         {
                             foreach (var oW in SEBWindowHandler.GetOpenWindows())
                             {
                                 var proc = oW.Key.GetProcess();
                                 if (toolStripButton.WindowHandlingProcess.ToLower()
-                                    .Contains(proc.GetExecutableName().ToLower())
+                                        .Contains(proc.GetExecutableName().ToLower())
                                     ||
                                     proc.GetExecutableName()
                                         .ToLower()
@@ -1070,13 +1069,15 @@ namespace SebWindowsClient
                                     processReference = proc;
                                     break;
                                 }
-                            }                            
+                            }
                         }
 
                         //If the process still ha no mainWindowHandle try open by window name comparing with title set in config which then is set to the tooltip of the button :)
-                        if(processReference.MainWindowHandle == IntPtr.Zero)
-                            processReference = SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
+                        if (processReference.MainWindowHandle == IntPtr.Zero)
+                            processReference =
+                                SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
 
+<<<<<<< HEAD
                         new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
 
                         //IntPtr handle = processReference.MainWindowHandle;
@@ -1092,7 +1093,15 @@ namespace SebWindowsClient
 
                         //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
                         //SetForegroundWindow(handle);
+=======
+                        new WindowChooser(processReference, ((ToolStripButton) sender).Bounds.X,
+                            Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
+>>>>>>> 8a1497c... SEBWIN-50 Handling disposed Processreferences of third party applications
                     }
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    StartPermittedProcessById(i);
                 }
                 catch (Exception ex)
                 {
@@ -1110,6 +1119,13 @@ namespace SebWindowsClient
             if (IsIconic(hWnd)) ShowWindow(hWnd, SW_RESTORE);
             SetForegroundWindow(hWnd);
             return true;
+        }
+
+        private void StartPermittedProcessById(int id)
+        {
+            string permittedProcessCall = (string)permittedProcessesCalls[id];
+            Process newProcess = CreateProcessWithExitHandler(permittedProcessCall);
+            permittedProcessesReferences[id] = newProcess;
         }
 
         /// ----------------------------------------------------------------------------------------

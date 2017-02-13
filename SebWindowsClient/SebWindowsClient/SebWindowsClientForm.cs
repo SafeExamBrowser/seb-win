@@ -1077,9 +1077,6 @@ namespace SebWindowsClient
                             processReference =
                                 SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
 
-<<<<<<< HEAD
-                        new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
-
                         //IntPtr handle = processReference.MainWindowHandle;
                         //if (handle == IntPtr.Zero)
                         //{
@@ -1093,10 +1090,10 @@ namespace SebWindowsClient
 
                         //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
                         //SetForegroundWindow(handle);
-=======
+
                         new WindowChooser(processReference, ((ToolStripButton) sender).Bounds.X,
                             Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
->>>>>>> 8a1497c... SEBWIN-50 Handling disposed Processreferences of third party applications
+
                     }
                 }
                 catch (ObjectDisposedException ex)

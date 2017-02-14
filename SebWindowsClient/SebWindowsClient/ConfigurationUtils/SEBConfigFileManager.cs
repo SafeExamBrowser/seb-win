@@ -53,6 +53,7 @@ namespace SebWindowsClient.ConfigurationUtils
         // Prefixes
         private const int PREFIX_LENGTH = 4;
         private const string PUBLIC_KEY_HASH_MODE = "pkhs";
+        private const string PUBLIC_SYMMETRIC_KEY_MODE = "pskh";
         private const string PASSWORD_MODE = "pswd";
         private const string PLAIN_DATA_MODE = "plnd";
         private const string PASSWORD_CONFIGURING_CLIENT_MODE = "pwcc";
@@ -198,6 +199,23 @@ namespace SebWindowsClient.ConfigurationUtils
             prefixString = GetPrefixStringFromData(ref sebData);
 
             //// Check prefix identifying encryption modes
+
+            // Prefix = pksh ("Public-Symmetric Key Hash") ?
+
+            if (prefixString.CompareTo(PUBLIC_SYMMETRIC_KEY_MODE) == 0)
+            {
+
+                // Decrypt with cryptographic identity/private and symmetric key
+                sebData = DecryptDataWithPublicKeyHashPrefix(sebData, forEditing, ref sebFileCertificateRef);
+                if (sebData == null)
+                {
+                    return null;
+                }
+
+                // Get 4-char prefix again
+                // and remaining data without prefix, which is either plain or still encoded with password
+                prefixString = GetPrefixStringFromData(ref sebData);
+            }
 
             // Prefix = pkhs ("Public Key Hash") ?
 

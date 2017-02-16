@@ -609,7 +609,27 @@ namespace SebWindowsClient.ConfigurationUtils
             // in the variable which was passed as reference when calling this method
             if (forEditing) sebFileCertificateRef = certificateRef;
 
-            sebData = SEBProtectionController.DecryptDataWithCertificate(sebData, certificateRef);
+            // Are we using the new identity certificate decryption with a symmetric key?
+            if (usingSymmetricKey)
+            {
+                // Get length of the encrypted symmetric key
+                Int32 encryptedSymmetricKeyLength = BitConverter.ToInt32(GetPrefixDataFromData(ref sebData, sizeof(Int32)), 0);
+                // Get encrypted symmetric key
+                byte[] encryptedSymmetricKey = GetPrefixDataFromData(ref sebData, encryptedSymmetricKeyLength);
+                // Decrypt symmetric key
+                byte[] symmetricKey = SEBProtectionController.DecryptDataWithCertificate(encryptedSymmetricKey, certificateRef);
+                if (symmetricKey == null)
+                {
+                    return null;
+                }
+                string symmetricKeyString = Convert.ToBase64String(symmetricKey);
+                // Decrypt config file data using the symmetric key as password
+                sebData = SEBProtectionController.DecryptDataWithPassword(sebData, symmetricKeyString);
+            }
+            else
+            {
+                sebData = SEBProtectionController.DecryptDataWithCertificate(sebData, certificateRef);
+            }
 
             return sebData;
         }

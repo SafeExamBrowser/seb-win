@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1611,8 +1611,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle4;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -5153,7 +5153,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxUseOldAsymmetricOnlyEncryption.AutoSize = true;
             this.checkBoxUseOldAsymmetricOnlyEncryption.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxUseOldAsymmetricOnlyEncryption.Location = new System.Drawing.Point(261, 178);
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Location = new System.Drawing.Point(261, 176);
             this.checkBoxUseOldAsymmetricOnlyEncryption.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxUseOldAsymmetricOnlyEncryption.Name = "checkBoxUseOldAsymmetricOnlyEncryption";
             this.checkBoxUseOldAsymmetricOnlyEncryption.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -5163,6 +5163,7 @@ namespace SebWindowsConfig
             this.toolTip1.SetToolTip(this.checkBoxUseOldAsymmetricOnlyEncryption, "The new asymmetric/symmetric encryption is much faster especially for large confi" +
         "g files with embedded resources.");
             this.checkBoxUseOldAsymmetricOnlyEncryption.UseVisualStyleBackColor = true;
+            this.checkBoxUseOldAsymmetricOnlyEncryption.CheckedChanged += new System.EventHandler(this.checkBoxUseOldAsymmetricOnlyEncryption_CheckedChanged);
             // 
             // SebWindowsConfigForm
             // 

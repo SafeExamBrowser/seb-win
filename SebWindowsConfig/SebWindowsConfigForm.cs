@@ -315,6 +315,7 @@ namespace SebWindowsConfig
             radioButtonStartingAnExam     .Checked =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 0);
             radioButtonConfiguringAClient .Checked =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] == 1);
             checkBoxAllowPreferencesWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowPreferencesWindow];
+            checkBoxUseOldAsymmetricOnlyEncryption.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyUseAsymmetricOnlyEncryption];
             comboBoxCryptoIdentity.SelectedIndex   =          SEBSettings.intArrayCurrent[SEBSettings.ValCryptoIdentity];
 
             // If the settings password local variable contains a hash (and it isn't empty)
@@ -990,6 +991,11 @@ namespace SebWindowsConfig
         {
             SEBSettings.intArrayCurrent[SEBSettings.ValCryptoIdentity] = comboBoxCryptoIdentity.SelectedIndex;
             SEBSettings.strArrayCurrent[SEBSettings.ValCryptoIdentity] = comboBoxCryptoIdentity.Text;
+        }
+
+        private void checkBoxUseOldAsymmetricOnlyEncryption_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyUseAsymmetricOnlyEncryption] = checkBoxUseOldAsymmetricOnlyEncryption.Checked;
         }
 
         private void textBoxSettingsPassword_TextChanged(object sender, EventArgs e)

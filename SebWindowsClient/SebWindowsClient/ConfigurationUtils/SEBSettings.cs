@@ -99,6 +99,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeySebConfigPurpose        = "sebConfigPurpose";
         public const String KeyAllowPreferencesWindow  = "allowPreferencesWindow";
         public const String KeyCryptoIdentity          = "cryptoIdentity";
+        public const String KeyUseAsymmetricOnlyEncryption = "useAsymmetricOnlyEncryption";
 
         // Group "Appearance"
         public const String KeyBrowserViewMode              = "browserViewMode";
@@ -548,7 +549,7 @@ namespace SebWindowsClient.ConfigurationUtils
             // Default settings for group "Config File"
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPreferencesWindow , true);
-            //SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedSettingsPassword , "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyUseAsymmetricOnlyEncryption, false);
 
             // CryptoIdentity is stored additionally
             SEBSettings.intArrayDefault[SEBSettings.ValCryptoIdentity] = 0;

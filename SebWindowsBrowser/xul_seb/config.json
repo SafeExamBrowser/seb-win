@@ -200,7 +200,7 @@
 "mainBrowserWindowWidth":"100%",
 "newBrowserWindowByLinkBlockForeign":false,
 "newBrowserWindowByLinkHeight":"600",
-"newBrowserWindowByLinkNavigation": true,
+"newBrowserWindowNavigation": true,
 "newBrowserWindowByLinkPolicy":2,
 "newBrowserWindowByLinkPositioning":1,
 "newBrowserWindowByLinkWidth":"800",

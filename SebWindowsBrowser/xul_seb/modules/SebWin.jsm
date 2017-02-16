@@ -297,7 +297,7 @@ this.SebWin = {
 			}
 		}
 		else { // popup
-			if (su.getConfig("newBrowserWindowByLinkNavigation", "boolean", false)) {
+			if (su.getConfig("newBrowserWindowNavigation", "boolean", false)) {
 				tb.className = (su.getConfig("touchOptimized", "boolean", false)) ? "tbTouch" : "tbDesktop";
 				ib.className = (su.getConfig("touchOptimized", "boolean", false)) ? "tbTouch" : "tbDesktop";
 				win.document.getElementById("btnBack").className = "hidden";

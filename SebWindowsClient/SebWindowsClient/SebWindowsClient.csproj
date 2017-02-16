@@ -366,9 +366,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\refresh.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -393,7 +390,6 @@
     <Content Include="NAudio.dll" />
     <Content Include="Resources\reload.png" />
     <None Include="Resources\resource.png" />
-    <None Include="Resources\resource.bmp" />
     <Content Include="Resources\restartExam.png" />
     <Content Include="Resources\loading.gif" />
     <Content Include="Resources\SEBCloseWindowIcon.png" />

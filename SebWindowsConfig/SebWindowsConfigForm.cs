@@ -224,6 +224,7 @@ namespace SebWindowsConfig
             if (selectedCertificate > 0)
             {
                 fileCertificateRef = (X509Certificate2)certificateReferences[selectedCertificate-1];
+
             } //comboBoxCryptoIdentity.SelectedIndex;
 
             // Get selected config purpose
@@ -370,8 +371,9 @@ namespace SebWindowsConfig
             checkBoxEnableJava              .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJava];
             checkBoxEnableJavaScript        .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJavaScript];
             checkBoxBlockPopUpWindows       .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBlockPopUpWindows];
-            checkBoxAllowBrowsingBackForward.Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
-            checkBoxRemoveProfile           .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
+            checkBoxAllowBrowsingBackForward.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
+            checkBoxAllowNavigationNewWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowNavigation];
+            checkBoxRemoveProfile.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
             checkBoxDisableLocalStorage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDisableLocalStorage];
             checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
             // BEWARE: you must invert this value since "Use Without" is "Not Enable"!
@@ -1665,6 +1667,11 @@ namespace SebWindowsConfig
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward] = checkBoxAllowBrowsingBackForward.Checked;
             checkBoxEnableAltMouseWheel.Checked = checkBoxAllowBrowsingBackForward.Checked;
+        }
+
+        private void checkBoxAllowNavigationNewWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowNavigation] = checkBoxAllowNavigationNewWindow.Checked;
         }
 
         private void checkBoxRemoveProfile_CheckedChanged(object sender, EventArgs e)

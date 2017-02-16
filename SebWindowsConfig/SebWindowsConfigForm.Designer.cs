@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -399,6 +399,7 @@ namespace SebWindowsConfig
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxUseOldAsymmetricOnlyEncryption = new System.Windows.Forms.CheckBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1610,8 +1611,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -4317,6 +4318,7 @@ namespace SebWindowsConfig
             // 
             // tabPageConfigFile
             // 
+            this.tabPageConfigFile.Controls.Add(this.checkBoxUseOldAsymmetricOnlyEncryption);
             this.tabPageConfigFile.Controls.Add(this.buttonConfigureClient);
             this.tabPageConfigFile.Controls.Add(this.label8);
             this.tabPageConfigFile.Controls.Add(this.buttonEditDuplicate);
@@ -4354,7 +4356,7 @@ namespace SebWindowsConfig
             // buttonConfigureClient
             // 
             this.buttonConfigureClient.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonConfigureClient.Location = new System.Drawing.Point(380, 348);
+            this.buttonConfigureClient.Location = new System.Drawing.Point(380, 361);
             this.buttonConfigureClient.Margin = new System.Windows.Forms.Padding(2);
             this.buttonConfigureClient.Name = "buttonConfigureClient";
             this.buttonConfigureClient.Size = new System.Drawing.Size(143, 32);
@@ -4367,7 +4369,7 @@ namespace SebWindowsConfig
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(376, 283);
+            this.label8.Location = new System.Drawing.Point(376, 296);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(125, 13);
@@ -4377,7 +4379,7 @@ namespace SebWindowsConfig
             // buttonEditDuplicate
             // 
             this.buttonEditDuplicate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditDuplicate.Location = new System.Drawing.Point(380, 306);
+            this.buttonEditDuplicate.Location = new System.Drawing.Point(380, 319);
             this.buttonEditDuplicate.Margin = new System.Windows.Forms.Padding(2);
             this.buttonEditDuplicate.Name = "buttonEditDuplicate";
             this.buttonEditDuplicate.Size = new System.Drawing.Size(143, 32);
@@ -4390,7 +4392,7 @@ namespace SebWindowsConfig
             // buttonApplyAndStartSEB
             // 
             this.buttonApplyAndStartSEB.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonApplyAndStartSEB.Location = new System.Drawing.Point(380, 391);
+            this.buttonApplyAndStartSEB.Location = new System.Drawing.Point(380, 404);
             this.buttonApplyAndStartSEB.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApplyAndStartSEB.Name = "buttonApplyAndStartSEB";
             this.buttonApplyAndStartSEB.Size = new System.Drawing.Size(143, 32);
@@ -4403,7 +4405,7 @@ namespace SebWindowsConfig
             // buttonRevertToLocalClientSettings
             // 
             this.buttonRevertToLocalClientSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRevertToLocalClientSettings.Location = new System.Drawing.Point(204, 348);
+            this.buttonRevertToLocalClientSettings.Location = new System.Drawing.Point(204, 361);
             this.buttonRevertToLocalClientSettings.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRevertToLocalClientSettings.Name = "buttonRevertToLocalClientSettings";
             this.buttonRevertToLocalClientSettings.Size = new System.Drawing.Size(143, 32);
@@ -4416,7 +4418,7 @@ namespace SebWindowsConfig
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(202, 283);
+            this.label7.Location = new System.Drawing.Point(202, 296);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 13);
@@ -4426,7 +4428,7 @@ namespace SebWindowsConfig
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 283);
+            this.label6.Location = new System.Drawing.Point(27, 296);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(94, 13);
@@ -4437,7 +4439,7 @@ namespace SebWindowsConfig
             // buttonSaveSettings
             // 
             this.buttonSaveSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveSettings.Location = new System.Drawing.Point(29, 348);
+            this.buttonSaveSettings.Location = new System.Drawing.Point(29, 361);
             this.buttonSaveSettings.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSaveSettings.Name = "buttonSaveSettings";
             this.buttonSaveSettings.Size = new System.Drawing.Size(143, 32);
@@ -4452,7 +4454,7 @@ namespace SebWindowsConfig
             this.labelSettingsPasswordCompare.AutoSize = true;
             this.labelSettingsPasswordCompare.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSettingsPasswordCompare.ForeColor = System.Drawing.Color.Red;
-            this.labelSettingsPasswordCompare.Location = new System.Drawing.Point(340, 251);
+            this.labelSettingsPasswordCompare.Location = new System.Drawing.Point(340, 264);
             this.labelSettingsPasswordCompare.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelSettingsPasswordCompare.Name = "labelSettingsPasswordCompare";
             this.labelSettingsPasswordCompare.Size = new System.Drawing.Size(187, 13);
@@ -4464,7 +4466,7 @@ namespace SebWindowsConfig
             // buttonSaveSettingsAs
             // 
             this.buttonSaveSettingsAs.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveSettingsAs.Location = new System.Drawing.Point(29, 391);
+            this.buttonSaveSettingsAs.Location = new System.Drawing.Point(29, 404);
             this.buttonSaveSettingsAs.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSaveSettingsAs.Name = "buttonSaveSettingsAs";
             this.buttonSaveSettingsAs.Size = new System.Drawing.Size(143, 32);
@@ -4477,7 +4479,7 @@ namespace SebWindowsConfig
             // buttonOpenSettings
             // 
             this.buttonOpenSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenSettings.Location = new System.Drawing.Point(29, 306);
+            this.buttonOpenSettings.Location = new System.Drawing.Point(29, 319);
             this.buttonOpenSettings.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOpenSettings.Name = "buttonOpenSettings";
             this.buttonOpenSettings.Size = new System.Drawing.Size(143, 32);
@@ -4490,7 +4492,7 @@ namespace SebWindowsConfig
             // labelUseEither
             // 
             this.labelUseEither.AutoSize = true;
-            this.labelUseEither.Location = new System.Drawing.Point(27, 184);
+            this.labelUseEither.Location = new System.Drawing.Point(27, 197);
             this.labelUseEither.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelUseEither.Name = "labelUseEither";
             this.labelUseEither.Size = new System.Drawing.Size(272, 13);
@@ -4524,7 +4526,7 @@ namespace SebWindowsConfig
             // 
             this.labelConfirmSettingsPassword.AutoSize = true;
             this.labelConfirmSettingsPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelConfirmSettingsPassword.Location = new System.Drawing.Point(202, 231);
+            this.labelConfirmSettingsPassword.Location = new System.Drawing.Point(202, 244);
             this.labelConfirmSettingsPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelConfirmSettingsPassword.Name = "labelConfirmSettingsPassword";
             this.labelConfirmSettingsPassword.Size = new System.Drawing.Size(129, 13);
@@ -4535,7 +4537,7 @@ namespace SebWindowsConfig
             // 
             this.labelSettingsPassword.AutoSize = true;
             this.labelSettingsPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSettingsPassword.Location = new System.Drawing.Point(238, 208);
+            this.labelSettingsPassword.Location = new System.Drawing.Point(238, 221);
             this.labelSettingsPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelSettingsPassword.Name = "labelSettingsPassword";
             this.labelSettingsPassword.Size = new System.Drawing.Size(93, 13);
@@ -4545,7 +4547,7 @@ namespace SebWindowsConfig
             // textBoxConfirmSettingsPassword
             // 
             this.textBoxConfirmSettingsPassword.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxConfirmSettingsPassword.Location = new System.Drawing.Point(343, 230);
+            this.textBoxConfirmSettingsPassword.Location = new System.Drawing.Point(343, 243);
             this.textBoxConfirmSettingsPassword.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxConfirmSettingsPassword.Name = "textBoxConfirmSettingsPassword";
             this.textBoxConfirmSettingsPassword.PasswordChar = '●';
@@ -4558,7 +4560,7 @@ namespace SebWindowsConfig
             // textBoxSettingsPassword
             // 
             this.textBoxSettingsPassword.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSettingsPassword.Location = new System.Drawing.Point(343, 207);
+            this.textBoxSettingsPassword.Location = new System.Drawing.Point(343, 220);
             this.textBoxSettingsPassword.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxSettingsPassword.Name = "textBoxSettingsPassword";
             this.textBoxSettingsPassword.PasswordChar = '●';
@@ -4626,7 +4628,7 @@ namespace SebWindowsConfig
             // buttonRevertToDefaultSettings
             // 
             this.buttonRevertToDefaultSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRevertToDefaultSettings.Location = new System.Drawing.Point(204, 306);
+            this.buttonRevertToDefaultSettings.Location = new System.Drawing.Point(204, 319);
             this.buttonRevertToDefaultSettings.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRevertToDefaultSettings.Name = "buttonRevertToDefaultSettings";
             this.buttonRevertToDefaultSettings.Size = new System.Drawing.Size(143, 32);
@@ -4639,7 +4641,7 @@ namespace SebWindowsConfig
             // buttonRevertToLastOpened
             // 
             this.buttonRevertToLastOpened.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRevertToLastOpened.Location = new System.Drawing.Point(204, 391);
+            this.buttonRevertToLastOpened.Location = new System.Drawing.Point(204, 404);
             this.buttonRevertToLastOpened.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRevertToLastOpened.Name = "buttonRevertToLastOpened";
             this.buttonRevertToLastOpened.Size = new System.Drawing.Size(143, 32);
@@ -5147,6 +5149,21 @@ namespace SebWindowsConfig
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
+            // checkBoxUseOldAsymmetricOnlyEncryption
+            // 
+            this.checkBoxUseOldAsymmetricOnlyEncryption.AutoSize = true;
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Location = new System.Drawing.Point(261, 178);
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Name = "checkBoxUseOldAsymmetricOnlyEncryption";
+            this.checkBoxUseOldAsymmetricOnlyEncryption.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Size = new System.Drawing.Size(263, 17);
+            this.checkBoxUseOldAsymmetricOnlyEncryption.TabIndex = 73;
+            this.checkBoxUseOldAsymmetricOnlyEncryption.Text = "Use old asymmetric-only encryption (for SEB < 2.2)";
+            this.toolTip1.SetToolTip(this.checkBoxUseOldAsymmetricOnlyEncryption, "The new asymmetric/symmetric encryption is much faster especially for large confi" +
+        "g files with embedded resources.");
+            this.checkBoxUseOldAsymmetricOnlyEncryption.UseVisualStyleBackColor = true;
+            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5636,6 +5653,7 @@ namespace SebWindowsConfig
         private System.Windows.Forms.CheckBox checkBoxSetVolumeLevel;
         private System.Windows.Forms.CheckBox checkBoxMuteAudio;
         private System.Windows.Forms.CheckBox checkBoxAllowNavigationNewWindow;
+        private System.Windows.Forms.CheckBox checkBoxUseOldAsymmetricOnlyEncryption;
 
     }
 }

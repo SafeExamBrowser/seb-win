@@ -53,7 +53,7 @@ namespace SebWindowsClient.ConfigurationUtils
         // Prefixes
         private const int PREFIX_LENGTH = 4;
         private const string PUBLIC_KEY_HASH_MODE = "pkhs";
-        private const string PUBLIC_SYMMETRIC_KEY_MODE = "pskh";
+        private const string PUBLIC_SYMMETRIC_KEY_MODE = "phsk";
         private const string PASSWORD_MODE = "pswd";
         private const string PLAIN_DATA_MODE = "plnd";
         private const string PASSWORD_CONFIGURING_CLIENT_MODE = "pwcc";
@@ -152,7 +152,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 SEBClientInfo.InitializeLogger();
 
                 // Write new settings to the localapp directory
-                SEBSettings.WriteSebConfigurationFile(SEBClientInfo.SebClientSettingsAppDataFile, "", false, null, SEBSettings.sebConfigPurposes.sebConfigPurposeConfiguringClient);
+                SEBSettings.WriteSebConfigurationFile(SEBClientInfo.SebClientSettingsAppDataFile, "", false, null, false, SEBSettings.sebConfigPurposes.sebConfigPurposeConfiguringClient);
 
                 // Re-Initialize SEB desktop according to the new settings
                 if (!SebWindowsClientMain.InitSEBDesktop()) return false;
@@ -206,7 +206,7 @@ namespace SebWindowsClient.ConfigurationUtils
             {
 
                 // Decrypt with cryptographic identity/private and symmetric key
-                sebData = DecryptDataWithPublicKeyHashPrefix(sebData, forEditing, ref sebFileCertificateRef);
+                sebData = DecryptDataWithPublicKeyHashPrefix(sebData, true, forEditing, ref sebFileCertificateRef);
                 if (sebData == null)
                 {
                     return null;
@@ -223,7 +223,7 @@ namespace SebWindowsClient.ConfigurationUtils
             {
 
                 // Decrypt with cryptographic identity/private key
-                sebData = DecryptDataWithPublicKeyHashPrefix(sebData, forEditing, ref sebFileCertificateRef);
+                sebData = DecryptDataWithPublicKeyHashPrefix(sebData, false, forEditing, ref sebFileCertificateRef);
                 if (sebData == null)
                 {
                     return null;
@@ -593,7 +593,7 @@ namespace SebWindowsClient.ConfigurationUtils
         /// and returns the decrypted bytes 
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        private static byte[] DecryptDataWithPublicKeyHashPrefix(byte[] sebData, bool forEditing, ref X509Certificate2 sebFileCertificateRef)
+        private static byte[] DecryptDataWithPublicKeyHashPrefix(byte[] sebData, bool usingSymmetricKey, bool forEditing, ref X509Certificate2 sebFileCertificateRef)
         {
             // Get 20 bytes public key hash prefix
             // and remaining data with the prefix stripped
@@ -686,7 +686,7 @@ namespace SebWindowsClient.ConfigurationUtils
         /// </summary>
         /// ----------------------------------------------------------------------------------------
 
-        public static byte[] EncryptSEBSettingsWithCredentials(string settingsPassword, bool passwordIsHash, X509Certificate2 certificateRef, SEBSettings.sebConfigPurposes configPurpose, bool forEditing)
+        public static byte[] EncryptSEBSettingsWithCredentials(string settingsPassword, bool passwordIsHash, X509Certificate2 certificateRef, bool useAsymmetricOnlyEncryption, SEBSettings.sebConfigPurposes configPurpose, bool forEditing)
         {
             // Get current settings dictionary and clean it from empty arrays and dictionaries
             //DictObj cleanedCurrentSettings = SEBSettings.CleanSettingsDictionary();
@@ -753,7 +753,7 @@ namespace SebWindowsClient.ConfigurationUtils
             if (certificateRef != null)
             {
                 // Encrypt preferences using a cryptographic identity
-                encryptedSebData = EncryptDataUsingIdentity(encryptedSebData, certificateRef);
+                encryptedSebData = EncryptDataUsingIdentity(encryptedSebData, certificateRef, useAsymmetricOnlyEncryption);
             }
 
             // gzip the encrypted data
@@ -768,25 +768,65 @@ namespace SebWindowsClient.ConfigurationUtils
         /// </summary>
         /// ----------------------------------------------------------------------------------------
 
-        public static byte[] EncryptDataUsingIdentity(byte[] data, X509Certificate2 certificateRef)
+        public static byte[] EncryptDataUsingIdentity(byte[] data, X509Certificate2 certificateRef, bool useAsymmetricOnlyEncryption)
         {
-            //get public key hash from selected identity's certificate
+            // Get public key hash from selected identity's certificate
+            string prefixString;
             byte[] publicKeyHash = SEBProtectionController.GetPublicKeyHashFromCertificate(certificateRef);
+            byte[] encryptedData;
+            byte[] encryptedKeyLengthBytes = new byte[0];
+            byte[] encryptedKey = new byte[0];
+            byte[] encryptedSEBConfigData;
 
-            //encrypt data using public key
-            byte[] encryptedData = SEBProtectionController.EncryptDataWithCertificate(data, certificateRef);
+            if (!useAsymmetricOnlyEncryption)
+            {
+                prefixString = PUBLIC_SYMMETRIC_KEY_MODE;
 
-            // Create byte array large enough to hold prefix, public key hash and encrypted data
-            byte[] encryptedSebData = new byte[encryptedData.Length + PREFIX_LENGTH + publicKeyHash.Length];
+                // For new asymmetric/symmetric encryption create a random symmetric key
+                byte[] symmetricKey = AESThenHMAC.NewKey();
+                string symmetricKeyString = Convert.ToBase64String(symmetricKey);
+
+                // Encrypt the symmetric key using the identity certificate
+                encryptedKey = SEBProtectionController.EncryptDataWithCertificate(symmetricKey, certificateRef);
+
+                // Get length of the encrypted key
+                encryptedKeyLengthBytes = BitConverter.GetBytes(encryptedKey.Length);
+
+                //encrypt data using symmetric key
+                encryptedData = SEBProtectionController.EncryptDataWithPassword(data, symmetricKeyString);
+            }
+            else
+            {
+                prefixString = PUBLIC_KEY_HASH_MODE;
+
+                //encrypt data using public key
+                encryptedData = SEBProtectionController.EncryptDataWithCertificate(data, certificateRef);
+            }
+
+            // Create byte array large enough to hold prefix, public key hash, length of and encrypted symmetric key plus encrypted data
+            encryptedSEBConfigData = new byte[PREFIX_LENGTH + publicKeyHash.Length + encryptedKeyLengthBytes.Length + encryptedKey.Length + encryptedData.Length];
+            int destinationOffset = 0;
+
             // Copy prefix indicating data has been encrypted with a public key identified by hash into out data
-            string prefixString = PUBLIC_KEY_HASH_MODE;
-            Buffer.BlockCopy(Encoding.UTF8.GetBytes(prefixString), 0, encryptedSebData, 0, PREFIX_LENGTH);
-            // Copy public key hash to out data
-            Buffer.BlockCopy(publicKeyHash, 0, encryptedSebData, PREFIX_LENGTH, publicKeyHash.Length);
-            // Copy encrypted data to out data
-            Buffer.BlockCopy(encryptedData, 0, encryptedSebData, PREFIX_LENGTH + publicKeyHash.Length, encryptedData.Length);
+            Buffer.BlockCopy(Encoding.UTF8.GetBytes(prefixString), 0, encryptedSEBConfigData, destinationOffset, PREFIX_LENGTH);
+            destinationOffset += PREFIX_LENGTH;
 
-            return encryptedSebData;
+            // Copy public key hash to out data
+            Buffer.BlockCopy(publicKeyHash, 0, encryptedSEBConfigData, destinationOffset, publicKeyHash.Length);
+            destinationOffset += publicKeyHash.Length;
+
+            // Copy length of encrypted symmetric key to out data
+            Buffer.BlockCopy(encryptedKeyLengthBytes, 0, encryptedSEBConfigData, destinationOffset, encryptedKeyLengthBytes.Length);
+            destinationOffset += encryptedKeyLengthBytes.Length;
+
+            // Copy encrypted symmetric key to out data
+            Buffer.BlockCopy(encryptedKey, 0, encryptedSEBConfigData, destinationOffset, encryptedKey.Length);
+            destinationOffset += encryptedKey.Length;
+
+            // Copy encrypted data to out data
+            Buffer.BlockCopy(encryptedData, 0, encryptedSEBConfigData, destinationOffset, encryptedData.Length);
+
+            return encryptedSEBConfigData;
         }
 
 

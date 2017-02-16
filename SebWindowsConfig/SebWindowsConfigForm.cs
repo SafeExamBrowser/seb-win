@@ -230,9 +230,10 @@ namespace SebWindowsConfig
             // Get selected config purpose
             int currentConfigPurpose = (int)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeySebConfigPurpose);
             SEBSettings.sebConfigPurposes configPurpose = (SEBSettings.sebConfigPurposes)currentConfigPurpose;
+            bool useOldAsymmetricOnlyEncryption = checkBoxUseOldAsymmetricOnlyEncryption.Checked;
 
             // Write the "new" settings to file
-            if (!SEBSettings.WriteSebConfigurationFile(fileName, filePassword, settingsPasswordFieldsContainHash, fileCertificateRef, configPurpose, forEditing: true)) 
+            if (!SEBSettings.WriteSebConfigurationFile(fileName, filePassword, settingsPasswordFieldsContainHash, fileCertificateRef, useOldAsymmetricOnlyEncryption, configPurpose, forEditing: true)) 
             { 
                 return false;
             }

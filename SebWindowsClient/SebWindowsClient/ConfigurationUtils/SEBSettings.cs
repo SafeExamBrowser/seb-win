@@ -1656,7 +1656,7 @@ namespace SebWindowsClient.ConfigurationUtils
         // ********************************************************
         // Write the settings to the configuration file and save it
         // ********************************************************
-        public static bool WriteSebConfigurationFile(String fileName, string filePassword, bool passwordIsHash, X509Certificate2 fileCertificateRef, SEBSettings.sebConfigPurposes configPurpose, bool forEditing = false)
+        public static bool WriteSebConfigurationFile(String fileName, string filePassword, bool passwordIsHash, X509Certificate2 fileCertificateRef, bool useAsymmetricOnlyEncryption, SEBSettings.sebConfigPurposes configPurpose, bool forEditing = false)
         {
             try 
             {
@@ -1664,7 +1664,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 // Encrypt the configuration settings depending on passed credentials
                 // Write the configuration settings into .seb file.
 
-                byte [] encryptedSettings = SEBConfigFileManager.EncryptSEBSettingsWithCredentials(filePassword, passwordIsHash, fileCertificateRef, configPurpose, forEditing);
+                byte [] encryptedSettings = SEBConfigFileManager.EncryptSEBSettingsWithCredentials(filePassword, passwordIsHash, fileCertificateRef, useAsymmetricOnlyEncryption, configPurpose, forEditing);
                 File.WriteAllBytes(fileName, encryptedSettings);
             }
             catch (Exception streamWriteException) 

@@ -36,3 +36,4 @@ pref("full-screen-api.enabled", true);
 pref("gfx.direct2d.disabled", false);
 pref("layers.acceleration.disabled", false);
 pref("general.useragent.locale", "de-DE");
+pref("browser.display.use_document_fonts", 1);

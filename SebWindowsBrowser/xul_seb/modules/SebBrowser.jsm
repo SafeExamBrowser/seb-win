@@ -647,7 +647,8 @@ this.SebBrowser = {
 	
 	back : function(win) {
 		var nav = win.XulLibBrowser.webNavigation;
-		if (!su.getConfig("allowBrowsingBackForward","boolean",false)) {
+        if (!su.getConfig("allowBrowsingBackForward","boolean",false) &&
+            !su.getConfig("newBrowserWindowNavigation","boolean",false)) {
 			sl.debug("navigation: back not allowed")
 			return; 
 		}
@@ -659,7 +660,8 @@ this.SebBrowser = {
 	
 	forward : function(win) {
 		var nav = win.XulLibBrowser.webNavigation;
-		if (!su.getConfig("allowBrowsingBackForward","boolean",false)) { 
+		if (!su.getConfig("allowBrowsingBackForward","boolean",false) &&
+            !su.getConfig("newBrowserWindowNavigation","boolean",false)) {
 			sl.debug("navigation: forward not allowed");	
 			return; 
 		}
@@ -672,7 +674,7 @@ this.SebBrowser = {
 	refreshNavigation : function(win) {
 		sl.debug("refreshNavigation");
 		var nav = win.XulLibBrowser.webNavigation;
-		var visible = (win === seb.mainWin) ? su.getConfig("allowBrowsingBackForward","boolean",false) : su.getConfig("newBrowserWindowNavigation","boolean",false);		
+		var visible = (win === seb.mainWin) ? su.getConfig("allowBrowsingBackForward","boolean",false) : su.getConfig("newBrowserWindowNavigation","boolean",false);
 		if (visible) { // if not visible do nothing 
 			var back = win.document.getElementById("btnBack");
 			var forward = win.document.getElementById("btnForward");

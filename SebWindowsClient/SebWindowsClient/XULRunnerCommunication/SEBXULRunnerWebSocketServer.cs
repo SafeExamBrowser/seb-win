@@ -45,7 +45,7 @@ namespace SebWindowsClient.XULRunnerCommunication
                 {
                     if (tcpi.LocalEndPoint.Port == port && tcpi.State != TcpState.TimeWait)
                     {
-                        Logger.AddInformation("Server already running!");
+                        Logger.AddInformation("Port Occupied, maybe the server is already running");
                         return true;
                     }
                 }

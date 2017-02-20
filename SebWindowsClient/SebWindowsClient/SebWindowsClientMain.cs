@@ -114,7 +114,7 @@ namespace SebWindowsClient
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        //[STAThread] //Do not use this, it breaks the ability to switch to a new desktop
+        [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();

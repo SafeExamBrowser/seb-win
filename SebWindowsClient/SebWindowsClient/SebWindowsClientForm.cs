@@ -435,7 +435,7 @@ namespace SebWindowsClient
         /// ----------------------------------------------------------------------------------------
         private void xulRunner_Exited(object sender, System.EventArgs e)
         {
-            Logger.AddError("XULRunner exit event fired.", this, null);
+            Logger.AddInformation("XULRunner exit event fired.", this, null);
 
             //xulRunnerExitEventHandled = true;
             // Is the handle for the XULRunner process valid?
@@ -443,7 +443,7 @@ namespace SebWindowsClient
             {
                 try
                 {
-                    // Read the exit code. Strange enough this often fails in Windows 8.1
+                    // Read the exit code.
                     xulRunnerExitCode = xulRunner.ExitCode;
                     xulRunnerExitTime = xulRunner.ExitTime;
                 }
@@ -463,9 +463,7 @@ namespace SebWindowsClient
             if (xulRunnerExitCode != 0)
             {
                 // An error occured when exiting XULRunner, maybe it crashed?
-                Logger.AddError("An error occurred when exiting XULRunner. Exit code: " + xulRunnerExitCode.ToString(), this, null);
-                // Restart XULRunner
-                //StartXulRunner();
+                Logger.AddWarning("XulRunner exited with Exit Code. Exit code: " + xulRunnerExitCode.ToString(), this, null);
             }
             else
             {
@@ -1573,9 +1571,6 @@ namespace SebWindowsClient
                 SebWindowsClientMain.CheckIfInsideVirtualMachine();
                 SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
 
-                Logger.AddInformation("attempting to start socket server");
-                SEBXULRunnerWebSocketServer.StartServer();
-
                 //Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)
                 try
                 {
@@ -1618,6 +1613,9 @@ namespace SebWindowsClient
                 {
                     Logger.AddError("Unable to kill processes that are running before start", this, ex);
                 }
+
+                Logger.AddInformation("attempting to start socket server");
+                SEBXULRunnerWebSocketServer.StartServer();
 
                 // Disable unwanted keys.
                 SebKeyCapture.FilterKeys = true;

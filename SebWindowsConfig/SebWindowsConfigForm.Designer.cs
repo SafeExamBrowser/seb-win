@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1611,8 +1611,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2783,7 +2783,7 @@ namespace SebWindowsConfig
             this.groupBox9.Size = new System.Drawing.Size(555, 181);
             this.groupBox9.TabIndex = 121;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Restart Exam Button";
+            this.groupBox9.Text = "Back to Start Button";
             // 
             // checkBoxUseStartURL
             // 
@@ -2795,7 +2795,7 @@ namespace SebWindowsConfig
             this.checkBoxUseStartURL.Size = new System.Drawing.Size(179, 17);
             this.checkBoxUseStartURL.TabIndex = 119;
             this.checkBoxUseStartURL.Text = "Use Start URL (see General tab)";
-            this.toolTip1.SetToolTip(this.checkBoxUseStartURL, "The restart exam button reloads the exam\'s Start URL");
+            this.toolTip1.SetToolTip(this.checkBoxUseStartURL, "The back to start button reloads the Start URL");
             this.checkBoxUseStartURL.UseVisualStyleBackColor = true;
             this.checkBoxUseStartURL.CheckedChanged += new System.EventHandler(this.checkBoxUseStartURL_CheckedChanged);
             // 
@@ -2807,7 +2807,7 @@ namespace SebWindowsConfig
             this.textBoxRestartExamLink.Name = "textBoxRestartExamLink";
             this.textBoxRestartExamLink.Size = new System.Drawing.Size(526, 19);
             this.textBoxRestartExamLink.TabIndex = 116;
-            this.toolTip1.SetToolTip(this.textBoxRestartExamLink, "This fully qualified URL is loaded when the restart exam button is pressed");
+            this.toolTip1.SetToolTip(this.textBoxRestartExamLink, "This fully qualified URL is loaded when clicking the back to start button");
             this.textBoxRestartExamLink.TextChanged += new System.EventHandler(this.textBoxRestartExamLink_TextChanged);
             // 
             // checkBoxRestartExamPasswordProtected
@@ -2817,11 +2817,11 @@ namespace SebWindowsConfig
             this.checkBoxRestartExamPasswordProtected.Location = new System.Drawing.Point(14, 152);
             this.checkBoxRestartExamPasswordProtected.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxRestartExamPasswordProtected.Name = "checkBoxRestartExamPasswordProtected";
-            this.checkBoxRestartExamPasswordProtected.Size = new System.Drawing.Size(295, 17);
+            this.checkBoxRestartExamPasswordProtected.Size = new System.Drawing.Size(297, 17);
             this.checkBoxRestartExamPasswordProtected.TabIndex = 115;
-            this.checkBoxRestartExamPasswordProtected.Text = "Protect restart exam button with the quit/restart password";
-            this.toolTip1.SetToolTip(this.checkBoxRestartExamPasswordProtected, "The quit/restart password (if set) must be entered when the restart exam button w" +
-        "as pressed.");
+            this.checkBoxRestartExamPasswordProtected.Text = "Protect back to start button with the quit/restart password";
+            this.toolTip1.SetToolTip(this.checkBoxRestartExamPasswordProtected, "The quit/restart password (if set) must be entered when the back to start button " +
+        "was clicked.");
             this.checkBoxRestartExamPasswordProtected.UseVisualStyleBackColor = true;
             this.checkBoxRestartExamPasswordProtected.CheckedChanged += new System.EventHandler(this.checkBoxRestartExamPasswordProtected_CheckedChanged);
             // 
@@ -2849,8 +2849,8 @@ namespace SebWindowsConfig
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(456, 22);
             this.textBox4.TabIndex = 118;
-            this.textBox4.Text = "Title/tool tip text for the restart button (leave empty for localized standard te" +
-    "xt)\r\n";
+            this.textBox4.Text = "Title/tool tip text for the back to start button (leave empty for localized stand" +
+    "ard text)\r\n";
             // 
             // textBox3
             // 
@@ -2864,8 +2864,8 @@ namespace SebWindowsConfig
             this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(394, 19);
             this.textBox3.TabIndex = 118;
-            this.textBox3.Text = "Enter restart link or select \"Use Start URL\" to display the restart exam button i" +
-    "n the SEB task bar.";
+            this.textBox3.Text = "Enter custom URL or select \"Use Start URL\" to display the back to start button in" +
+    " the SEB task bar.";
             // 
             // groupBox8
             // 
@@ -3458,9 +3458,9 @@ namespace SebWindowsConfig
             this.checkBoxAllowNavigationNewWindow.Location = new System.Drawing.Point(14, 79);
             this.checkBoxAllowNavigationNewWindow.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAllowNavigationNewWindow.Name = "checkBoxAllowNavigationNewWindow";
-            this.checkBoxAllowNavigationNewWindow.Size = new System.Drawing.Size(246, 17);
+            this.checkBoxAllowNavigationNewWindow.Size = new System.Drawing.Size(206, 17);
             this.checkBoxAllowNavigationNewWindow.TabIndex = 8;
-            this.checkBoxAllowNavigationNewWindow.Text = "Allow navigating in additional browser windows";
+            this.checkBoxAllowNavigationNewWindow.Text = "Allow navigating in additional windows";
             this.toolTip1.SetToolTip(this.checkBoxAllowNavigationNewWindow, resources.GetString("checkBoxAllowNavigationNewWindow.ToolTip"));
             this.checkBoxAllowNavigationNewWindow.UseVisualStyleBackColor = true;
             this.checkBoxAllowNavigationNewWindow.CheckedChanged += new System.EventHandler(this.checkBoxAllowNavigationNewWindow_CheckedChanged);

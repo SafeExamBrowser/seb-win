@@ -58,7 +58,7 @@ namespace SebRegistryResetter
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
-                    
+
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace SebRegistryResetter
                 Console.WriteLine("Unable to determine if this application is running with administrator privileges.");
                 Console.WriteLine("Did you run it with administrator privileges? (Y=Yes,N=No)");
                 var ranAsAdmin = Console.ReadLine();
-                if(ranAsAdmin == null || ranAsAdmin.ToLower() != "y")
+                if (ranAsAdmin == null || ranAsAdmin.ToLower() != "y")
                     Environment.Exit(0);
             }
 
@@ -77,7 +77,7 @@ namespace SebRegistryResetter
                 var filePath = String.Format(@"{0}\sebregistry.srg", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 if (File.Exists(filePath))
                 {
-                    Console.WriteLine(String.Format("Found {0}",filePath));
+                    Console.WriteLine(String.Format("Found {0}", filePath));
                     Console.WriteLine("Resetting Registry keys...");
                     var service = new RegistryService();
                     if (service.Reset())
@@ -98,22 +98,23 @@ namespace SebRegistryResetter
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(String.Format("Error: Unable to find file or reset registry keys\n{0}:{1}",ex.ToString(),ex.Message));
+                Console.WriteLine(String.Format("Error: Unable to find file or reset registry keys\n{0}:{1}", ex.ToString(), ex.Message));
             }
-            
+
             //Direct Instantiation
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("If the file was not found, it is possible that there are no registry entries to reset.\nIs there anything NOT working as expected when you press CTRL+ALT+DEL? (Y=Yes/N=No)");
-            
+
             var res = Console.ReadLine();
-            if(res == null || res.ToLower() != "y")
+            if (res == null || res.ToLower() != "y")
                 Environment.Exit(0);
 
 
             Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
             var username = Console.ReadLine();
             var sid = SIDHandler.GetSIDFromUsername(username);
-            if (sid == "")
+            Console.WriteLine("Username: {0} / SID: {1}", username, sid);
+            if (string.IsNullOrWhiteSpace(sid))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("User not found in the registry!");
@@ -144,26 +145,30 @@ namespace SebRegistryResetter
             {
                 try
                 {
+                    Console.WriteLine(@"Trying to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName);
+                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
                     if (entry.DataValue != null)
                     {
                         entry.DataValue = 0;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", entry.RegistryPath, entry.DataItemName, entry.DataValue));
                     }
-                    
+
                 }
                 catch (Exception)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(String.Format(@"Unable to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName));
                 }
-                
+
             }
 
             foreach (var entry in entriesToOne)
             {
                 try
                 {
+                    Console.WriteLine(@"Trying to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName);
+                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
                     if (entry.DataValue != null)
                     {
                         entry.DataValue = 1;
@@ -187,7 +192,7 @@ namespace SebRegistryResetter
                     easeOfAccess.DataValue = "";
                     Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", easeOfAccess.RegistryPath, easeOfAccess.DataItemName, easeOfAccess.DataValue));
                 }
-                
+
             }
             catch (Exception)
             {

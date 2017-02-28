@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1611,8 +1611,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle4;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2767,7 +2767,7 @@ namespace SebWindowsConfig
             this.tabPageExam.Padding = new System.Windows.Forms.Padding(2);
             this.tabPageExam.Size = new System.Drawing.Size(1242, 601);
             this.tabPageExam.TabIndex = 18;
-            this.tabPageExam.Text = "Exam";
+            this.tabPageExam.Text = " ";
             this.tabPageExam.UseVisualStyleBackColor = true;
             // 
             // groupBox9
@@ -2939,7 +2939,7 @@ namespace SebWindowsConfig
             this.textBox2.BackColor = System.Drawing.SystemColors.Window;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(15, 49);
+            this.textBox2.Location = new System.Drawing.Point(15, 74);
             this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
@@ -2954,12 +2954,12 @@ namespace SebWindowsConfig
             // 
             this.checkBoxSendBrowserExamKey.AutoSize = true;
             this.checkBoxSendBrowserExamKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxSendBrowserExamKey.Location = new System.Drawing.Point(15, 88);
+            this.checkBoxSendBrowserExamKey.Location = new System.Drawing.Point(15, 21);
             this.checkBoxSendBrowserExamKey.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxSendBrowserExamKey.Name = "checkBoxSendBrowserExamKey";
-            this.checkBoxSendBrowserExamKey.Size = new System.Drawing.Size(221, 17);
+            this.checkBoxSendBrowserExamKey.Size = new System.Drawing.Size(247, 17);
             this.checkBoxSendBrowserExamKey.TabIndex = 2;
-            this.checkBoxSendBrowserExamKey.Text = "Send Browser Exam Key in HTTP header";
+            this.checkBoxSendBrowserExamKey.Text = "Use Browser Exam Key (send in HTTP header)";
             this.toolTip1.SetToolTip(this.checkBoxSendBrowserExamKey, "Browser Exam Key is send in an HTTP header to authenticate the SEB client and its" +
         " settings to a compatible exam system.");
             this.checkBoxSendBrowserExamKey.UseVisualStyleBackColor = true;
@@ -2967,7 +2967,7 @@ namespace SebWindowsConfig
             // 
             // textBoxBrowserExamKey
             // 
-            this.textBoxBrowserExamKey.Location = new System.Drawing.Point(15, 22);
+            this.textBoxBrowserExamKey.Location = new System.Drawing.Point(15, 47);
             this.textBoxBrowserExamKey.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxBrowserExamKey.Name = "textBoxBrowserExamKey";
             this.textBoxBrowserExamKey.Size = new System.Drawing.Size(526, 20);

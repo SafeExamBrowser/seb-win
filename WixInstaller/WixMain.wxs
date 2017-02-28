@@ -51,6 +51,11 @@
           "%WIX%\bin\heat" dir SebWindowsBrowser\xul_seb -out WixInstaller\XulSeb.wxs -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder
           "%WIX%\bin\heat" dir SebWindowsBrowser\xulrunner -out WixInstaller\XulRunner.wxs -gg -cg XulRunnerComponentGroup -template fragment -sfrag -dr XulRunnerInstallFolder
           
+          The two .wxs files are produced pre-build. 
+          1. Build the installer with error 
+          2. ADD THE TWO .wxs FILES TO THE PROJECT 
+          3. Rebuild the installer
+          
           Two expected warnings/errors:
           * SelfReg DLL on breakpadinjector.dll (error 1114) and wow_helper.exe (error 193)
       -->

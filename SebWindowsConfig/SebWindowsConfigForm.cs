@@ -408,9 +408,9 @@ namespace SebWindowsConfig
             checkBoxDownloadOpenSEBFiles.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig];
 
             // Group "Exam"
-           //textBoxBrowserExamKey    .Text    =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserExamKey];
-            textBoxQuitURL           .Text    =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL];
+            textBoxQuitURL.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL];
             checkBoxSendBrowserExamKey.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey];
+            textBoxBrowserExamKey.Enabled = checkBoxSendBrowserExamKey.Checked;
             checkBoxUseStartURL.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL];
             textBoxRestartExamLink.Enabled = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL];
             checkBoxRestartExamPasswordProtected.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamPasswordProtected];
@@ -1818,12 +1818,12 @@ namespace SebWindowsConfig
 
         private void textBoxBrowserExamKey_TextChanged(object sender, EventArgs e)
         {
-          //SEBSettings.settingsCurrent[SEBSettings.KeyBrowserExamKey] = textBoxBrowserExamKey.Text;
         }
 
         private void checkBoxSendBrowserExamKey_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey] = checkBoxSendBrowserExamKey.Checked;
+            textBoxBrowserExamKey.Enabled = checkBoxSendBrowserExamKey.Checked;
         }
 
         private void textBoxQuitURL_TextChanged(object sender, EventArgs e)

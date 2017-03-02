@@ -232,7 +232,7 @@ namespace SebWindowsClient
                         }
 
                         Logger.AddInformation("File downloaded from {0}, checking if it's a valid seb file", uri);
-                        if (ReconfigureWithSettings(sebSettings))
+                        if (ReconfigureWithSettings(sebSettings, true))
                         {
                             Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
                             return true;
@@ -295,11 +295,11 @@ namespace SebWindowsClient
         /// </summary>
         /// <param name="sebSettings"></param>
         /// <returns></returns>
-        public bool ReconfigureWithSettings(byte[] sebSettings)
+        public bool ReconfigureWithSettings(byte[] sebSettings, bool suppressFileFormatError = false)
         {
             var x = SEBXULRunnerWebSocketServer.IsRunning;
             Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
-            if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings))
+            if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings, suppressFileFormatError))
             {
                 Logger.AddInformation("StoreDecryptedSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
                 Logger.AddError("Settings could not be decrypted or stored.", this, null, null);

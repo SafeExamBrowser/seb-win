@@ -67,7 +67,7 @@ namespace SebWindowsClient.ConfigurationUtils
         /// Decrypt, parse and use new SEB settings
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        public static bool StoreDecryptedSEBSettings(byte[] sebData)
+        public static bool StoreDecryptedSEBSettings(byte[] sebData, bool suppressFileFormatError = false)
         {
             
             DictObj sebPreferencesDict;
@@ -75,7 +75,7 @@ namespace SebWindowsClient.ConfigurationUtils
             bool passwordIsHash = false;
             X509Certificate2 sebFileCertificateRef = null;
 
-            sebPreferencesDict = DecryptSEBSettings(sebData, false, ref sebFilePassword, ref passwordIsHash, ref sebFileCertificateRef);
+            sebPreferencesDict = DecryptSEBSettings(sebData, false, ref sebFilePassword, ref passwordIsHash, ref sebFileCertificateRef, suppressFileFormatError);
             if (sebPreferencesDict == null) return false; //Decryption didn't work, we abort
 
             Logger.AddInformation("Reconfiguring");
@@ -181,7 +181,7 @@ namespace SebWindowsClient.ConfigurationUtils
         /// certificate reference found in the .seb file is returned 
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        public static DictObj DecryptSEBSettings(byte[] sebData, bool forEditing, ref string sebFilePassword, ref bool passwordIsHash, ref X509Certificate2 sebFileCertificateRef)
+        public static DictObj DecryptSEBSettings(byte[] sebData, bool forEditing, ref string sebFilePassword, ref bool passwordIsHash, ref X509Certificate2 sebFileCertificateRef, bool suppressFileFormatError = false)
         {
             // Ungzip the .seb (according to specification >= v14) source data
             byte[] unzippedSebData = GZipByte.Decompress(sebData);
@@ -300,7 +300,11 @@ namespace SebWindowsClient.ConfigurationUtils
                         {
                             // No valid prefix and no unencrypted file with valid header
                             // cancel reading .seb file
-                            SEBMessageBox.Show(SEBUIStrings.settingsNotUsable, SEBUIStrings.settingsNotUsableReason, MessageBoxIcon.Error, MessageBoxButtons.OK, neverShowTouchOptimized: forEditing);
+                            if (!suppressFileFormatError)
+                            {
+                                SEBMessageBox.Show(SEBUIStrings.settingsNotUsable, SEBUIStrings.settingsNotUsableReason,
+                                    MessageBoxIcon.Error, MessageBoxButtons.OK, neverShowTouchOptimized: forEditing);
+                            }
                             return null;
                         }
                     }

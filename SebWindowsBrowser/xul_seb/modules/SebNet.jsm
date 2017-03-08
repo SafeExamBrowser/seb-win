@@ -159,6 +159,23 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 				}
 			}
 		}
+		if (sendBrowserExamKey) {
+			var k;
+			if (reqSalt) {								
+				k = base.getRequestValue(url, reqKey);
+				sl.info("send request key with salt: " + url + " : " + reqKey + " = " + k);
+			}
+			else {
+				k = reqKey;
+				sl.info("send request key: " + url + " : " + reqKey + " = " + k);
+			}
+			subject.setRequestHeader(reqHeader, k, false);
+			sl.info("request header:");
+			sl.info("*****************");
+			aVisitor2 = new requestHeaderVisitor();
+			subject.visitRequestHeaders(aVisitor2);
+			sl.info("");
+		}
 	}
 };
 

@@ -339,6 +339,7 @@ this.SebHost = {
 		try {
 			// maybe controlled seb quit before?
 			// base.quitFromHost(); no: because of application loop in netpoint
+			
 			var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 			file.initWithPath("/usr/bin/sudo");
 			// create an nsIProcess
@@ -349,8 +350,20 @@ this.SebHost = {
 			// called process terminates.
 			// Second and third params are used to pass command-line arguments
 			// to the process.
-			// var args = ["/sbin/halt"];
+			
 			var args = ["/usr/local/bin/shutdown_system"];
+			
+			/*
+			var event = {
+				notify : function(timer) {
+					process.run(false, args, args.length);
+				}
+			}
+			var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+			timer.initWithCallback(event,2000, Ci.nsITimer.TYPE_ONE_SHOT);
+			base.quitFromHost();
+			*/
+			
 			process.run(false, args, args.length);
 		}
 		catch(e) {
@@ -369,7 +382,6 @@ this.SebHost = {
 		base.quitFromHost();
 	},
 	
-	
 	shutdown : function() {
 		let os = appinfo.OS.toUpperCase();
 		switch (os) { // line feed for dump messages
@@ -378,7 +390,8 @@ this.SebHost = {
 				break;
 			case "UNIX" :
 			case "LINUX" :
-				base.shutdownLinuxHost();
+				seb.hostQuitHandler = base.shutdownLinuxHost;
+				base.quitFromHost();
 				break;
 			case "DARWIN" :
 				base.shutdownMacHost();

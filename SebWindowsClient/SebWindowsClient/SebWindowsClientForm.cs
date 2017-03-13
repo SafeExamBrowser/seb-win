@@ -203,15 +203,16 @@ namespace SebWindowsClient
 
                             if (uri.Scheme == "seb")
                             {
-                            // Try first by http
+                                // Try first by http
                                 Logger.AddError("Trying to download .seb settings by http", null, null);
-                            using (myWebClient)
-                            {
-                                sebSettings = myWebClient.DownloadData(uri.ToString().Replace("seb://", "http://"));
-                            }
-                            if (sebSettings == null)
-                            {
-                                    Logger.AddError("Downloading .seb settings by http failed, try to download by https", null, null);
+                                using (myWebClient)
+                                {
+                                    sebSettings = myWebClient.DownloadData(uri.ToString().Replace("seb://", "http://"));
+                                }
+                                if (sebSettings == null)
+                                {
+                                    Logger.AddError(
+                                        "Downloading .seb settings by http failed, try to download by https", null, null);
                                 }
                             }
                             if (sebSettings == null)
@@ -220,8 +221,32 @@ namespace SebWindowsClient
                                 Logger.AddError("Downloading .seb settings by https", null, null);
                                 using (myWebClient)
                                 {
-                                    sebSettings = myWebClient.DownloadData(uri.ToString().Replace("seb://", "https://").Replace("sebs://", "https://"));
+                                    sebSettings =
+                                        myWebClient.DownloadData(
+                                            uri.ToString().Replace("seb://", "https://").Replace("sebs://", "https://"));
                                 }
+                            }
+                            Logger.AddInformation(
+                                String.Format("File downloaded from {0}, checking if it's a valid seb file", uri));
+                            if (ReconfigureWithSettings(sebSettings, true))
+                            {
+                                Logger.AddInformation("Succesfully read the new configuration, length is " +
+                                                      sebSettings.Length);
+                                return true;
+                            }
+                        }
+                        catch (WebException wex)
+                        {
+                            if (wex.Response is HttpWebResponse &&
+                                (wex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
+                            {
+                                Logger.AddInformation("Authorization required for download seb file");
+                            }
+                            else
+                            {
+                                SEBMessageBox.Show(SEBUIStrings.cannotOpenSEBLink, SEBUIStrings.cannotOpenSEBLinkMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                                //MessageBox.Show(new Form() { TopMost = true }, "Unable to follow the link!");
+                                Logger.AddError("Unable to download a file from the " + file + " link", this, wex);
                             }
                         }
                         catch (Exception ex)
@@ -231,12 +256,7 @@ namespace SebWindowsClient
                             Logger.AddError("Unable to download a file from the "+ file + " link", this, ex);
                         }
 
-                        Logger.AddInformation("File downloaded from {0}, checking if it's a valid seb file", uri);
-                        if (ReconfigureWithSettings(sebSettings, true))
-                        {
-                            Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
-                            return true;
-                        }
+                        
                         //sebSettings seems to be some other content. There may be an authentication necessary to download the file, redirect the user to the website
                         Logger.AddInformation("The downloaded content is not a seb file, there may be an authentication necessary to get the file.");
                         SEBSettings.settingsCurrent[SEBSettings.KeyStartURL] = uri.ToString();

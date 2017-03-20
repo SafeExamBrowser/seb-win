@@ -72,57 +72,59 @@ namespace SebWindowsClient
                 {
                     ShowWindow(_openedWindows.First().Key);
                 }
-
-                //Add the icons
-                int index = 0;
-                foreach (var openWindow in _openedWindows)
+                else
                 {
-                    Image image = GetSmallWindowIcon(openWindow.Key);
-                    appImages.Images.Add(image);
-                    var appItem = new ListViewItem(openWindow.Value, index);
-                    appList.Items.Add(appItem);
-                    if (closeImages != null)
+                    //Add the icons
+                    int index = 0;
+                    foreach (var openWindow in _openedWindows)
                     {
-                        closeImages.Images.Add(Resources.closewindow);
-                        var closeItem = new ListViewItem("close", index);
-                        closeListView.Items.Add(closeItem);
+                        Image image = GetSmallWindowIcon(openWindow.Key);
+                        appImages.Images.Add(image);
+                        var appItem = new ListViewItem(openWindow.Value, index);
+                        appList.Items.Add(appItem);
+                        if (closeImages != null)
+                        {
+                            closeImages.Images.Add(Resources.closewindow);
+                            var closeItem = new ListViewItem("close", index);
+                            closeListView.Items.Add(closeItem);
+                        }
+
+                        index++;
                     }
 
-                    index++;
-                }
+                    if (closeImages != null)
+                    {
+                        this.closeListView.View = View.LargeIcon;
+                        this.closeListView.LargeImageList = closeImages;
+                    }
+                    this.appList.View = View.LargeIcon;
+                    this.appList.LargeImageList = appImages;
+                    this.Height = 6 + appList.Size.Height + (closeImages != null ? heightOfCloseIcon : 0) + 6;
+                    this.Top = top - this.Height;
 
-                if (closeImages != null)
-                {
-                    this.closeListView.View = View.LargeIcon;
-                    this.closeListView.LargeImageList = closeImages;
+                    //Calculate the width
+                    this.Width = Screen.PrimaryScreen.Bounds.Width;
+                    this.Show();
+                    this.appList.Focus();
+
+                    //Hide it after 4 secs
+                    var t = new Timer();
+                    t.Tick += CloseIt;
+                    if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
+                    {
+                        t.Interval = 4000;
+                    }
+                    else
+                    {
+                        t.Interval = 3000;
+                    }
+                    t.Start();
                 }
-                this.appList.View = View.LargeIcon;
-                this.appList.LargeImageList = appImages;
-                this.Height = 6 + appList.Size.Height + (closeImages != null ? heightOfCloseIcon : 0) + 6;
-                this.Top = top - this.Height;
             }
             catch (Exception)
             {
                 this.Close();
             }
-
-            //Calculate the width
-            this.Width = Screen.PrimaryScreen.Bounds.Width;
-            this.Show();
-            this.appList.Focus();
-
-            //Hide it after 4 secs
-            var t = new Timer();
-            t.Tick += CloseIt;
-            if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
-            {
-                t.Interval = 4000;
-            }
-            else
-            {
-                t.Interval = 3000;
-            }
-            t.Start();
         }
 
         private void CloseIt(object sender, EventArgs e)

@@ -1027,10 +1027,6 @@ namespace SebWindowsClient
                         processReference.Refresh();
 
                         new WindowChooser(processReference, ((ToolStripButton)sender).Bounds.X, Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
-
-                        //IntPtr handle = processReference.MainWindowHandle;
-                        //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
-                        //SetForegroundWindow(handle);
                     }
                 }
                 catch (Exception)  // XULRunner wasn't running anymore
@@ -1075,19 +1071,6 @@ namespace SebWindowsClient
                             processReference =
                                 SEBWindowHandler.GetWindowHandleByTitle(toolStripButton.Identifier).GetProcess();
 
-                        //IntPtr handle = processReference.MainWindowHandle;
-                        //if (handle == IntPtr.Zero)
-                        //{
-                        //    //Try open by window name comparing with title set in config which then is set to the tooltip of the button :)
-                        //    foreach(var windowHandle in SEBWindowHandler.GetWindowHandlesByTitle(toolStripButton.Identifier))
-                        //    {
-                        //        if (IsIconic(windowHandle)) ShowWindow(windowHandle, SW_RESTORE);
-                        //        SetForegroundWindow(windowHandle);
-                        //    }
-                        //}
-
-                        //if (IsIconic(handle)) ShowWindow(handle, SW_RESTORE);
-                        //SetForegroundWindow(handle);
 
                         new WindowChooser(processReference, ((ToolStripButton) sender).Bounds.X,
                             Screen.PrimaryScreen.Bounds.Height - taskbarHeight);
@@ -1103,10 +1086,6 @@ namespace SebWindowsClient
                     Logger.AddError("Error when trying to start permitted process by clicking in SEB taskbar: ", null, ex);
                 }
             }
-            //if (SebKeyCapture.SebApplicationChooser == null)
-            //    SebKeyCapture.SebApplicationChooser = new SebApplicationChooserForm();
-            //SebKeyCapture.SebApplicationChooser.fillListApplications();
-            //SebKeyCapture.SebApplicationChooser.Visible = true;
         }
 
         static bool EnumThreadCallback(IntPtr hWnd, IntPtr lParam)

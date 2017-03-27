@@ -352,8 +352,6 @@ namespace SebWindowsConfig
             checkBoxShowMenuBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowMenuBar];
             checkBoxShowTaskBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar];
             comboBoxTaskBarHeight             .Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
-            radioButtonUseZoomPage            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
-            radioButtonUseZoomText            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
             checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
             radioButtonOskAlwaysShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 0;
             radioButtonOskNeverShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 1;
@@ -380,21 +378,25 @@ namespace SebWindowsConfig
             checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
             // BEWARE: you must invert this value since "Use Without" is "Not Enable"!
 
+            textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
             radioButtonUserAgentMacDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 0);
             radioButtonUserAgentMacCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 1);
-            textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
+            textBoxUserAgentMacCustom.TextChanged += textBoxUserAgentMacCustom_TextChanged;
 
-            radioButtonUserAgentDesktopDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 0);
-            radioButtonUserAgentDesktopCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 1);
             textBoxUserAgentDesktopModeCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopModeCustom];
             textBoxUserAgentDesktopModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_DESKTOP;
+            radioButtonUserAgentDesktopDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 0);
+            radioButtonUserAgentDesktopCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 1);
+            textBoxUserAgentDesktopModeCustom.TextChanged += textBoxUserAgentDesktopModeCustom_TextChanged;
 
-            radioButtonUserAgentTouchDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 0);
-            radioButtonUserAgentTouchIPad.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 1);
-            radioButtonUserAgentTouchCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 2);
             textBoxUserAgentTouchModeCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeCustom];
             textBoxUserAgentTouchModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH;
             textBoxUserAgentTouchModeIPad.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD;
+            radioButtonUserAgentTouchDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 0);
+            radioButtonUserAgentTouchIPad.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 1);
+            radioButtonUserAgentTouchCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 2);
+            textBoxUserAgentTouchModeCustom.TextChanged += textBoxUserAgentTouchModeCustom_TextChanged;
+            
 
             textBoxBrowserSuffix.Text = ((string) SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowTitleSuffix]);
 
@@ -687,6 +689,8 @@ namespace SebWindowsConfig
             radioButtonUseZoomPage.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
             radioButtonUseZoomText.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
             enableZoomAdjustZoomMode();
+            checkBoxEnableZoomText.CheckedChanged += checkBoxEnableZoomText_CheckedChanged;
+            checkBoxEnableZoomPage.CheckedChanged += checkBoxEnableZoomPage_CheckedChanged;
 
             checkBoxAllowSpellCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheck];
             checkBoxAllowDictionaryLookup.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictionaryLookup];

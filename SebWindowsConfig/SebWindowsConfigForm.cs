@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
@@ -354,8 +355,6 @@ namespace SebWindowsConfig
             checkBoxShowMenuBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowMenuBar];
             checkBoxShowTaskBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar];
             comboBoxTaskBarHeight             .Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
-            radioButtonUseZoomPage            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
-            radioButtonUseZoomText            .Checked     =    ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
             checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
             radioButtonOskAlwaysShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 0;
             radioButtonOskNeverShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 1;
@@ -381,21 +380,24 @@ namespace SebWindowsConfig
             checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
             // BEWARE: you must invert this value since "Use Without" is "Not Enable"!
 
+            textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
             radioButtonUserAgentMacDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 0);
             radioButtonUserAgentMacCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 1);
-            textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
-
-            radioButtonUserAgentDesktopDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 0);
-            radioButtonUserAgentDesktopCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 1);
+            textBoxUserAgentMacCustom.TextChanged += textBoxUserAgentMacCustom_TextChanged;
+            
             textBoxUserAgentDesktopModeCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopModeCustom];
             textBoxUserAgentDesktopModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_DESKTOP;
+            radioButtonUserAgentDesktopDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 0);
+            radioButtonUserAgentDesktopCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] == 1);
+            textBoxUserAgentDesktopModeCustom.TextChanged += textBoxUserAgentDesktopModeCustom_TextChanged;
 
-            radioButtonUserAgentTouchDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 0);
-            radioButtonUserAgentTouchIPad.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 1);
-            radioButtonUserAgentTouchCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 2);
             textBoxUserAgentTouchModeCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeCustom];
             textBoxUserAgentTouchModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH;
             textBoxUserAgentTouchModeIPad.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD;
+            radioButtonUserAgentTouchDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 0);
+            radioButtonUserAgentTouchIPad.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 1);
+            radioButtonUserAgentTouchCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 2);
+            textBoxUserAgentTouchModeCustom.TextChanged += textBoxUserAgentTouchModeCustom_TextChanged;
 
             // Group "Down/Uploads"
             checkBoxAllowDownUploads.Checked           = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDownUploads];
@@ -662,6 +664,8 @@ namespace SebWindowsConfig
             radioButtonUseZoomPage.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
             radioButtonUseZoomText.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
             enableZoomAdjustZoomMode();
+            checkBoxEnableZoomText.CheckedChanged += checkBoxEnableZoomText_CheckedChanged;
+            checkBoxEnableZoomPage.CheckedChanged += checkBoxEnableZoomPage_CheckedChanged;
 
             checkBoxAllowSpellCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheck];
             checkBoxAllowDictionaryLookup.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictionaryLookup];
@@ -3637,16 +3641,16 @@ namespace SebWindowsConfig
             else if (checkBoxEnableZoomPage.Checked && !checkBoxEnableZoomText.Checked)
             {
                 groupBoxZoomMode.Enabled = true;
-                radioButtonUseZoomPage.Checked = true;
                 radioButtonUseZoomPage.Enabled = true;
                 radioButtonUseZoomText.Enabled = false;
+                radioButtonUseZoomPage.Checked = true;
             }
             else if (!checkBoxEnableZoomPage.Checked && checkBoxEnableZoomText.Checked)
             {
                 groupBoxZoomMode.Enabled = true;
-                radioButtonUseZoomText.Checked = true;
                 radioButtonUseZoomText.Enabled = true;
                 radioButtonUseZoomPage.Enabled = false;
+                radioButtonUseZoomText.Checked = true;
             }
             else
             {

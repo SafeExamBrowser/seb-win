@@ -611,7 +611,7 @@ namespace SebWindowsClient
                                         else
                                         {
                                             runningProcessesToClose.Add(proc);
-                                            runningApplicationsToClose.Add(title == "SEB" ? executable : title);
+                                            runningApplicationsToClose.Add(title == "SEB" ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
                                             j++;
                                         }
                                     }
@@ -1309,20 +1309,22 @@ namespace SebWindowsClient
                     bool prohibitedProcessActive = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyActive);
                     if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
                     {
-                        string executable = (string)prohibitedProcess[SEBSettings.KeyExecutable];
+                        string title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
+                        if (title == null) title = "";
+                        string executable = ((string)prohibitedProcess[SEBSettings.KeyExecutable]).ToLower();
                         // Check if the process is running
                         runningApplications = Process.GetProcesses();
                         for (int j = 0; j < runningApplications.Count(); j++)
                         {
                             string runningProcessName = runningApplications[j].ProcessName;
-                            if (runningProcessName != null && executable.Contains(runningProcessName))
+                            if (runningProcessName != null && executable.Contains(runningProcessName.ToLower()))
                             {
                                 // If the flag strongKill is set, then the process is killed without asking the user
                                 bool strongKill = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyStrongKill);
                                 if (!strongKill || !SEBNotAllowedProcessController.CloseProcess(runningApplications[j]))
                                 {
                                     runningProcessesToClose.Add(runningApplications[j]);
-                                    runningApplicationsToClose.Add(executable);
+                                    runningApplicationsToClose.Add(title == "SEB" ? (string)prohibitedProcess[SEBSettings.KeyExecutable] : title);
                                 }
                             }
                         }

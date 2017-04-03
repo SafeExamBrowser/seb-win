@@ -89,7 +89,8 @@ this.SebHost = {
 		base.sendHandler = {
 			"SebFile" : base.sendSebFile,
 			"ReconfigureAborted" : base.sendReconfigureAborted,
-			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered
+			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered,
+			"FullScreenChanged" : base.sendFullScreenChanged
 		};
 		sl.out("SebHost initialized: " + seb);
 	},
@@ -325,6 +326,11 @@ this.SebHost = {
 		base.sendMessage(JSON.stringify(msg));
 	},
 	
+	sendFullScreenChanged : function(state) {
+		let msg = {Handler:"FullScreenChanged",Opts:{"fullscreen":state}};
+		base.sendMessage(JSON.stringify(msg));
+	},
+	
 	quitFromHost : function () {
 		seb.hostForceQuit = true;
 		seb.quitIgnoreWarning = true;
@@ -444,6 +450,9 @@ this.SebHost = {
 	},
 	
 	createScreenKeyboardController : function (win) {
+		if (!su.getConfig("browserScreenKeyboard","boolean",false)) {
+			return;
+		}
 		sl.debug("createScreenKeyboardController");
 		win.document.addEventListener("click",onClick,false);
 		var elArr = new Array();
@@ -496,5 +505,22 @@ this.SebHost = {
 			}
 			catch(e){}
 		} 
+	},
+	
+	createFullscreenController : function (win) {
+		sl.debug("createFullscreenController");
+		
+		win.document.onfullscreenchange = function ( evt ) {
+			if (evt.target != evt.currentTarget) {
+				return;
+			}
+			if ( win.document.fullscreenElement ) {
+				base.sendFullScreenChanged(true);
+			}
+			else {
+				base.sendFullScreenChanged(false);
+			}
+			
+		};
 	}
 }

@@ -33,9 +33,13 @@ this.EXPORTED_SYMBOLS = ["SebConfig"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ prefs } = Cu.import("resource://gre/modules/Services.jsm").Services,
+	{ prefs, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services,
 	{ FileUtils } = Cu.import("resource://gre/modules/FileUtils.jsm",{});
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
+/* SebGlobals */
+scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* Services */
 
@@ -47,7 +51,8 @@ XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","S
 
 /* ModuleGlobals */
 let	base = null,
-	seb = null;
+	seb = null,
+	uaReg = new RegExp(/rv\:(.+)?\).*?(seb\/.*)$/ig);
 
 this.SebConfig =  {
 	prefsMap : {},
@@ -57,6 +62,7 @@ this.SebConfig =  {
 		base = this;
 		seb = obj;
 		sl.out("SebConfig initialized: " + seb);
+		base.prefsMap["browserUserAgent"] = base.browserUserAgent;
 		base.prefsMap["browserZoomFull"] = base.browserZoomFull;
 		base.prefsMap["zoomMaxPercent"] = base.zoomMaxPercent;
 		base.prefsMap["zoomMinPercent"] = base.zoomMinPercent;
@@ -177,7 +183,45 @@ this.SebConfig =  {
 			base.setPref(k,v);
 		}
 	},
-
+	
+	browserUserAgent : function(param) {
+		var ret = "";
+		var topt = su.getConfig("touchOptimized","boolean",false);
+		var uaPref = (topt === false) ? su.getConfig(BROWSER_UA_DESKTOP_PREF,"number",0) : su.getConfig(BROWSER_UA_TOUCH_PREF,"number",0);
+		var bua = su.getConfig("browserUserAgent","string","");
+		switch (uaPref) {
+			case BROWSER_UA_DESKTOP_DEFAULT :
+			case BROWSER_UA_TOUCH_DEFAULT :
+				var httpHandler = Cc["@mozilla.org/network/protocol;1?name=http"].getService(Ci.nsIHttpProtocolHandler);
+				var userAgent = httpHandler.userAgent;
+				var match = uaReg.exec(userAgent);
+				if (match) {
+					ret = userAgent.replace(match[2],"Firefox/"+match[1]) + " " + bua;
+					if (topt === true) {
+						ret = ret.replace(match[1],match[1]+"; Touch");
+					}
+				}
+				else {
+					sl.err("Error matching user-agent: " + userAgent);
+					ret = userAgent;
+				}
+				break;
+			case BROWSER_UA_DESKTOP_CUSTOM :
+			case BROWSER_UA_TOUCH_IPAD :
+			case BROWSER_UA_TOUCH_CUSTOM :
+				if (topt === true) {
+					ret = (uaPref === BROWSER_UA_TOUCH_IPAD) ? su.getConfig(BROWSER_UA_TOUCH_IPAD_PREF,"string","") : su.getConfig(BROWSER_UA_TOUCH_CUSTOM_PREF,"string","");
+				}
+				else {
+					ret = su.getConfig(BROWSER_UA_DESKTOP_CUSTOM_PREF,"string","")
+				}
+				ret = ret + " " + bua;
+				break;
+				
+		}
+		return ret;
+	},
+	
 	browserZoomFull : function(param) {
 		var ret = (seb.config["zoomMode"] == 0) ? true : false;
 		return ret;

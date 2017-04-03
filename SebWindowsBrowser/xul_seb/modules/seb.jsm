@@ -252,6 +252,8 @@ this.seb =  {
 		sb.setEmbeddedCerts();
 		base.setQuitHandler(win);
 		sh.setMessageSocketHandler(win);
+		sh.createScreenKeyboardController(win);
+		sh.createFullscreenController(win);
 		ss.setSebserverSocketHandler(win);
 		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
@@ -266,6 +268,8 @@ this.seb =  {
 		base.initArsKeys(win);
 		sw.setToolbar(win);
 		sw.setSize(win);
+		sh.createScreenKeyboardController(win);
+		sh.createFullscreenController(win);
 	},
 
 	initAdditionalResources : function (obj) {
@@ -337,7 +341,7 @@ this.seb =  {
 		}
 		keySet.parentNode.appendChild(keySet);
 	},
-
+	
 	/* handler */
 	setQuitHandler : function(win) {
 		sl.debug("setQuitHandler");

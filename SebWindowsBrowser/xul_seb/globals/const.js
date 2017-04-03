@@ -16,4 +16,16 @@ const 	DEBUG_LEVEL = 1,
 	RECONF_SUCCESS = 2,
 	RECONF_ABORTED = 3,
 	RECONFIG_URL = "chrome://seb/content/reconf.xul",
-	RECONFIG_FEATURES = "chrome,dialog,modal,resizable=yes,width=800,height=600,scrollbars=yes";
+	RECONFIG_FEATURES = "chrome,dialog,modal,resizable=yes,width=800,height=600,scrollbars=yes",
+	BROWSER_UA_DESKTOP_PREF = "browserUserAgentModeWinDesktop",
+	BROWSER_UA_TOUCH_PREF = "browserUserAgentModeWinTouch",
+	BROWSER_UA_DESKTOP_CUSTOM_PREF = "browserUserAgentModeWinDesktopCustom",
+	BROWSER_UA_TOUCH_IPAD_PREF = "browserUserAgentModeWinTouchIPad",
+	BROWSER_UA_TOUCH_CUSTOM_PREF = "browserUserAgentModeWinTouchCustom",
+	BROWSER_UA_DESKTOP_DEFAULT = 0,
+	BROWSER_UA_DESKTOP_CUSTOM = 1,
+	BROWSER_UA_TOUCH_DEFAULT = 0, 
+	BROWSER_UA_TOUCH_IPAD = 1,
+	BROWSER_UA_TOUCH_CUSTOM = 2;
+	
+

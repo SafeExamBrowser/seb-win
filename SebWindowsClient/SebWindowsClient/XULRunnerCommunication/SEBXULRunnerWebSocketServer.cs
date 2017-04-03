@@ -60,6 +60,9 @@ namespace SebWindowsClient.XULRunnerCommunication
         public static event EventHandler OnXulRunnerQuitLinkClicked;
         public static event EventHandler OnXulRunnerTextFocus;
         public static event EventHandler OnXulRunnerTextBlur;
+        public static event BrowserEventHandler OnXulRunnerFullscreenchanged;
+
+        public delegate void BrowserEventHandler(dynamic opts);
 
         private static IWebSocketConnection XULRunner;
 
@@ -193,6 +196,12 @@ namespace SebWindowsClient.XULRunnerCommunication
                 {
                     case SEBXULMessage.SEBXULHandler.AdditionalRessourceTriggered:
                         additionalResourceHandler.OpenAdditionalResourceById(sebxulMessage.Opts["Id"].ToString());
+                        break;
+                    case SEBXULMessage.SEBXULHandler.FullScreenChanged:
+                        if (OnXulRunnerFullscreenchanged != null)
+                        {
+                            OnXulRunnerFullscreenchanged(sebxulMessage.Opts);
+                        }
                         break;
                 }
             }

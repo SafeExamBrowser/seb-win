@@ -20,7 +20,8 @@ namespace SebWindowsClient.XULRunnerCommunication
             Reconfigure,
             SebFileTransfer,
             AdditionalRessourceTriggered,
-            ReconfigureAborted
+            ReconfigureAborted,
+            FullScreenChanged
         }
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)

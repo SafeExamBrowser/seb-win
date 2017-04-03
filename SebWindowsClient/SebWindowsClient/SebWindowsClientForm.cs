@@ -1521,6 +1521,17 @@ namespace SebWindowsClient
 
                 Logger.AddInformation("attempting to start socket server");
                 SEBXULRunnerWebSocketServer.StartServer();
+                SEBXULRunnerWebSocketServer.OnXulRunnerFullscreenchanged += opts =>
+                {
+                    if (opts.fullscreen == true)
+                    {
+                        this.BeginInvoke(new Action(this.Hide));
+                    }
+                    else
+                    {
+                        this.BeginInvoke(new Action(this.Show));
+                    }
+                };
 
                 // Disable unwanted keys.
                 SebKeyCapture.FilterKeys = true;

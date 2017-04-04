@@ -807,6 +807,24 @@ namespace SebWindowsConfig
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
+        /// Check if there are some uncommited cells in DataGridViews and commit them.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        private void CommitEditingInDataGridViews()
+        {
+            if (datagridBlackListFilter.IsCurrentCellDirty)
+            {
+                datagridBlackListFilter.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+
+            if (datagridWhitelist.IsCurrentCellDirty)
+            {
+                datagridWhitelist.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
         /// Check if there are some unconfirmed passwords and show alert if so.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
@@ -1092,6 +1110,9 @@ namespace SebWindowsConfig
         {
             // Check if there are unconfirmed passwords, if yes show an alert and abort saving
             if (ArePasswordsUnconfirmed()) return false;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
 
             StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(currentDireSebConfigFile).Append(@"\").Append(currentFileSebConfigFile);
             String fileName = sebClientSettingsAppDataBuilder.ToString();
@@ -3880,6 +3901,5 @@ namespace SebWindowsConfig
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = listBoxMinMacOSVersion.SelectedIndex;
         }
-
     } // end of   class     SebWindowsConfigForm
 }     // end of   namespace SebWindowsConfig

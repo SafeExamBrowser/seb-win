@@ -131,7 +131,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADy
-        yAAAAk1TRnQBSQFMAgEBCwEAAYABCQGAAQkBIAEAASABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAGA
+        yAAAAk1TRnQBSQFMAgEBCwEAAYgBCQGIAQkBIAEAASABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAGA
         AwABYAMAAQEBAAEgBgABwJIAAY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGO
         AYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEA
         Af8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGO
@@ -164,14 +164,14 @@
         Af8DAAH/AwAB/wMAAf+gAANMAZAB0ALOAf8BrQGqAakB/wGKAYcBhQH/AYICAAH/AZ8BnQGbAf8BqgGo
         AaYB/wGlAaIBoQH/AZsBmAGXAf8BhwGEAYMB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wGpAaYBpQH/
         AdgB1gHVAf8DQAFvFAABjgGLAQAB/wGOAYsBAAH/AbsBuQEAAf8MAAL1AegB/wHCAcABAAH/DAAC8QHf
-        Af8BxgHEAQEB/wwAAeoB6QHPAf8B0gHRAZoB/wG+AbwBAAH/AY8BjAEAAf8BjgGLAQAB/wGOAYsBAAH/
+        Af8BxgHEAQAB/wwAAeoB6QHPAf8B0gHRAZoB/wG+AbwBAAH/AY8BjAEAAf8BjgGLAQAB/wGOAYsBAAH/
         AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGL
         AQAB/wGOAYsBAAH/AY4BiwEAAf8DAAH/AwAB/wMAAf8DmgH/A6IB/wOiAf8DogH/A6IB/wOiAf8DogH/
         A6IB/wOiAf8DogH/A6IB/wOiAf8DogH/A6IB/wOiAf8DogH/A6IB/wOiAf8DogH/A6IB/wOiAf8DogH/
         A6IB/wOiAf8DogH/A5oB/wMAAf8DAAH/AwAB/5wAA1UBsgHJAccBxgH/AZ0BmgGYAf8BigGHAYQB/wGN
         AYoBiAH/AaoBpwGlAf8BswGwAa4B/wGmAaMBoQH/AagBpQGjAf8BrQGqAagB/wGsAakBqAH/AZYBkwGS
         Af8DAAH/AwAB/wMAAf8BggIAAf8DAAH/AwAB/wGOAYsBigH/Ac8BzgHNAf8DSgGLEAABjgGLAQAB/wGO
-        AYsBAAH/AbsBuQEAAf8MAAL1AegB/wHCAcABAAH/DAAC8QHfAf8BxgHEAQEB/wwAAeoB6QHPAf8B0gHR
+        AYsBAAH/AbsBuQEAAf8MAAL1AegB/wHCAcABAAH/DAAC8QHfAf8BxgHEAQAB/wwAAeoB6QHPAf8B0gHR
         AZoB/wHdAdwBsgH/AcUBwwEAAf8BjwGMAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/
         AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8DAAH/
         AwAB/wOiAf8DkwH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
@@ -179,7 +179,7 @@
         AwAB/5gAA1YBqwHHAcUBxAH/AZoBlwGVAf8BkwGQAY4B/wGXAZQBkgH/AZoBlwGVAf8BsAGtAasB/wGp
         AaYBpAH/AagBpQGjAf8BpgGjAaEB/wGhAZ4BnAH/AaEBngGcAf8BrAGpAacB/wGiAZ8BngH/AY8BjAGL
         Af8DAAH/AwAB/wGAAgAB/wGBAgAB/wMAAf8BggIAAf8BzgHMAcsB/wNGAX8MAAGOAYsBAAH/AY4BiwEA
-        Af8BuwG5AQAB/wwAAvUB6AH/AcIBwAEAAf8MAALxAd8B/wHGAcQBAQH/DAAB6gHpAc8B/wHSAdEBmgH/
+        Af8BuwG5AQAB/wwAAvUB6AH/AcIBwAEAAf8MAALxAd8B/wHGAcQBAAH/DAAB6gHpAc8B/wHSAdEBmgH/
         Ad0B3AGyAf8B3QHcAbIB/wHPAc4BkgH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGL
         AQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wMAAf8DmgH/
         A5EB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
@@ -274,7 +274,7 @@
         Af8DAAH/AwAB/wMAAf8DAAH/AwAB/wG3AbEBpwH/Aa4BrAGqAf8BqQGmAaQB/wGrAagBpgH/AaQBogGg
         Af8BoQGeAZwB/wGhAZ4BnAH/AaABnQGbAf8BqgGoAaUB/wGVAZIBkQH/AwAB/wGAAgAB/wMAAf8BjwGM
         AYsB/wNhAeYBjgGLAQAB/wGOAYsBAAH/AZcBlAEAAf8BugG4AQAB/wG9AbwBAAH/Ab0BvAEAAf8BuwG6
-        AQAB/wHGAcQBAQH/AdkB2AGoAf8QAAG+AbwBAAH/AdYB1QGiAf8C5wHKAf8MAAHbAdoBrgH/AuoB0AH/
+        AQAB/wHGAcQBAAH/AdkB2AGoAf8QAAG+AbwBAAH/AdYB1QGiAf8C5wHKAf8MAAHbAdoBrgH/AuoB0AH/
         AY4BiwEAAf8BtgG0AQAB/wH+Af0B/AH/AcMBwgEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGL
         AQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wMAAf8DlAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
         AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A7AB/wgAA9UB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
@@ -312,9 +312,9 @@
         AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AZ0BmgEAAf8BpQGjAQAB/wGlAaMBAAH/AaUBowEAAf8BnAGZ
         AQAB/wGjAaEBAAH/AaUBowEAAf8BpQGjAQAB/wGlAaMBAAH/AZsBmAEAAf8BpAGiAQAB/wGlAaMBAAH/
         AaUBowEAAf8BpQGjAQAB/wGZAZcBAAH/AY4BiwEAAf8BlwGVAQAB/wHrAeoB0gH/BAABwQHAAQAB/wGO
-        AYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wMAAf8DAgH/AwAB/wMA
+        AYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wMAAf8DAQH/AwAB/wMA
         Af8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DmAH/JAADvgH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMAAf8DAAH/AwIB/wMAAf+AAAErAiwBQwMAAf8DQAH9BAADTAGPAcsByAHHAf8BzQHKAccB/wHM
+        AwAB/wMAAf8DAAH/AwEB/wMAAf+AAAErAiwBQwMAAf8DQAH9BAADTAGPAcsByAHHAf8BzQHKAccB/wHM
         AcYBwQH/AwAB/wMAAf8DAAH/AwAB/wMAAf8CAAGGAf8DAAH/AwAB/wMAAf8DAAH/AbgBtQGyAf8BqwGo
         AacB/wG1AbIBsQH/AaMBoQGfAf8BiAGFAYQB/wGJAYYBhAH/AYYBgwGCAf8BhAGBAQAB/wGAAgAB/wMA
         Af8DAAH/AbwBugG5Af8DQwF4BAABjgGLAQAB/wGOAYsBAAH/AY4BiwEAAf8BjgGLAQAB/wGOAYsBAAH/
@@ -997,16 +997,13 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="dataGridViewTextBoxColumn3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="dataGridViewTextBoxColumn4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="dataGridViewTextBoxColumn4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridViewTextBoxColumn3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridViewTextBoxColumn3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="comboBoxChooseIdentityToEmbed.ToolTip" xml:space="preserve">
@@ -1103,18 +1100,9 @@
   <data name="checkBoxMonitorProcesses.ToolTip" xml:space="preserve">
     <value>SEB monitors which processes/applications are running during an exam. Those which are not permitted are hiddden, those which are prohibited will be closed/killed. Always active in kiosk mode 'Disable Explorer Shell'</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="checkBoxAllowBrowsingBackForward.ToolTip" xml:space="preserve">
     <value>Corresponds with 'Enable Alt-Mousewheel' in Hooked Keys settings. Disabling browsing to previously visited pages increases security, because it might be possible to leave an exam by browsing back to an external start page.</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="comboBoxCryptoIdentity.ToolTip" xml:space="preserve">
     <value>Identities (X.509 certificates with RSA public key and associated private key) in the Windows Certificate Store which can be used for encrypting and decrypting. Install the chosen identity on your SEB clients.</value>
   </data>
@@ -1123,6 +1111,9 @@
   </data>
   <metadata name="folderBrowserDialogLogDirectoryWin.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>968, 17</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1222, 17</value>

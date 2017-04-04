@@ -1063,6 +1063,12 @@ namespace SebWindowsConfig
 
         private void buttonOpenSettings_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1109,6 +1115,12 @@ namespace SebWindowsConfig
 
         public void openSettingsFile(string filePath)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1262,6 +1274,12 @@ namespace SebWindowsConfig
 
         private void buttonRevertToDefaultSettings_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1297,6 +1315,12 @@ namespace SebWindowsConfig
 
         private void buttonRevertToLocalClientSettings_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1334,6 +1358,12 @@ namespace SebWindowsConfig
 
         private void buttonRevertToLastOpened_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1358,6 +1388,12 @@ namespace SebWindowsConfig
 
         private void buttonEditDuplicate_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed since last saved/opened
             int result = checkSettingsChanged();
             // User selected cancel, abort
@@ -1423,6 +1459,12 @@ namespace SebWindowsConfig
 
         private void buttonConfigureClient_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Get the path to the local client settings configuration file
             StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(SEBClientInfo.SebClientSettingsAppDataDirectory).Append(SEBClientInfo.SEB_CLIENT_CONFIG);
             string filename = sebClientSettingsAppDataBuilder.ToString();
@@ -1458,6 +1500,12 @@ namespace SebWindowsConfig
 
         private void buttonApplyAndStartSEB_Click(object sender, EventArgs e)
         {
+            // Check if there are unconfirmed passwords, if yes show an alert and abort saving
+            if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Check if settings changed and save them if yes
             // Generate current Browser Exam Key
             string currentBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();

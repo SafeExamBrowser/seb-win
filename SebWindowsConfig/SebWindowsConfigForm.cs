@@ -1202,6 +1202,9 @@ namespace SebWindowsConfig
             // Check if there are unconfirmed passwords, if yes show an alert and abort saving
             if (ArePasswordsUnconfirmed()) return;
 
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             // Set the default directory and file name in the File Dialog
             saveFileDialogSebConfigFile.InitialDirectory = currentDireSebConfigFile;
             saveFileDialogSebConfigFile.FileName = currentFileSebConfigFile;
@@ -3843,6 +3846,10 @@ namespace SebWindowsConfig
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ArePasswordsUnconfirmed()) return;
+
+            // Commit cells which are being edited in DataGridViews
+            CommitEditingInDataGridViews();
+
             Application.Exit();
         }
 
@@ -3855,6 +3862,9 @@ namespace SebWindowsConfig
                     e.Cancel = true;
                     return;
                 }
+
+                // Commit cells which are being edited in DataGridViews
+                CommitEditingInDataGridViews();
 
                 int result = checkSettingsChanged();
                 // User selected cancel, abort

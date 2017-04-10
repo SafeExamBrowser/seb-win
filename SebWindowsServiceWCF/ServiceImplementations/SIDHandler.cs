@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -21,7 +22,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
         {
             try
             {
-                return GetSid(username);
+                return ReadSidFromWmic(username);
+                //return GetSid(username);
             }
             catch (Exception ex)
             {
@@ -103,6 +105,26 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                     }
                 }
             }
+        }
+
+        private static string ReadSidFromWmic(string username)
+        {
+            Process console = new Process();
+            console.StartInfo.FileName = "cmd.exe";
+            console.StartInfo.Arguments = string.Format("/c \"wmic useraccount where name='{0}' get sid\"", username);
+            console.StartInfo.UseShellExecute = false;
+            console.StartInfo.RedirectStandardOutput = true;
+            console.StartInfo.CreateNoWindow = true;
+            console.Start();
+            while (!console.StandardOutput.EndOfStream)
+            {
+                string sid = console.StandardOutput.ReadLine();
+                if (sid != null && sid.Trim().Length > 10)
+                {
+                    return sid.Trim();
+                }
+            }
+            return null;
         }
     }
 }

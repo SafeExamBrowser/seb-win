@@ -209,32 +209,9 @@ namespace SebWindowsClient.ConfigurationUtils
 
                 // Set correct task bar height according to display dpi
                 xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
+            }
 
-                if ((int)xulRunnerSettings[SEBSettings.KeyBrowserUserAgentTouchMode] == 0)
-                {
-                    xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_TOUCH;
-                }
-                else if ((int)xulRunnerSettings[SEBSettings.KeyBrowserUserAgentTouchMode] == 1)
-                {
-                    xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD;
-                }
-                else if ((int)xulRunnerSettings[SEBSettings.KeyBrowserUserAgentTouchMode] == 2)
-                {
-                    xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = xulRunnerSettings[SEBSettings.KeyBrowserUserAgentTouchModeCustom];
-                }
-            }
-            else
-            {
-                if ((int)xulRunnerSettings[SEBSettings.KeyBrowserUserAgentDesktopMode] == 0)
-                {
-                    xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_DESKTOP;
-                }
-                else
-                {
-                    xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = xulRunnerSettings[SEBSettings.KeyBrowserUserAgentDesktopModeCustom];
-                }
-            }
-            xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] += " " + SEBClientInfo.BROWSER_USERAGENT_SEB + " " + Application.ProductVersion;
+            xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion;
 
             // Set onscreen keyboard settings flag when touch optimized is enabled
             xulRunnerSettings[SEBSettings.KeyBrowserScreenKeyboard] = (bool)xulRunnerSettings[SEBSettings.KeyTouchOptimized];

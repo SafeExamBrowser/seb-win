@@ -605,7 +605,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowBrowsingBackForward, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyNewBrowserWindowNavigation, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyRemoveBrowserProfile, true);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyDisableLocalStorage     , true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyDisableLocalStorage     , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableSebBrowser        , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadButton        , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadWarning       , true);

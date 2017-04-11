@@ -152,6 +152,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyBrowserUserAgentDesktopMode          = "browserUserAgentWinDesktopMode";
         public const String KeyBrowserUserAgentDesktopModeCustom    = "browserUserAgentWinDesktopModeCustom";
         public const String KeyBrowserUserAgentTouchMode            = "browserUserAgentWinTouchMode";
+        public const String KeyBrowserUserAgentTouchModeIPad        = "browserUserAgentWinTouchModeIPad";
         public const String KeyBrowserUserAgentTouchModeCustom      = "browserUserAgentWinTouchModeCustom";
         public const String KeyBrowserUserAgent                     = "browserUserAgent";
         public const String KeyBrowserUserAgentMac                  = "browserUserAgentMac";
@@ -612,6 +613,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentDesktopMode, 0);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentDesktopModeCustom, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentTouchMode, 0);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentTouchModeIPad, SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentTouchModeCustom, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgent, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentMac, 0);

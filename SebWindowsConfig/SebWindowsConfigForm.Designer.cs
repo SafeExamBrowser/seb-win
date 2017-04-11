@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1030,9 +1030,9 @@ namespace SebWindowsConfig
             this.groupBox10.Controls.Add(this.label4);
             this.groupBox10.Controls.Add(this.checkBoxUseStandardDirectory);
             this.groupBox10.Location = new System.Drawing.Point(31, 244);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox10.Size = new System.Drawing.Size(740, 175);
             this.groupBox10.TabIndex = 95;
             this.groupBox10.TabStop = false;
@@ -1068,7 +1068,7 @@ namespace SebWindowsConfig
             // textBoxLogDirectoryOSX
             // 
             this.textBoxLogDirectoryOSX.Location = new System.Drawing.Point(224, 128);
-            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryOSX.Name = "textBoxLogDirectoryOSX";
             this.textBoxLogDirectoryOSX.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryOSX.TabIndex = 82;
@@ -1077,7 +1077,7 @@ namespace SebWindowsConfig
             // textBoxLogDirectoryWin
             // 
             this.textBoxLogDirectoryWin.Location = new System.Drawing.Point(224, 63);
-            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogDirectoryWin.Name = "textBoxLogDirectoryWin";
             this.textBoxLogDirectoryWin.Size = new System.Drawing.Size(495, 22);
             this.textBoxLogDirectoryWin.TabIndex = 92;
@@ -1296,9 +1296,9 @@ namespace SebWindowsConfig
             this.tabPageUrlFilter.Controls.Add(this.groupBox1);
             this.tabPageUrlFilter.Controls.Add(this.checkBoxEnableURLContentFilter);
             this.tabPageUrlFilter.Location = new System.Drawing.Point(4, 25);
-            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Name = "tabPageUrlFilter";
-            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageUrlFilter.Size = new System.Drawing.Size(933, 572);
             this.tabPageUrlFilter.TabIndex = 3;
             this.tabPageUrlFilter.Text = "Filter";
@@ -1336,9 +1336,9 @@ namespace SebWindowsConfig
             this.groupBox2.Controls.Add(this.btnRemoveBlackListFilter);
             this.groupBox2.Controls.Add(this.btnAddBlackListFilter);
             this.groupBox2.Location = new System.Drawing.Point(19, 263);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(888, 201);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
@@ -1399,9 +1399,9 @@ namespace SebWindowsConfig
             this.groupBox1.Controls.Add(this.btnRemoveWhitelistFilter);
             this.groupBox1.Controls.Add(this.btnAddWhitelistFilter);
             this.groupBox1.Location = new System.Drawing.Point(20, 44);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(888, 201);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
@@ -1615,8 +1615,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle7;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -1663,7 +1663,7 @@ namespace SebWindowsConfig
             // textBoxBypassedProxyHostList
             // 
             this.textBoxBypassedProxyHostList.Location = new System.Drawing.Point(25, 391);
-            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxBypassedProxyHostList.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxBypassedProxyHostList.Multiline = true;
             this.textBoxBypassedProxyHostList.Name = "textBoxBypassedProxyHostList";
             this.textBoxBypassedProxyHostList.Size = new System.Drawing.Size(873, 121);
@@ -2112,7 +2112,7 @@ namespace SebWindowsConfig
             // ButtonChooseExecutable
             // 
             this.ButtonChooseExecutable.Location = new System.Drawing.Point(648, 98);
-            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonChooseExecutable.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonChooseExecutable.Name = "ButtonChooseExecutable";
             this.ButtonChooseExecutable.Size = new System.Drawing.Size(40, 27);
             this.ButtonChooseExecutable.TabIndex = 92;
@@ -2766,9 +2766,9 @@ namespace SebWindowsConfig
             this.groupBox9.Controls.Add(this.textBox4);
             this.groupBox9.Controls.Add(this.textBox3);
             this.groupBox9.Location = new System.Drawing.Point(32, 342);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox9.Size = new System.Drawing.Size(740, 223);
             this.groupBox9.TabIndex = 121;
             this.groupBox9.TabStop = false;
@@ -2862,9 +2862,9 @@ namespace SebWindowsConfig
             this.groupBox8.Controls.Add(this.textBoxQuitURL);
             this.groupBox8.Controls.Add(this.textBox1);
             this.groupBox8.Location = new System.Drawing.Point(32, 181);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(740, 144);
             this.groupBox8.TabIndex = 120;
             this.groupBox8.TabStop = false;
@@ -2919,9 +2919,9 @@ namespace SebWindowsConfig
             this.groupBox7.Controls.Add(this.checkBoxSendBrowserExamKey);
             this.groupBox7.Controls.Add(this.textBoxBrowserExamKey);
             this.groupBox7.Location = new System.Drawing.Point(32, 20);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox7.Size = new System.Drawing.Size(740, 144);
             this.groupBox7.TabIndex = 119;
             this.groupBox7.TabStop = false;
@@ -3027,7 +3027,7 @@ namespace SebWindowsConfig
             // textBoxDownloadDirectoryWin
             // 
             this.textBoxDownloadDirectoryWin.Location = new System.Drawing.Point(359, 68);
-            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryWin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryWin.Name = "textBoxDownloadDirectoryWin";
             this.textBoxDownloadDirectoryWin.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryWin.TabIndex = 87;
@@ -3061,7 +3061,7 @@ namespace SebWindowsConfig
             // textBoxDownloadDirectoryOSX
             // 
             this.textBoxDownloadDirectoryOSX.Location = new System.Drawing.Point(359, 105);
-            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDownloadDirectoryOSX.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDownloadDirectoryOSX.Name = "textBoxDownloadDirectoryOSX";
             this.textBoxDownloadDirectoryOSX.Size = new System.Drawing.Size(504, 22);
             this.textBoxDownloadDirectoryOSX.TabIndex = 84;
@@ -3205,9 +3205,9 @@ namespace SebWindowsConfig
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacDefault);
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacCustom);
             this.groupBox14.Location = new System.Drawing.Point(723, 380);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox14.Size = new System.Drawing.Size(667, 126);
             this.groupBox14.TabIndex = 74;
             this.groupBox14.TabStop = false;
@@ -3261,9 +3261,9 @@ namespace SebWindowsConfig
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchDefault);
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchCustom);
             this.groupBox13.Location = new System.Drawing.Point(723, 521);
-            this.groupBox13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox13.Size = new System.Drawing.Size(667, 151);
             this.groupBox13.TabIndex = 73;
             this.groupBox13.TabStop = false;
@@ -3271,14 +3271,15 @@ namespace SebWindowsConfig
             // 
             // textBoxUserAgentTouchModeIPad
             // 
+            this.textBoxUserAgentTouchModeIPad.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxUserAgentTouchModeIPad.Location = new System.Drawing.Point(152, 53);
             this.textBoxUserAgentTouchModeIPad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxUserAgentTouchModeIPad.Name = "textBoxUserAgentTouchModeIPad";
-            this.textBoxUserAgentTouchModeIPad.ReadOnly = true;
             this.textBoxUserAgentTouchModeIPad.Size = new System.Drawing.Size(495, 22);
             this.textBoxUserAgentTouchModeIPad.TabIndex = 122;
             this.toolTip1.SetToolTip(this.textBoxUserAgentTouchModeIPad, "An iPad user agent is recognized by most websites which have a tablet mobile them" +
         "e.");
+            this.textBoxUserAgentTouchModeIPad.TextChanged += new System.EventHandler(this.textBoxUserAgentTouchModeIPad_TextChanged);
             // 
             // radioButtonUserAgentTouchIPad
             // 
@@ -3348,9 +3349,9 @@ namespace SebWindowsConfig
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopDefault);
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopCustom);
             this.groupBox12.Location = new System.Drawing.Point(31, 521);
-            this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox12.Size = new System.Drawing.Size(667, 151);
             this.groupBox12.TabIndex = 72;
             this.groupBox12.TabStop = false;
@@ -3431,9 +3432,9 @@ namespace SebWindowsConfig
             this.groupBox11.Controls.Add(this.checkBoxAllowBrowsingBackForward);
             this.groupBox11.Controls.Add(this.checkBoxBlockPopUpWindows);
             this.groupBox11.Location = new System.Drawing.Point(31, 346);
-            this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox11.Size = new System.Drawing.Size(667, 160);
             this.groupBox11.TabIndex = 71;
             this.groupBox11.TabStop = false;
@@ -3530,7 +3531,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxRemoveProfile.AutoSize = true;
             this.checkBoxRemoveProfile.Location = new System.Drawing.Point(19, 124);
-            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxRemoveProfile.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxRemoveProfile.Name = "checkBoxRemoveProfile";
             this.checkBoxRemoveProfile.Size = new System.Drawing.Size(163, 21);
             this.checkBoxRemoveProfile.TabIndex = 6;
@@ -3898,9 +3899,9 @@ namespace SebWindowsConfig
             this.groupBox6.Controls.Add(this.checkBoxHideBrowserWindowToolbar);
             this.groupBox6.Controls.Add(this.checkBoxShowMenuBar);
             this.groupBox6.Location = new System.Drawing.Point(31, 268);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox6.Size = new System.Drawing.Size(667, 85);
             this.groupBox6.TabIndex = 83;
             this.groupBox6.TabStop = false;
@@ -3958,9 +3959,9 @@ namespace SebWindowsConfig
             this.groupBox5.Controls.Add(this.checkBoxShowTime);
             this.groupBox5.Controls.Add(this.checkBoxShowReloadButton);
             this.groupBox5.Location = new System.Drawing.Point(31, 366);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox5.Size = new System.Drawing.Size(667, 162);
             this.groupBox5.TabIndex = 82;
             this.groupBox5.TabStop = false;
@@ -4062,9 +4063,9 @@ namespace SebWindowsConfig
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomPage);
             this.groupBoxEnableZoom.Controls.Add(this.checkBoxEnableZoomText);
             this.groupBoxEnableZoom.Location = new System.Drawing.Point(31, 540);
-            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Name = "groupBoxEnableZoom";
-            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxEnableZoom.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxEnableZoom.Size = new System.Drawing.Size(321, 85);
             this.groupBoxEnableZoom.TabIndex = 76;
             this.groupBoxEnableZoom.TabStop = false;
@@ -4101,9 +4102,9 @@ namespace SebWindowsConfig
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomPage);
             this.groupBoxZoomMode.Controls.Add(this.radioButtonUseZoomText);
             this.groupBoxZoomMode.Location = new System.Drawing.Point(376, 540);
-            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Name = "groupBoxZoomMode";
-            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxZoomMode.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxZoomMode.Size = new System.Drawing.Size(321, 85);
             this.groupBoxZoomMode.TabIndex = 75;
             this.groupBoxZoomMode.TabStop = false;
@@ -4142,9 +4143,9 @@ namespace SebWindowsConfig
             this.groupBox4.Controls.Add(this.radioButtonUseFullScreenMode);
             this.groupBox4.Controls.Add(this.radioButtonTouchOptimized);
             this.groupBox4.Location = new System.Drawing.Point(31, 20);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(667, 113);
             this.groupBox4.TabIndex = 74;
             this.groupBox4.TabStop = false;
@@ -4683,7 +4684,7 @@ namespace SebWindowsConfig
             this.comboBoxAdditionalResourceStartUrl.DisplayMember = "Value";
             this.comboBoxAdditionalResourceStartUrl.FormattingEnabled = true;
             this.comboBoxAdditionalResourceStartUrl.Location = new System.Drawing.Point(709, 38);
-            this.comboBoxAdditionalResourceStartUrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxAdditionalResourceStartUrl.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxAdditionalResourceStartUrl.Name = "comboBoxAdditionalResourceStartUrl";
             this.comboBoxAdditionalResourceStartUrl.Size = new System.Drawing.Size(457, 24);
             this.comboBoxAdditionalResourceStartUrl.TabIndex = 58;

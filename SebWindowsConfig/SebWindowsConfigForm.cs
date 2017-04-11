@@ -391,7 +391,7 @@ namespace SebWindowsConfig
 
             textBoxUserAgentTouchModeCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeCustom];
             textBoxUserAgentTouchModeDefault.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH;
-            textBoxUserAgentTouchModeIPad.Text = SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD;
+            textBoxUserAgentTouchModeIPad.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeIPad];
             radioButtonUserAgentTouchDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 0);
             radioButtonUserAgentTouchIPad.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 1);
             radioButtonUserAgentTouchCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchMode] == 2);
@@ -1809,6 +1809,12 @@ namespace SebWindowsConfig
             if (radioButtonUserAgentDesktopCustom.Checked == true)
                 SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] = 1;
             //else SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] = 0;
+        }
+
+        private void textBoxUserAgentTouchModeIPad_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeIPad] = textBoxUserAgentTouchModeIPad.Text;
+
         }
 
         private void textBoxUserAgentDesktopModeCustom_TextChanged(object sender, EventArgs e)

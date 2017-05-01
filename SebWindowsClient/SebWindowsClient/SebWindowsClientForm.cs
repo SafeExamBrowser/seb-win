@@ -1741,11 +1741,6 @@ namespace SebWindowsClient
             {
                 Logger.AddInformation("closing loading screen");
                 SEBLoading.CloseLoading();
-                try
-                {
-                   loadingThread.Abort();
-                }
-                catch{}
             }
 
 

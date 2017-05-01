@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DesktopUtils;
@@ -10,6 +8,9 @@ namespace SebWindowsClient
     public partial class SEBSplashScreen : Form
     {
         #region Instance
+
+        private Timer t;
+
         public SEBSplashScreen()
         {
             InitializeComponent();
@@ -23,26 +24,8 @@ namespace SebWindowsClient
             {
                 //No Version info available
             }
-
-            float dpiX;
-            using (var g = this.CreateGraphics())
-            {
-                dpiX = g.DpiX;
-            }
-            float scaleFactor = dpiX / 96;
-
-            float width = (float)this.pictureBox1.Width;
-            //this.pictureBox1.Width = (int)Math.Round(width * scaleFactor);
-
-            float height = (float)this.pictureBox1.Height;
-            //this.pictureBox1.Height = (int)Math.Round(height * scaleFactor);
-
-            this.Click += KillMe;
-            this.pictureBox1.Click += KillMe;
-            this.TxtVersion.Click += KillMe;
-            this.lblLoading.Click += KillMe;
-
-            var t = new Timer {Interval = 200};
+            
+            t = new Timer {Interval = 200};
             t.Tick += (sender, args) => Progress();
             t.Start();
         }
@@ -73,6 +56,7 @@ namespace SebWindowsClient
         /// <param name="e"></param>
         public void KillMe(object o, EventArgs e)
         {
+            t.Stop();
             this.Close();
         }
 
@@ -87,14 +71,12 @@ namespace SebWindowsClient
         /// var thread = new Thread(SEBLoading.StartSplash);
         /// thread.Start();
         /// </summary>
-        static public void StartSplash()
+        public static void StartSplash()
         {
             SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
 
-            // Instance a splash form given the image names
             splash = new SEBSplashScreen();
-            // Run the form
-            Application.Run(splash);
+            splash.ShowDialog();
         }
 
         /// <summary>
@@ -106,10 +88,14 @@ namespace SebWindowsClient
                 return;
             try
             {
-                // Shut down the splash screen
-                splash.Invoke(new EventHandler(splash.KillMe));
-                splash.Dispose();
-                splash = null;
+                if (splash.InvokeRequired)
+                {
+                    splash.Invoke(new EventHandler(splash.KillMe));
+                }
+                else
+                {
+                    splash.KillMe(null, null);
+                }
             }
             catch (Exception)
             { }

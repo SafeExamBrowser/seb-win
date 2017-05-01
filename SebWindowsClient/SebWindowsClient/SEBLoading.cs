@@ -35,14 +35,12 @@ namespace SebWindowsClient
         /// var thread = new Thread(SEBLoading.StartLoading);
         /// thread.Start();
         /// </summary>
-        static public void StartLoading()
+        public static void StartLoading()
         {
             SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
-
-            // Instance a loading screen form given the image names
+            
             loading = new SEBLoading();
-            // Run the form
-            Application.Run(loading);
+            loading.ShowDialog();
         }
 
         /// <summary>

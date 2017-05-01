@@ -46,19 +46,5 @@ namespace SebWindowsClient.ProcessUtils
             }
 
         }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Clean clipboard.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        //public static void CleanClipboard()
-        //{
-        //    Thread staThread = new Thread(SEBClipboard._CleanClipboard);
-        //    staThread.SetApartmentState(ApartmentState.STA);
-        //    staThread.Start();
-        //    staThread.Join();
-        //}
-
     }
 }

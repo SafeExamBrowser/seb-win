@@ -1057,7 +1057,7 @@ namespace SebWindowsClient
             {
                 // Ask the user to locate the application
                 SEBToForeground();
-                return ThreadedDialog.ShowFileDialogForExecutable(executable);
+                return Dialog.ShowFileDialogForExecutable(executable);
             }
             return fullPath;
         }

@@ -8,7 +8,7 @@
 
 ~Computer description, e.g. manufacturer, device name, hardware specs etc.~
 
-- [ ] Mac OS
+- [ ] Mac
 - [x] Windows
 
 OS-Version: X.X(.X) \

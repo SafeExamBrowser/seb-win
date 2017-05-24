@@ -21,6 +21,4 @@ SEB-Version: X.X(.X)
 3. ~...~
 
 > ***Information:** 
-Please replace all placeholders (~PLACEHOLDER~) and version numbers according to your situation. The more detailed information
-you provide, the easier it will be for us to detect and reliably fix the issue. Feel free to delete this comment before
-submitting the issue report...*
+Please replace all placeholders (~PLACEHOLDER~) and version numbers according to your situation. The more detailed information you provide, the easier it will be for us to detect and reliably fix the issue. Feel free to delete this comment before submitting the issue report...*

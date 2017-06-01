@@ -203,3 +203,5 @@ InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/SafeExamBrowserI
 SafeExamBrowserInstaller.exe
 InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/SafeExamBrowserInstaller/LogFiles
 InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/SafeExamBrowserInstaller/Reports
+/WixInstaller/XulRunner.wxs
+/WixInstaller/XulSeb.wxs

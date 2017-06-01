@@ -345,4 +345,7 @@
   <data name="wrongQuitRestartPasswordText" xml:space="preserve">
     <value>Falsches Beenden-/Neustart-Passwort</value>
   </data>
+  <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
+    <value>Um die Bildschirmtastatur nutzen zu können, bitte den Windows Tablet-Modus aktivieren und die physische Tastatur entfernen</value>
+  </data>
 </root>

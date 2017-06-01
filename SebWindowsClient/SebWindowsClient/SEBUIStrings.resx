@@ -423,4 +423,7 @@
   <data name="WlanThatYouHaveUsedBefore" xml:space="preserve">
     <value>that you have used before.</value>
   </data>
+  <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
+    <value>To use the on-screen-keyboard, enable tablet mode and detach the keyboard</value>
+  </data>
 </root>

@@ -17,10 +17,21 @@ namespace SebWindowsClient.UI
 {
     public class SEBOnScreenKeyboardToolStripButton : SEBToolStripButton
     {
+        [DllImport("user32.dll")]
+        static extern int GetSystemMetrics(SystemMetric smIndex);
+
+        public enum SystemMetric
+        {
+            SM_CONVERTABLESLATEMODE = 0x2003,
+            SM_SYSTEMDOCKED = 0x2004,
+        }
+
         public SEBOnScreenKeyboardToolStripButton()
         {
             InitializeComponent();
             this.Alignment = ToolStripItemAlignment.Right;
+            EnableOrDisableBasedOnState();
+            SystemEvents.UserPreferenceChanging += SystemEvents_UserPreferenceChanging;
         }
 
         protected override void OnClick(EventArgs e)
@@ -40,11 +51,23 @@ namespace SebWindowsClient.UI
 
         private void InitializeComponent()
         {
-            // 
-            // SEBOnScreenKeyboardToolStripButton
-            // 
             this.ToolTipText = SEBUIStrings.toolTipOnScreenKeyboard;
             base.Image = (Bitmap)Resources.ResourceManager.GetObject("keyboard");
+        }
+
+        private void EnableOrDisableBasedOnState()
+        {
+            var tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1);
+            this.Enabled = tabletMode == 1 && GetSystemMetrics(SystemMetric.SM_CONVERTABLESLATEMODE) == 0;
+            this.ToolTipText = !this.Enabled ? SEBUIStrings.toolTipOnScreenKeyboardNotEnabled : SEBUIStrings.toolTipOnScreenKeyboard;
+        }
+
+        private void SystemEvents_UserPreferenceChanging(object sender, UserPreferenceChangingEventArgs e)
+        {
+            if (e.Category == UserPreferenceCategory.General)
+            {
+                EnableOrDisableBasedOnState();
+            }
         }
     }
 

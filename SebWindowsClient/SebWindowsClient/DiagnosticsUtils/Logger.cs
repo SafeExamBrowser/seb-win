@@ -7,6 +7,7 @@ namespace SebWindowsClient.DiagnosticsUtils
 {
     public class Logger
     {
+
         //TODO: Change signature of methods and make singleton
         public static void AddError(string message, object eventSource, Exception exception, string details = null)
         {
@@ -56,6 +57,7 @@ namespace SebWindowsClient.DiagnosticsUtils
             }
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Logger.AddInformation(String.Format("SEB version: {0}", version));
+
         }
 
         private static string LogFilePath { get; set; }
@@ -67,25 +69,30 @@ namespace SebWindowsClient.DiagnosticsUtils
             Information
         }
 
+        private static readonly object Lock = new object();
+
         private static void Log(Severity severity, string message, object eventSource, Exception exception, string details = null)
         {
             try
             {
-                using (var file = new StreamWriter(LogFilePath, true))
+                lock (Lock)
                 {
-                    string eventSourceString = eventSource == null ? "" : string.Format(" ({0})", eventSource);
-                    string exceptionString = exception == null
-                        ? ""
-                        : string.Format("\n\n Exception: {0} - {1}\n{2}", exception, exception.Message,
-                            exception.StackTrace);
-                    string detailsString = details == null || (exception != null && details == exception.Message)
-                        ? ""
-                        : string.Format("\n\n{0}",details);
+                    using (var file = new StreamWriter(LogFilePath, true))
+                    {
+                        string eventSourceString = eventSource == null ? "" : string.Format(" ({0})", eventSource);
+                        string exceptionString = exception == null
+                            ? ""
+                            : string.Format("\n\n Exception: {0} - {1}\n{2}", exception, exception.Message,
+                                exception.StackTrace);
+                        string detailsString = details == null || (exception != null && details == exception.Message)
+                            ? ""
+                            : string.Format("\n\n{0}", details);
 
-                    file.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
+                        file.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
 #if DEBUG
-                    Console.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
+                        Console.WriteLine("{0} [{1}]: {2}{3}{4}{5}\n", DateTime.Now.ToLocalTime(), severity, message, eventSourceString, exceptionString, detailsString);
 #endif
+                    }
                 }
             }
             catch

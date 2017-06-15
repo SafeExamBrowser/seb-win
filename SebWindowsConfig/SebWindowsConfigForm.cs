@@ -353,9 +353,6 @@ namespace SebWindowsConfig
 			checkBoxShowTaskBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar];
 			comboBoxTaskBarHeight             .Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
 			checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
-			radioButtonOskAlwaysShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 0;
-			radioButtonOskNeverShow.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 1;
-			radioButtonOskAutoDetect.Checked = (int)SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] == 2;
 
 			// Group "Browser"
 			 listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
@@ -3871,30 +3868,6 @@ namespace SebWindowsConfig
 		private void checkBoxEnableTouchExit_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit] = checkBoxEnableTouchExit.Checked;
-		}
-
-		private void radioButtonOskAlwaysShow_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radioButtonOskAlwaysShow.Checked)
-			{
-				SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 0;
-			}
-		}
-
-		private void radioButtonOskNeverShow_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radioButtonOskNeverShow.Checked)
-			{
-				SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 1;
-			}
-		}
-
-		private void radioButtonOskAutoDetect_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radioButtonOskAutoDetect.Checked)
-			{
-				SEBSettings.settingsCurrent[SEBSettings.KeyOskBehavior] = 2;
-			}
 		}
 
 		private void comboBoxAdditionalResourceStartUrl_DropDown(object sender, EventArgs e)

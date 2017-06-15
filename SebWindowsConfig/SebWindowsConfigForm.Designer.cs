@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
 			this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -93,6 +93,7 @@ namespace SebWindowsConfig
 			this.tabPageNetwork = new System.Windows.Forms.TabPage();
 			this.tabControlNetwork = new System.Windows.Forms.TabControl();
 			this.tabPageUrlFilter = new System.Windows.Forms.TabPage();
+			this.UrlFilterContainer = new System.Windows.Forms.Panel();
 			this.checkBoxEnableURLFilter = new System.Windows.Forms.CheckBox();
 			this.checkBoxEnableURLContentFilter = new System.Windows.Forms.CheckBox();
 			this.tabPageCertificates = new System.Windows.Forms.TabPage();
@@ -283,10 +284,6 @@ namespace SebWindowsConfig
 			this.checkBoxEnableAudioControl = new System.Windows.Forms.CheckBox();
 			this.checkBoxSetVolumeLevel = new System.Windows.Forms.CheckBox();
 			this.checkBoxMuteAudio = new System.Windows.Forms.CheckBox();
-			this.groupBox15 = new System.Windows.Forms.GroupBox();
-			this.radioButtonOskAutoDetect = new System.Windows.Forms.RadioButton();
-			this.radioButtonOskNeverShow = new System.Windows.Forms.RadioButton();
-			this.radioButtonOskAlwaysShow = new System.Windows.Forms.RadioButton();
 			this.checkBoxAllowDictionaryLookup = new System.Windows.Forms.CheckBox();
 			this.groupBox6 = new System.Windows.Forms.GroupBox();
 			this.checkBoxEnableBrowserWindowToolbar = new System.Windows.Forms.CheckBox();
@@ -389,7 +386,6 @@ namespace SebWindowsConfig
 			this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.UrlFilterContainer = new System.Windows.Forms.Panel();
 			this.tabPageHookedKeys.SuspendLayout();
 			this.groupBoxFunctionKeys.SuspendLayout();
 			this.groupBoxSpecialKeys.SuspendLayout();
@@ -428,7 +424,6 @@ namespace SebWindowsConfig
 			this.tabPageAppearance.SuspendLayout();
 			this.groupBox16.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarVolumeLevel)).BeginInit();
-			this.groupBox15.SuspendLayout();
 			this.groupBox6.SuspendLayout();
 			this.groupBox5.SuspendLayout();
 			this.groupBoxEnableZoom.SuspendLayout();
@@ -1288,6 +1283,13 @@ namespace SebWindowsConfig
 			this.tabPageUrlFilter.Text = "Filter";
 			this.tabPageUrlFilter.UseVisualStyleBackColor = true;
 			// 
+			// UrlFilterContainer
+			// 
+			this.UrlFilterContainer.Location = new System.Drawing.Point(30, 67);
+			this.UrlFilterContainer.Name = "UrlFilterContainer";
+			this.UrlFilterContainer.Size = new System.Drawing.Size(991, 643);
+			this.UrlFilterContainer.TabIndex = 23;
+			// 
 			// checkBoxEnableURLFilter
 			// 
 			this.checkBoxEnableURLFilter.AutoSize = true;
@@ -1458,8 +1460,8 @@ namespace SebWindowsConfig
 			// 
 			// Type
 			// 
-			dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-			this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+			this.Type.DefaultCellStyle = dataGridViewCellStyle1;
 			this.Type.HeaderText = "Type";
 			this.Type.Name = "Type";
 			this.Type.ReadOnly = true;
@@ -3594,7 +3596,6 @@ namespace SebWindowsConfig
 			// tabPageAppearance
 			// 
 			this.tabPageAppearance.Controls.Add(this.groupBox16);
-			this.tabPageAppearance.Controls.Add(this.groupBox15);
 			this.tabPageAppearance.Controls.Add(this.checkBoxAllowDictionaryLookup);
 			this.tabPageAppearance.Controls.Add(this.groupBox6);
 			this.tabPageAppearance.Controls.Add(this.groupBox5);
@@ -3619,7 +3620,7 @@ namespace SebWindowsConfig
 			this.groupBox16.Controls.Add(this.checkBoxEnableAudioControl);
 			this.groupBox16.Controls.Add(this.checkBoxSetVolumeLevel);
 			this.groupBox16.Controls.Add(this.checkBoxMuteAudio);
-			this.groupBox16.Location = new System.Drawing.Point(798, 181);
+			this.groupBox16.Location = new System.Drawing.Point(791, 25);
 			this.groupBox16.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.groupBox16.Name = "groupBox16";
 			this.groupBox16.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -3669,59 +3670,6 @@ namespace SebWindowsConfig
 			this.checkBoxMuteAudio.TabIndex = 87;
 			this.checkBoxMuteAudio.Text = "Mute Audio on startup";
 			this.checkBoxMuteAudio.UseVisualStyleBackColor = true;
-			// 
-			// groupBox15
-			// 
-			this.groupBox15.Controls.Add(this.radioButtonOskAutoDetect);
-			this.groupBox15.Controls.Add(this.radioButtonOskNeverShow);
-			this.groupBox15.Controls.Add(this.radioButtonOskAlwaysShow);
-			this.groupBox15.Location = new System.Drawing.Point(792, 25);
-			this.groupBox15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.groupBox15.Name = "groupBox15";
-			this.groupBox15.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.groupBox15.Size = new System.Drawing.Size(330, 141);
-			this.groupBox15.TabIndex = 85;
-			this.groupBox15.TabStop = false;
-			this.groupBox15.Text = "Automatic on-screen keyboard behavior";
-			// 
-			// radioButtonOskAutoDetect
-			// 
-			this.radioButtonOskAutoDetect.AutoSize = true;
-			this.radioButtonOskAutoDetect.Location = new System.Drawing.Point(6, 78);
-			this.radioButtonOskAutoDetect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.radioButtonOskAutoDetect.Name = "radioButtonOskAutoDetect";
-			this.radioButtonOskAutoDetect.Size = new System.Drawing.Size(211, 24);
-			this.radioButtonOskAutoDetect.TabIndex = 2;
-			this.radioButtonOskAutoDetect.TabStop = true;
-			this.radioButtonOskAutoDetect.Text = "Detect physical keyboard";
-			this.radioButtonOskAutoDetect.UseVisualStyleBackColor = true;
-			this.radioButtonOskAutoDetect.CheckedChanged += new System.EventHandler(this.radioButtonOskAutoDetect_CheckedChanged);
-			// 
-			// radioButtonOskNeverShow
-			// 
-			this.radioButtonOskNeverShow.AutoSize = true;
-			this.radioButtonOskNeverShow.Location = new System.Drawing.Point(6, 49);
-			this.radioButtonOskNeverShow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.radioButtonOskNeverShow.Name = "radioButtonOskNeverShow";
-			this.radioButtonOskNeverShow.Size = new System.Drawing.Size(116, 24);
-			this.radioButtonOskNeverShow.TabIndex = 1;
-			this.radioButtonOskNeverShow.TabStop = true;
-			this.radioButtonOskNeverShow.Text = "Never show";
-			this.radioButtonOskNeverShow.UseVisualStyleBackColor = true;
-			this.radioButtonOskNeverShow.CheckedChanged += new System.EventHandler(this.radioButtonOskNeverShow_CheckedChanged);
-			// 
-			// radioButtonOskAlwaysShow
-			// 
-			this.radioButtonOskAlwaysShow.AutoSize = true;
-			this.radioButtonOskAlwaysShow.Location = new System.Drawing.Point(6, 22);
-			this.radioButtonOskAlwaysShow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.radioButtonOskAlwaysShow.Name = "radioButtonOskAlwaysShow";
-			this.radioButtonOskAlwaysShow.Size = new System.Drawing.Size(124, 24);
-			this.radioButtonOskAlwaysShow.TabIndex = 0;
-			this.radioButtonOskAlwaysShow.TabStop = true;
-			this.radioButtonOskAlwaysShow.Text = "Always show";
-			this.radioButtonOskAlwaysShow.UseVisualStyleBackColor = true;
-			this.radioButtonOskAlwaysShow.CheckedChanged += new System.EventHandler(this.radioButtonOskAlwaysShow_CheckedChanged);
 			// 
 			// checkBoxAllowDictionaryLookup
 			// 
@@ -4983,13 +4931,6 @@ namespace SebWindowsConfig
 			this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
 			this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
 			// 
-			// UrlFilterContainer
-			// 
-			this.UrlFilterContainer.Location = new System.Drawing.Point(30, 67);
-			this.UrlFilterContainer.Name = "UrlFilterContainer";
-			this.UrlFilterContainer.Size = new System.Drawing.Size(991, 643);
-			this.UrlFilterContainer.TabIndex = 23;
-			// 
 			// SebWindowsConfigForm
 			// 
 			this.AllowDrop = true;
@@ -5077,8 +5018,6 @@ namespace SebWindowsConfig
 			this.groupBox16.ResumeLayout(false);
 			this.groupBox16.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarVolumeLevel)).EndInit();
-			this.groupBox15.ResumeLayout(false);
-			this.groupBox15.PerformLayout();
 			this.groupBox6.ResumeLayout(false);
 			this.groupBox6.PerformLayout();
 			this.groupBox5.ResumeLayout(false);
@@ -5441,10 +5380,6 @@ namespace SebWindowsConfig
         private System.Windows.Forms.TextBox textBoxUserAgentTouchModeIPad;
         private System.Windows.Forms.RadioButton radioButtonUserAgentTouchIPad;
         private System.Windows.Forms.CheckBox checkBoxEnableTouchExit;
-        private System.Windows.Forms.GroupBox groupBox15;
-        private System.Windows.Forms.RadioButton radioButtonOskAutoDetect;
-        private System.Windows.Forms.RadioButton radioButtonOskNeverShow;
-        private System.Windows.Forms.RadioButton radioButtonOskAlwaysShow;
         private System.Windows.Forms.CheckBox checkBoxInsideSebEnableNetworkConnectionSelector;
         private System.Windows.Forms.CheckBox checkBoxAllowPDFPlugIn;
         private System.Windows.Forms.CheckBox checkBoxDownloadPDFFiles;

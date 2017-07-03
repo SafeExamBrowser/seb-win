@@ -37,3 +37,4 @@ pref("gfx.direct2d.disabled", false);
 pref("layers.acceleration.disabled", false);
 pref("general.useragent.locale", "de-DE");
 pref("browser.display.use_document_fonts", 1);
+pref("dom.serviceWorkers.enabled", true);

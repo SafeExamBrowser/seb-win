@@ -53,7 +53,7 @@
 "browserUserAgentWinTouchModeIPad": "browser UserAgentWinTouchMode IPad",
 "browserUserAgentWinTouchModeCustom" : "browser UserAgentWinTouchMode Custom",
 "browserViewMode":1,
-"browserWindowTitleSuffix": "Suffix",
+"browserWindowTitleSuffix": "",
 "downloadDirectoryWin":"",
 "embeddedCertificates":[],
 "enableBrowserWindowToolbar":false,

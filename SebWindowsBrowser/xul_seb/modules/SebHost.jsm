@@ -343,40 +343,35 @@ this.SebHost = {
 		// create an nsIFile for the executable
 		sl.out("try shutdown linux host...");
 		try {
-			// maybe controlled seb quit before?
-			// base.quitFromHost(); no: because of application loop in netpoint
-			
 			var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 			file.initWithPath("/usr/bin/sudo");
-			// create an nsIProcess
 			var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
 			process.init(file);
-			// Run the process.
-			// If first param is true, calling thread will be blocked until
-			// called process terminates.
-			// Second and third params are used to pass command-line arguments
-			// to the process.
-			
 			var args = ["/usr/local/bin/shutdown_system"];
-			
-			/*
-			var event = {
-				notify : function(timer) {
-					process.run(false, args, args.length);
-				}
-			}
-			var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-			timer.initWithCallback(event,2000, Ci.nsITimer.TYPE_ONE_SHOT);
-			base.quitFromHost();
-			*/
-			
-			process.run(false, args, args.length);
+			process.run(false, args, args.length);		
 		}
 		catch(e) {
 			//prompt.alert(mainWin, "Message from Admin", e);
 			sl.err("Error " + e);
 		}
 	},
+	
+	rebootLinuxHost : function() {
+                // create an nsIFile for the executable
+                sl.out("try reboot linux host...");
+                try {
+                        var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+                        file.initWithPath("/usr/bin/sudo");
+                        var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+                        process.init(file);
+                        var args = ["/usr/local/bin/reboot_system"];
+                        process.run(false, args, args.length);
+                }
+                catch(e) {
+                        //prompt.alert(mainWin, "Message from Admin", e);
+                        sl.err("Error " + e);
+                }
+        },
 	
 	shutdownWindowsHost : function() {
 		sl.debug("shutdown windows host is not defined, but i can shutdown seb client :-)");
@@ -407,6 +402,26 @@ this.SebHost = {
 		}
 	},
 	
+	reboot : function() {
+                let os = appinfo.OS.toUpperCase();
+                switch (os) { // line feed for dump messages
+                        case "WINNT" :
+                                //base.shutdownWindowsHost();
+                                break;
+                        case "UNIX" :
+                        case "LINUX" :
+                                seb.hostQuitHandler = base.rebootLinuxHost;
+                                base.quitFromHost();
+                                break;
+                        case "DARWIN" :
+                                // base.shutdownMacHost();
+                                break;
+                        default :
+                                // do nothing
+                }
+        },
+
+
 	sendLog : function (str) {
 		if (socketlog && messageSocket != null) {
 			try {

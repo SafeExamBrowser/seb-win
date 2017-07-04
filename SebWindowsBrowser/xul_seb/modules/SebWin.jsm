@@ -186,6 +186,12 @@ this.SebWin = {
 				sl.debug("remove win from array ...");
 				base.wins.splice(i,1);
 				sl.debug("windows count: " + base.wins.length);
+				try {
+					base.wins[0].focus(); 
+				}
+				catch (e) {
+					sl.err(e);
+				}
 				break;
 			}
 		}

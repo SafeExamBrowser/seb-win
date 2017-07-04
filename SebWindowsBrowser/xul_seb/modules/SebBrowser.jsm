@@ -147,20 +147,23 @@ this.SebBrowser = {
 	},
 	
 	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
-		if (aRequest instanceof Ci.nsIHttpChannel) {
-			aRequest.QueryInterface(Ci.nsIHttpChannel);
-		}
+		
 		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
-			if (!(aRequest instanceof Ci.nsIHttpChannel)) { // experimental !!!
-				sl.debug("start: document not part of the http channel: " + aRequest.name + " - status: " + aStatus);
-				return;
-			} 
+			
+			sl.debug("DOCUMENT REQUEST START: " + aRequest.name + " status: " + aStatus);
+			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
+				sl.debug("Request is NOT instance of Ci.nsIHttpChannel");
+				sl.debug(aRequest.name);
+				return 0;
+			}
+			sl.debug("Request is instance of Ci.nsIHttpChannel");
+			sl.debug(aRequest.name);
+			aRequest.QueryInterface(Ci.nsIHttpChannel);
+				
+			sl.debug("baseurl: " + this.baseurl);
 			this.isStarted = true;
 			this.win = sw.getChromeWin(aWebProgress.DOMWindow);
 			this.baseurl = btoa(aRequest.name);
-			sl.debug("DOCUMENT REQUEST START: " + aRequest.name + " status: " + aStatus);
-			sl.debug("baseurl: " + this.baseurl);
-			
 			base.startLoading(this.win);
 			if (seb.quitURL === aRequest.name) {
 				if (base.quitURLRefererFilter != "") {
@@ -220,14 +223,29 @@ this.SebBrowser = {
 			}
 		}
 		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
-			if (!(aRequest instanceof Ci.nsIHttpChannel)) { // experimental !!!
-				sl.debug("stop: document not part of the http channel: " + aRequest.name + " - status: " + aStatus);
-				return;
-			}
+			
 			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus);
-			//this.win = sw.getChromeWin(aWebProgress.DOMWindow);
-			if (!Components.isSuccessCode(aStatus) && aStatus != 2152398850) { // heise.de with all that advertising will not load without that skipped 2152398850 status
-			//if (aStatus > 0 && aStatus != 2152398850) { // error: experimental!!! ToDo: look at status codes!!
+			
+			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
+				sl.debug("Request is NOT instance of Ci.nsIHttpChannel");
+				sl.debug(aRequest.name);
+				return 0;
+			}
+			
+			sl.debug("Request is instance of Ci.nsIHttpChannel");
+			sl.debug(aRequest.name);
+			aRequest.QueryInterface(Ci.nsIHttpChannel);
+			let reqErr = false;
+			let reqStatus = false;
+			let reqSucceeded = false;
+			try {
+				reqStatus = aRequest.responseStatus;
+				reqSucceeded = aRequest.requestSucceeded;
+			}
+			catch(e) {
+				reqErr = e;				
+			}
+			if (reqErr || !reqSucceeded || !reqStatus) {
 				sl.debug("Error document loading: " + aStatus);
 				base.stopLoading(this.win);
 				try {
@@ -269,12 +287,16 @@ this.SebBrowser = {
 					return 1;
 				}
 			}
+			else {
+				sl.debug("document loading succeeded: " + aStatus); // something to do?
+			}
 			
 			base.stopLoading(this.win);
 			this.isStarted = false;
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
+			
 			try {
-				this.win.document.title = this.win.content.document.title + " - " + windowTitleSuffix;
+				this.win.document.title = (windowTitleSuffix == '') ? this.win.content.document.title : this.win.content.document.title + " - " + windowTitleSuffix;
 			}
 			catch(e) {
 				sl.debug(e);
@@ -597,7 +619,8 @@ this.SebBrowser = {
 		}
 		sl.debug("restart...");
 		sw.removeSecondaryWins();
-		let url = su.getUrl();
+		let urlConfig = su.getConfig("restartExamURL","string","");
+		let url = (urlConfig != "") ? urlConfig : su.getUrl();
 		//sw.showLoading(seb.mainWin);
 		base.loadPage(seb.mainWin,url);
 	},

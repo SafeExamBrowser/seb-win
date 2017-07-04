@@ -179,7 +179,7 @@
 "browserUserAgentWinTouchModeIPad": "browser UserAgentWinTouchMode IPad",
 "browserUserAgentWinTouchModeCustom" : "browser UserAgentWinTouchMode Custom",
 "browserViewMode":1,
-"browserWindowTitleSuffix": "Suffix",
+"browserWindowTitleSuffix": "",
 "downloadDirectoryWin":"",
 "embeddedCertificates":
 [
@@ -204,7 +204,7 @@
 "mainBrowserWindowWidth":"100%",
 "newBrowserWindowByLinkBlockForeign":false,
 "newBrowserWindowByLinkHeight":"600",
-"newBrowserWindowNavigation": true,
+"newBrowserWindowNavigation": false,
 "newBrowserWindowByLinkPolicy":2,
 "newBrowserWindowByLinkPositioning":1,
 "newBrowserWindowByLinkWidth":"800",
@@ -235,7 +235,7 @@
 "sendBrowserExamKey":true,
 "showReloadWarning" : true,
 "showTaskBar":false,
-"startURL":"https://www.simple.org:8443/demo/test.html",
+"startURL":"https://",
 "taskBarHeight":0,
 "touchOptimized":false,
 "urlFilterTrustedContent":true,

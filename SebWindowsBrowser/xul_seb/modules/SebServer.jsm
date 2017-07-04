@@ -64,6 +64,7 @@ this.SebServer = {
 		seb = obj;
 		sl.out("SebServer initialized: " + seb);
 		base.handler["shutdown"] = base.shutdown;
+		base.handler["reboot"] = base.reboot;
 		base.handler["sendScreenshotData"] = base.sendScreenshotData;
 	},
 	
@@ -140,6 +141,11 @@ this.SebServer = {
 		sh.shutdown();
 	},
 	
+	reboot : function(seb) {
+                sl.debug("socket client: reboot: " + seb.id);
+                sh.reboot();
+        },
+
 	sendScreenshotData : function(file) {
 		sc.sendScreenshotData(file);
 	},

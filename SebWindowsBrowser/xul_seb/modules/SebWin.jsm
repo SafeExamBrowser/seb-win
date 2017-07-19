@@ -218,7 +218,7 @@ this.SebWin = {
 		for (var i=0;i<base.wins.length;i++) {
 			let win = base.wins[i];
 			if (base.getWinType(win) != "main") {
-				var n = (win.document && win.content) ? base.getWinType(win) + ": " + win.document.title : " empty document";
+				var n = (win.document && win.XulLibBrowser.contentDocument) ? base.getWinType(win) + ": " + win.document.title : " empty document";
 				sl.debug("close win from array: " + n);
 				win.close();
 			}

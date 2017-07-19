@@ -168,7 +168,7 @@ this.SebBrowser = {
 			if (seb.quitURL === aRequest.name) {
 				if (base.quitURLRefererFilter != "") {
 					let filter = base.quitURLRefererFilter;
-					let referer = this.win.content.document.location.href;
+					let referer = this.win.XulLibBrowser.contentDocument.location.href;
 					if (referer.indexOf(filter) < 0) {
 						sl.debug("quitURL \"" + seb.quitURL + "\" is only allowed if string in referrer: \"" + filter + "\"");
 						aRequest.cancel(aStatus);
@@ -296,7 +296,7 @@ this.SebBrowser = {
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
 			
 			try {
-				this.win.document.title = (windowTitleSuffix == '') ? this.win.content.document.title : this.win.content.document.title + " - " + windowTitleSuffix;
+				this.win.document.title = (windowTitleSuffix == '') ? this.win.XulLibBrowser.contentDocument.title : this.win.XulLibBrowser.contentDocument.title + " - " + windowTitleSuffix;
 			}
 			catch(e) {
 				sl.debug(e);
@@ -600,7 +600,7 @@ this.SebBrowser = {
 	
 	loadPage : function (win,url,flag) {	// only use for real http requests
 		sl.debug("try to load: " + url);
-		win.content.document.location.href = url;
+		win.XulLibBrowser.contentDocument.location.href = url;
 	},
 	
 	reload : function (win) {

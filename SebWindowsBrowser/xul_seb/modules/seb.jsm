@@ -224,11 +224,17 @@ this.seb =  {
 
 	initLocale : function() {
 		let loc = "en-US";
-		let osLoc = locale.getLocaleComponentForUserAgent();
-		sl.debug("getLocaleComponentForUserAgent:" + osLoc);
-		if (osLoc != "") {
-			loc = osLoc;
+		try {
+			let osLoc = locale.getAppLocale();
+			sl.debug("getAppLocale: " + osLoc);
+			if (osLoc != "") {
+				loc = osLoc;
+			}
 		}
+		catch(e) {
+			sl.err("locale.getAppLocale() error: " + e);
+		}
+		
 		let paramLoc = base.config["browserLanguage"];
 		sl.debug("browserLanguage:" + paramLoc);
 		if (paramLoc != null && paramLoc != "") {
@@ -240,7 +246,8 @@ this.seb =  {
 			loc = cmdLoc;
 		}
 		sl.debug("locale: " + loc);
-		prefs.setCharPref("general.useragent.locale",loc);
+		sg.setPref("general.useragent.locale",loc);
+		sg.setPref("intl.accept_languages",loc);
 	},
 
 	initMain : function(win) {

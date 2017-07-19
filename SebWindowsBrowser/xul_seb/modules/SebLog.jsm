@@ -52,9 +52,9 @@ scriptloader.loadSubScript("resource://globals/const.js");
 let 	seb = null,
 	base = null,
 	logpath = "",
-	logfileEnabled = false,
-	logfile = null,
-	logenc = null,
+	//logfileEnabled = false,
+	//logfile = null,
+	//logenc = null,
  	os = "",
 	lf = "\n",
 	message = {};
@@ -64,7 +64,7 @@ this.SebLog = {
 	init : function(obj) {
 		seb = obj;
 		base = this;
-		base.initLogfile();
+		//base.initLogfile();
 		os = appinfo.OS.toUpperCase();
 		switch (os) { // line feed for dump messages
 			case "WINNT" :
@@ -86,10 +86,12 @@ this.SebLog = {
 		let str = appinfo.name + " out : " + msg;
 		console.logStringMessage(str);
 		dump(str + lf);
+		/*
 		try { 
 			base.writeLogfile(str);
-		} 
+		}  
 		catch(e){}
+		*/ 
 		sh.sendLog(str);
 	},
 	debug : function(msg) {
@@ -99,10 +101,12 @@ this.SebLog = {
 		let str = appinfo.name + " debug : " + msg;
 		console.logStringMessage(str);
 		dump(str + lf);
+		/*
 		try { 
 			base.writeLogfile(str);
 		} 
 		catch(e){}
+		*/ 
 		sh.sendLog(str);
 	},
 	
@@ -113,10 +117,12 @@ this.SebLog = {
 		let str = appinfo.name + " info : " + msg;
 		console.logStringMessage(str);
 		dump(str + lf);
+		/*
 		try { 
 			base.writeLogfile(str);
 		} 
 		catch(e){}
+		*/ 
 		sh.sendLog(str);
 	},
 	
@@ -124,10 +130,12 @@ this.SebLog = {
 		let str = appinfo.name + " err : " + msg;
 		Cu.reportError(str);
 		dump(str + lf);
+		/*
 		try { 
 			base.writeLogfile(str);
 		} 
 		catch(e){}
+		*/ 
 		sh.sendLog(str);
 	},
 	
@@ -152,6 +160,7 @@ this.SebLog = {
 		}
 	},
 	
+	/*
 	initLogfile : function() {
 		logfileEnabled = su.getBool(su.getCmd("logfile"));
 		if (!logfileEnabled) { base.debug("logfile disabled."); return }
@@ -176,9 +185,9 @@ this.SebLog = {
 	setLogfile : function(file) {
 		logfile = file;
 		var d = new Date();
-		let array = logenc.encode("\n*************************************\ninitialize logfile " + d.toLocaleString() + "\n*************************************\n");
+		let array = logenc.encode("\n**************************************\ninitialize logfile " + d.toLocaleString() + "\n**************************************\n");
 		logfile.write(array);
-	},
+	}, 
 	
 	writeLogfile : function (str) {
 		if (logfile != null && logenc != null) {
@@ -186,4 +195,5 @@ this.SebLog = {
 			logfile.write(array);
 		}
 	}
+	*/ 
 }

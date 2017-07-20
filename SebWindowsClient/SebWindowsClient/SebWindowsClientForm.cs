@@ -387,6 +387,8 @@ namespace SebWindowsClient
         {
             deleteXulRunnerProfileOnNewVersionOfSEB();
 
+            StartXulRunnerWithSilentParameter();
+
             string xulRunnerPath = "";
             string desktopName = "";
             if (userDefinedArguments == null) userDefinedArguments="";
@@ -432,7 +434,7 @@ namespace SebWindowsClient
                 desktopName = SEBClientInfo.DesktopName;
                 xulRunner = SEBDesktopController.CreateProcess(xulRunnerPath, desktopName);
                 xulRunner.EnableRaisingEvents = true;
-                xulRunner.Exited += xulRunner_Exited;
+                xulRunner.Exited += XulRunner_Exited;
 
                 return true;
 
@@ -469,9 +471,14 @@ namespace SebWindowsClient
             File.WriteAllText(versionFile, version);
         }
 
-        private void deleteXulRunnerProfileFolder()
+        private void StartXulRunnerWithSilentParameter()
         {
-            
+            string path = string.Format("{0} -silent -profile \"{1}Profiles\"", SEBClientInfo.XulRunnerExePath, SEBClientInfo.SebClientSettingsAppDataDirectory);
+            xulRunner = SEBDesktopController.CreateProcess(path, SEBClientInfo.DesktopName);
+            while (!xulRunner.HasExited)
+            {
+                Thread.Sleep(100);
+            }
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -479,7 +486,7 @@ namespace SebWindowsClient
         /// Handle xulRunner_Exited event and display process information.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        private void xulRunner_Exited(object sender, System.EventArgs e)
+        private void XulRunner_Exited(object sender, System.EventArgs e)
         {
             Logger.AddInformation("XULRunner exit event fired.", this, null);
 
@@ -1620,7 +1627,7 @@ namespace SebWindowsClient
                 //Deregister SEB closed Event
                 if (xulRunner != null)
                 {
-                    xulRunner.Exited -= xulRunner_Exited;   
+                    xulRunner.Exited -= XulRunner_Exited;   
                 }
 
                 Logger.AddInformation("closing processes that where started by seb");

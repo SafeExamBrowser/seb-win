@@ -9,14 +9,14 @@ namespace SebWindowsClient.ConfigurationUtils
 {
     class SEBURLFilterExpression
     {
-        private string scheme;
-        private string user;
-        private string password;
-        private string host;
-        private int? port;
-        private string path;
-        private string query;
-        private string fragment;
+        public string scheme;
+        public string user;
+        public string password;
+        public string host;
+        public int? port;
+        public string path;
+        public string query;
+        public string fragment;
 
 
         public SEBURLFilterExpression(string filterExpressionString)
@@ -25,7 +25,7 @@ namespace SebWindowsClient.ConfigurationUtils
             string newScheme = "";
             Uri URLFromString = null;
 
-            if (filterExpressionString != null && filterExpressionString.Length > 0)
+            if (!string.IsNullOrEmpty(filterExpressionString))
             {
                 int schemeDelimiter = filterExpressionString.IndexOf("://");
 
@@ -71,14 +71,31 @@ namespace SebWindowsClient.ConfigurationUtils
                 // Use the saved scheme instead of the temporary http://
 
                 this.scheme = newScheme;
-                this.user = URLFromString.UserInfo;
-                //this.password = URLFromString.;
+                string userInfo = URLFromString.UserInfo;
+                if (!string.IsNullOrEmpty(userInfo))
+                {
+                    int userPasswordSeparator = userInfo.IndexOf(":");
+                    if (userPasswordSeparator == -1)
+                    {
+                        this.user = userInfo;
+                    }
+                    else
+                    {
+                        if (userPasswordSeparator != 0)
+                        {
+                            this.user = userInfo.Substring(0, userPasswordSeparator);
+                        }
+                        if (userPasswordSeparator < userInfo.Length - 1)
+                        {
+                            this.password = userInfo.Substring(userPasswordSeparator + 1, userInfo.Length - 1 - userPasswordSeparator);
+                        }
+                    }
+                }
                 this.host = URLFromString.Host;
                 this.port = URLFromString.Port;
                 this.path = URLFromString.AbsolutePath.TrimEnd(new char[] { '/' });
                 this.query = URLFromString.Query;
                 this.fragment = URLFromString.Fragment;
-
             }
         }
 
@@ -94,53 +111,49 @@ namespace SebWindowsClient.ConfigurationUtils
             this.fragment = fragment;
         }
 
-        /*
+        
 
         public string String()
         {
             StringBuilder expressionString = new StringBuilder();
-            if (this.scheme.Length > 0) {
-                if (this.host.Length > 0) {
+            if (!string.IsNullOrEmpty(this.scheme)) {
+                if (!string.IsNullOrEmpty(this.host)) {
                     expressionString.AppendFormat("{0}://", this.scheme);
                 } else {
                     expressionString.AppendFormat("{0}:", this.scheme);
                 }
             }
-            if (this.user.Length > 0) {
+            if (!string.IsNullOrEmpty(this.user)) {
                 expressionString.Append(this.user);
 
-                if (this.password.Length > 0) {
+                if (!string.IsNullOrEmpty(this.password)) {
                     expressionString.AppendFormat(":{0}@", this.password);
                 } else {
                     expressionString.Append("@");
                 }
             }
-            if (this.host.Length > 0) {
+            if (!string.IsNullOrEmpty(this.host)) {
                 expressionString.Append(this.host);
             }
-            if (this.port != null && this.port > 0) && (this.port <= 65535)) {
-                [expressionString appendFormat:@":%@", _port.stringValue];
+            if (this.port != null && this.port > 0 && this.port <= 65535) {
+                expressionString.AppendFormat(":{0}", this.port);
             }
-            if (_path.length > 0) {
-                if ([_path hasPrefix:@"/"]) {
-                    [expressionString appendString:_path];
+            if (!string.IsNullOrEmpty(this.path)) {
+                if (this.path.StartsWith("/")) {
+                    expressionString.Append(this.path);
                 } else {
-                    [expressionString appendFormat:@"/%@", _path];
+                    expressionString.AppendFormat("/{0}", this.path);
                 }
-
-        //        if (![_path hasSuffix:@"/"]) {
-        //            [expressionString appendString:@"/"];
-        //        }
             }
-            if (_query.length > 0) {
-                [expressionString appendFormat:@"?%@", _query];
+            if (!string.IsNullOrEmpty(this.query)) {
+                expressionString.AppendFormat("?{0}", this.query);
             }
-            if (_fragment.length > 0) {
-                [expressionString appendFormat:@"#%@", _fragment];
+            if (!string.IsNullOrEmpty(this.fragment)) {
+                expressionString.AppendFormat("#{0}", this.fragment);
             }
 
-            return expressionString;
+            return expressionString.ToString();
         }
-            }*/
+
     }
 }

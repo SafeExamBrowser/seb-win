@@ -13,7 +13,7 @@ namespace SebWindowsClient.ConfigurationUtils
         private string user;
         private string password;
         private string host;
-        private int port;
+        private int? port;
         private string path;
         private string query;
         private string fragment;
@@ -80,25 +80,6 @@ namespace SebWindowsClient.ConfigurationUtils
                 this.fragment = URLFromString.Fragment;
 
             }
-
-            //    // Create a muatable array to hold results of scanning the filter expression for relevant separators
-            //    NSMutableArray *foundSeparators = [NSMutableArray new];
-            //    
-            //    /// Scan the filter expression string for all relevant URL separators
-            //    // Scan for the scheme separator
-            //    NSString *separator = @"://";
-            //    NSRange scanResult = [filterExpressionString rangeOfString:separator];
-            //    if (scanResult.location != NSNotFound) {
-            //        NSDictionary *foundSeparator = @{
-            //                                         @"separator" : separator,
-            //                                         @"location" : [NSNumber numberWithInteger:scanResult.location],
-            //                                         @"length" : [NSNumber numberWithInteger:scanResult.length],
-            //                                         };
-            //
-            //        [foundSeparators addObject:foundSeparator];
-            //    }
-
-
         }
 
         public SEBURLFilterExpression(string scheme, string user, string password, string host, int port, string path, string query, string fragment)
@@ -115,30 +96,29 @@ namespace SebWindowsClient.ConfigurationUtils
 
         /*
 
-        - (NSString*) string
+        public string String()
         {
-            //    NSURL *newURL;
-            NSMutableString* expressionString = [NSMutableString new];
-            if (_scheme.length > 0) {
-                if (_host.length > 0) {
-                    [expressionString appendFormat:@"%@://", _scheme];
+            StringBuilder expressionString = new StringBuilder();
+            if (this.scheme.Length > 0) {
+                if (this.host.Length > 0) {
+                    expressionString.AppendFormat("{0}://", this.scheme);
                 } else {
-                    [expressionString appendFormat:@"%@:", _scheme];
+                    expressionString.AppendFormat("{0}:", this.scheme);
                 }
             }
-            if (_user.length > 0) {
-                [expressionString appendString:_user];
+            if (this.user.Length > 0) {
+                expressionString.Append(this.user);
 
-                if (_password.length > 0) {
-                    [expressionString appendFormat:@":%@@", _password];
+                if (this.password.Length > 0) {
+                    expressionString.AppendFormat(":{0}@", this.password);
                 } else {
-                    [expressionString appendString:@"@"];
+                    expressionString.Append("@");
                 }
             }
-            if (_host.length > 0) {
-                [expressionString appendString:_host];
+            if (this.host.Length > 0) {
+                expressionString.Append(this.host);
             }
-            if (_port && (_port.integerValue > 0) && (_port.integerValue <= 65535)) {
+            if (this.port != null && this.port > 0) && (this.port <= 65535)) {
                 [expressionString appendFormat:@":%@", _port.stringValue];
             }
             if (_path.length > 0) {
@@ -161,7 +141,6 @@ namespace SebWindowsClient.ConfigurationUtils
 
             return expressionString;
         }
-            }
-            */
+            }*/
     }
 }

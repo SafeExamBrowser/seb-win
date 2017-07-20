@@ -101,6 +101,8 @@
       <DependentUpon>SEBAudioControl.cs</DependentUpon>
     </Compile>
     <Compile Include="BlockShortcutsUtils\SebKeyCapture.cs" />
+    <Compile Include="ConfigurationUtils\SEBURLFilterExpression.cs" />
+    <Compile Include="ConfigurationUtils\SEBURLFilterRegexExpression.cs" />
     <Compile Include="ConfigurationUtils\FileCompressor.cs" />
     <Compile Include="ConfigurationUtils\IFileCompressor.cs" />
     <Compile Include="DiagnosticsUtils\OSVersion.cs" />

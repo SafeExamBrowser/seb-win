@@ -753,8 +753,7 @@ namespace SebWindowsClient
 
             //Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
 
-            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] ==
-                true && !(Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
             {
                 var sebOnScreenKeyboardToolStripButton = new SEBOnScreenKeyboardToolStripButton();
                 taskbarToolStrip.Items.Add(sebOnScreenKeyboardToolStripButton);

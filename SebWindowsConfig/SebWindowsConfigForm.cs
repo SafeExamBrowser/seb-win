@@ -374,8 +374,10 @@ namespace SebWindowsConfig
             checkBoxEnableJava              .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJava];
             checkBoxEnableJavaScript        .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJavaScript];
             checkBoxBlockPopUpWindows       .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBlockPopUpWindows];
-            checkBoxAllowBrowsingBackForward.Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
-            checkBoxRemoveProfile           .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
+            checkBoxAllowBrowsingBackForward.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
+            checkBoxAllowVideoCapture.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVideoCapture];
+            checkBoxAllowAudioCapture.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowAudioCapture];
+            checkBoxRemoveProfile.Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
             checkBoxDisableLocalStorage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDisableLocalStorage];
             checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
             // BEWARE: you must invert this value since "Use Without" is "Not Enable"!
@@ -1713,6 +1715,16 @@ namespace SebWindowsConfig
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward] = checkBoxAllowBrowsingBackForward.Checked;
             checkBoxEnableAltMouseWheel.Checked = checkBoxAllowBrowsingBackForward.Checked;
+        }
+
+        private void checkBoxAllowVideoCapture_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowVideoCapture] = checkBoxAllowVideoCapture.Checked;
+        }
+
+        private void checkBoxAllowAudioCapture_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowAudioCapture] = checkBoxAllowAudioCapture.Checked;
         }
 
         private void checkBoxRemoveProfile_CheckedChanged(object sender, EventArgs e)
@@ -3959,5 +3971,6 @@ namespace SebWindowsConfig
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = listBoxMinMacOSVersion.SelectedIndex;
         }
+
     } // end of   class     SebWindowsConfigForm
 }     // end of   namespace SebWindowsConfig

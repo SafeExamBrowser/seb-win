@@ -44,4 +44,5 @@ user_pref("full-screen-api.enabled", true);
 user_pref("gfx.direct2d.disabled", false);
 user_pref("layers.acceleration.disabled", false);
 user_pref("browser.display.use_document_fonts", 1);
-user_pref("network.http.spdy.enabled.http2", true);
+user_pref("dom.serviceWorkers.enabled", true);
+user_pref("media.navigator.permission.disabled", true);

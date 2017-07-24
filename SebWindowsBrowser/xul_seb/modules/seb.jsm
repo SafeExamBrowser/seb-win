@@ -1491,8 +1491,13 @@ var seb = (function() {
 		//ch.update(urlData, urlData.length);
 		ch.update(keyData, keyData.length);
 		var hash = ch.finish(false);
-		var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+		var s = "";
+		for (var i=0; i<hash.length; i++) {
+			s += toHexString(hash.charCodeAt(i));
+		};
 		return s;
+		//var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+		//return s;
 	}
 	
 	String.prototype.trim = function () {

@@ -85,6 +85,8 @@ var winctrl = (function() {
             "plugin.state.java" : pluginEnableJava,
             "javascript.enabled" : "enableJavaScript",
             "dom.disable_open_during_load" : "blockPopUpWindows",
+            "media.navigator.video.enabled" : "allowVideoCapture",
+            "media.getusermedia.audiocapture.enabled" : "allowAudioCapture",
             "layout.spellcheckDefault" : spellcheckDefault,
 	    "general.useragent.override" : "browserUserAgent"
 					},

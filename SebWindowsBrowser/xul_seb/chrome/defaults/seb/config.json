@@ -20,6 +20,8 @@
 							"plugin.state.java" : 0,
 							"javascript.enabled" : true,
 							"dom.disable_open_during_load" : false,
+							"media.navigator.video.enabled" : false,
+							"media.getusermedia.audiocapture.enabled" : false,
 							"layout.spellcheckDefault" : 0
 						  },
 	"seb.url"				: "http://www.safeexambrowser.org",

@@ -137,8 +137,10 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyEnableJava                           = "enableJava";
 		public const String KeyEnableJavaScript                     = "enableJavaScript";
 		public const String KeyBlockPopUpWindows                    = "blockPopUpWindows";
-		public const String KeyAllowBrowsingBackForward             = "allowBrowsingBackForward";
-		public const String KeyNewBrowserWindowNavigation           = "newBrowserWindowNavigation";
+        public const String KeyAllowVideoCapture = "allowVideoCapture";
+        public const String KeyAllowAudioCapture = "allowAudioCapture";
+        public const String KeyAllowBrowsingBackForward             = "allowBrowsingBackForward";
+        public const String KeyNewBrowserWindowNavigation           = "newBrowserWindowNavigation";
 		public const String KeyRemoveBrowserProfile                 = "removeBrowserProfile";
 		public const String KeyDisableLocalStorage                  = "removeLocalStorage";
 		public const String KeyEnableSebBrowser                     = "enableSebBrowser";
@@ -602,7 +604,9 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableJava              , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableJavaScript        , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyBlockPopUpWindows       , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowBrowsingBackForward, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVideoCapture, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowAudioCapture, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowBrowsingBackForward, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyNewBrowserWindowNavigation, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyRemoveBrowserProfile, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyDisableLocalStorage     , false);

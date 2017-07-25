@@ -93,9 +93,6 @@ namespace SebWindowsClient.ConfigurationUtils
             //SEBClientInfo.SebWindowsClientForm.Close();
             //SEBClientInfo.SebWindowsClientForm.Dispose();
 
-            // We need to check if setting for createNewDesktop changed
-            SEBClientInfo.CreateNewDesktopOldValue = (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop);
-
             if ((int)sebPreferencesDict[SEBSettings.KeySebConfigPurpose] == (int)SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam)
             {
                 ///
@@ -115,20 +112,6 @@ namespace SebWindowsClient.ConfigurationUtils
 
                 //Re-initialize logger
                 SEBClientInfo.InitializeLogger();
-
-                // Check if SEB is running on the standard desktop and the new settings demand to run in new desktop (createNewDesktop = true)
-                // or the other way around!
-                if (SEBClientInfo.CreateNewDesktopOldValue != (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop))
-                {
-                    // If it did, SEB needs to quit and be restarted manually for the new setting to take effekt
-                    if (SEBClientInfo.CreateNewDesktopOldValue == false)
-                        SEBMessageBox.Show(SEBUIStrings.settingsRequireNewDesktop, SEBUIStrings.settingsRequireNewDesktopReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
-                    else
-                        SEBMessageBox.Show(SEBUIStrings.settingsRequireNotNewDesktop, SEBUIStrings.settingsRequireNotNewDesktopReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
-
-                    //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
-                    SEBClientInfo.SebWindowsClientForm.ExitApplication();
-                }
 
                 // Re-Initialize SEB according to the new settings
                 Logger.AddInformation("Attemting to InitSEBDesktop for reconfiguration");
@@ -185,15 +168,6 @@ namespace SebWindowsClient.ConfigurationUtils
                 {
                     // Activate SebWindowsClient so the message box gets focus
                     //SEBClientInfo.SebWindowsClientForm.Activate();
-
-                    // Check if setting for createNewDesktop changed
-                    if (SEBClientInfo.CreateNewDesktopOldValue != (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop))
-                    {
-                        // If it did, SEB needs to quit and be restarted manually for the new setting to take effekt
-                        SEBMessageBox.Show(SEBUIStrings.sebReconfiguredRestartNeeded, SEBUIStrings.sebReconfiguredRestartNeededReason, MessageBoxIcon.Warning, MessageBoxButtons.OK);
-                        //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
-                        SEBClientInfo.SebWindowsClientForm.ExitApplication();
-                    }
 
                     if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
                     {

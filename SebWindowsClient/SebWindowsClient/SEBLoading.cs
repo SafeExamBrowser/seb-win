@@ -37,11 +37,6 @@ namespace SebWindowsClient
         /// </summary>
         static public void StartLoading()
         {
-            //Set the threads desktop to the new desktop if "Create new Desktop" is activated
-            //Set the threads desktop to the new desktop if "Create new Desktop" is activated
-            if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop] || SEBClientInfo.CreateNewDesktopOldValue)
-                SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop);
-            else
                 SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
 
             // Instance a loading screen form given the image names

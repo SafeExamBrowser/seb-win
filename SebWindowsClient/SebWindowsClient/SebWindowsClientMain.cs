@@ -214,10 +214,6 @@ namespace SebWindowsClient
 
         public static void StartSplash()
         {
-            //Set the threads desktop to the new desktop if "Create new Desktop" is activated
-            if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
-                SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop);
-
             // Instance a splash form given the image names
             splash = new SEBSplashScreen();
             // Run the form
@@ -367,32 +363,10 @@ namespace SebWindowsClient
             //on NT4/NT5 ++ a new desktop is created
             if (SEBClientInfo.IsNewOS)
             {
-                sessionCreateNewDesktop = (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop];
-                if (sessionCreateNewDesktop)
-                {
-                    SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
-                    SEBDesktopController OriginalInput = SEBDesktopController.OpenInputDesktop();
-
-                    SEBClientInfo.SEBNewlDesktop = SEBDesktopController.CreateDesktop(SEBClientInfo.SEB_NEW_DESKTOP_NAME);
-                    SEBDesktopController.Show(SEBClientInfo.SEBNewlDesktop.DesktopName);
-                    if (!SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop))
-                    {
-                        Logger.AddError("SetThreadDesktop failed! Looks like the thread has hooks or windows in the current desktop.", null, null);
-                        SEBDesktopController.Show(SEBClientInfo.OriginalDesktop.DesktopName);
-                        SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
-                        SEBClientInfo.SEBNewlDesktop.Close();
-                        SEBMessageBox.Show(SEBUIStrings.createNewDesktopFailed, SEBUIStrings.createNewDesktopFailedReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
-                        return false;
-                    }
-                    SEBClientInfo.DesktopName = SEBClientInfo.SEB_NEW_DESKTOP_NAME;
-                }
-                else
-                {
-                    SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
-                    SEBClientInfo.DesktopName = SEBClientInfo.OriginalDesktop.DesktopName;
-                    //If you kill the explorer shell you don't need this!
-                    //SebWindowsClientForm.SetVisibility(false);
-                }
+                SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
+                SEBClientInfo.DesktopName = SEBClientInfo.OriginalDesktop.DesktopName;
+                //If you kill the explorer shell you don't need this!
+                //SebWindowsClientForm.SetVisibility(false);
             }
 
             Logger.AddInformation("Successfully InitSebSettings");
@@ -445,69 +419,63 @@ namespace SebWindowsClient
 #endif
 
             //Process watching
-            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyMonitorProcesses)[SEBSettings.KeyMonitorProcesses] || (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
+            #region Foreground Window Watching (Allowed Executables)
+
+            //This prevents the not allowed executables from poping up
+            try
             {
-                #region Foreground Window Watching (Allowed Executables)
-
-                //This prevents the not allowed executables from poping up
-                try
-                {
-                    SEBWindowHandler.EnableForegroundWatchDog();
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddError("Unable to EnableForegroundWatchDog", null, ex);
-                }
-                #endregion
-
-                #region Prohibited Executables watching
-                //Handle prohibited executables watching
-                SEBProcessHandler.ProhibitedExecutables.Clear();
-                //Add prohibited executables
-                foreach (Dictionary<string, object> process in SEBSettings.prohibitedProcessList)
-                {
-                    if ((bool)process[SEBSettings.KeyActive])
-                    {
-                        //First add the executable itself
-                        SEBProcessHandler.ProhibitedExecutables.Add(
-                            ((string)process[SEBSettings.KeyExecutable]).ToLower());
-                    }
-                }
-                //This prevents the prohibited executables from starting up
-                try
-                {
-                    SEBProcessHandler.EnableProcessWatchDog();
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddError("Unable to EnableProcessWatchDog", null, ex);
-                }
-                #endregion
+                SEBWindowHandler.EnableForegroundWatchDog();
             }
-            
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to EnableForegroundWatchDog", null, ex);
+            }
+            #endregion
+
+            #region Prohibited Executables watching
+            //Handle prohibited executables watching
+            SEBProcessHandler.ProhibitedExecutables.Clear();
+            //Add prohibited executables
+            foreach (Dictionary<string, object> process in SEBSettings.prohibitedProcessList)
+            {
+                if ((bool)process[SEBSettings.KeyActive])
+                {
+                    //First add the executable itself
+                    SEBProcessHandler.ProhibitedExecutables.Add(
+                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
+                }
+            }
+            //This prevents the prohibited executables from starting up
+            try
+            {
+                SEBProcessHandler.EnableProcessWatchDog();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to EnableProcessWatchDog", null, ex);
+            }
+            #endregion
+
             //Kill Explorer Shell
             // Global variable indicating if the explorer shell has been killed
             SEBClientInfo.ExplorerShellWasKilled = false;
-            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
+            //Minimize all Open Windows
+            try
             {
-                //Minimize all Open Windows
-                try
-                {
-                    SEBWindowHandler.MinimizeAllOpenWindows();
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddError("Unable to MinimizeAllOpenWindows", null, ex);
-                }
-                //Kill the explorer Shell
-                try
-                {
-                    SEBClientInfo.ExplorerShellWasKilled = SEBProcessHandler.KillExplorerShell();
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddError("Unable to KillExplorerShell", null, ex);
-                }
+                SEBWindowHandler.MinimizeAllOpenWindows();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to MinimizeAllOpenWindows", null, ex);
+            }
+            //Kill the explorer Shell
+            try
+            {
+                SEBClientInfo.ExplorerShellWasKilled = SEBProcessHandler.KillExplorerShell();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to KillExplorerShell", null, ex);
             }
 
             Logger.AddInformation("Successfully InitSEBDesktop");

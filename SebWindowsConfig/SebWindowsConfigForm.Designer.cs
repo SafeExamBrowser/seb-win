@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1655,8 +1655,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -3467,10 +3467,10 @@
             this.checkBoxAllowAudioCapture.Location = new System.Drawing.Point(518, 113);
             this.checkBoxAllowAudioCapture.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxAllowAudioCapture.Name = "checkBoxAllowAudioCapture";
-            this.checkBoxAllowAudioCapture.Size = new System.Drawing.Size(232, 29);
+            this.checkBoxAllowAudioCapture.Size = new System.Drawing.Size(364, 29);
             this.checkBoxAllowAudioCapture.TabIndex = 9;
-            this.checkBoxAllowAudioCapture.Text = "Allow audio capture";
-            this.toolTip1.SetToolTip(this.checkBoxAllowAudioCapture, "User has to confirm reloading a web page with F5 or reload button");
+            this.checkBoxAllowAudioCapture.Text = "Allow audio capture (microphone)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowAudioCapture, "Allow web applications to access microphone");
             this.checkBoxAllowAudioCapture.UseVisualStyleBackColor = true;
             this.checkBoxAllowAudioCapture.CheckedChanged += new System.EventHandler(this.checkBoxAllowAudioCapture_CheckedChanged);
             // 
@@ -3484,6 +3484,7 @@
             this.checkBoxAllowVideoCapture.Size = new System.Drawing.Size(330, 29);
             this.checkBoxAllowVideoCapture.TabIndex = 8;
             this.checkBoxAllowVideoCapture.Text = "Allow video capture (webcam)";
+            this.toolTip1.SetToolTip(this.checkBoxAllowVideoCapture, "Allow web applications to access camera");
             this.checkBoxAllowVideoCapture.UseVisualStyleBackColor = true;
             this.checkBoxAllowVideoCapture.CheckedChanged += new System.EventHandler(this.checkBoxAllowVideoCapture_CheckedChanged);
             // 

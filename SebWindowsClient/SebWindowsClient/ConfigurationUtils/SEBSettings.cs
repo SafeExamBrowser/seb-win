@@ -173,6 +173,30 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyRestartExamUseStartURL = "restartExamUseStartURL";
         public const String KeyRestartExamPasswordProtected = "restartExamPasswordProtected";
 
+        // Group Additional Resources
+        public const String KeyAdditionalResources = "additionalResources";
+        public const String KeyAdditionalResourcesActive = "active";
+        public const String KeyAdditionalResourcesAutoOpen = "autoOpen";
+        public const String KeyAdditionalResourcesIdentifier = "identifier";
+        public const String KeyAdditionalResourcesTitle = "title";
+        public const String KeyAdditionalResourcesUrl = "url";
+        public const String KeyAdditionalResourcesResourceData = "resourceData";
+        public const String KeyAdditionalResourcesResourceDataLauncher = "resourceDataLauncher";
+        public const String KeyAdditionalResourcesResourceDataFilename = "resourceDataFilename";
+        public const String KeyAdditionalResourcesResourceIcons = "resourceIcons";
+        public const String KeyAdditionalResourcesResourceIconsFormat = "format";
+        public const String KeyAdditionalResourcesResourceIconsResolution = "resolution";
+        public const String KeyAdditionalResourcesResourceIconsIconData = "iconData";
+        public const String KeyAdditionalResourcesIdentiﬁerCounter = "additionalResourcesIdentiﬁerCounter";
+        public const String KeyAdditionalResourcesLinkUrl = "linkURL";
+        public const String KeyAdditionalResourcesRefererFilter = "refererFilter";
+        public const String KeyAdditionalResourcesResetSession = "resetSession";
+        public const String KeyAdditionalResourcesKey = "key";
+        public const String KeyAdditionalResourcesModifiers = "modifiers";
+        public const String KeyAdditionalResourcesConfirm = "confirm";
+        public const String KeyAdditionalResourcesConfirmText = "confirmText";
+        public const String KeyAdditionalResourcesShowButton = "showButton";
+
         // Group "Applications"
         public const String KeyMonitorProcesses = "monitorProcesses";
 

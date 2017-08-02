@@ -723,7 +723,14 @@ namespace SebWindowsClient
                             if (fullPath != null)
                             {
                                 var x = toolStripButton.Height;
-                                processImage = Iconextractor.ExtractHighResIconImage(fullPath, taskbarHeight-8);
+                                try
+                                {
+                                    processImage = Iconextractor.ExtractHighResIconImage(fullPath, taskbarHeight - 8);
+                                }
+                                catch (Exception)
+                                {
+                                    Logger.AddError("Could not extract icon of file: " + fullPath, null, null);
+                                }
                                 if (processImage == null)
                                 {
                                     processIcon = GetApplicationIcon(fullPath);
@@ -955,11 +962,6 @@ namespace SebWindowsClient
         private Icon GetApplicationIcon(string fullPath)
         {
             Icon processIcon;
-            try
-            {
-                //var icon = IconTools.GetIconForFile(fullPath, ShellIconSize.LargeIcon);
-                //return new Icon();
-            }catch{}
             
             try
             {

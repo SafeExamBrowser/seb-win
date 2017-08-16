@@ -1,12 +1,12 @@
-﻿using MetroFramework.Controls;
-using System;
-using System.Drawing;
+﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
+using MetroFramework.Controls;
 
 namespace MetroFramework
 {
-    public partial class MetroMessageBoxControl : Form
+	public partial class MetroMessageBoxControl : Form
     {
         public MetroMessageBoxControl()
         {
@@ -22,16 +22,23 @@ namespace MetroFramework
             metroButton2.Click += new EventHandler(button_Click);
             metroButton3.Click += new EventHandler(button_Click);
 
-            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (x, y) =>
-            {
-                this.WindowState = FormWindowState.Normal;
-                InitializeSize();
-            };
+			Microsoft.Win32.SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             InitializeSize();
         }
 
-        private void InitializeSize()
+		~MetroMessageBoxControl()
+		{
+			Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+		}
+
+		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+		{
+			this.WindowState = FormWindowState.Normal;
+			InitializeSize();
+		}
+
+		private void InitializeSize()
         {
             this.WindowState = FormWindowState.Maximized;
             this.Padding = new Padding(0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2), 0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2));

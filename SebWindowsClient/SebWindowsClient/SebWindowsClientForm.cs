@@ -35,23 +35,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using SebWindowsClient.AudioUtils;
-using SebWindowsClient.ConfigurationUtils;
-using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.DesktopUtils;
-using System.Net;
-using System.IO;
-using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.BlockShortcutsUtils;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DesktopUtils;
+using SebWindowsClient.DiagnosticsUtils;
+using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.ServiceUtils;
 using SebWindowsClient.UI;
 using SebWindowsClient.XULRunnerCommunication;
@@ -61,9 +61,9 @@ using ListObj = System.Collections.Generic.List<object>;
 
 namespace SebWindowsClient
 {
-    
 
-    public partial class SebWindowsClientForm : Form
+
+	public partial class SebWindowsClientForm : Form
     {
         [DllImport("user32.dll")]
         private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
@@ -105,7 +105,7 @@ namespace SebWindowsClient
 
             SEBXULRunnerWebSocketServer.OnXulRunnerCloseRequested += OnXULRunnerShutdDownRequested;
             SEBXULRunnerWebSocketServer.OnXulRunnerQuitLinkClicked += OnXulRunnerQuitLinkPressed;
-            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (x, y) => PlaceFormOnDesktop(TapTipHandler.IsKeyboardVisible());
+			Microsoft.Win32.SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             try
             {
@@ -117,7 +117,12 @@ namespace SebWindowsClient
             }
         }
 
-        private void OnXULRunnerShutdDownRequested(object sender, EventArgs e)
+		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+		{
+			PlaceFormOnDesktop(TapTipHandler.IsKeyboardVisible());
+		}
+
+		private void OnXULRunnerShutdDownRequested(object sender, EventArgs e)
         {
             if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyAllowQuit])
             {
@@ -1717,6 +1722,11 @@ namespace SebWindowsClient
 
                 Logger.AddInformation("returning from closesebform");
             }
+
+			if (!reconfiguring)
+			{
+				Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+			}
         }
 
         /// <summary>

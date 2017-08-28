@@ -412,18 +412,18 @@ namespace SebWindowsClient
                     xulRunnerArgumentsBuilder.Append(" -profile \"").Append(SEBClientInfo.SebClientSettingsAppDataDirectory).Append("Profiles\"");
                 }
                 // If logging is enabled in settings and there is no custom xulrunner -logfile argument 
-                if (!userDefinedArguments.ToLower().Contains("-logfile") && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableLogging))
+                if (!userDefinedArguments.ToLower().Contains("-logpath") && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableLogging))
                 {
                     string logDirectory = (string)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyLogDirectoryWin);
                     if (String.IsNullOrEmpty(logDirectory))
                     {
                         // When there is no directory indicated, we use the placeholder for telling xulrunner to use the AppData directory to store the log
-                        xulRunnerArgumentsBuilder.Append(" -logfile \"").Append(SEBClientInfo.SebClientSettingsAppDataDirectory).Append("\\seb.log\"");
+                        xulRunnerArgumentsBuilder.Append(" -logfile 1 -logpath \"").Append(SEBClientInfo.SebClientSettingsAppDataDirectory).Append("\\seb.log\"");
                     }
                     else
                     {
                         logDirectory = Environment.ExpandEnvironmentVariables(logDirectory);
-                        xulRunnerArgumentsBuilder.Append(" -logfile \"").Append(logDirectory).Append("\\seb.log\"");
+                        xulRunnerArgumentsBuilder.Append(" -logfile 1 -logpath \"").Append(logDirectory).Append("\\seb.log\"");
                     }
 
                     if (!(userDefinedArguments.ToLower()).Contains("-debug"))
@@ -453,27 +453,35 @@ namespace SebWindowsClient
 
         private void deleteXulRunnerProfileOnNewVersionOfSEB()
         {
-            var xulRunnerProfileFolder = string.Format(@"{0}\Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
-            var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + @"\SEBVersion";
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            
-            //If it's not a new version of SEB, skip this
-            if (File.Exists(versionFile) && File.ReadAllText(versionFile) == version)
+            try
             {
-                return;
-            }
+                var xulRunnerProfileFolder = string.Format(@"{0}\Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
+                var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + @"\SEBVersion";
+                var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            //Delete the old profile directory if it exists
-            if (Directory.Exists(xulRunnerProfileFolder))
+                //If it's not a new version of SEB, skip this
+                if (File.Exists(versionFile) && File.ReadAllText(versionFile) == version)
+                {
+                    return;
+                }
+
+                //Delete the old profile directory if it exists
+                if (Directory.Exists(xulRunnerProfileFolder))
+                {
+                    Directory.Delete(xulRunnerProfileFolder, true);
+                }
+
+                //Create the profile directory
+                Directory.CreateDirectory(xulRunnerProfileFolder);
+
+                //Write the version file
+                File.WriteAllText(versionFile, version);
+
+            }
+            catch (Exception ex)
             {
-                Directory.Delete(xulRunnerProfileFolder, true);
+                Logger.AddError("Could not check or delete old Firefox profile folder: ", this, ex, ex.Message);
             }
-
-            //Create the profile directory
-            Directory.CreateDirectory(xulRunnerProfileFolder);
-            
-            //Write the version file
-            File.WriteAllText(versionFile, version);
         }
 
         private void StartXulRunnerWithSilentParameter()

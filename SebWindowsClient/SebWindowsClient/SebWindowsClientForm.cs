@@ -1751,7 +1751,9 @@ namespace SebWindowsClient
                 loadingThread.Start();
             }
 
-            SEBProcessHandler.LogAllRunningProcesses();
+			taskbarToolStrip.ProcessWndProc = false;
+
+			SEBProcessHandler.LogAllRunningProcesses();
 
             Logger.AddInformation("Attempting to CloseSEBForm in ExitApplication");
             try

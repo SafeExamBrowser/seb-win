@@ -5,10 +5,10 @@ using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebWindowsServiceWCF.RegistryHandler
 {
-    /// <summary>
-    /// Abstract Parent Class Registry Entry for specific RegistryEntries
-    /// </summary>
-    public abstract class RegistryEntry
+	/// <summary>
+	/// Abstract Parent Class Registry Entry for specific RegistryEntries
+	/// </summary>
+	public abstract class RegistryEntry
     {
         /// <summary>
         /// The complete path to the registry key starting with HKEY_[...]
@@ -75,7 +75,10 @@ namespace SebWindowsServiceWCF.RegistryHandler
                             regKey = regKey.OpenSubKey(RegistryPath.Substring(this.RegistryPath.IndexOf('\\') + 1), true);
                             //If the subkey exists, delete the value
                             if (regKey != null)
+							{
                                 regKey.DeleteValue(this.DataItemName);
+								Logger.Log(String.Format("Deleted registry key '{0}'", DataItemName));
+							}
                         }
                         catch (Exception ex)
                         {
@@ -88,7 +91,8 @@ namespace SebWindowsServiceWCF.RegistryHandler
                     else if (value != null && value.GetType() == this.DataType)
                     {
                         Registry.SetValue(this.RegistryPath, this.DataItemName, value);
-                    }
+						Logger.Log(String.Format("Set registry key '{0}' to '{1}'", DataItemName, value ?? "<NULL>"));
+					}
                     else
                     {
                         Logger.Log(String.Format("Unable to set the value {2}:{0} for the registrykey {1}, because the value is of the wrong type", value, this.RegistryPath, this.DataItemName));

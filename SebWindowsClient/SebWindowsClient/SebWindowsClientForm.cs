@@ -662,18 +662,18 @@ namespace SebWindowsClient
 				}
 				if (SEBMessageBox.Show(SEBUIStrings.closeProcesses, SEBUIStrings.closeProcessesQuestion + "\n\n" + applicationsListToClose.ToString(), MessageBoxIcon.Error, MessageBoxButtons.OKCancel) == DialogResult.OK)
 				{
-                    int i = 0;
-                    while (i < runningProcessesToClose.Count())
+					int i = 0;
+					while (i < runningProcessesToClose.Count())
 					{
 						if (SEBNotAllowedProcessController.CloseProcess(runningProcessesToClose[i]))
 						{
 							runningProcessesToClose.RemoveAt(i);
 							runningApplicationsToClose.RemoveAt(i);
 						}
-                        else
-                        {
-                            i++;
-                        }
+						else
+						{
+							i++;
+						}
 					}
 					if (runningProcessesToClose.Any())
 					{
@@ -1755,6 +1755,8 @@ namespace SebWindowsClient
 				loadingThread = new Thread(SEBLoading.StartLoading);
 				loadingThread.Start();
 			}
+
+			taskbarToolStrip.ProcessWndProc = false;
 
 			SEBProcessHandler.LogAllRunningProcesses();
 

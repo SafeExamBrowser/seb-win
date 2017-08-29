@@ -49,52 +49,6 @@ namespace SebWindowsClient.ProcessUtils
             return ProcessOwner;
         }
 
-        /// <summary>
-        /// Closes process by process name.
-        /// </summary>
-        /// <returns></returns>
-        public static void CloseProcessByName(string nameToClosse)
-        {
-            Process[] processes = System.Diagnostics.Process.GetProcesses();
-            foreach (System.Diagnostics.Process processToClosse in processes)
-            {
-                if (processToClosse.ProcessName == nameToClosse)
-                {
-                    try
-                    {
-                        // Display physical memory usage 5 times at intervals of 2 seconds.
-                        for (int i = 0; i < 5; i++)
-                        {
-                            if (!processToClosse.HasExited)
-                            {
-                                // Discard cached information about the process.
-                                processToClosse.Refresh();
-                                // Print working set to console.
-                                Console.WriteLine("Physical Memory Usage: "
-                                                        + processToClosse.WorkingSet64.ToString());
-                                // Wait 2 seconds.
-                                Thread.Sleep(2000);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                        // Close process by sending a close message to its main window.
-                        processToClosse.CloseMainWindow();
-                        // Free resources associated with process.
-                        processToClosse.Close();
-
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("The following exception was raised: ");
-                        Console.WriteLine(e.Message);
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Closes process by process name.
@@ -104,7 +58,11 @@ namespace SebWindowsClient.ProcessUtils
         {
             try
             {
-                if (processToClose != null) // && !processToClose.HasExited)
+                if (processToClose == null) // && !processToClose.HasExited)
+                {
+                    return true;
+                }
+                else
                 {
                     Logger.AddInformation("Closing " + processToClose.ProcessName);
                     if (processToClose.ProcessName.Contains("firefox"))
@@ -117,7 +75,11 @@ namespace SebWindowsClient.ProcessUtils
                     string name = "processHasExitedTrue";
 
                     // Try to close process nicely with CloseMainWindow
-                    if (!processToClose.HasExited)
+                    if (processToClose.HasExited)
+                    {
+                        return true;
+                    }
+                    else
                     {
                         Logger.AddInformation("Process " + processToClose.ProcessName + " hasnt closed yet, try again");
                         //If the process handles the mainWindow
@@ -149,7 +111,11 @@ namespace SebWindowsClient.ProcessUtils
                     processToClose.Refresh();
 
                     // Check if process has exited now and otherwise kill it
-                    if (!processToClose.HasExited)
+                    if (processToClose.HasExited)
+                    {
+                        return true;
+                    }
+                    else
                     {
                         // If process still hasn't exited, we kill it
                         Logger.AddError("Send Kill to process " + name, null, null);

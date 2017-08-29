@@ -392,7 +392,7 @@ namespace SebWindowsClient
 		{
 			deleteXulRunnerProfileOnNewVersionOfSEB();
 
-			StartXulRunnerWithSilentParameter();
+			//StartXulRunnerWithSilentParameter();
 
 			string xulRunnerPath = "";
 			string desktopName = "";

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Ionic.Zip;
 using SebWindowsClient.DiagnosticsUtils;
 
@@ -20,12 +21,42 @@ namespace SebWindowsClient.ConfigurationUtils
 			{
 				if (Directory.Exists(TempDirectory))
 				{
-					Directory.Delete(TempDirectory, true);
+					DeleteDirectory(TempDirectory);
+					Logger.AddInformation("Successfully deleted temporary directory.");
 				}
 			}
 			catch (Exception e)
 			{
 				Logger.AddError("Error when trying to delete temporary directory: ", null, e);
+			}
+		}
+
+		/// <summary>
+		/// Attempt to fix the issue happening when deleting the TempDirectory (see SEBWIN-49).
+		/// Source: https://stackoverflow.com/questions/329355/cannot-delete-directory-with-directory-deletepath-true/1703799#1703799
+		/// </summary>
+		private static void DeleteDirectory(string path)
+		{
+			foreach (string directory in Directory.GetDirectories(path))
+			{
+				DeleteDirectory(directory);
+			}
+
+			try
+			{
+				Directory.Delete(path, true);
+			}
+			catch (IOException e)
+			{
+				Logger.AddWarning(String.Format("Failed to delete {0} with IOException: {1}", path, e.Message), null);
+				Thread.Sleep(100);
+				Directory.Delete(path, true);
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				Logger.AddWarning(String.Format("Failed to delete {0} with UnauthorizedAccessException: {1}", path, e.Message), null);
+				Thread.Sleep(100);
+				Directory.Delete(path, true);
 			}
 		}
 

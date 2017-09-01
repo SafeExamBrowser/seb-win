@@ -35,22 +35,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Serialization;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.XULRunnerCommunication;
-using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using ListObj = System.Collections.Generic.List<object>;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public class XULRunnerConfig
+	public class XULRunnerConfig
     {
         public Prefs prefs = new Prefs();
         public string seb_url;
@@ -219,8 +218,11 @@ namespace SebWindowsClient.ConfigurationUtils
             //Remove all AdditionalResourceData from settings
             RecursivelyRemoveAdditionalResourceData((ListObj)xulRunnerSettings[SEBSettings.KeyAdditionalResources]);
 
-            // Serialise 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
+			// The installed operating system culture for correct website localization
+			xulRunnerSettings.Add("browserLanguage", CultureInfo.InstalledUICulture.Name);
+
+			// Serialise 
+			JavaScriptSerializer serializer = new JavaScriptSerializer();
             string jsonSettings = serializer.Serialize(xulRunnerSettings);
             // Convert to Base64 String
             byte[] bytesJson = Encoding.UTF8.GetBytes(jsonSettings);

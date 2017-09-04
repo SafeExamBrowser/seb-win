@@ -451,7 +451,6 @@ namespace SebWindowsConfig
             comboBoxTaskBarHeight.Items.AddRange(StringTaskBarHeight);
 
              listBoxOpenLinksHTML.Items.AddRange(StringPolicyLinkOpening);
-             listBoxOpenLinksJava.Items.AddRange(StringPolicyLinkOpening);
 
              listBoxChooseFileToUploadPolicy.Items.AddRange(StringPolicyFileUpload);
              listBoxSebServicePolicy        .Items.AddRange(StringPolicySebService);

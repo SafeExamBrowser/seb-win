@@ -96,7 +96,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyCryptoIdentity          = "cryptoIdentity";
 		public const String KeyUseAsymmetricOnlyEncryption = "useAsymmetricOnlyEncryption";
 
-		// Group "Appearance"
+		// Group "User Interface"
 		public const String KeyBrowserViewMode              = "browserViewMode";
 		public const String KeyMainBrowserWindowWidth       = "mainBrowserWindowWidth";
 		public const String KeyMainBrowserWindowHeight      = "mainBrowserWindowHeight";
@@ -111,7 +111,8 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyEnableZoomPage               = "enableZoomPage";
 		public const String KeyZoomMode                     = "zoomMode";
 		public const String KeyAllowSpellCheck              = "allowSpellCheck";
-		public const String KeyShowTime                     = "showTime";
+        public const String KeyShowReloadButton = "showReloadButton";
+        public const String KeyShowTime                     = "showTime";
 		public const String KeyShowInputLanguage            = "showInputLanguage";
 		public const String KeyAllowDictionaryLookup        = "allowDictionaryLookup";
 		public const String KeyEnableTouchExit              = "enableTouchExit";
@@ -137,14 +138,14 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyEnableJava                           = "enableJava";
 		public const String KeyEnableJavaScript                     = "enableJavaScript";
 		public const String KeyBlockPopUpWindows                    = "blockPopUpWindows";
-        public const String KeyAllowVideoCapture = "allowVideoCapture";
-        public const String KeyAllowAudioCapture = "allowAudioCapture";
-        public const String KeyAllowBrowsingBackForward             = "allowBrowsingBackForward";
-        public const String KeyNewBrowserWindowNavigation           = "newBrowserWindowNavigation";
+		public const String KeyAllowVideoCapture = "allowVideoCapture";
+		public const String KeyAllowAudioCapture = "allowAudioCapture";
+		public const String KeyAllowBrowsingBackForward             = "allowBrowsingBackForward";
+		public const String KeyNewBrowserWindowNavigation           = "newBrowserWindowNavigation";
 		public const String KeyRemoveBrowserProfile                 = "removeBrowserProfile";
 		public const String KeyDisableLocalStorage                  = "removeLocalStorage";
 		public const String KeyEnableSebBrowser                     = "enableSebBrowser";
-		public const String KeyShowReloadButton                     = "showReloadButton";
+		public const String KeyBrowserWindowAllowReload             = "browserWindowAllowReload";
 		public const String KeyShowReloadWarning                    = "showReloadWarning";
 		public const String KeyBrowserUserAgentDesktopMode          = "browserUserAgentWinDesktopMode";
 		public const String KeyBrowserUserAgentDesktopModeCustom    = "browserUserAgentWinDesktopModeCustom";
@@ -573,7 +574,8 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyZoomMode                    , 0);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowSpellCheck             , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowDictionaryLookup       , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadButton, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyOskBehavior             , 2);
@@ -604,16 +606,16 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableJava              , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableJavaScript        , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyBlockPopUpWindows       , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVideoCapture, false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowAudioCapture, false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowBrowsingBackForward, false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVideoCapture, false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowAudioCapture, false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowBrowsingBackForward, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyNewBrowserWindowNavigation, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyRemoveBrowserProfile, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyDisableLocalStorage     , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableSebBrowser        , true);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadButton        , true);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadWarning       , true);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentDesktopMode, 0);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserWindowAllowReload, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadWarning, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentDesktopMode, 0);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentDesktopModeCustom, "");
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentTouchMode, 0);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserUserAgentTouchModeIPad, SEBClientInfo.BROWSER_USERAGENT_TOUCH_IPAD);

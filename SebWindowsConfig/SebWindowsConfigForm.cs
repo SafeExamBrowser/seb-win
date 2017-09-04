@@ -334,7 +334,7 @@ namespace SebWindowsConfig
 				textBoxConfirmSettingsPassword.Text = settingsPassword;
 			}
 
-			// Group "Appearance"
+			// Group "User Interface"
 			if ((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] == true)
 			{
 				radioButtonTouchOptimized.Checked = true;
@@ -351,14 +351,13 @@ namespace SebWindowsConfig
 			checkBoxHideBrowserWindowToolbar  .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyHideBrowserWindowToolbar];
 			checkBoxShowMenuBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowMenuBar];
 			checkBoxShowTaskBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar];
-			comboBoxTaskBarHeight             .Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
+            checkBoxShowReloadButton.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadButton];
+            comboBoxTaskBarHeight.Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
 			checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
 
 			// Group "Browser"
 			 listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
-			 listBoxOpenLinksJava .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByScriptPolicy];
 			checkBoxBlockLinksHTML.Checked       = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkBlockForeign];
-			checkBoxBlockLinksJava.Checked       = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByScriptBlockForeign];
 
 			comboBoxNewBrowserWindowWidth      .Text          = (String)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkWidth ];
 			comboBoxNewBrowserWindowHeight     .Text          = (String)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkHeight];
@@ -368,9 +367,22 @@ namespace SebWindowsConfig
 			checkBoxEnableJava              .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJava];
 			checkBoxEnableJavaScript        .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableJavaScript];
 			checkBoxBlockPopUpWindows       .Checked =   (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBlockPopUpWindows];
-			checkBoxAllowBrowsingBackForward.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
+            checkBoxAllowVideoCapture.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVideoCapture];
+            checkBoxAllowAudioCapture.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowAudioCapture];
+            checkBoxAllowBrowsingBackForward.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward];
 			checkBoxAllowNavigationNewWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowNavigation];
-			checkBoxRemoveProfile.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
+            checkBoxAllowReload.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload];
+            checkBoxShowReloadWarning.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning];
+            checkBoxEnableZoomPage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomPage];
+            checkBoxEnableZoomText.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomText];
+            radioButtonUseZoomPage.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
+            radioButtonUseZoomText.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
+            enableZoomAdjustZoomMode();
+            checkBoxEnableZoomText.CheckedChanged += checkBoxEnableZoomText_CheckedChanged;
+            checkBoxEnableZoomPage.CheckedChanged += checkBoxEnableZoomPage_CheckedChanged;
+
+            checkBoxAllowSpellCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheck];
+            checkBoxAllowDictionaryLookup.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictionaryLookup]; checkBoxRemoveProfile.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
 			checkBoxDisableLocalStorage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDisableLocalStorage];
 			checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
 			// BEWARE: you must invert this value since "Use Without" is "Not Enable"!
@@ -686,18 +698,6 @@ namespace SebWindowsConfig
 			checkBoxEnableF11.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableF11];
 			checkBoxEnableF12.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableF12];
 
-			checkBoxShowReloadButton.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadButton];
-			checkBoxShowReloadWarning.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning];
-			checkBoxEnableZoomPage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomPage];
-			checkBoxEnableZoomText.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomText];
-			radioButtonUseZoomPage.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
-			radioButtonUseZoomText.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 1);
-			enableZoomAdjustZoomMode();
-			checkBoxEnableZoomText.CheckedChanged += checkBoxEnableZoomText_CheckedChanged;
-			checkBoxEnableZoomPage.CheckedChanged += checkBoxEnableZoomPage_CheckedChanged;
-
-			checkBoxAllowSpellCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheck];
-			checkBoxAllowDictionaryLookup.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictionaryLookup];
 			checkBoxShowTime.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTime];
 			checkBoxShowKeyboardLayout.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowInputLanguage];
 
@@ -1630,20 +1630,12 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy] = listBoxOpenLinksHTML.SelectedIndex;
 		}
 
-		private void listBoxOpenLinksJava_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByScriptPolicy] = listBoxOpenLinksJava.SelectedIndex;
-		}
 
 		private void checkBoxBlockLinksHTML_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkBlockForeign] = checkBoxBlockLinksHTML.Checked;
 		}
 
-		private void checkBoxBlockLinksJava_CheckedChanged(object sender, EventArgs e)
-		{
-			SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByScriptBlockForeign] = checkBoxBlockLinksJava.Checked;
-		}
 
 		private void comboBoxNewBrowserWindowWidth_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -1702,7 +1694,17 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyBlockPopUpWindows] = checkBoxBlockPopUpWindows.Checked;
 		}
 
-		private void checkBoxAllowBrowsingBackForward_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxAllowVideoCapture_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowVideoCapture] = checkBoxAllowVideoCapture.Checked;
+        }
+
+        private void checkBoxAllowAudioCapture_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowAudioCapture] = checkBoxAllowAudioCapture.Checked;
+        }
+
+        private void checkBoxAllowBrowsingBackForward_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAllowBrowsingBackForward] = checkBoxAllowBrowsingBackForward.Checked;
 			checkBoxEnableAltMouseWheel.Checked = checkBoxAllowBrowsingBackForward.Checked;
@@ -1734,7 +1736,12 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadButton] = checkBoxShowReloadButton.Checked;
 		}
 
-		private void checkBoxShowReloadWarning_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxAllowReload_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] = checkBoxAllowReload.Checked;
+        }
+
+        private void checkBoxShowReloadWarning_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning] = checkBoxShowReloadWarning.Checked;
 		}
@@ -3950,5 +3957,6 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
-	}
+
+    }
 }

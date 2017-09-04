@@ -611,7 +611,8 @@ this.SebBrowser = {
 			sl.err("no xullib.browser in ChromeWindow!");
 			return false;
 		}
-		win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
+		//win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
+		win.XulLibBrowser.reload();
 	},
 	
 	restart : function() {

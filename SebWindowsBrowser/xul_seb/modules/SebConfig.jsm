@@ -55,6 +55,7 @@ let	base = null,
 	uaReg = new RegExp(/rv\:(.+)?\).*?(seb\/.*)$/ig);
 
 this.SebConfig =  {
+	defaultFile : null,
 	prefsMap : {},
 	callback : null,
 
@@ -86,9 +87,9 @@ this.SebConfig =  {
 				base.initCustomConfig.call(null,null);
 			}
 		}
-		let defaultFile = FileUtils.getFile("CurProcD",["default.json"], null);
-		if (defaultFile.exists()) {
-			su.getJSON(defaultFile.path,cb);
+		base.defaultFile = FileUtils.getFile("CurProcD",["default.json"], null);
+		if (base.defaultFile.exists()) {
+			su.getJSON(base.defaultFile.path,cb);
 		}
 		else {
 				sl.err("no default config found!");

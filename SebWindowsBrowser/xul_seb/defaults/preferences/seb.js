@@ -49,3 +49,4 @@ pref("dom.indexedDB.enabled", true);
 pref("browser.cache.disk.capacity", 512000);
 pref("dom.push.enabled", true);
 pref("browser.cache.disk.enable", true);
+pref("media.navigator.permission.disabled", true);

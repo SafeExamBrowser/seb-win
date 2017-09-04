@@ -37,8 +37,8 @@ xulApplication.prototype = {
 		cmdline = cmdLine;
 		try {	
 			Cc["@mozilla.org/toolkit/crash-reporter;1"].getService(Ci.nsICrashReporter).submitReports = false;
-			this.initLog();	
 			if (cmdLine.findFlag("silent",false) < 0) {
+				this.initLog();
                                 seb.initCmdLine(cmdLine);
                                 cmdLine.preventDefault = false;
                         }
@@ -58,7 +58,7 @@ xulApplication.prototype = {
 		let promise = OS.File.open(logpath,{write:true, append:true});
 		promise = promise.then(
 			function onSuccess(file) {
-				dump("xulApplication: " + cmdline);
+				//dump("xulApplication: " + cmdline);
 				
 				logenc = new TextEncoder();
 				logfile = file;

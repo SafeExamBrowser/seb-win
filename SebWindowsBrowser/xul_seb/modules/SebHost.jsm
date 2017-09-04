@@ -402,11 +402,18 @@ this.SebHost = {
 		}
 	},
 	
+	shutdownKey : function() {
+		if (!su.getConfig("sebShutdownKeyEnabled","boolean",false)) {
+			return;
+		}
+		base.shutdown();
+	},
+	
 	reboot : function() {
                 let os = appinfo.OS.toUpperCase();
                 switch (os) { // line feed for dump messages
                         case "WINNT" :
-                                //base.shutdownWindowsHost();
+                                //base.rebootWindowsHost();
                                 break;
                         case "UNIX" :
                         case "LINUX" :
@@ -414,14 +421,20 @@ this.SebHost = {
                                 base.quitFromHost();
                                 break;
                         case "DARWIN" :
-                                // base.shutdownMacHost();
+                                // base.rebootMacHost();
                                 break;
                         default :
                                 // do nothing
                 }
         },
 
-
+	rebootKey : function() {
+		if (!su.getConfig("sebRebootKeyEnabled","boolean",false)) {
+			return;
+		}
+		base.reboot();
+	},
+	
 	sendLog : function (str) {
 		if (socketlog && messageSocket != null) {
 			try {

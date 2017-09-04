@@ -138,6 +138,7 @@ this.SebBrowser = {
 		base = this;
 		seb = obj;
 		certdb = Cc[nsX509CertDB].getService(nsIX509CertDB);
+		let _certs = certdb.getCerts();
 		//base.disableBuiltInCerts();
 		authMgr = Cc["@mozilla.org/network/http-auth-manager;1"].getService(Ci.nsIHttpAuthManager); // clearAll
 		cookieMgr = Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager); // removeAll
@@ -579,6 +580,7 @@ this.SebBrowser = {
 	},
 	
 	disableBuiltInCerts : function () {
+		sl.debug("disableBuiltInCerts");
 		let certs = certdb.getCerts();
 		let enumerator = certs.getEnumerator();
 		while (enumerator.hasMoreElements()) {

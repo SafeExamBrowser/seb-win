@@ -44,6 +44,7 @@ const 	hph = io.getProtocolHandler("http").QueryInterface(Ci.nsIHttpProtocolHand
 
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","SebLog");
+XPCOMUtils.defineLazyModuleGetter(this,"sg","resource://modules/SebConfig.jsm","SebConfig");
 
 /* SebGlobals */
 scriptloader.loadSubScript("resource://globals/prototypes.js");
@@ -55,7 +56,9 @@ let	base = null,
 
 this.SebUtils =  {
 
-	checkUrl : /(http|https|file)\:\/\/.*/i,	
+	checkUrl : /(http|https|file)\:\/\/.*/i,
+	checkRelativeConfig : /^[^\/\\\s]+\.json$/,
+	checkAbsoluteConfig : /[\/\\]+.*?\.json$/,
 	checkP12 : /\.p12$/i,
 	checkCRT : /\.crt$/i,
 	checkJSON : /^\s*?\{.*\}\s*?$/,
@@ -142,16 +145,31 @@ this.SebUtils =  {
 		var isUrl = base.checkUrl.test(url.toString());
 		
 		if (!isUrl) {
-			let f = FileUtils.File(url);
-			if (!f || !f.exists()) {
-				sl.err("wrong url for getJSON: " + url);
+			let rel = base.checkRelativeConfig.test(url.toString());
+			let f = null;
+			try {
+				if (rel) {
+					f = FileUtils.getFile("CurProcD",[url], null);
+				}
+				else {
+					f = FileUtils.File(url);
+				}
+				if (!f || !f.exists()) {
+					sl.err("wrong url for getJSON: " + url);
+					callback(false);
+					return;
+				}
+				else {
+					url = fph.newFileURI(f).spec;
+				}
+			}
+			catch (e) {
+				sl.err("could not load url: " + url + "\n" + e);
 				callback(false);
 				return;
 			}
-			else {
-				url = fph.newFileURI(f).spec;
-			}
 		}
+
 		sl.debug("try to load json object: " + url);
 		Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newChannel(url, "", null).asyncOpen({
 			_data: "",

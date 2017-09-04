@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.ServiceUtils;
 
 namespace SebWindowsClient.ProcessUtils
 {
-    /// <summary>
-    /// Offers methods to handle windows
-    /// </summary>
-    public static class SEBWindowHandler
+	/// <summary>
+	/// Offers methods to handle windows
+	/// </summary>
+	public static class SEBWindowHandler
     {
 
         #region Public Members
@@ -93,12 +88,18 @@ namespace SebWindowsClient.ProcessUtils
                     if (!IsWindowVisible(hWnd)) return true;
 
                     var lLength = GetWindowTextLength(hWnd);
-                    if (lLength == 0) return true;
 
-                    var lBuilder = new StringBuilder(lLength);
-                    GetWindowText(hWnd, lBuilder, lLength + 1);
+                    if (lLength == 0 && hWnd.GetProcess().GetExecutableName().Contains("firefox"))
+					{
+						lWindows[hWnd] = "Untitled";
+					}
+					else if (lLength != 0)
+					{
+						var lBuilder = new StringBuilder(lLength);
+						GetWindowText(hWnd, lBuilder, lLength + 1);
+						lWindows[hWnd] = lBuilder.ToString().ToLower();
+					}
 
-                    lWindows[hWnd] = lBuilder.ToString().ToLower();
                     return true;
 
                 }, 0);

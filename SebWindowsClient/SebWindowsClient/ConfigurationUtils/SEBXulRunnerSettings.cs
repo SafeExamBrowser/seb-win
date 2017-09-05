@@ -219,7 +219,7 @@ namespace SebWindowsClient.ConfigurationUtils
             RecursivelyRemoveAdditionalResourceData((ListObj)xulRunnerSettings[SEBSettings.KeyAdditionalResources]);
 
 			// The installed operating system culture for correct website localization
-			xulRunnerSettings.Add("browserLanguage", CultureInfo.InstalledUICulture.Name);
+			xulRunnerSettings.Add("browserLanguage", System.Globalization.CultureInfo.CurrentCulture.Name);
 
 			// Serialise 
 			JavaScriptSerializer serializer = new JavaScriptSerializer();

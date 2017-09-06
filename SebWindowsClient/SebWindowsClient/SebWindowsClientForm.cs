@@ -897,7 +897,13 @@ namespace SebWindowsClient
 
 			//Add the ReloadhBrowserButton
 			if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyShowReloadButton)[SEBSettings.KeyShowReloadButton])
-				taskbarToolStrip.Items.Add(new SEBReloadBrowserToolStripButton());
+			{
+				var button = new SEBReloadBrowserToolStripButton();
+
+				button.Enabled = SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] as bool? == true;
+
+				taskbarToolStrip.Items.Add(button);
+			}
 
 			//Add the BatterystatusControl to the toolbar
 			try

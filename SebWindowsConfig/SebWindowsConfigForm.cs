@@ -3403,6 +3403,11 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] = radioKillExplorerShell.Checked;
 			checkBoxMonitorProcesses.Enabled = !radioKillExplorerShell.Checked;
+
+			if (radioKillExplorerShell.Checked)
+			{
+				checkBoxMonitorProcesses.Checked = true;
+			}
 		}
 
 		private void checkBoxAllowWlan_CheckedChanged(object sender, EventArgs e)
@@ -3958,5 +3963,5 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
 
-    }
+	}
 }

@@ -42,7 +42,7 @@ using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebRegistryResetter
 {
-    class Program
+	class Program
     {
         static void Main(string[] args)
         {
@@ -113,16 +113,17 @@ namespace SebRegistryResetter
             Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
             var username = Console.ReadLine();
             var sid = SIDHandler.GetSIDFromUsername(username);
-            Console.WriteLine("Username: {0} / SID: {1}",username, sid);
-            if (string.IsNullOrWhiteSpace(sid))
+
+			while (string.IsNullOrWhiteSpace(sid))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("User not found in the registry!");
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("SID for username '{0}' could not be found in the registry! Try again or hit CTRL+C to exit...", username);
+				username = Console.ReadLine();
+				sid = SIDHandler.GetSIDFromUsername(username);
+			}
 
             Console.ResetColor();
+			Console.WriteLine("Username: {0} / SID: {1}",username, sid);
             Console.WriteLine("Resetting all registry entries possibly touched by the SEB Windows Service to an unrestricted value");
 
             var entriesToZero = new List<RegistryEntry>

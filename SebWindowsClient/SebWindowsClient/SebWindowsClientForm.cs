@@ -1803,6 +1803,19 @@ namespace SebWindowsClient
 		private void SebWindowsClientForm_SizeChanged(object sender, EventArgs e)
 		{
 			this.WindowState = FormWindowState.Normal;
-		}       
+		}
+
+		private void taskbarToolStrip_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var menu = new ContextMenuStrip();
+				var item = new ToolStripMenuItem("About SEB");
+
+				item.Click += (o, args) => new AboutWindow().Show();
+				menu.Items.Add(item);
+				menu.Show(this, e.Location);
+			}
+		}
 	}
 }

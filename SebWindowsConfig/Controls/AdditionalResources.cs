@@ -470,17 +470,27 @@ namespace SebWindowsConfig.Controls
 			};
 			if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				DictObj selectedResource = GetSelectedResource();
-				selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = new FileInfo(openFileDialog.FileName).Name;
-				selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncodeFile(openFileDialog.FileName);
-				comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true; 
-				comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = false;
-				comboBoxAdditionalResourcesChooseFileToLaunch.Text = new FileInfo(openFileDialog.FileName).Name;
+				try
+				{
+					var fileInfo = new FileInfo(openFileDialog.FileName);
+					var resourceData = _fileCompressor.CompressAndEncodeFile(openFileDialog.FileName);
+					DictObj selectedResource = GetSelectedResource();
 
-				SetIconFromFile(openFileDialog.FileName);
+					selectedResource[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = fileInfo.Name;
+					selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = resourceData;
+					comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true; 
+					comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = false;
+					comboBoxAdditionalResourcesChooseFileToLaunch.Text = fileInfo.Name;
 
-				treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
-				EmbeddedResourceChosen();
+					SetIconFromFile(openFileDialog.FileName);
+
+					treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+					EmbeddedResourceChosen();
+				}
+				catch (OutOfMemoryException)
+				{
+					MessageBox.Show("The chosen resource file is too big!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
 			}
 		}
 
@@ -493,17 +503,24 @@ namespace SebWindowsConfig.Controls
 			};
 			if (chooseFolderDialog.ShowDialog() == DialogResult.OK)
 			{
-				DictObj selectedResource = GetSelectedResource();
-				List<string> containingFilenames;
-				selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = _fileCompressor.CompressAndEncodeDirectory(chooseFolderDialog.SelectedPath, out containingFilenames);
+				try
+				{
+					var resourceData = _fileCompressor.CompressAndEncodeDirectory(chooseFolderDialog.SelectedPath, out List<string> containingFilenames);
+					DictObj selectedResource = GetSelectedResource();
 
-				treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
+					selectedResource[SEBSettings.KeyAdditionalResourcesResourceData] = resourceData;
+					treeViewAdditionalResources.SelectedNode.Text = GetDisplayTitle(selectedResource);
 				
-				comboBoxAdditionalResourcesChooseFileToLaunch.DataSource = containingFilenames;
-				comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true;
-				comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = true;
+					comboBoxAdditionalResourcesChooseFileToLaunch.DataSource = containingFilenames;
+					comboBoxAdditionalResourcesChooseFileToLaunch.Visible = true;
+					comboBoxAdditionalResourcesChooseFileToLaunch.Enabled = true;
 
-				EmbeddedResourceChosen();
+					EmbeddedResourceChosen();
+				}
+				catch (OutOfMemoryException)
+				{
+					MessageBox.Show("The chosen resource folder is too big!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
 			}
 		}
 

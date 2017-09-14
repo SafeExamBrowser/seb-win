@@ -897,7 +897,13 @@ namespace SebWindowsClient
 
 			//Add the ReloadhBrowserButton
 			if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyShowReloadButton)[SEBSettings.KeyShowReloadButton])
-				taskbarToolStrip.Items.Add(new SEBReloadBrowserToolStripButton());
+			{
+				var button = new SEBReloadBrowserToolStripButton();
+
+				button.Enabled = SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] as bool? == true;
+
+				taskbarToolStrip.Items.Add(button);
+			}
 
 			//Add the BatterystatusControl to the toolbar
 			try
@@ -1797,6 +1803,19 @@ namespace SebWindowsClient
 		private void SebWindowsClientForm_SizeChanged(object sender, EventArgs e)
 		{
 			this.WindowState = FormWindowState.Normal;
-		}       
+		}
+
+		private void taskbarToolStrip_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var menu = new ContextMenuStrip();
+				var item = new ToolStripMenuItem("About SEB");
+
+				item.Click += (o, args) => new AboutWindow().Show();
+				menu.Items.Add(item);
+				menu.Show(this, e.Location);
+			}
+		}
 	}
 }

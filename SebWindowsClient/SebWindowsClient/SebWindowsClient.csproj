@@ -91,6 +91,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWindow.Designer.cs">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="AdditionalResourcesUtils\AdditionalResourceHandler.cs" />
     <Compile Include="AdditionalResourcesUtils\IAdditionalResourceHandler.cs" />
     <Compile Include="AudioUtils\AudioControl.cs" />
@@ -232,6 +238,9 @@
       <DependentUpon>SEBWlanNetworkSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="WlanUtils\WlanApi.cs" />
+    <EmbeddedResource Include="AboutWindow.resx">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AudioUtils\SEBAudioControl.de.resx">
       <DependentUpon>SEBAudioControl.cs</DependentUpon>
     </EmbeddedResource>

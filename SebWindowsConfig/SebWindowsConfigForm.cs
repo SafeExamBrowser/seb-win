@@ -2867,6 +2867,11 @@ namespace SebWindowsConfig
         }
 
 
+        private void textBoxProhibitedProcessOriginalName_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+
         private void textBoxProhibitedProcessDescription_TextChanged(object sender, EventArgs e)
         {
             // Prevent double events from switching to false process index

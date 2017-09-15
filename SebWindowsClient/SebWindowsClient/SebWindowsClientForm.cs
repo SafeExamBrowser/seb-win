@@ -35,20 +35,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using SebWindowsClient.ConfigurationUtils;
-using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.DesktopUtils;
-using System.Net;
-using System.IO;
-using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.BlockShortcutsUtils;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DesktopUtils;
+using SebWindowsClient.DiagnosticsUtils;
+using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.ServiceUtils;
 using SebWindowsClient.UI;
 using SebWindowsClient.XULRunnerCommunication;
@@ -57,9 +57,9 @@ using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
 namespace SebWindowsClient
 {
-    
 
-    public partial class SebWindowsClientForm : Form
+
+	public partial class SebWindowsClientForm : Form
     {
         [DllImport("user32.dll")]
         private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
@@ -1384,10 +1384,9 @@ namespace SebWindowsClient
                     if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
                     {
                         string title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
-                        if (title == null) title = "";
                         string executable = ((string)prohibitedProcess[SEBSettings.KeyExecutable]).ToLower();
-                        // Check if the process is running
-                        runningApplications = Process.GetProcesses();
+						// Check if the process is running
+						runningApplications = Process.GetProcesses();
                         for (int j = 0; j < runningApplications.Count(); j++)
                         {
                             string runningProcessName = runningApplications[j].ProcessName;
@@ -1402,8 +1401,16 @@ namespace SebWindowsClient
                                 else
                                 {
                                     runningProcessesToClose.Add(runningApplications[j]);
-                                    runningApplicationsToClose.Add(title == "SEB" ? (string)prohibitedProcess[SEBSettings.KeyExecutable] : title);
-                                    //runningApplicationsToClose.Add((title == "SEB" ? "" : (title == "" ? "" : title + " - ")) + executable);
+
+									if (String.IsNullOrWhiteSpace(title))
+									{
+										title = executable;
+									}
+
+									if (!runningApplicationsToClose.Contains(title))
+									{
+										runningApplicationsToClose.Add(title);
+									}
                                 }
                             }
                         }

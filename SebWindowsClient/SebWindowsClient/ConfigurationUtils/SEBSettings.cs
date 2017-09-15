@@ -218,7 +218,8 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyOS          = "os";
         public const String KeyTitle       = "title";
         public const String KeyDescription = "description";
-        public const String KeyExecutable  = "executable";
+        public const String KeyExecutable = "executable";
+        public const String KeyOriginalName = "originalName";
         public const String KeyPath        = "path";
         public const String KeyIdentifier  = "identifier";
         public const String KeyUser        = "user";
@@ -666,6 +667,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyTitle      , "SEB");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyDescription, "");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyExecutable, SEBClientInfo.XUL_RUNNER);
+            SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyOriginalName, SEBClientInfo.XUL_RUNNER);
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyPath       , "../xulrunner/");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyIdentifier , "XULRunner");
             SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyWindowHandlingProcess , "");
@@ -682,7 +684,8 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyOS, IntWin);
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyTitle      , "");
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyDescription, "");
-            SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyExecutable , "");
+            SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyExecutable, "");
+            SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyOriginalName, "");
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyPath       , "");
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyIdentifier , "");
             SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyWindowHandlingProcess , "");
@@ -694,7 +697,8 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyCurrentUser, true);
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyStrongKill , false);
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyOS         , IntWin);
-            SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyExecutable , "");
+            SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyExecutable, "");
+            SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyOriginalName, "");
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyDescription, "");
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyIdentifier , "");
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyWindowHandlingProcess , "");

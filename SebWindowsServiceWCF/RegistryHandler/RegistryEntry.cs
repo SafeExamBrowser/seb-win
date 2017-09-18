@@ -106,7 +106,25 @@ namespace SebWindowsServiceWCF.RegistryHandler
                 }
             }
         }
-    }
+	}
+
+	/// <remarks>
+	/// IMPORTANT: This registry configuration only has an effect after Chrome is restarted!
+	/// 
+	/// See https://www.chromium.org/administrators/policy-list-3#DefaultNotificationsSetting:
+	/// •	1 = Allow sites to show desktop notifications
+	/// •	2 = Do not allow any site to show desktop notifications
+	/// •	3 = Ask every time a site wants to show desktop notifications
+	/// </remarks>
+	public class RegDisableChromeNotifications : RegistryEntry
+	{
+		public RegDisableChromeNotifications(string SID) : base(SID)
+		{
+			RegistryPath = String.Format(@"HKEY_USERS\{0}\Software\Policies\Google\Chrome", SID);
+			DataItemName = "DefaultNotificationsSetting";
+			DataType = typeof(Int32);
+		}
+	}
 
     public class RegDisableLockWorkstation : RegistryEntry
     {

@@ -12,10 +12,10 @@ using SEBWindowsServiceContracts;
 
 namespace SebWindowsClient.ServiceUtils
 {
-    /// <summary>
-    /// Static SebWindowsServiceHandler with singleton pattern
-    /// </summary>
-    public static class SebWindowsServiceHandler
+	/// <summary>
+	/// Static SebWindowsServiceHandler with singleton pattern
+	/// </summary>
+	public static class SebWindowsServiceHandler
     {
         private static bool _initialized = false;
         private static string _username;
@@ -106,6 +106,7 @@ namespace SebWindowsClient.ServiceUtils
         {
             var valuesToSet = new Dictionary<RegistryIdentifiers, object>
             {
+				{RegistryIdentifiers.DisableChromeNotifications, 2 },
                 {RegistryIdentifiers.DisableLockWorkstation, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableLockThisComputer )[SEBSettings.KeyInsideSebEnableLockThisComputer ] ? 0 : 1},
                 {RegistryIdentifiers.DisableChangePassword, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableChangeAPassword  )[SEBSettings.KeyInsideSebEnableChangeAPassword  ] ? 0 : 1},
                 {RegistryIdentifiers.DisableTaskMgr, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableStartTaskManager )[SEBSettings.KeyInsideSebEnableStartTaskManager ] ? 0 : 1},

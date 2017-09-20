@@ -1343,7 +1343,6 @@ namespace SebWindowsClient
 					if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
 					{
 						string title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
-						if (title == null) title = "";
 						string executable = ((string)prohibitedProcess[SEBSettings.KeyExecutable]).ToLower();
 						// Check if the process is running
 						runningApplications = Process.GetProcesses();
@@ -1357,7 +1356,16 @@ namespace SebWindowsClient
 								if (!strongKill || !SEBNotAllowedProcessController.CloseProcess(runningApplications[j]))
 								{
 									runningProcessesToClose.Add(runningApplications[j]);
-									runningApplicationsToClose.Add(title == "SEB" ? (string)prohibitedProcess[SEBSettings.KeyExecutable] : title);
+
+									if (String.IsNullOrWhiteSpace(title))
+									{
+										title = executable;
+									}
+
+									if (!runningApplicationsToClose.Contains(title))
+									{
+										runningApplicationsToClose.Add(title);
+									}
 								}
 							}
 						}

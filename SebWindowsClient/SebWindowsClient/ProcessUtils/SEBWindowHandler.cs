@@ -64,10 +64,10 @@ namespace SebWindowsClient.ProcessUtils
 				return false;
 			}
 
-			// If no allowed apps are specified, all apps are allowed
+			// If no allowed apps are specified, no apps are allowed
 			if (AllowedExecutables.Count == 0)
 			{
-				return true;
+				return false;
 			}
 
 			try

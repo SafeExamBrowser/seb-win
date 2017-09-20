@@ -1987,8 +1987,9 @@ namespace SebWindowsConfig
              listBoxPermittedProcessOS.SelectedIndex   =   (Int32)SEBSettings.permittedProcessData[SEBSettings.KeyOS];
              textBoxPermittedProcessTitle      .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyTitle];
              textBoxPermittedProcessDescription.Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyDescription];
-             textBoxPermittedProcessExecutable .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyExecutable];
-             textBoxPermittedProcessExecutables .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyWindowHandlingProcess];
+            textBoxPermittedProcessExecutable.Text = (String)SEBSettings.permittedProcessData[SEBSettings.KeyExecutable];
+            textBoxPermittedProcessOriginalName.Text = (String)SEBSettings.permittedProcessData[SEBSettings.KeyOriginalName];
+            textBoxPermittedProcessExecutables.Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyWindowHandlingProcess];
              textBoxPermittedProcessPath       .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyPath];
              textBoxPermittedProcessIdentifier .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyIdentifier];
 
@@ -2041,8 +2042,9 @@ namespace SebWindowsConfig
              listBoxPermittedProcessOS.SelectedIndex   = IntWin;
              textBoxPermittedProcessTitle      .Text   = "";
              textBoxPermittedProcessDescription.Text   = "";
-             textBoxPermittedProcessExecutable .Text   = "";
-             textBoxPermittedProcessExecutables .Text   = "";
+            textBoxPermittedProcessExecutable.Text = "";
+            textBoxPermittedProcessOriginalName.Text = "";
+            textBoxPermittedProcessExecutables.Text   = "";
              textBoxPermittedProcessPath       .Text   = "";
              textBoxPermittedProcessIdentifier .Text   = "";
 
@@ -2444,6 +2446,15 @@ namespace SebWindowsConfig
             SEBSettings.permittedProcessData[SEBSettings.KeyWindowHandlingProcess] = textBoxPermittedProcessExecutables.Text;
         }
 
+        private void textBoxPermittedProcessOriginalName_TextChanged(object sender, EventArgs e)
+        {
+            if (SEBSettings.permittedProcessIndex < 0) return;
+            SEBSettings.permittedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyPermittedProcesses];
+            SEBSettings.permittedProcessData = (DictObj)SEBSettings.permittedProcessList[SEBSettings.permittedProcessIndex];
+            SEBSettings.permittedProcessData[SEBSettings.KeyOriginalName] = textBoxPermittedProcessOriginalName.Text;
+
+        }
+
         private void buttonPermittedProcessCodeSignature_Click(object sender, EventArgs e)
         {
 
@@ -2595,7 +2606,8 @@ namespace SebWindowsConfig
             checkBoxProhibitedProcessStrongKill .Checked = (Boolean)SEBSettings.prohibitedProcessData[SEBSettings.KeyStrongKill];
              listBoxProhibitedProcessOS.SelectedIndex    =   (Int32)SEBSettings.prohibitedProcessData[SEBSettings.KeyOS];
              textBoxProhibitedProcessExecutable .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyExecutable];
-             textBoxProhibitedProcessDescription.Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyDescription];
+            textBoxProhibitedProcessOriginalName.Text = (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyOriginalName];
+            textBoxProhibitedProcessDescription.Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyDescription];
              textBoxProhibitedProcessIdentifier .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyIdentifier];
              textBoxProhibitedProcessUser       .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyUser];
 
@@ -2621,11 +2633,12 @@ namespace SebWindowsConfig
             checkBoxProhibitedProcessActive     .Checked = true;
             checkBoxProhibitedProcessCurrentUser.Checked = true;
             checkBoxProhibitedProcessStrongKill .Checked = false;
-             listBoxProhibitedProcessOS.SelectedIndex    = IntWin;
-             textBoxProhibitedProcessExecutable .Text    = "";
-             textBoxProhibitedProcessDescription.Text    = "";
-             textBoxProhibitedProcessIdentifier .Text    = "";
-             textBoxProhibitedProcessUser       .Text    = "";
+            listBoxProhibitedProcessOS.SelectedIndex    = IntWin;
+            textBoxProhibitedProcessExecutable .Text    = "";
+            textBoxProhibitedProcessOriginalName.Text = "";
+            textBoxProhibitedProcessDescription.Text    = "";
+            textBoxProhibitedProcessIdentifier .Text    = "";
+            textBoxProhibitedProcessUser       .Text    = "";
 
             // Reset the ignore widget event flags
             ignoreWidgetEventProhibitedProcessesActive      = false;
@@ -2869,6 +2882,10 @@ namespace SebWindowsConfig
 
         private void textBoxProhibitedProcessOriginalName_TextChanged(object sender, EventArgs e)
         {
+            if (SEBSettings.prohibitedProcessIndex < 0) return;
+            SEBSettings.prohibitedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
+            SEBSettings.prohibitedProcessData = (DictObj)SEBSettings.prohibitedProcessList[SEBSettings.prohibitedProcessIndex];
+            SEBSettings.prohibitedProcessData[SEBSettings.KeyOriginalName] = textBoxProhibitedProcessOriginalName.Text;
         }
 
 

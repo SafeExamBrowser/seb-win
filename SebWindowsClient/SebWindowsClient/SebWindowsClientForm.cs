@@ -453,34 +453,75 @@ namespace SebWindowsClient
 
 		private void deleteXulRunnerProfileOnNewVersionOfSEB()
 		{
+			Logger.AddInformation("Attempting to handle Firefox profile folder...");
+
 			try
 			{
-				var xulRunnerProfileFolder = string.Format(@"{0}\Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
-				var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + @"\SEBVersion";
-				var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+				var xulRunnerProfileFolder = string.Format(@"{0}Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
+				var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + "SEBVersion";
+				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+				var previousVersion = string.Empty;
+
+				Logger.AddInformation("Firefox profile folder: " + xulRunnerProfileFolder);
 
 				//If it's not a new version of SEB, skip this
-				if (File.Exists(versionFile) && File.ReadAllText(versionFile) == version)
+				if (File.Exists(versionFile) && (previousVersion = File.ReadAllText(versionFile)) == currentVersion)
 				{
+					Logger.AddInformation("Currently running version of SEB is equal to previously running version, no profile deletion necessary. Version: " + currentVersion);
+
 					return;
 				}
+
+				Logger.AddInformation(String.Format("Currently running version ({0}) is different from previous version ({1}). Trying to delete profile folder...", currentVersion, previousVersion));
 
 				//Delete the old profile directory if it exists
 				if (Directory.Exists(xulRunnerProfileFolder))
 				{
-					Directory.Delete(xulRunnerProfileFolder, true);
+					DeleteDirectory(xulRunnerProfileFolder);
 				}
+
+				Logger.AddInformation("Successfully deleted old Firefox profile folder.");
 
 				//Create the profile directory
 				Directory.CreateDirectory(xulRunnerProfileFolder);
+				Logger.AddInformation("Successfully created empty Firefox profile folder.");
 
 				//Write the version file
-				File.WriteAllText(versionFile, version);
-
+				File.WriteAllText(versionFile, currentVersion);
+				Logger.AddInformation("Successfully saved current SEB version to " + versionFile);
 			}
 			catch (Exception ex)
 			{
 				Logger.AddError("Could not check or delete old Firefox profile folder: ", this, ex, ex.Message);
+			}
+		}
+
+		/// <summary>
+		/// Attempt to fix the issue happening when deleting the Firefox profile directory (see SEBWIN-135).
+		/// Source: https://stackoverflow.com/questions/329355/cannot-delete-directory-with-directory-deletepath-true/1703799#1703799
+		/// </summary>
+		private static void DeleteDirectory(string path)
+		{
+			foreach (string directory in Directory.GetDirectories(path))
+			{
+				DeleteDirectory(directory);
+			}
+
+			try
+			{
+				Directory.Delete(path, true);
+			}
+			catch (IOException e)
+			{
+				Logger.AddWarning(String.Format("Failed to delete {0} with IOException: {1}", path, e.Message), null);
+				Thread.Sleep(100);
+				Directory.Delete(path, true);
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				Logger.AddWarning(String.Format("Failed to delete {0} with UnauthorizedAccessException: {1}", path, e.Message), null);
+				Thread.Sleep(100);
+				Directory.Delete(path, true);
 			}
 		}
 

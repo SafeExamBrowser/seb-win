@@ -2182,6 +2182,7 @@ namespace SebWindowsConfig
             processData[SEBSettings.KeyTitle      ] = "";
             processData[SEBSettings.KeyDescription] = "";
             processData[SEBSettings.KeyExecutable ] = "";
+            processData[SEBSettings.KeyOriginalName] = "";
             processData[SEBSettings.KeyWindowHandlingProcess ] = "";
             processData[SEBSettings.KeyPath       ] = "";
             processData[SEBSettings.KeyIdentifier ] = "";
@@ -2231,6 +2232,7 @@ namespace SebWindowsConfig
             {
                 buttonAddPermittedProcess_Click(this, EventArgs.Empty);
                 textBoxPermittedProcessExecutable.Text = permittedApplicationInformation.Executable;
+                textBoxPermittedProcessOriginalName.Text = permittedApplicationInformation.OriginalName;
                 textBoxPermittedProcessTitle.Text = permittedApplicationInformation.Title;
                 textBoxPermittedProcessPath.Text = permittedApplicationInformation.Path;
             }
@@ -2242,6 +2244,7 @@ namespace SebWindowsConfig
             if (permittedApplicationInformation != null)
             {
                 textBoxPermittedProcessExecutable.Text = permittedApplicationInformation.Executable;
+                textBoxPermittedProcessOriginalName.Text = permittedApplicationInformation.OriginalName;
                 textBoxPermittedProcessTitle.Text = permittedApplicationInformation.Title;
                 textBoxPermittedProcessPath.Text = permittedApplicationInformation.Path;
             }
@@ -2298,6 +2301,11 @@ namespace SebWindowsConfig
                     .Replace(Environment.SystemDirectory.ToLower(), "");
 
                 permittedApplicationInformation.Path = filePath;
+
+                // Get Original Name
+                var executableInfo = FileVersionInfo.GetVersionInfo(filename);
+                permittedApplicationInformation.OriginalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
                 return permittedApplicationInformation;
                 //TODO (pwyss 2015/03/13): Keep a list with tools that need special configurations and fill them accordingly (WindowHandlingProcess for example)
             }
@@ -2766,6 +2774,7 @@ namespace SebWindowsConfig
             processData[SEBSettings.KeyStrongKill ] = false;
             processData[SEBSettings.KeyOS         ] = IntWin;
             processData[SEBSettings.KeyExecutable ] = "";
+            processData[SEBSettings.KeyOriginalName] = "";
             processData[SEBSettings.KeyDescription] = "";
             processData[SEBSettings.KeyIdentifier ] = "";
             processData[SEBSettings.KeyUser       ] = "";

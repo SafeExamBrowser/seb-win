@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -161,6 +161,8 @@
             this.buttonRemovePermittedProcess = new System.Windows.Forms.Button();
             this.buttonAddPermittedProcess = new System.Windows.Forms.Button();
             this.groupBoxPermittedProcess = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBoxPermittedProcessOriginalName = new System.Windows.Forms.TextBox();
             this.checkBoxPermittedProcessIconInTaskbar = new System.Windows.Forms.CheckBox();
             this.ButtonChooseExecutable = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -395,8 +397,6 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBoxPermittedProcessOriginalName = new System.Windows.Forms.TextBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1646,8 +1646,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2135,10 +2135,30 @@
             this.toolTip1.SetToolTip(this.groupBoxPermittedProcess, "Terminate process in a not-nice way, which may cause data loss if the application" +
         " had unsaved data");
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(108, 104);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(73, 13);
+            this.label13.TabIndex = 95;
+            this.label13.Text = "Original Name";
+            // 
+            // textBoxPermittedProcessOriginalName
+            // 
+            this.textBoxPermittedProcessOriginalName.Location = new System.Drawing.Point(184, 104);
+            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxPermittedProcessOriginalName.Name = "textBoxPermittedProcessOriginalName";
+            this.textBoxPermittedProcessOriginalName.Size = new System.Drawing.Size(549, 20);
+            this.textBoxPermittedProcessOriginalName.TabIndex = 94;
+            this.toolTip1.SetToolTip(this.textBoxPermittedProcessOriginalName, "Original file name (optional)");
+            this.textBoxPermittedProcessOriginalName.TextChanged += new System.EventHandler(this.textBoxPermittedProcessOriginalName_TextChanged);
+            // 
             // checkBoxPermittedProcessIconInTaskbar
             // 
             this.checkBoxPermittedProcessIconInTaskbar.AutoSize = true;
-            this.checkBoxPermittedProcessIconInTaskbar.Location = new System.Drawing.Point(734, 29);
+            this.checkBoxPermittedProcessIconInTaskbar.Location = new System.Drawing.Point(753, 28);
             this.checkBoxPermittedProcessIconInTaskbar.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPermittedProcessIconInTaskbar.Name = "checkBoxPermittedProcessIconInTaskbar";
             this.checkBoxPermittedProcessIconInTaskbar.Size = new System.Drawing.Size(99, 17);
@@ -2151,7 +2171,7 @@
             // 
             // ButtonChooseExecutable
             // 
-            this.ButtonChooseExecutable.Location = new System.Drawing.Point(682, 77);
+            this.ButtonChooseExecutable.Location = new System.Drawing.Point(703, 77);
             this.ButtonChooseExecutable.Name = "ButtonChooseExecutable";
             this.ButtonChooseExecutable.Size = new System.Drawing.Size(30, 22);
             this.ButtonChooseExecutable.TabIndex = 92;
@@ -2174,7 +2194,7 @@
             this.textBoxPermittedProcessExecutables.Location = new System.Drawing.Point(246, 130);
             this.textBoxPermittedProcessExecutables.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessExecutables.Name = "textBoxPermittedProcessExecutables";
-            this.textBoxPermittedProcessExecutables.Size = new System.Drawing.Size(466, 20);
+            this.textBoxPermittedProcessExecutables.Size = new System.Drawing.Size(487, 20);
             this.textBoxPermittedProcessExecutables.TabIndex = 90;
             this.toolTip1.SetToolTip(this.textBoxPermittedProcessExecutables, "Process executable which is actually handling the main window.");
             this.textBoxPermittedProcessExecutables.TextChanged += new System.EventHandler(this.textBoxPermittedProcessExecutables_TextChanged);
@@ -2182,7 +2202,7 @@
             // checkBoxPermittedProcessStrongKill
             // 
             this.checkBoxPermittedProcessStrongKill.AutoSize = true;
-            this.checkBoxPermittedProcessStrongKill.Location = new System.Drawing.Point(734, 116);
+            this.checkBoxPermittedProcessStrongKill.Location = new System.Drawing.Point(753, 115);
             this.checkBoxPermittedProcessStrongKill.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPermittedProcessStrongKill.Name = "checkBoxPermittedProcessStrongKill";
             this.checkBoxPermittedProcessStrongKill.Size = new System.Drawing.Size(155, 17);
@@ -2195,7 +2215,7 @@
             // 
             // buttonPermittedProcessCodeSignature
             // 
-            this.buttonPermittedProcessCodeSignature.Location = new System.Drawing.Point(734, 282);
+            this.buttonPermittedProcessCodeSignature.Location = new System.Drawing.Point(753, 281);
             this.buttonPermittedProcessCodeSignature.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPermittedProcessCodeSignature.Name = "buttonPermittedProcessCodeSignature";
             this.buttonPermittedProcessCodeSignature.Size = new System.Drawing.Size(112, 24);
@@ -2212,7 +2232,7 @@
             this.dataGridViewPermittedProcessArguments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ArgumentActive,
             this.ArgumentParameter});
-            this.dataGridViewPermittedProcessArguments.Location = new System.Drawing.Point(140, 182);
+            this.dataGridViewPermittedProcessArguments.Location = new System.Drawing.Point(161, 183);
             this.dataGridViewPermittedProcessArguments.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewPermittedProcessArguments.Name = "dataGridViewPermittedProcessArguments";
             this.dataGridViewPermittedProcessArguments.RowHeadersVisible = false;
@@ -2240,7 +2260,7 @@
             // labelPermittedProcessIdentifier
             // 
             this.labelPermittedProcessIdentifier.AutoSize = true;
-            this.labelPermittedProcessIdentifier.Location = new System.Drawing.Point(148, 287);
+            this.labelPermittedProcessIdentifier.Location = new System.Drawing.Point(169, 288);
             this.labelPermittedProcessIdentifier.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelPermittedProcessIdentifier.Name = "labelPermittedProcessIdentifier";
             this.labelPermittedProcessIdentifier.Size = new System.Drawing.Size(47, 13);
@@ -2249,7 +2269,7 @@
             // 
             // textBoxPermittedProcessIdentifier
             // 
-            this.textBoxPermittedProcessIdentifier.Location = new System.Drawing.Point(199, 284);
+            this.textBoxPermittedProcessIdentifier.Location = new System.Drawing.Point(220, 285);
             this.textBoxPermittedProcessIdentifier.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessIdentifier.Name = "textBoxPermittedProcessIdentifier";
             this.textBoxPermittedProcessIdentifier.Size = new System.Drawing.Size(513, 20);
@@ -2261,7 +2281,7 @@
             // 
             // buttonPermittedProcessRemoveArgument
             // 
-            this.buttonPermittedProcessRemoveArgument.Location = new System.Drawing.Point(85, 206);
+            this.buttonPermittedProcessRemoveArgument.Location = new System.Drawing.Point(130, 207);
             this.buttonPermittedProcessRemoveArgument.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPermittedProcessRemoveArgument.Name = "buttonPermittedProcessRemoveArgument";
             this.buttonPermittedProcessRemoveArgument.Size = new System.Drawing.Size(22, 24);
@@ -2273,7 +2293,7 @@
             // 
             // buttonPermittedProcessAddArgument
             // 
-            this.buttonPermittedProcessAddArgument.Location = new System.Drawing.Point(56, 206);
+            this.buttonPermittedProcessAddArgument.Location = new System.Drawing.Point(101, 207);
             this.buttonPermittedProcessAddArgument.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPermittedProcessAddArgument.Name = "buttonPermittedProcessAddArgument";
             this.buttonPermittedProcessAddArgument.Size = new System.Drawing.Size(22, 24);
@@ -2286,7 +2306,7 @@
             // labelPermittedProcessArguments
             // 
             this.labelPermittedProcessArguments.AutoSize = true;
-            this.labelPermittedProcessArguments.Location = new System.Drawing.Point(54, 188);
+            this.labelPermittedProcessArguments.Location = new System.Drawing.Point(99, 189);
             this.labelPermittedProcessArguments.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelPermittedProcessArguments.Name = "labelPermittedProcessArguments";
             this.labelPermittedProcessArguments.Size = new System.Drawing.Size(57, 13);
@@ -2339,7 +2359,7 @@
             this.textBoxPermittedProcessPath.Location = new System.Drawing.Point(86, 156);
             this.textBoxPermittedProcessPath.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessPath.Name = "textBoxPermittedProcessPath";
-            this.textBoxPermittedProcessPath.Size = new System.Drawing.Size(626, 20);
+            this.textBoxPermittedProcessPath.Size = new System.Drawing.Size(647, 20);
             this.textBoxPermittedProcessPath.TabIndex = 5;
             this.textBoxPermittedProcessPath.TextChanged += new System.EventHandler(this.textBoxPermittedProcessPath_TextChanged);
             // 
@@ -2348,7 +2368,7 @@
             this.textBoxPermittedProcessExecutable.Location = new System.Drawing.Point(199, 78);
             this.textBoxPermittedProcessExecutable.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessExecutable.Name = "textBoxPermittedProcessExecutable";
-            this.textBoxPermittedProcessExecutable.Size = new System.Drawing.Size(478, 20);
+            this.textBoxPermittedProcessExecutable.Size = new System.Drawing.Size(499, 20);
             this.textBoxPermittedProcessExecutable.TabIndex = 4;
             this.toolTip1.SetToolTip(this.textBoxPermittedProcessExecutable, "File name of the executable, which should not contain any parts of a file system " +
         "path, only the filename of the exe file (like calc.exe).");
@@ -2359,7 +2379,7 @@
             this.textBoxPermittedProcessDescription.Location = new System.Drawing.Point(86, 52);
             this.textBoxPermittedProcessDescription.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessDescription.Name = "textBoxPermittedProcessDescription";
-            this.textBoxPermittedProcessDescription.Size = new System.Drawing.Size(626, 20);
+            this.textBoxPermittedProcessDescription.Size = new System.Drawing.Size(647, 20);
             this.textBoxPermittedProcessDescription.TabIndex = 2;
             this.toolTip1.SetToolTip(this.textBoxPermittedProcessDescription, "Optional, should explain what kind of process this is, because this might not be " +
         "obvious only from the executable\'s name.");
@@ -2390,7 +2410,7 @@
             this.textBoxPermittedProcessTitle.Location = new System.Drawing.Point(199, 26);
             this.textBoxPermittedProcessTitle.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessTitle.Name = "textBoxPermittedProcessTitle";
-            this.textBoxPermittedProcessTitle.Size = new System.Drawing.Size(513, 20);
+            this.textBoxPermittedProcessTitle.Size = new System.Drawing.Size(534, 20);
             this.textBoxPermittedProcessTitle.TabIndex = 1;
             this.toolTip1.SetToolTip(this.textBoxPermittedProcessTitle, "Application title which is displayed in the application chooser. Background proce" +
         "sses don’t have a title, because they can’t be selected by users.");
@@ -2399,7 +2419,7 @@
             // checkBoxPermittedProcessAllowUser
             // 
             this.checkBoxPermittedProcessAllowUser.AutoSize = true;
-            this.checkBoxPermittedProcessAllowUser.Location = new System.Drawing.Point(734, 94);
+            this.checkBoxPermittedProcessAllowUser.Location = new System.Drawing.Point(753, 93);
             this.checkBoxPermittedProcessAllowUser.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPermittedProcessAllowUser.Name = "checkBoxPermittedProcessAllowUser";
             this.checkBoxPermittedProcessAllowUser.Size = new System.Drawing.Size(223, 17);
@@ -2412,7 +2432,7 @@
             // checkBoxPermittedProcessAutohide
             // 
             this.checkBoxPermittedProcessAutohide.AutoSize = true;
-            this.checkBoxPermittedProcessAutohide.Location = new System.Drawing.Point(734, 72);
+            this.checkBoxPermittedProcessAutohide.Location = new System.Drawing.Point(753, 71);
             this.checkBoxPermittedProcessAutohide.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPermittedProcessAutohide.Name = "checkBoxPermittedProcessAutohide";
             this.checkBoxPermittedProcessAutohide.Size = new System.Drawing.Size(160, 17);
@@ -2427,7 +2447,7 @@
             // checkBoxPermittedProcessAutostart
             // 
             this.checkBoxPermittedProcessAutostart.AutoSize = true;
-            this.checkBoxPermittedProcessAutostart.Location = new System.Drawing.Point(734, 50);
+            this.checkBoxPermittedProcessAutostart.Location = new System.Drawing.Point(753, 49);
             this.checkBoxPermittedProcessAutostart.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxPermittedProcessAutostart.Name = "checkBoxPermittedProcessAutostart";
             this.checkBoxPermittedProcessAutostart.Size = new System.Drawing.Size(68, 17);
@@ -5061,26 +5081,6 @@
             this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(108, 104);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(73, 13);
-            this.label13.TabIndex = 95;
-            this.label13.Text = "Original Name";
-            // 
-            // textBoxPermittedProcessOriginalName
-            // 
-            this.textBoxPermittedProcessOriginalName.Location = new System.Drawing.Point(184, 104);
-            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxPermittedProcessOriginalName.Name = "textBoxPermittedProcessOriginalName";
-            this.textBoxPermittedProcessOriginalName.Size = new System.Drawing.Size(528, 20);
-            this.textBoxPermittedProcessOriginalName.TabIndex = 94;
-            this.toolTip1.SetToolTip(this.textBoxPermittedProcessOriginalName, "Original file name (optional)");
-            this.textBoxPermittedProcessOriginalName.TextChanged += new System.EventHandler(this.textBoxPermittedProcessOriginalName_TextChanged);
             // 
             // SebWindowsConfigForm
             // 

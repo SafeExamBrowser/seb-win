@@ -87,7 +87,7 @@ namespace SebWindowsClient.ProcessUtils
 							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
 							var originalProcessName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
 
-							if (!processName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase))
+							if (!String.IsNullOrWhiteSpace(originalProcessName) && !processName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase))
 							{
 								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalProcessName, processName));
 								processName = originalProcessName;

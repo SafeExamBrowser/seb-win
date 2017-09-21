@@ -348,4 +348,10 @@
   <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
     <value>Um die Bildschirmtastatur nutzen zu können, bitte den Windows Tablet-Modus aktivieren und die physische Tastatur entfernen</value>
   </data>
+  <data name="tableModeNotEnabledWarningText" xml:space="preserve">
+    <value>Bitte aktiviere den Windows Tablet Modus und starte SEB erneut.</value>
+  </data>
+  <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
+    <value>Windows Tablet Modus aktivieren</value>
+  </data>
 </root>

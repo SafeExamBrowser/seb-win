@@ -1556,98 +1556,99 @@ namespace SebWindowsClient
 
 			// Check if VM and SEB Windows Service available and required
 			try
-			{
-				SebWindowsClientMain.CheckIfInsideVirtualMachine();
-				SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);                
+            {
+                SebWindowsClientMain.CheckIfTabletModeIsEnabled();
+                SebWindowsClientMain.CheckIfInsideVirtualMachine();
+                SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
 
-				//Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)
-				try
-				{
-					Logger.AddInformation("setting registry values");
-					if (SebWindowsServiceHandler.IsServiceAvailable &&
-						!SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
-					{
-						Logger.AddError("Unable to set Registry values", this, null);
-						SebWindowsClientMain.CheckServicePolicy(false);
-					}
-				}
-				catch (SEBNotAllowedToRunEception ex)
-				{
-					throw;
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to set Registry values", this, ex);
-					SebWindowsClientMain.CheckServicePolicy(false);
-				}
+                //Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)
+                try
+                {
+                    Logger.AddInformation("setting registry values");
+                    if (SebWindowsServiceHandler.IsServiceAvailable &&
+                        !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
+                    {
+                        Logger.AddError("Unable to set Registry values", this, null);
+                        SebWindowsClientMain.CheckServicePolicy(false);
+                    }
+                }
+                catch (SEBNotAllowedToRunEception ex)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to set Registry values", this, ex);
+                    SebWindowsClientMain.CheckServicePolicy(false);
+                }
 
-				//Disable windows update service (with SEBWindowsServiceWCF)
-				try
-				{
-					Logger.AddInformation("disabling windows update");
-					if (SebWindowsServiceHandler.IsServiceAvailable && !SebWindowsServiceHandler.DisableWindowsUpdate())
-						Logger.AddWarning("Unable to disable windows upate service", this, null);
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to disable windows update service", this, ex);
-				}
+                //Disable windows update service (with SEBWindowsServiceWCF)
+                try
+                {
+                    Logger.AddInformation("disabling windows update");
+                    if (SebWindowsServiceHandler.IsServiceAvailable && !SebWindowsServiceHandler.DisableWindowsUpdate())
+                        Logger.AddWarning("Unable to disable windows upate service", this, null);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to disable windows update service", this, ex);
+                }
 
-				try
-				{
-					Logger.AddInformation("killing processes that are not allowed to run");
-					bool bClientRegistryAndProcesses = InitClientRegistryAndKillProcesses();
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to kill processes that are running before start", this, ex);
-				}
+                try
+                {
+                    Logger.AddInformation("killing processes that are not allowed to run");
+                    bool bClientRegistryAndProcesses = InitClientRegistryAndKillProcesses();
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to kill processes that are running before start", this, ex);
+                }
 
-				Logger.AddInformation("attempting to start socket server");
-				SEBXULRunnerWebSocketServer.StartServer();
-				SEBXULRunnerWebSocketServer.OnXulRunnerFullscreenchanged += opts =>
-				{
-					if (opts.fullscreen == true)
-					{
-						this.BeginInvoke(new Action(this.Hide));
-					}
-					else
-					{
-						this.BeginInvoke(new Action(this.Show));
-					}
-				};
+                Logger.AddInformation("attempting to start socket server");
+                SEBXULRunnerWebSocketServer.StartServer();
+                SEBXULRunnerWebSocketServer.OnXulRunnerFullscreenchanged += opts =>
+                {
+                    if (opts.fullscreen == true)
+                    {
+                        this.BeginInvoke(new Action(this.Hide));
+                    }
+                    else
+                    {
+                        this.BeginInvoke(new Action(this.Show));
+                    }
+                };
 
-				// Disable unwanted keys.
-				SebKeyCapture.FilterKeys = true;
+                // Disable unwanted keys.
+                SebKeyCapture.FilterKeys = true;
 
-				try
-				{
-					Logger.AddInformation("adding allowed processes to taskbar");
-					addPermittedProcessesToTS();
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to addPermittedProcessesToTS", this, ex);
-				}
-				
-				if (sebCloseDialogForm == null)
-				{
-					Logger.AddInformation("creating close dialog form");
-					sebCloseDialogForm = new SebCloseDialogForm();
-					sebCloseDialogForm.TopMost = true;
-				}
-				if (sebApplicationChooserForm == null)
-				{
-					Logger.AddInformation("building application chooser form");
-					sebApplicationChooserForm = new SebApplicationChooserForm();
-					sebApplicationChooserForm.TopMost = true;
-					sebApplicationChooserForm.Show();
-					sebApplicationChooserForm.Visible = false;
-				}
+                try
+                {
+                    Logger.AddInformation("adding allowed processes to taskbar");
+                    addPermittedProcessesToTS();
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to addPermittedProcessesToTS", this, ex);
+                }
 
-				return true;
-			}
-			catch (SEBNotAllowedToRunEception ex)
+                if (sebCloseDialogForm == null)
+                {
+                    Logger.AddInformation("creating close dialog form");
+                    sebCloseDialogForm = new SebCloseDialogForm();
+                    sebCloseDialogForm.TopMost = true;
+                }
+                if (sebApplicationChooserForm == null)
+                {
+                    Logger.AddInformation("building application chooser form");
+                    sebApplicationChooserForm = new SebApplicationChooserForm();
+                    sebApplicationChooserForm.TopMost = true;
+                    sebApplicationChooserForm.Show();
+                    sebApplicationChooserForm.Visible = false;
+                }
+
+                return true;
+            }
+            catch (SEBNotAllowedToRunEception ex)
 			{
 				// VM or service not available and set to be required
 				Logger.AddInformation(string.Format("exiting without starting up because {0}", ex.Message));
@@ -1656,12 +1657,12 @@ namespace SebWindowsClient
 			}
 		}
 
-		/// ----------------------------------------------------------------------------------------
-		/// <summary>
-		/// Close SEB Form.
-		/// </summary>
-		/// ----------------------------------------------------------------------------------------
-		public void CloseSEBForm(bool reconfiguring = false)
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Close SEB Form.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public void CloseSEBForm(bool reconfiguring = false)
 		{
 			{
 				//Restore Registry Values

@@ -426,4 +426,10 @@
   <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
     <value>To use the on-screen-keyboard, enable tablet mode and detach the keyboard</value>
   </data>
+  <data name="tableModeNotEnabledWarningText" xml:space="preserve">
+    <value>Please enable Windows Tablet Mode and start SEB again.</value>
+  </data>
+  <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
+    <value>Enable Windows Tablet Mode</value>
+  </data>
 </root>

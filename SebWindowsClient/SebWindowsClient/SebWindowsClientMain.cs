@@ -9,6 +9,7 @@ using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.DesktopUtils;
 using System.Threading;
 using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.Win32;
 
 //
 //  SebWindowsClient.cs
@@ -400,6 +401,29 @@ namespace SebWindowsClient
                 SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
                 Logger.AddInformation("Closing New Dekstop");
                 SEBClientInfo.SEBNewlDesktop.Close();
+            }
+        }
+
+        public static void CheckIfTabletModeIsEnabled()
+        {
+            if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
+            {
+                bool? tabletMode = null;
+                try
+                {
+                    //returns null if the key is not existing (another windows version than 10)
+                   tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1) == 1;
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to check for tablet mode, assuming its not a Windows Version with a tablet mode and if so, ignore this error", null, ex, ex.StackTrace);
+                }
+                if (tabletMode != null && tabletMode == false)
+                {
+                    SEBMessageBox.Show(SEBUIStrings.tableModeNotEnabledWarningTitle, SEBUIStrings.tableModeNotEnabledWarningText, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    Logger.AddInformation("Windows Tablet mode was not enabled, exiting seb", null, null);
+                    throw new SEBNotAllowedToRunEception("SEB not running without Tablet mode...");
+                }
             }
         }
 

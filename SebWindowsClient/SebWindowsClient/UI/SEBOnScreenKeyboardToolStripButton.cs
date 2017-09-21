@@ -56,8 +56,8 @@ namespace SebWindowsClient.UI
 
 		private void EnableOrDisableBasedOnState()
 		{
-			var tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1);
-			this.Enabled = tabletMode == 1 && GetSystemMetrics(SystemMetric.SM_CONVERTABLESLATEMODE) == 0;
+            var tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1);
+            this.Enabled = tabletMode == 1 && GetSystemMetrics(SystemMetric.SM_CONVERTABLESLATEMODE) == 0;
 			this.ToolTipText = !this.Enabled ? SEBUIStrings.toolTipOnScreenKeyboardNotEnabled : SEBUIStrings.toolTipOnScreenKeyboard;
 		}
 

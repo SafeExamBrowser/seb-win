@@ -1355,52 +1355,74 @@ namespace SebWindowsClient
             return true;
         }
 
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Set registry values and close prohibited processes.
-        /// </summary>
-        /// <returns>true if succeed</returns>
-        /// ----------------------------------------------------------------------------------------
-        private bool InitClientRegistryAndKillProcesses()
+        private bool CheckProhibitedProcesses()
         {
+			// Add prohibited processes to the "processes not permitted to run" list 
+			// which will be dealt with after checking if permitted processes are already running;
+			// the user will be asked to quit all those processes him/herself or to let SEB kill them
+			// Prohibited processes with the strongKill flag set can be killed without user consent
 
-            // Add prohibited processes to the "processes not permitted to run" list 
-            // which will be dealt with after checking if permitted processes are already running;
-            // the user will be asked to quit all those processes him/herself or to let SEB kill them
-            // Prohibited processes with the strongKill flag set can be killed without user consent
+			var prohibitedProcessList = (List<object>) SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
 
-            List<object> prohibitedProcessList = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
-            if (prohibitedProcessList.Count() > 0)
-            {
-                // Check if the prohibited processes are running
-                Process[] runningApplications;
-                runningProcessesToClose.Clear();
-                runningApplicationsToClose.Clear();
-                for (int i = 0; i < prohibitedProcessList.Count; i++)
-                {
-                    Dictionary<string, object> prohibitedProcess = (Dictionary<string, object>)prohibitedProcessList[i];
-                    SEBSettings.operatingSystems prohibitedProcessOS = (SEBSettings.operatingSystems)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyOS);
-                    bool prohibitedProcessActive = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyActive);
-                    if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
-                    {
-                        string title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
-                        string executable = ((string)prohibitedProcess[SEBSettings.KeyExecutable]).ToLower();
-						// Check if the process is running
-						runningApplications = Process.GetProcesses();
-                        for (int j = 0; j < runningApplications.Count(); j++)
-                        {
-                            string runningProcessName = runningApplications[j].ProcessName;
-                            if (runningProcessName != null && executable.Contains(runningProcessName.ToLower()))
-                            {
-                                // If the flag strongKill is set, then the process is killed without asking the user
-                                bool strongKill = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyStrongKill);
-                                if (strongKill)
-                                {
-                                    SEBNotAllowedProcessController.CloseProcess(runningApplications[j]);
-                                }
-                                else
-                                {
-                                    runningProcessesToClose.Add(runningApplications[j]);
+			if (prohibitedProcessList.Any())
+			{
+				var runningApplications = Process.GetProcesses().Select(p =>
+				{
+					var runningProcessName = p.ProcessName;
+					var originalProcessName = string.Empty;
+					var hasOriginalName = false;
+
+					try
+					{
+						hasOriginalName = p.HasDifferentOriginalName(out originalProcessName);
+					}
+					catch (Exception e)
+					{
+						Logger.AddError(String.Format("Failed to verify original name of process '{0}'!", runningProcessName), null, e);
+					}
+
+					return new
+					{
+						Name = runningProcessName,
+						OriginalName = originalProcessName,
+						HasOriginalName = hasOriginalName,
+						Process = p
+					};
+				}).ToList();
+
+				runningProcessesToClose.Clear();
+				runningApplicationsToClose.Clear();
+
+				foreach (var prohibitedProcess in prohibitedProcessList.Cast<Dictionary<string, object>>().ToList())
+				{
+					var prohibitedProcessOS = (SEBSettings.operatingSystems) SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyOS);
+					var prohibitedProcessActive = (bool) SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyActive);
+
+					if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
+					{
+						var title = (string) SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
+						var executable = Path.GetFileNameWithoutExtension(prohibitedProcess[SEBSettings.KeyExecutable] as string ?? string.Empty);
+						var originalName = Path.GetFileNameWithoutExtension(prohibitedProcess[SEBSettings.KeyOriginalName] as string ?? string.Empty);
+
+						foreach (var application in runningApplications)
+						{
+							var isProhibited = false;
+
+							isProhibited |= !String.IsNullOrWhiteSpace(application.Name) && executable.Equals(application.Name, StringComparison.InvariantCultureIgnoreCase);
+							isProhibited |= !String.IsNullOrWhiteSpace(originalName) && application.HasOriginalName && originalName.Equals(application.OriginalName, StringComparison.InvariantCultureIgnoreCase);
+
+							if (isProhibited)
+							{
+								// If the flag strongKill is set, then the process is killed without asking the user
+								var strongKill = (bool) SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyStrongKill);
+
+								if (strongKill)
+								{
+									SEBNotAllowedProcessController.CloseProcess(application.Process);
+								}
+								else
+								{
+									runningProcessesToClose.Add(application.Process);
 
 									if (String.IsNullOrWhiteSpace(title))
 									{
@@ -1411,13 +1433,14 @@ namespace SebWindowsClient
 									{
 										runningApplicationsToClose.Add(title);
 									}
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return true;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -1597,7 +1620,7 @@ namespace SebWindowsClient
                 try
                 {
                     Logger.AddInformation("Killing processes that are not allowed to run");
-                    bool bClientRegistryAndProcesses = InitClientRegistryAndKillProcesses();
+                    bool bClientRegistryAndProcesses = CheckProhibitedProcesses();
                 }
                 catch (Exception ex)
                 {

@@ -21,7 +21,7 @@ namespace SebWindowsClient.ProcessUtils
         /// <summary>
         /// A list of not allowed window titles (the title must not exactly match but only contain the values in here
         /// </summary>
-        public static List<string> AllowedExecutables = new List<string>();
+        public static List<ExecutableInfo> AllowedExecutables = new List<ExecutableInfo>();
 
         /// <summary>
         /// The possible actions for a window defined by ShowWindowAsync()
@@ -57,35 +57,37 @@ namespace SebWindowsClient.ProcessUtils
         {
 			var processName = process.GetExecutableName();
 
-			if (String.IsNullOrWhiteSpace(processName))
+			if (!String.IsNullOrWhiteSpace(processName))
 			{
-				return false;
-			}
+				var processHasOriginalName = process.HasDifferentOriginalName(out string originalProcessName);
 
-			// If no allowed apps are specified, no apps are allowed
-			if (AllowedExecutables.Count == 0)
-			{
-				return false;
-			}
-
-			try
-			{
-				if (process.HasDifferentOriginalName(out string originalName))
+				foreach (var executable in AllowedExecutables)
 				{
-					processName = originalName;
-				}
+					var isAllowed = executable.HasName || executable.HasOriginalName;
 
-				if (AllowedExecutables.Any(ex => ex.Equals(processName, StringComparison.InvariantCultureIgnoreCase)))
-				{
-					return true;
+					if (executable.HasName)
+					{
+						isAllowed &= executable.Name.Equals(processName, StringComparison.InvariantCultureIgnoreCase);
+					}
+
+					if (executable.HasOriginalName && processHasOriginalName)
+					{
+						isAllowed &= executable.OriginalName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase);
+
+						if (!executable.HasName)
+						{
+							isAllowed &= executable.OriginalName.Equals(processName, StringComparison.InvariantCultureIgnoreCase);
+						}
+					}
+
+					if (isAllowed)
+					{
+						return true;
+					}
 				}
 			}
-			catch (Exception e)
-			{
-				Logger.AddError(String.Format("Failed to check whether process '{0}' is allowed!", processName), null, e, e.Message);
-			}
 
-			Logger.AddInformation(String.Format("Window for process '{0}' is not allowed!", processName));
+			Logger.AddInformation(String.Format("Window for process '{0}' is not allowed!", processName ?? "<NULL>"));
 
 			return false;
         }

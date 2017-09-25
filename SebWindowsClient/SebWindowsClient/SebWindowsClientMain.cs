@@ -396,27 +396,28 @@ namespace SebWindowsClient
             //Search for permitted Applications (used in Taskswitcher (ALT-TAB) and in foreground watchdog
             SEBWindowHandler.AllowedExecutables.Clear();
             //Add the SafeExamBrowser to the allowed executables
-            SEBWindowHandler.AllowedExecutables.Add("safeexambrowser");
+            SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("safeexambrowser"));
             //Add allowed executables from all allowedProcessList
             foreach (Dictionary<string, object> process in SEBSettings.permittedProcessList)
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-					var processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyExecutable]).ToLower());
+					var processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyExecutable] ?? string.Empty).ToLower());
+					var originalProcessName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyOriginalName] ?? string.Empty).ToLower());
 
-					SEBWindowHandler.AllowedExecutables.Add(processName);
+					SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName, originalProcessName));
 
 					if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
                     {
 						processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
-						SEBWindowHandler.AllowedExecutables.Add(processName);
+						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName));
                     }
                 }
             }
 
 #if DEBUG
                 //Add visual studio to allowed executables for debugging
-                SEBWindowHandler.AllowedExecutables.Add("devenv");
+                SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("devenv"));
 #endif
 
             //Process watching

@@ -160,30 +160,37 @@ namespace SebWindowsClient.ProcessUtils
 
 			originalName = string.Empty;
 
-			using (var searcher = new ManagementObjectSearcher(query))
-			using (var results = searcher.Get())
+			try
 			{
-				var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
-
-				if (processData != null)
+				using (var searcher = new ManagementObjectSearcher(query))
+				using (var results = searcher.Get())
 				{
-					var executablePath = processData["ExecutablePath"] as string;
+					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
-					if (!String.IsNullOrEmpty(executablePath))
+					if (processData != null)
 					{
-						var processName = process.GetExecutableName();
-						var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+						var executablePath = processData["ExecutablePath"] as string;
 
-						originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
-
-						if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
 						{
-							Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
+							var processName = process.GetExecutableName();
+							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
 
-							return true;
+							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+							if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+							{
+								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
+
+								return true;
+							}
 						}
 					}
 				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
 			}
 
 			return false;

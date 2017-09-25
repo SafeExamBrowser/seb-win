@@ -1,32 +1,24 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Xml.Serialization;
+using System.Text;
+using System.Windows.Forms;
 using SebWindowsClient;
-using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using ListObj  = System.Collections.Generic.List                <object>;
-using DictObj  = System.Collections.Generic.Dictionary  <string, object>;
-using KeyValue = System.Collections.Generic.KeyValuePair<string, object>;
+using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using ListObj = System.Collections.Generic.List<object>;
 
 
 
 namespace SebWindowsConfig
 {
-    public partial class SebWindowsConfigForm : Form
+	public partial class SebWindowsConfigForm : Form
     {
         public bool    adminPasswordFieldsContainHash = false;
         public bool     quitPasswordFieldsContainHash = false;
@@ -2304,7 +2296,7 @@ namespace SebWindowsConfig
 
                 // Get Original Name
                 var executableInfo = FileVersionInfo.GetVersionInfo(filename);
-                permittedApplicationInformation.OriginalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+                permittedApplicationInformation.OriginalName = executableInfo.OriginalFilename;
 
                 return permittedApplicationInformation;
                 //TODO (pwyss 2015/03/13): Keep a list with tools that need special configurations and fill them accordingly (WindowHandlingProcess for example)

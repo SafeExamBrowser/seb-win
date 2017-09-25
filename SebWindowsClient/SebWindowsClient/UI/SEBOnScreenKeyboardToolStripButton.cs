@@ -7,15 +7,15 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.ProcessUtils;
 using SebWindowsClient.Properties;
 using SebWindowsClient.XULRunnerCommunication;
-using SebWindowsClient.ConfigurationUtils;
 
 
 namespace SebWindowsClient.UI
 {
-    public class SEBOnScreenKeyboardToolStripButton : SEBToolStripButton
+	public class SEBOnScreenKeyboardToolStripButton : SEBToolStripButton
     {
         public SEBOnScreenKeyboardToolStripButton()
         {
@@ -104,8 +104,8 @@ namespace SebWindowsClient.UI
                         return;
                     }
 
-                    if (!SEBWindowHandler.AllowedExecutables.Contains("tabtip"))
-                        SEBWindowHandler.AllowedExecutables.Add("tabtip");
+                    if (!SEBWindowHandler.AllowedExecutables.Any(e => e.Name == "tabtip"))
+                        SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("tabtip"));
 
                     //TODO: Use Environment Variable here, but with SEB running as 32bit it always takes X86
                     //string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);

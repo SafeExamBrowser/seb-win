@@ -732,6 +732,10 @@ namespace SebWindowsClient
                                 //SEBClientInfo.SebWindowsClientForm.Activate();
                                 SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s",title), MessageBoxIcon.Error, MessageBoxButtons.OK);
                             }
+                        } else
+                        {
+                            // Permitted application is Firefox: Set its call entry to null
+                            permittedProcessesCalls.Add(null);
                         }
                     }
                 }

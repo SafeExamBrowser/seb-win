@@ -442,9 +442,10 @@ namespace SebWindowsClient
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBProcessHandler.ProhibitedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
+					var name = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyExecutable] ?? string.Empty);
+					var originalName = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyOriginalName] ?? string.Empty);
+
+					SEBProcessHandler.ProhibitedExecutables.Add(new ExecutableInfo(name, originalName));
                 }
             }
             //This prevents the prohibited executables from starting up

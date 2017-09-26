@@ -232,4 +232,16 @@ namespace SebWindowsServiceWCF.RegistryHandler
             this.DataType = typeof(Int32);
         }
     }
+
+    public class RegNoAutoRebootWithLoggedOnUsers : RegistryEntry
+    {
+        public RegNoAutoRebootWithLoggedOnUsers(string SID)
+            : base(SID)
+        {
+            this.RegistryPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU";
+            this.DataItemName = "NoAutoRebootWithLoggedOnUsers";
+            //DWORD
+            this.DataType = typeof(Int32);
+        }
+    }
 }

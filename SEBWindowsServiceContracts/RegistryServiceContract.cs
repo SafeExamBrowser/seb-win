@@ -38,7 +38,8 @@ namespace SEBWindowsServiceContracts
         EnableShade,
         EnableShadeHorizon,
         EaseOfAccess,
-        DontDisplayNetworkSelectionUI
+        DontDisplayNetworkSelectionUI,
+        NoAutoRebootWithLoggedOnUsers
     }
 
 }

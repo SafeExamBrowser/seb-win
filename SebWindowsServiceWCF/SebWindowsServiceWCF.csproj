@@ -49,6 +49,7 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandExecutor\CommandExecutor.cs" />
     <Compile Include="OSVersion.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

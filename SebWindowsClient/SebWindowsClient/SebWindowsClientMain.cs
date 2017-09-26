@@ -411,7 +411,7 @@ namespace SebWindowsClient
                 bool? tabletMode = null;
                 try
                 {
-                    //returns null if the key is not existing (another windows version than 10)
+                   //returns null if the key is not existing (another windows version than 10)
                    tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1) == 1;
                 }
                 catch (Exception ex)

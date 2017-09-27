@@ -24,7 +24,7 @@ namespace SebWindowsClient.ProcessUtils
         /// <summary>
         /// A list of not prohibited window executables
         /// </summary>
-        public static List<string> ProhibitedExecutables = new List<string>();
+        public static List<ExecutableInfo> ProhibitedExecutables = new List<ExecutableInfo>();
 
         #endregion
 
@@ -265,20 +265,35 @@ namespace SebWindowsClient.ProcessUtils
         {
             if (_processesToWatch.Count == 0)
             {
-                foreach (var processName in SEBProcessHandler.ProhibitedExecutables)
+                foreach (var executable in SEBProcessHandler.ProhibitedExecutables)
                 {
-                    var processToWatch = new ProcessInfo(processName);
-                    processToWatch.Started += ProcessStarted;
-                    _processesToWatch.Add(processToWatch);
-                }
+					if (executable.HasName)
+					{
+						var processInfo = new ProcessInfo(executable.Name);
+
+						processInfo.Started += ProcessStarted;
+
+						_processesToWatch.Add(processInfo);
+					}
+
+					if (executable.HasOriginalName && !executable.NamesAreEqual)
+					{
+						var processInfo = new ProcessInfo(executable.OriginalName);
+
+						processInfo.Started += ProcessStarted;
+
+						_processesToWatch.Add(processInfo);
+					}
+				}
             }
         }
 
         private void ProcessStarted(object sender, EventArgs e)
         {
             var processName = ((ProcessInfo) sender).ProcessName;
-            foreach (var process in Process.GetProcesses().Where(p => processName.Contains(p.ProcessName)))
-            {
+
+			foreach (var process in Process.GetProcesses().Where(p => processName.Equals(p.ProcessName, StringComparison.InvariantCultureIgnoreCase)))
+			{
                 if (!SEBNotAllowedProcessController.CloseProcess(process))
                 {
                     ShowMessageOrPasswordDialog(processName);

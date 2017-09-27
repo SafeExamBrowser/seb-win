@@ -22,5 +22,10 @@ namespace SebWindowsClient.ProcessUtils
 		{
 			get { return !String.IsNullOrEmpty(OriginalName); }
 		}
+
+		public bool NamesAreEqual
+		{
+			get { return Name.Equals(OriginalName, StringComparison.InvariantCultureIgnoreCase); }
+		}
 	}
 }

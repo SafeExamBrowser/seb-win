@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -46,36 +48,72 @@ namespace SebWindowsClient.ProcessUtils
 
         private static List<IntPtr> _hiddenWindowHandles = new List<IntPtr>();
 
-        #endregion
+		#endregion
 
-        #region Public Methods
+		#region Public Methods
 
-        /// <summary>
-        /// Checks if the process that holds the windowhandle is allowed to show its window
-        /// </summary>
-        /// <param name="processName"></param>
-        /// <returns></returns>
-        public static bool IsWindowAllowedByProcessName(string processName)
-        {
-            if (String.IsNullOrWhiteSpace(processName))
-                return false;
+		/// <summary>
+		/// Checks if the process that holds the window handle is allowed to show its window.
+		/// </summary>
+		public static bool IsWindowAllowed(this Process process)
+		{
+			var processName = process.GetExecutableName();
 
-            processName = processName.ToLower();
+			if (String.IsNullOrWhiteSpace(processName))
+			{
+				return false;
+			}
 
-            //If no allowed apps are specified, meaning all apps are allowed return true
-            if (AllowedExecutables.Count == 0)
-                return true;
-            //If explicitly allowed return true
-            if (AllowedExecutables.Count > 0 && AllowedExecutables.Any(ex => ex.Contains(processName) || processName.Contains(ex)))
-                return true;
+			// If no allowed apps are specified, all apps are allowed
+			if (AllowedExecutables.Count == 0)
+			{
+				return true;
+			}
 
-            //else return false
-            return false;
-        }
+			try
+			{
+				var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process";
+				using (var searcher = new ManagementObjectSearcher(query))
+				using (var results = searcher.Get())
+				{
+					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
-        /// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
-        /// <returns>A dictionary that contains the handle and title (in lower case) of all the open windows.</returns>
-        public static IDictionary<IntPtr, string> GetOpenWindows()
+					if (processData != null)
+					{
+						var executablePath = processData["ExecutablePath"] as string;
+
+						if (!String.IsNullOrEmpty(executablePath))
+						{
+							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+							var originalProcessName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+							if (!processName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase))
+							{
+								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalProcessName, processName));
+								processName = originalProcessName;
+							}
+
+							if (AllowedExecutables.Any(ex => ex.Equals(processName, StringComparison.InvariantCultureIgnoreCase)))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError(String.Format("Failed to check whether process '{0}' is allowed!", processName), null, e, e.Message);
+			}
+
+			Logger.AddInformation(String.Format("Window for process '{0}' is not allowed!", processName));
+
+			return false;
+		}
+
+		/// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
+		/// <returns>A dictionary that contains the handle and title (in lower case) of all the open windows.</returns>
+		public static IDictionary<IntPtr, string> GetOpenWindows()
         {
             try
             {
@@ -351,15 +389,6 @@ namespace SebWindowsClient.ProcessUtils
             {
                 ForegroundWatchDog.StopWatchDog();
             }
-        }
-
-        #endregion
-
-        #region Process Extensions
-
-        public static bool IsWindowAllowed(this Process process)
-        {
-            return IsWindowAllowedByProcessName(process.GetExecutableName());
         }
 
         #endregion

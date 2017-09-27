@@ -123,8 +123,8 @@ namespace SebWindowsClient.UI
 						return;
 					}
 
-					if (!SEBWindowHandler.AllowedExecutables.Contains("tabtip.exe"))
-						SEBWindowHandler.AllowedExecutables.Add("tabtip.exe");
+					if (!SEBWindowHandler.AllowedExecutables.Contains("tabtip"))
+						SEBWindowHandler.AllowedExecutables.Add("tabtip");
 
 					//TODO: Use Environment Variable here, but with SEB running as 32bit it always takes X86
 					//string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);

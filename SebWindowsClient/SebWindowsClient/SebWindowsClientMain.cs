@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Management;
-using System.Windows.Forms;
-using SebWindowsClient.ConfigurationUtils;
-using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.ProcessUtils;
-using SebWindowsClient.DesktopUtils;
 using System.Threading;
+using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.Win32;
+using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DesktopUtils;
+using SebWindowsClient.DiagnosticsUtils;
+using SebWindowsClient.ProcessUtils;
 
 //
 //  SebWindowsClient.cs
@@ -48,7 +49,7 @@ using Microsoft.Win32;
 
 namespace SebWindowsClient
 {
-    public class SingleInstanceController : WindowsFormsApplicationBase
+	public class SingleInstanceController : WindowsFormsApplicationBase
     {
         public SingleInstanceController()
         {
@@ -295,15 +296,16 @@ namespace SebWindowsClient
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
-                    if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
-                    {
-                        SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
-                    }
-                }
+					var processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyExecutable]).ToLower());
+
+					SEBWindowHandler.AllowedExecutables.Add(processName);
+
+					if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
+					{
+						processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
+						SEBWindowHandler.AllowedExecutables.Add(processName);
+					}
+				}
             }
 
 #if DEBUG

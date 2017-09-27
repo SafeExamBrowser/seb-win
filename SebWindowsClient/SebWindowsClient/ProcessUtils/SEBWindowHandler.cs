@@ -59,7 +59,7 @@ namespace SebWindowsClient.ProcessUtils
 
 			if (!String.IsNullOrWhiteSpace(processName))
 			{
-				var processHasOriginalName = process.HasDifferentOriginalName(out string originalProcessName);
+				var processHasOriginalName = process.HasOriginalName(out string originalProcessName);
 
 				foreach (var executable in AllowedExecutables)
 				{
@@ -78,6 +78,10 @@ namespace SebWindowsClient.ProcessUtils
 						{
 							isAllowed &= executable.OriginalName.Equals(processName, StringComparison.InvariantCultureIgnoreCase);
 						}
+					}
+					else if (executable.HasOriginalName && !processHasOriginalName)
+					{
+						isAllowed = false;
 					}
 
 					if (isAllowed)

@@ -166,7 +166,7 @@ namespace SebWindowsClient.ProcessUtils
                 .Where(oW => oW.Key.GetProcess().GetExecutableName() == process.GetExecutableName());
         }
 
-		public static bool HasDifferentOriginalName(this Process process, out string originalName)
+		public static bool HasOriginalName(this Process process, out string originalName)
 		{
 			var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
 
@@ -193,9 +193,9 @@ namespace SebWindowsClient.ProcessUtils
 							if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
 							{
 								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
-
-								return true;
 							}
+
+							return true;
 						}
 					}
 				}

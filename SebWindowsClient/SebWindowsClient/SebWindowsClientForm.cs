@@ -1374,7 +1374,7 @@ namespace SebWindowsClient
 
 					try
 					{
-						hasOriginalName = p.HasDifferentOriginalName(out originalProcessName);
+						hasOriginalName = p.HasOriginalName(out originalProcessName);
 					}
 					catch (Exception e)
 					{

@@ -1095,7 +1095,8 @@ namespace SebWindowsClient
 		{
 			string executable = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyExecutable);
 			if (executable == null) executable = "";
-			string executablePath = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyPath);
+			string originalName = (string) SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyOriginalName) ?? string.Empty;
+			string executablePath = (string) SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyPath);
 			if (executablePath == null) executablePath = "";
 			bool allowChoosingApp = (bool)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyAllowUser);
 			//if (allowChoosingApp == null) allowChoosingApp = false;
@@ -1136,7 +1137,7 @@ namespace SebWindowsClient
 			{
 				// Ask the user to locate the application
 				SEBToForeground();
-				return Dialog.ShowFileDialogForExecutable(executable);
+				return Dialog.ShowFileDialogForExecutable(executable, originalName);
 			}
 			return fullPath;
 		}

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
@@ -43,7 +42,7 @@ using SebWindowsClient.DesktopUtils;
 
 namespace SebWindowsClient
 {
-    public class Worker
+	public class Worker
     {
         // This method will be called when the thread is started. 
         public void ShowPasswordDialogInThread()
@@ -64,28 +63,44 @@ namespace SebWindowsClient
             openFileDialog.CheckPathExists = true;
             openFileDialog.DefaultExt = "exe";
             openFileDialog.Title = SEBUIStrings.locatePermittedApplication;
-            //openFileDialog.
 
             // Get the user inputs in the File Dialog
             DialogResult fileDialogResult = openFileDialog.ShowDialog();
-
-            // If the user clicked "Cancel", do nothing
-            // If the user clicked "OK"    , use the third party applications file name and path as the permitted process
             fileNameFullPath = null;
-            //if (fileDialogResult.Equals(DialogResult.Cancel)) fileNameFullPath = null;
+
             if (fileDialogResult.Equals(DialogResult.OK))
             {
-                // We check if the returned path really ends with the same executable as was searched
-                if (openFileDialog.FileName.EndsWith(fileNameExecutable, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    fileNameFullPath = openFileDialog.FileName;
-                }
+				var filePath = openFileDialog.FileName;
+				var executable = Path.GetFileName(filePath);
+				var hasSameName = executable.Equals(fileNameExecutable, StringComparison.InvariantCultureIgnoreCase);
+				var hasNoOrSameOriginalName = String.IsNullOrWhiteSpace(fileNameOriginal) || MatchesOriginalFileName(executable, filePath);
+
+				if (hasSameName && hasNoOrSameOriginalName)
+				{
+					fileNameFullPath = filePath;
+				}
             }
         }
         public void RequestStop()
         {
             _shouldStop = true;
         }
+
+		private bool MatchesOriginalFileName(string executableName, string executablePath)
+		{
+			try
+			{
+				var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+
+				return executableName.Equals(executableInfo.OriginalFilename, StringComparison.InvariantCultureIgnoreCase);
+			}
+			catch
+			{
+			}
+
+			return false;
+		}
+
         // Volatile is used as hint to the compiler that this data 
         // member will be accessed by multiple threads. 
         private volatile bool _shouldStop;
@@ -95,6 +110,7 @@ namespace SebWindowsClient
 
         public volatile string fileNameExecutable;
         public volatile string fileNameFullPath;
+		public volatile string fileNameOriginal;
     }
 
     public class ThreadedDialog
@@ -149,7 +165,7 @@ namespace SebWindowsClient
             }
         }
 
-        public static string ShowFileDialogForExecutable(string fileName)
+        public static string ShowFileDialogForExecutable(string fileName, string originalName)
         {
             // Switch to default desktop
             if (SebWindowsClientMain.sessionCreateNewDesktop) SEBDesktopController.Show(SEBClientInfo.OriginalDesktop.DesktopName);
@@ -159,6 +175,7 @@ namespace SebWindowsClient
             Thread workerThread = new Thread(workerObject.ShowFileDialogInThread);
             workerThread.SetApartmentState(ApartmentState.STA);
             workerObject.fileNameExecutable = fileName;
+			workerObject.fileNameOriginal = originalName;
 
             // Start the worker thread.
             workerThread.Start();

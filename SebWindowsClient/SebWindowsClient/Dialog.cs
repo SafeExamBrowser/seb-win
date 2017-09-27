@@ -69,7 +69,7 @@ namespace SebWindowsClient
             string res = null;
             if (fileDialogResult.Equals(DialogResult.OK))
             {
-                if (openFileDialog.FileName.EndsWith(filename))
+                if (openFileDialog.FileName.EndsWith(filename, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return openFileDialog.FileName;
                 }

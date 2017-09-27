@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 
@@ -39,7 +41,7 @@ using SebWindowsClient.ConfigurationUtils;
 namespace SebWindowsClient
 {
 
-    public class Dialog
+	public class Dialog
     {
         public static string ShowPasswordDialogForm(string title, string passwordRequestText)
         {
@@ -49,7 +51,7 @@ namespace SebWindowsClient
             return SebPasswordDialogForm.ShowPasswordDialogForm(title, passwordRequestText);
         }
 
-        public static string ShowFileDialogForExecutable(string filename)
+        public static string ShowFileDialogForExecutable(string filename, string originalFilename)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -66,17 +68,36 @@ namespace SebWindowsClient
 
             // If the user clicked "Cancel", do nothing
             // If the user clicked "OK"    , use the third party applications file name and path as the permitted process
-            string res = null;
             if (fileDialogResult.Equals(DialogResult.OK))
             {
-                if (openFileDialog.FileName.EndsWith(filename))
-                {
-                    return openFileDialog.FileName;
-                }
-            }
+				var filePath = openFileDialog.FileName;
+				var executable = Path.GetFileName(filePath);
+				var hasSameName = executable.Equals(filename, StringComparison.InvariantCultureIgnoreCase);
+				var hasNoOrSameOriginalName = String.IsNullOrWhiteSpace(originalFilename) || MatchesOriginalFileName(executable, filePath);
+
+				if (hasSameName && hasNoOrSameOriginalName)
+				{
+					return filePath;
+				}
+			}
+
             return null;
         }
 
-    }
+		private static bool MatchesOriginalFileName(string executableName, string executablePath)
+		{
+			try
+			{
+				var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+
+				return executableName.Equals(executableInfo.OriginalFilename, StringComparison.InvariantCultureIgnoreCase);
+			}
+			catch
+			{
+			}
+
+			return false;
+		}
+	}
 }
 

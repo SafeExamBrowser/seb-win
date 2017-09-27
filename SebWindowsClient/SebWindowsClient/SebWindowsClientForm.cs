@@ -672,7 +672,7 @@ namespace SebWindowsClient
 										else
 										{
 											runningProcessesToClose.Add(proc);
-											runningApplicationsToClose.Add(title == "SEB" ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
+											runningApplicationsToClose.Add(title == SEBClientInfo.SEB_SHORTNAME ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
 											j++;
 										}
 									}
@@ -793,10 +793,10 @@ namespace SebWindowsClient
 								if (processImage == null)
 								{
 									processIcon = GetApplicationIcon(fullPath);
-								// If the icon couldn't be read, we try it again
-								if (processIcon == null && processImage == null) processIcon = GetApplicationIcon(fullPath);
-								// If it again didn't work out, we try to take the icon of SEB
-								if (processIcon == null) processIcon = GetApplicationIcon(Application.ExecutablePath);
+									// If the icon couldn't be read, we try it again
+									if (processIcon == null && processImage == null) processIcon = GetApplicationIcon(fullPath);
+									// If it again didn't work out, we try to take the icon of SEB
+									if (processIcon == null) processIcon = GetApplicationIcon(Application.ExecutablePath);
 									toolStripButton.Image = processIcon.ToBitmap();
 								}
 								else
@@ -846,7 +846,7 @@ namespace SebWindowsClient
 											{
 												string argumentString = (string)argument[SEBSettings.KeyArgument];
 												// The parameters -app and -ctrl cannot be changed by the user, we skip them 
-												if (!argumentString.Contains("-app") && !argumentString.Contains("-ctrl")) 
+												if (!argumentString.Contains("-app") && !argumentString.Contains("-ctrl"))
 													startProcessNameBuilder.Append(" ").Append((string)argument[SEBSettings.KeyArgument]);
 											}
 										}
@@ -861,8 +861,13 @@ namespace SebWindowsClient
 							{
 								// Permitted application has not been found: Set its call entry to null
 								permittedProcessesCalls.Add(null);
-								SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s",title), MessageBoxIcon.Error, MessageBoxButtons.OK);
+								SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s", title), MessageBoxIcon.Error, MessageBoxButtons.OK);
 							}
+						}
+						else
+						{
+							// Permitted application is Firefox: Set its call entry to null
+							permittedProcessesCalls.Add(null);
 						}
 					}
 				}
@@ -1090,7 +1095,8 @@ namespace SebWindowsClient
 		{
 			string executable = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyExecutable);
 			if (executable == null) executable = "";
-			string executablePath = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyPath);
+			string originalName = (string) SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyOriginalName) ?? string.Empty;
+			string executablePath = (string) SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyPath);
 			if (executablePath == null) executablePath = "";
 			bool allowChoosingApp = (bool)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyAllowUser);
 			//if (allowChoosingApp == null) allowChoosingApp = false;
@@ -1131,7 +1137,7 @@ namespace SebWindowsClient
 			{
 				// Ask the user to locate the application
 				SEBToForeground();
-				return Dialog.ShowFileDialogForExecutable(executable);
+				return Dialog.ShowFileDialogForExecutable(executable, originalName);
 			}
 			return fullPath;
 		}
@@ -1354,49 +1360,75 @@ namespace SebWindowsClient
 				}
 			}
 		}
-		
-		/// ----------------------------------------------------------------------------------------
-		/// <summary>
-		/// Set registry values and close prohibited processes.
-		/// </summary>
-		/// <returns>true if succeed</returns>
-		/// ----------------------------------------------------------------------------------------
-		private bool InitClientRegistryAndKillProcesses()
-		{
 
+		private bool CheckProhibitedProcesses()
+		{
 			// Add prohibited processes to the "processes not permitted to run" list 
 			// which will be dealt with after checking if permitted processes are already running;
 			// the user will be asked to quit all those processes him/herself or to let SEB kill them
 			// Prohibited processes with the strongKill flag set can be killed without user consent
 
-			List<object> prohibitedProcessList = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
-			if (prohibitedProcessList.Count() > 0)
+			var prohibitedProcessList = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
+
+			if (prohibitedProcessList.Any())
 			{
-				// Check if the prohibited processes are running
-				Process[] runningApplications;
+				var runningApplications = Process.GetProcesses().Select(p =>
+				{
+					var runningProcessName = p.ProcessName;
+					var originalProcessName = string.Empty;
+					var hasOriginalName = false;
+
+					try
+					{
+						hasOriginalName = p.HasOriginalName(out originalProcessName);
+					}
+					catch (Exception e)
+					{
+						Logger.AddError(String.Format("Failed to verify original name of process '{0}'!", runningProcessName), null, e);
+					}
+
+					return new
+					{
+						Name = runningProcessName,
+						OriginalName = originalProcessName,
+						HasOriginalName = hasOriginalName,
+						Process = p
+					};
+				}).ToList();
+
 				runningProcessesToClose.Clear();
 				runningApplicationsToClose.Clear();
-				for (int i = 0; i < prohibitedProcessList.Count; i++)
+
+				foreach (var prohibitedProcess in prohibitedProcessList.Cast<Dictionary<string, object>>().ToList())
 				{
-					Dictionary<string, object> prohibitedProcess = (Dictionary<string, object>)prohibitedProcessList[i];
-					SEBSettings.operatingSystems prohibitedProcessOS = (SEBSettings.operatingSystems)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyOS);
-					bool prohibitedProcessActive = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyActive);
+					var prohibitedProcessOS = (SEBSettings.operatingSystems)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyOS);
+					var prohibitedProcessActive = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyActive);
+
 					if (prohibitedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && prohibitedProcessActive)
 					{
-						string title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
-						string executable = ((string)prohibitedProcess[SEBSettings.KeyExecutable]).ToLower();
-						// Check if the process is running
-						runningApplications = Process.GetProcesses();
-						for (int j = 0; j < runningApplications.Count(); j++)
+						var title = (string)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyTitle);
+						var executable = Path.GetFileNameWithoutExtension(prohibitedProcess[SEBSettings.KeyExecutable] as string ?? string.Empty);
+						var originalName = Path.GetFileNameWithoutExtension(prohibitedProcess[SEBSettings.KeyOriginalName] as string ?? string.Empty);
+
+						foreach (var application in runningApplications)
 						{
-							string runningProcessName = runningApplications[j].ProcessName;
-							if (runningProcessName != null && executable.Contains(runningProcessName.ToLower()))
+							var isProhibited = false;
+
+							isProhibited |= !String.IsNullOrWhiteSpace(application.Name) && executable.Equals(application.Name, StringComparison.InvariantCultureIgnoreCase);
+							isProhibited |= !String.IsNullOrWhiteSpace(originalName) && application.HasOriginalName && originalName.Equals(application.OriginalName, StringComparison.InvariantCultureIgnoreCase);
+
+							if (isProhibited)
 							{
 								// If the flag strongKill is set, then the process is killed without asking the user
-								bool strongKill = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyStrongKill);
-								if (!strongKill || !SEBNotAllowedProcessController.CloseProcess(runningApplications[j]))
+								var strongKill = (bool)SEBSettings.valueForDictionaryKey(prohibitedProcess, SEBSettings.KeyStrongKill);
+
+								if (strongKill)
 								{
-									runningProcessesToClose.Add(runningApplications[j]);
+									SEBNotAllowedProcessController.CloseProcess(application.Process);
+								}
+								else
+								{
+									runningProcessesToClose.Add(application.Process);
 
 									if (String.IsNullOrWhiteSpace(title))
 									{
@@ -1413,6 +1445,7 @@ namespace SebWindowsClient
 					}
 				}
 			}
+
 			return true;
 		}
 
@@ -1597,7 +1630,7 @@ namespace SebWindowsClient
                 try
                 {
                     Logger.AddInformation("killing processes that are not allowed to run");
-                    bool bClientRegistryAndProcesses = InitClientRegistryAndKillProcesses();
+                    bool bClientRegistryAndProcesses = CheckProhibitedProcesses();
                 }
                 catch (Exception ex)
                 {
@@ -1762,20 +1795,17 @@ namespace SebWindowsClient
 			   SEBDesktopWallpaper.Reset();
 
 				// Restart the explorer.exe shell
-			   if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell] || (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+				if (SEBClientInfo.ExplorerShellWasKilled)
 				{
-					if (SEBClientInfo.ExplorerShellWasKilled)
+					try
 					{
-						try
-						{
-							Logger.AddInformation("Attempting to start explorer shell");
-							SEBProcessHandler.StartExplorerShell();
-							Logger.AddInformation("Successfully started explorer shell");
-						}
-						catch (Exception ex)
-						{
-							Logger.AddError("Unable to StartExplorerShell",null,ex);
-						}
+						Logger.AddInformation("Attempting to start explorer shell");
+						SEBProcessHandler.StartExplorerShell();
+						Logger.AddInformation("Successfully started explorer shell");
+					}
+					catch (Exception ex)
+					{
+						Logger.AddError("Unable to StartExplorerShell",null,ex);
 					}
 				}
 

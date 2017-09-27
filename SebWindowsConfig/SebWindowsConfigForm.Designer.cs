@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1646,8 +1646,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -2009,12 +2009,12 @@
             this.OS,
             this.Executable,
             this.Title});
-            this.dataGridViewPermittedProcesses.Location = new System.Drawing.Point(19, 69);
+            this.dataGridViewPermittedProcesses.Location = new System.Drawing.Point(19, 20);
             this.dataGridViewPermittedProcesses.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewPermittedProcesses.Name = "dataGridViewPermittedProcesses";
             this.dataGridViewPermittedProcesses.RowHeadersVisible = false;
             this.dataGridViewPermittedProcesses.RowTemplate.Height = 24;
-            this.dataGridViewPermittedProcesses.Size = new System.Drawing.Size(733, 106);
+            this.dataGridViewPermittedProcesses.Size = new System.Drawing.Size(733, 190);
             this.dataGridViewPermittedProcesses.TabIndex = 2;
             this.dataGridViewPermittedProcesses.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPermittedProcesses_CellValueChanged);
             this.dataGridViewPermittedProcesses.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewPermittedProcesses_CurrentCellDirtyStateChanged);
@@ -2049,7 +2049,7 @@
             // 
             // buttonChoosePermittedProcess
             // 
-            this.buttonChoosePermittedProcess.Location = new System.Drawing.Point(223, 187);
+            this.buttonChoosePermittedProcess.Location = new System.Drawing.Point(843, 157);
             this.buttonChoosePermittedProcess.Margin = new System.Windows.Forms.Padding(2);
             this.buttonChoosePermittedProcess.Name = "buttonChoosePermittedProcess";
             this.buttonChoosePermittedProcess.Size = new System.Drawing.Size(112, 24);
@@ -2061,7 +2061,7 @@
             // 
             // buttonChoosePermittedApplication
             // 
-            this.buttonChoosePermittedApplication.Location = new System.Drawing.Point(90, 187);
+            this.buttonChoosePermittedApplication.Location = new System.Drawing.Point(843, 186);
             this.buttonChoosePermittedApplication.Margin = new System.Windows.Forms.Padding(2);
             this.buttonChoosePermittedApplication.Name = "buttonChoosePermittedApplication";
             this.buttonChoosePermittedApplication.Size = new System.Drawing.Size(125, 24);
@@ -2072,7 +2072,7 @@
             // 
             // buttonRemovePermittedProcess
             // 
-            this.buttonRemovePermittedProcess.Location = new System.Drawing.Point(48, 187);
+            this.buttonRemovePermittedProcess.Location = new System.Drawing.Point(801, 186);
             this.buttonRemovePermittedProcess.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRemovePermittedProcess.Name = "buttonRemovePermittedProcess";
             this.buttonRemovePermittedProcess.Size = new System.Drawing.Size(22, 24);
@@ -2084,7 +2084,7 @@
             // 
             // buttonAddPermittedProcess
             // 
-            this.buttonAddPermittedProcess.Location = new System.Drawing.Point(19, 187);
+            this.buttonAddPermittedProcess.Location = new System.Drawing.Point(772, 186);
             this.buttonAddPermittedProcess.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAddPermittedProcess.Name = "buttonAddPermittedProcess";
             this.buttonAddPermittedProcess.Size = new System.Drawing.Size(22, 24);
@@ -2474,7 +2474,7 @@
             // 
             this.checkBoxAllowSwitchToApplications.AutoSize = true;
             this.checkBoxAllowSwitchToApplications.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowSwitchToApplications.Location = new System.Drawing.Point(19, 16);
+            this.checkBoxAllowSwitchToApplications.Location = new System.Drawing.Point(772, 20);
             this.checkBoxAllowSwitchToApplications.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAllowSwitchToApplications.Name = "checkBoxAllowSwitchToApplications";
             this.checkBoxAllowSwitchToApplications.Size = new System.Drawing.Size(248, 17);
@@ -2490,7 +2490,7 @@
             // 
             this.checkBoxAllowFlashFullscreen.AutoSize = true;
             this.checkBoxAllowFlashFullscreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowFlashFullscreen.Location = new System.Drawing.Point(34, 37);
+            this.checkBoxAllowFlashFullscreen.Location = new System.Drawing.Point(779, 41);
             this.checkBoxAllowFlashFullscreen.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAllowFlashFullscreen.Name = "checkBoxAllowFlashFullscreen";
             this.checkBoxAllowFlashFullscreen.Size = new System.Drawing.Size(243, 17);

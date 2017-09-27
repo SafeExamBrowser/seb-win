@@ -793,10 +793,10 @@ namespace SebWindowsClient
 								if (processImage == null)
 								{
 									processIcon = GetApplicationIcon(fullPath);
-								// If the icon couldn't be read, we try it again
-								if (processIcon == null && processImage == null) processIcon = GetApplicationIcon(fullPath);
-								// If it again didn't work out, we try to take the icon of SEB
-								if (processIcon == null) processIcon = GetApplicationIcon(Application.ExecutablePath);
+									// If the icon couldn't be read, we try it again
+									if (processIcon == null && processImage == null) processIcon = GetApplicationIcon(fullPath);
+									// If it again didn't work out, we try to take the icon of SEB
+									if (processIcon == null) processIcon = GetApplicationIcon(Application.ExecutablePath);
 									toolStripButton.Image = processIcon.ToBitmap();
 								}
 								else
@@ -846,7 +846,7 @@ namespace SebWindowsClient
 											{
 												string argumentString = (string)argument[SEBSettings.KeyArgument];
 												// The parameters -app and -ctrl cannot be changed by the user, we skip them 
-												if (!argumentString.Contains("-app") && !argumentString.Contains("-ctrl")) 
+												if (!argumentString.Contains("-app") && !argumentString.Contains("-ctrl"))
 													startProcessNameBuilder.Append(" ").Append((string)argument[SEBSettings.KeyArgument]);
 											}
 										}
@@ -861,8 +861,13 @@ namespace SebWindowsClient
 							{
 								// Permitted application has not been found: Set its call entry to null
 								permittedProcessesCalls.Add(null);
-								SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s",title), MessageBoxIcon.Error, MessageBoxButtons.OK);
+								SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s", title), MessageBoxIcon.Error, MessageBoxButtons.OK);
 							}
+						}
+						else
+						{
+							// Permitted application is Firefox: Set its call entry to null
+							permittedProcessesCalls.Add(null);
 						}
 					}
 				}

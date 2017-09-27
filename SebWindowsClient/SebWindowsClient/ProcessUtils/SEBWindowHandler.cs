@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -72,33 +70,14 @@ namespace SebWindowsClient.ProcessUtils
 
 			try
 			{
-				var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process";
-				using (var searcher = new ManagementObjectSearcher(query))
-				using (var results = searcher.Get())
+				if (process.HasDifferentOriginalName(out string originalName))
 				{
-					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
+					processName = originalName;
+				}
 
-					if (processData != null)
-					{
-						var executablePath = processData["ExecutablePath"] as string;
-
-						if (!String.IsNullOrEmpty(executablePath))
-						{
-							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
-							var originalProcessName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
-
-							if (!String.IsNullOrWhiteSpace(originalProcessName) && !processName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase))
-							{
-								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalProcessName, processName));
-								processName = originalProcessName;
-							}
-
-							if (AllowedExecutables.Any(ex => ex.Equals(processName, StringComparison.InvariantCultureIgnoreCase)))
-							{
-								return true;
-							}
-						}
-					}
+				if (AllowedExecutables.Any(ex => ex.Equals(processName, StringComparison.InvariantCultureIgnoreCase)))
+				{
+					return true;
 				}
 			}
 			catch (Exception e)

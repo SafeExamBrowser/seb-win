@@ -76,7 +76,7 @@ namespace SebWindowsClient
             if (fileDialogResult.Equals(DialogResult.OK))
             {
                 // We check if the returned path really ends with the same executable as was searched
-                if (openFileDialog.FileName.EndsWith(fileNameExecutable))
+                if (openFileDialog.FileName.EndsWith(fileNameExecutable, StringComparison.InvariantCultureIgnoreCase))
                 {
                     fileNameFullPath = openFileDialog.FileName;
                 }

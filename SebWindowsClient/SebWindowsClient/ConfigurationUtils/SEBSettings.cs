@@ -1439,10 +1439,10 @@ namespace SebWindowsClient.ConfigurationUtils
 
 			}
 
-			// If XulRunner process was not in Permitted Process List, add it
+			// If XulRunner process was not in Permitted Process List, insert it at the beginning
 			if (indexOfProcessXulRunnerExe == -1)
 			{
-				SEBSettings.permittedProcessList.Add(SEBSettings.permittedProcessDataXulRunner);
+				SEBSettings.permittedProcessList.Insert(0, SEBSettings.permittedProcessDataXulRunner);
 			}
 		}
 

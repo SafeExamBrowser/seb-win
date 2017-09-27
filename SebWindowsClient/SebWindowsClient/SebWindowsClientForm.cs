@@ -672,7 +672,7 @@ namespace SebWindowsClient
 										else
 										{
 											runningProcessesToClose.Add(proc);
-											runningApplicationsToClose.Add(title == "SEB" ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
+											runningApplicationsToClose.Add(title == SEBClientInfo.SEB_SHORTNAME ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
 											j++;
 										}
 									}
@@ -1762,20 +1762,17 @@ namespace SebWindowsClient
 			   SEBDesktopWallpaper.Reset();
 
 				// Restart the explorer.exe shell
-			   if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell] || (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+				if (SEBClientInfo.ExplorerShellWasKilled)
 				{
-					if (SEBClientInfo.ExplorerShellWasKilled)
+					try
 					{
-						try
-						{
-							Logger.AddInformation("Attempting to start explorer shell");
-							SEBProcessHandler.StartExplorerShell();
-							Logger.AddInformation("Successfully started explorer shell");
-						}
-						catch (Exception ex)
-						{
-							Logger.AddError("Unable to StartExplorerShell",null,ex);
-						}
+						Logger.AddInformation("Attempting to start explorer shell");
+						SEBProcessHandler.StartExplorerShell();
+						Logger.AddInformation("Successfully started explorer shell");
+					}
+					catch (Exception ex)
+					{
+						Logger.AddError("Unable to StartExplorerShell",null,ex);
 					}
 				}
 

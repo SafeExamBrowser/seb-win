@@ -877,13 +877,13 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyHookKeys, true);
 
 			// Default settings for group "Special Keys"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableEsc        , false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableEsc        , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableCtrlEsc    , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltEsc     , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltTab     , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltF4      , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableStartMenu  , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableRightMouse , false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableRightMouse , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnablePrintScreen, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltMouseWheel, false);
 

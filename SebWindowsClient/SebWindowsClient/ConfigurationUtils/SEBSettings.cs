@@ -734,7 +734,7 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyWindowHandlingProcess , "");
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyUser       , "");
 
-			SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser", "Firefox" };
+			SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser" };
 
 			// Default settings for group "Network - Filter"
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);

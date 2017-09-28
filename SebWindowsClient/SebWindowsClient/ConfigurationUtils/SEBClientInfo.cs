@@ -106,8 +106,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const string SEB_CLIENT_LOG = "SebClient.log";
 		private const string XUL_RUNNER_CONFIG = "config.json";
 		public const string SEB_SHORTNAME = "SEB";
-		public const string XUL_RUNNER = "xulrunner.exe";
-		public const string FIREFOX = "firefox.exe";
+		public const string XUL_RUNNER = "firefox.exe";
 		private const string XUL_RUNNER_INI = "seb.ini";
 
 		// Application path contains [MANUFACTURER]\[PRODUCT_NAME]

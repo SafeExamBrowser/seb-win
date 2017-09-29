@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
+using System.Management;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ProcessUtils
 {
-    /// <summary>
-    /// Offers methods to handle windows
-    /// </summary>
-    public static class SEBProcessHandler
+	/// <summary>
+	/// Offers methods to handle windows
+	/// </summary>
+	public static class SEBProcessHandler
     {
 
         #region Public Members
@@ -26,7 +22,7 @@ namespace SebWindowsClient.ProcessUtils
         /// <summary>
         /// A list of not prohibited window executables
         /// </summary>
-        public static List<string> ProhibitedExecutables = new List<string>();
+        public static List<ExecutableInfo> ProhibitedExecutables = new List<ExecutableInfo>();
 
         #endregion
 
@@ -37,29 +33,6 @@ namespace SebWindowsClient.ProcessUtils
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Checks if the process is explicitly prohibited to run while SEB is running
-        /// </summary>
-        /// <param name="processName"></param>
-        /// <returns></returns>
-        public static bool IsProcessProhibited(string processName)
-        {
-            if (String.IsNullOrWhiteSpace(processName))
-                return false;
-
-            processName = processName.ToLower();
-
-            //If no prohibited Executables are defined, return false
-            if (ProhibitedExecutables.Count == 0)
-                return false;
-            //If explicitly prohibited, return true
-            if (ProhibitedExecutables.Count > 0 && ProhibitedExecutables.Any(ex => ex.Contains(processName) || processName.Contains(ex)))
-                return true;
-
-            //else return false
-            return false;
-        }
 
         /// <summary>
         /// Starts the explorer shell if not running
@@ -181,17 +154,59 @@ namespace SebWindowsClient.ProcessUtils
                 .Where(oW => oW.Key.GetProcess().GetExecutableName() == process.GetExecutableName());
         }
 
-        #endregion
+		public static bool HasOriginalName(this Process process, out string originalName)
+		{
+			var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
 
-        #region Private Methods
+			originalName = string.Empty;
 
-        
+			try
+			{
+				using (var searcher = new ManagementObjectSearcher(query))
+				using (var results = searcher.Get())
+				{
+					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
-        #endregion
+					if (processData != null)
+					{
+						var executablePath = processData["ExecutablePath"] as string;
 
-        #region Screensaver & Sleep
+						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+						{
+							var processName = process.GetExecutableName();
+							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
 
-        [FlagsAttribute]
+							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+							if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+							{
+								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
+							}
+
+							return true;
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
+			}
+
+			return false;
+		}
+
+		#endregion
+
+		#region Private Methods
+
+
+
+		#endregion
+
+		#region Screensaver & Sleep
+
+		[FlagsAttribute]
         public enum EXECUTION_STATE : uint
         {
             ES_SYSTEM_REQUIRED = 0x00000001,
@@ -238,11 +253,25 @@ namespace SebWindowsClient.ProcessUtils
         {
             if (_processesToWatch.Count == 0)
             {
-                foreach (var processName in SEBProcessHandler.ProhibitedExecutables)
+                foreach (var executable in SEBProcessHandler.ProhibitedExecutables)
                 {
-                    var processToWatch = new ProcessInfo(processName);
-                    processToWatch.Started += ProcessStarted;
-                    _processesToWatch.Add(processToWatch);
+					if (executable.HasName)
+					{
+						var processInfo = new ProcessInfo(executable.Name);
+
+						processInfo.Started += ProcessStarted;
+
+						_processesToWatch.Add(processInfo);
+					}
+
+					if (executable.HasOriginalName && !executable.NamesAreEqual)
+					{
+						var processInfo = new ProcessInfo(executable.OriginalName);
+
+						processInfo.Started += ProcessStarted;
+
+						_processesToWatch.Add(processInfo);
+					}
                 }
             }
         }
@@ -250,11 +279,10 @@ namespace SebWindowsClient.ProcessUtils
         private void ProcessStarted(object sender, EventArgs e)
         {
             var processName = ((ProcessInfo) sender).ProcessName;
-            foreach (var process in Process.GetProcesses().Where(p => processName.Contains(p.ProcessName)))
+
+            foreach (var process in Process.GetProcesses().Where(p => processName.Equals(p.ProcessName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 SEBNotAllowedProcessController.CloseProcess(process);
-                //p.CloseMainWindow();
-                //p.Close();
             }
         }
 

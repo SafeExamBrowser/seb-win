@@ -5,20 +5,20 @@
 // -------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Management;
-using System.Windows.Forms;
-using SebWindowsClient.ConfigurationUtils;
-using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.ProcessUtils;
-using SebWindowsClient.DesktopUtils;
-using System.Diagnostics;
-using System.Text;
 //using COM.Tools.VMDetect;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
-
+using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
+using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DesktopUtils;
+using SebWindowsClient.DiagnosticsUtils;
+using SebWindowsClient.ProcessUtils;
 
 //
 //  SebWindowsClient.cs
@@ -57,7 +57,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 namespace SebWindowsClient
 {
-    public class SingleInstanceController : WindowsFormsApplicationBase
+	public class SingleInstanceController : WindowsFormsApplicationBase
     {
         public SingleInstanceController()
         {
@@ -396,26 +396,28 @@ namespace SebWindowsClient
             //Search for permitted Applications (used in Taskswitcher (ALT-TAB) and in foreground watchdog
             SEBWindowHandler.AllowedExecutables.Clear();
             //Add the SafeExamBrowser to the allowed executables
-            SEBWindowHandler.AllowedExecutables.Add("safeexambrowser");
+            SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("safeexambrowser"));
             //Add allowed executables from all allowedProcessList
             foreach (Dictionary<string, object> process in SEBSettings.permittedProcessList)
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
-                    if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
+					var processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyExecutable] ?? string.Empty).ToLower());
+					var originalProcessName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyOriginalName] ?? string.Empty).ToLower());
+
+					SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName, originalProcessName));
+
+					if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
                     {
-                        SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
+						processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
+						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName));
                     }
                 }
             }
 
 #if DEBUG
                 //Add visual studio to allowed executables for debugging
-                SEBWindowHandler.AllowedExecutables.Add("devenv");
+                SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("devenv"));
 #endif
 
             //Process watching
@@ -440,9 +442,10 @@ namespace SebWindowsClient
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBProcessHandler.ProhibitedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
+					var name = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyExecutable] ?? string.Empty);
+					var originalName = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyOriginalName] ?? string.Empty);
+
+					SEBProcessHandler.ProhibitedExecutables.Add(new ExecutableInfo(name, originalName));
                 }
             }
             //This prevents the prohibited executables from starting up

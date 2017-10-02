@@ -91,8 +91,7 @@ namespace SebWindowsClient
 		public List<Process> permittedProcessesReferences = new List<Process>();
 		public List<Image> permittedProcessesIconImages = new List<Image>();
 
-		private List<Process> runningProcessesToClose = new List<Process>();
-		private List<string> runningApplicationsToClose = new List<string>();
+		private IDictionary<string, IList<Process>> runningApplicationsToClose = new Dictionary<string, IList<Process>>();
 
 		/// ----------------------------------------------------------------------------------------
 		/// <summary>
@@ -671,8 +670,14 @@ namespace SebWindowsClient
 										}
 										else
 										{
-											runningProcessesToClose.Add(proc);
-											runningApplicationsToClose.Add(title == SEBClientInfo.SEB_SHORTNAME ? (string)permittedProcess[SEBSettings.KeyExecutable] : title);
+											title = title == SEBClientInfo.SEB_SHORTNAME ? (string) permittedProcess[SEBSettings.KeyExecutable] : title;
+
+											if (!runningApplicationsToClose.ContainsKey(title))
+											{
+												runningApplicationsToClose[title] = new List<Process>();
+											}
+
+											runningApplicationsToClose[title].Add(proc);
 											j++;
 										}
 									}
@@ -694,37 +699,49 @@ namespace SebWindowsClient
 
 			// If we found already running permitted or if there were prohibited processes on the list, 
 			// we ask the user how to quit them
-			if (runningProcessesToClose.Count > 0)
+			if (runningApplicationsToClose.Count > 0)
 			{
 				StringBuilder applicationsListToClose = new StringBuilder();
-				foreach (string applicationToClose in runningApplicationsToClose)
+				foreach (string applicationToClose in runningApplicationsToClose.Keys)
 				{
 					applicationsListToClose.AppendLine("    " + applicationToClose);
 				}
 				if (SEBMessageBox.Show(SEBUIStrings.closeProcesses, SEBUIStrings.closeProcessesQuestion + "\n\n" + applicationsListToClose.ToString(), MessageBoxIcon.Error, MessageBoxButtons.OKCancel) == DialogResult.OK)
 				{
-					int i = 0;
-					while (i < runningProcessesToClose.Count())
+					var closedApplications = new List<string>();
+
+					foreach (var application in runningApplicationsToClose.Keys)
 					{
-						if (SEBNotAllowedProcessController.CloseProcess(runningProcessesToClose[i]))
+						var closedProcesses = 0;
+
+						foreach (var process in runningApplicationsToClose[application])
 						{
-							runningProcessesToClose.RemoveAt(i);
-							runningApplicationsToClose.RemoveAt(i);
+							if (SEBNotAllowedProcessController.CloseProcess(process))
+							{
+								closedProcesses++;
+							}
 						}
-						else
+
+						if (runningApplicationsToClose[application].Count == closedProcesses)
 						{
-							i++;
+							closedApplications.Add(application);
 						}
 					}
-					if (runningProcessesToClose.Any())
+
+					foreach (var application in closedApplications)
+					{
+						runningApplicationsToClose.Remove(application);
+					}
+
+					if (runningApplicationsToClose.Any())
 					{
 						SEBMessageBox.Show("SEB was unable to exit processes",
-							"SEB was unable to close the following processes" + "\n" + String.Join("\n", runningApplicationsToClose),
+							"SEB was unable to close the following processes" + "\n" + String.Join("\n", runningApplicationsToClose.Keys),
 							MessageBoxIcon.Error, MessageBoxButtons.OK);
 						ExitApplication();
 						return;
 					}
-					runningProcessesToClose.Clear();
+
 					runningApplicationsToClose.Clear();
 				}
 				else
@@ -1396,7 +1413,6 @@ namespace SebWindowsClient
 					};
 				}).ToList();
 
-				runningProcessesToClose.Clear();
 				runningApplicationsToClose.Clear();
 
 				foreach (var prohibitedProcess in prohibitedProcessList.Cast<Dictionary<string, object>>().ToList())
@@ -1428,17 +1444,17 @@ namespace SebWindowsClient
 								}
 								else
 								{
-									runningProcessesToClose.Add(application.Process);
-
 									if (String.IsNullOrWhiteSpace(title))
 									{
 										title = executable;
 									}
 
-									if (!runningApplicationsToClose.Contains(title))
+									if (!runningApplicationsToClose.Keys.Contains(title))
 									{
-										runningApplicationsToClose.Add(title);
+										runningApplicationsToClose[title] = new List<Process>();
 									}
+
+									runningApplicationsToClose[title].Add(application.Process);
 								}
 							}
 						}

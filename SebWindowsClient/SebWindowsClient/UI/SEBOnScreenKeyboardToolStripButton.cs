@@ -171,6 +171,8 @@ namespace SebWindowsClient.UI
 		/// The window is disabled. See http://msdn.microsoft.com/en-gb/library/windows/desktop/ms632600(v=vs.85).aspx.
 		/// </summary>
 		public const UInt32 WS_DISABLED = 0x8000000;
+		public const UInt32 WS_MINIMIZE = 0x20000000;
+		public const UInt32 WS_VISIBLE = 0x10000000;
 
 		/// <summary>
 		/// Specifies we wish to retrieve window styles.
@@ -215,7 +217,7 @@ namespace SebWindowsClient.UI
 			{
 				keyboardHandle.MaximizeWindow();
 				UInt32 style = GetWindowLong(keyboardHandle, GWL_STYLE);
-				visible = ((style & WS_DISABLED) != WS_DISABLED);
+				visible = (style & WS_DISABLED) != WS_DISABLED && (style & WS_MINIMIZE) != WS_MINIMIZE && (style & WS_VISIBLE) == WS_VISIBLE;
 			}
 
 			return visible;

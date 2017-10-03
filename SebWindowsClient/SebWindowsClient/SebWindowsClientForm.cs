@@ -915,11 +915,8 @@ namespace SebWindowsClient
 					int volume = (int)SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel];
 					new AudioControl().SetVolumeScalar((float)volume / 100);
 				}
-				if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAudioMute])
-				{
-					new AudioControl().Mute(true);
-				}
-				if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyAudioControlEnabled)[SEBSettings.KeyAudioControlEnabled])
+                new AudioControl().Mute((bool)SEBSettings.settingsCurrent[SEBSettings.KeyAudioMute]);
+                if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyAudioControlEnabled)[SEBSettings.KeyAudioControlEnabled])
 				{
 					taskbarToolStrip.Items.Add(new SEBAudioToolStripButton());
 				}

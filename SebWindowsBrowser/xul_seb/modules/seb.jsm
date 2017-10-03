@@ -224,6 +224,7 @@ this.seb =  {
 
 	initLocale : function() {
 		let loc = "en-US";
+		/*
 		try {
 			let osLoc = locale.getAppLocale();
 			sl.debug("getAppLocale: " + osLoc);
@@ -234,7 +235,7 @@ this.seb =  {
 		catch(e) {
 			sl.err("locale.getAppLocale() error: " + e);
 		}
-		
+		*/
 		let paramLoc = base.config["browserLanguage"];
 		sl.debug("browserLanguage:" + paramLoc);
 		if (paramLoc != null && paramLoc != "") {
@@ -510,7 +511,7 @@ this.seb =  {
 			return;
 		}
 
-		if (!base.allowQuit) { // on shutdown url the global variable "shutdownEnabled" is set to true
+		if (!base.allowQuit) { // on quitURL the global variable "allowQuit" is set to true
 			sl.out("no way! seb is locked :-)");
 		}
 		else {

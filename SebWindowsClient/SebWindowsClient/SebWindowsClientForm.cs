@@ -321,32 +321,44 @@ namespace SebWindowsClient
 		/// <returns></returns>
 		public bool ReconfigureWithSettings(byte[] sebSettings, bool suppressFileFormatError = false)
 		{
-			var x = SEBXULRunnerWebSocketServer.IsRunning;
-			Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
-			if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings, suppressFileFormatError))
+			var reconfigure = new Func<bool>(() =>
 			{
-				Logger.AddInformation("StoreDecryptedSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
-				Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
+				var x = SEBXULRunnerWebSocketServer.IsRunning;
+				Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
+				if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings, suppressFileFormatError))
+				{
+					Logger.AddInformation("StoreDecryptedSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
+					Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
+					SebWindowsClientMain.LoadingSebFile(false);
+					return false;
+				}
+
+				//Show splashscreen
+				//var splashThread = new Thread(SEBSplashScreen.StartSplash);
+
+				if (!SEBXULRunnerWebSocketServer.Started)
+				{
+					Logger.AddInformation("SEBXULRunnerWebSocketServer.Started returned false, this means the WebSocketServer communicating with the SEB XULRunner browser couldn't be started, exiting");
+					SEBMessageBox.Show(SEBUIStrings.webSocketServerNotStarted, SEBUIStrings.webSocketServerNotStartedMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
+					ExitApplication();
+					return false;
+				}
+				//SEBSplashScreen.CloseSplash();
+
+				Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
 				SebWindowsClientMain.LoadingSebFile(false);
-				return false;
-			}
 
-			//Show splashscreen
-			//var splashThread = new Thread(SEBSplashScreen.StartSplash);
+				return true;
+			});
 
-			if (!SEBXULRunnerWebSocketServer.Started)
+			if (InvokeRequired)
 			{
-				Logger.AddInformation("SEBXULRunnerWebSocketServer.Started returned false, this means the WebSocketServer communicating with the SEB XULRunner browser couldn't be started, exiting");
-				SEBMessageBox.Show(SEBUIStrings.webSocketServerNotStarted, SEBUIStrings.webSocketServerNotStartedMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
-				ExitApplication();
-				return false;
+				return (bool) Invoke(reconfigure);
 			}
-			//SEBSplashScreen.CloseSplash();
-
-			Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
-			SebWindowsClientMain.LoadingSebFile(false);
-
-			return true;
+			else
+			{
+				return reconfigure();
+			}
 		}
 
 		/// ----------------------------------------------------------------------------------------
@@ -1808,7 +1820,7 @@ namespace SebWindowsClient
 			   SEBDesktopWallpaper.Reset();
 
 				// Restart the explorer.exe shell
-				if (SEBClientInfo.ExplorerShellWasKilled)
+				if (SEBClientInfo.ExplorerShellWasKilled && !reconfiguring)
 				{
 					try
 					{

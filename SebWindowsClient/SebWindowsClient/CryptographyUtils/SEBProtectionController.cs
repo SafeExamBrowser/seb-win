@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using System.Security.Cryptography;
-using System.IO;
-using System.IO.Compression;
-using System.Security.Cryptography.X509Certificates;
 using System.Collections;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using Microsoft.VisualBasic.Devices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Windows.Forms;
+using PlistCS;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using PlistCS;
 
 //
 //  SEBProtectionController.cs
@@ -53,7 +50,7 @@ using PlistCS;
 
 namespace SebWindowsClient.CryptographyUtils
 {
-    public class SEBProtectionController
+	public class SEBProtectionController
     {
         // Prefix
         private const int PREFIX_LENGTH = 4;
@@ -157,7 +154,7 @@ namespace SebWindowsClient.CryptographyUtils
             foreach (X509Certificate2 x509Certificate in certsCollection)
             {
                 certificates.Add(x509Certificate);
-                certificateNames.Add(Parse(x509Certificate.Subject, "CN").FirstOrDefault());
+                certificateNames.Add(Parse(x509Certificate.Subject, "CN")?.FirstOrDefault() ?? x509Certificate.FriendlyName);
             }
 
             //Close the store.

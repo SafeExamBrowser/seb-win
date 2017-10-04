@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace SebWindowsClient.ConfigurationUtils
@@ -72,31 +69,52 @@ namespace SebWindowsClient.ConfigurationUtils
 
                 this.scheme = newScheme;
                 string userInfo = URLFromString.UserInfo;
-                if (!string.IsNullOrEmpty(userInfo))
-                {
-                    int userPasswordSeparator = userInfo.IndexOf(":");
-                    if (userPasswordSeparator == -1)
-                    {
-                        this.user = userInfo;
-                    }
-                    else
-                    {
-                        if (userPasswordSeparator != 0)
-                        {
-                            this.user = userInfo.Substring(0, userPasswordSeparator);
-                        }
-                        if (userPasswordSeparator < userInfo.Length - 1)
-                        {
-                            this.password = userInfo.Substring(userPasswordSeparator + 1, userInfo.Length - 1 - userPasswordSeparator);
-                        }
-                    }
-                }
+                this.user = User(userInfo);
+                this.password = Password(userInfo);
                 this.host = URLFromString.Host;
                 this.port = URLFromString.Port;
                 this.path = URLFromString.AbsolutePath.TrimEnd(new char[] { '/' });
                 this.query = URLFromString.Query;
                 this.fragment = URLFromString.Fragment;
             }
+        }
+
+        public static string User(string userInfo)
+        {
+            string user = "";
+            if (!string.IsNullOrEmpty(userInfo))
+            {
+                int userPasswordSeparator = userInfo.IndexOf(":");
+                if (userPasswordSeparator == -1)
+                {
+                    user = userInfo;
+                }
+                else
+                {
+                    if (userPasswordSeparator != 0)
+                    {
+                        user = userInfo.Substring(0, userPasswordSeparator);
+                    }
+                }
+            }
+            return user;
+        }
+
+        public static string Password(string userInfo)
+        {
+            string password = "";
+            if (!string.IsNullOrEmpty(userInfo))
+            {
+                int userPasswordSeparator = userInfo.IndexOf(":");
+                if (userPasswordSeparator != -1)
+                {
+                    if (userPasswordSeparator < userInfo.Length - 1)
+                    {
+                        password = userInfo.Substring(userPasswordSeparator + 1, userInfo.Length - 1 - userPasswordSeparator);
+                    }
+                }
+            }
+            return password;
         }
 
         public SEBURLFilterExpression(string scheme, string user, string password, string host, int port, string path, string query, string fragment)
@@ -113,7 +131,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
         
 
-        public string String()
+        public override string ToString()
         {
             StringBuilder expressionString = new StringBuilder();
             if (!string.IsNullOrEmpty(this.scheme)) {

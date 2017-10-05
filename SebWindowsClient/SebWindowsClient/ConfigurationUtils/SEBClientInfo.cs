@@ -78,13 +78,12 @@ namespace SebWindowsClient.ConfigurationUtils
         sebPurposePolicyConfiguringClient = 1
     };
 
-    public enum urlFilterRuleActions
+    public enum URLFilterRuleActions
     {
-        urlFilterActionBlock = 0,
-        urlFilterActionAllow = 1,
-        urlFilterActionSkip  = 2,
-        urlFilterActionAn    = 3,
-        urlFilterActionOr    = 4
+        block = 0,
+        allow = 1,
+        ignore = 2,
+        unknown = 3
     };
 
     public class SEBClientInfo

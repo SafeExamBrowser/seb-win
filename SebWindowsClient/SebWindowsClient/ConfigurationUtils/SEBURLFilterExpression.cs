@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SebWindowsClient.DiagnosticsUtils;
+using System;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace SebWindowsClient.ConfigurationUtils
@@ -23,7 +21,6 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             // Check if filter expression contains a scheme
             string newScheme = "";
-            Uri URLFromString = null;
 
             if (!string.IsNullOrEmpty(filterExpressionString))
             {
@@ -35,18 +32,14 @@ namespace SebWindowsClient.ConfigurationUtils
                     // (in case scheme contains a wildcard)
                     newScheme = filterExpressionString.Substring(0, schemeDelimiter);
                     filterExpressionString = "http" + filterExpressionString.Substring(schemeDelimiter);
-                    // Convert filter expression string to a NSURL
-                    if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
-                    {
-                        return;
-                    }
                 }
                 else
                 {
                     // Filter expression doesn't contain a scheme followed by an authority part,
                     // check for scheme followed by only a path (like about:blank or data:...)
-                    // Convert filter expression string to a NSURL
-                    if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
+                    // Convert filter expression string to a Uri
+                    /*
+                    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
                     {
                         return;
                     }
@@ -59,44 +52,86 @@ namespace SebWindowsClient.ConfigurationUtils
                         // Probably a relative URI without scheme
                         // Temporary prefix it with a http:// scheme
                         filterExpressionString = "http" + filterExpressionString;
-                        // Convert filter expression string to a NSURL
-                        if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
+                        // Convert filter expression string to a Uri
+                        if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
                         {
                             return;
                         }
                     }
+                    */
                 }
 
-                /// Convert NSURL to a SEBURLFilterExpression
+                /// Convert Uri to a SEBURLFilterExpression
                 // Use the saved scheme instead of the temporary http://
 
-                this.scheme = newScheme;
-                string userInfo = URLFromString.UserInfo;
-                if (!string.IsNullOrEmpty(userInfo))
+                try
                 {
-                    int userPasswordSeparator = userInfo.IndexOf(":");
-                    if (userPasswordSeparator == -1)
+                    UriBuilder parts = new UriBuilder(filterExpressionString);
+
+                    this.scheme = newScheme;
+                    this.user = parts.UserName;
+                    this.password = parts.Password;
+                    this.host = parts.Host;                  
+                    this.path = parts.Path.Trim(new char[] { '/' });
+
+                    int portNumber = parts.Port;
+                    // We only want a port if the filter expression string explicitely defines one!
+                    if (portNumber == -1 || filterExpressionString.IndexOf(this.host+":" + portNumber.ToString() + path) == -1)
                     {
-                        this.user = userInfo;
+                        this.port = null;
                     }
                     else
                     {
-                        if (userPasswordSeparator != 0)
-                        {
-                            this.user = userInfo.Substring(0, userPasswordSeparator);
-                        }
-                        if (userPasswordSeparator < userInfo.Length - 1)
-                        {
-                            this.password = userInfo.Substring(userPasswordSeparator + 1, userInfo.Length - 1 - userPasswordSeparator);
-                        }
+                        this.port = portNumber;
+                    }
+
+                    this.query = parts.Query;
+                    this.fragment = parts.Fragment;
+                }
+                catch (Exception ex)
+                {
+                    // This Uri might still have been relative, log this
+                    Logger.AddError("Could not read components of Uri. ", this, ex, ex.Message);
+                }
+            }
+        }
+
+        public static string User(string userInfo)
+        {
+            string user = "";
+            if (!string.IsNullOrEmpty(userInfo))
+            {
+                int userPasswordSeparator = userInfo.IndexOf(":");
+                if (userPasswordSeparator == -1)
+                {
+                    user = userInfo;
+                }
+                else
+                {
+                    if (userPasswordSeparator != 0)
+                    {
+                        user = userInfo.Substring(0, userPasswordSeparator);
                     }
                 }
-                this.host = URLFromString.Host;
-                this.port = URLFromString.Port;
-                this.path = URLFromString.AbsolutePath.TrimEnd(new char[] { '/' });
-                this.query = URLFromString.Query;
-                this.fragment = URLFromString.Fragment;
             }
+            return user;
+        }
+
+        public static string Password(string userInfo)
+        {
+            string password = "";
+            if (!string.IsNullOrEmpty(userInfo))
+            {
+                int userPasswordSeparator = userInfo.IndexOf(":");
+                if (userPasswordSeparator != -1)
+                {
+                    if (userPasswordSeparator < userInfo.Length - 1)
+                    {
+                        password = userInfo.Substring(userPasswordSeparator + 1, userInfo.Length - 1 - userPasswordSeparator);
+                    }
+                }
+            }
+            return password;
         }
 
         public SEBURLFilterExpression(string scheme, string user, string password, string host, int port, string path, string query, string fragment)
@@ -113,7 +148,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
         
 
-        public string String()
+        public override string ToString()
         {
             StringBuilder expressionString = new StringBuilder();
             if (!string.IsNullOrEmpty(this.scheme)) {

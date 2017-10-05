@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
@@ -28,9 +25,9 @@ namespace SebWindowsClient.ConfigurationUtils
                 this.scheme = RegexForFilterString(URLFromString.scheme);
                 this.user = RegexForFilterString(URLFromString.user);
                 this.password = RegexForFilterString(URLFromString.password);
-                this.host = RegexForFilterString(URLFromString.host);
+                this.host = RegexForHostFilterString(URLFromString.host);
                 this.port = URLFromString.port;
-                this.path = RegexForFilterString(URLFromString.path);
+                this.path = RegexForPathFilterString(URLFromString.path);
                 this.query = RegexForFilterString(URLFromString.query);
                 this.fragment = RegexForFilterString(URLFromString.fragment);
             }
@@ -42,7 +39,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
 
 
-        public Regex RegexForFilterString(string filterString)
+        public static Regex RegexForFilterString(string filterString)
         {
             if (string.IsNullOrEmpty(filterString))
             {
@@ -69,7 +66,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
 
 
-        public Regex RegexForHostFilterString(string filterString)
+        public static Regex RegexForHostFilterString(string filterString)
         {
             if (string.IsNullOrEmpty(filterString))
             {
@@ -103,7 +100,7 @@ namespace SebWindowsClient.ConfigurationUtils
         }
 
 
-        public Regex regexForPathFilterString(string filterString)
+        public static Regex RegexForPathFilterString(string filterString)
         {
             // Trim a possible trailing slash "/", we will instead add a rule to also match paths to directories without trailing slash
             filterString = filterString.TrimEnd(new char[] { '/' });
@@ -150,7 +147,7 @@ namespace SebWindowsClient.ConfigurationUtils
         }
 
 
-        public string String()
+        public override string ToString()
         {
             StringBuilder expressionString = new StringBuilder();
             string part;

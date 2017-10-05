@@ -146,7 +146,9 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		if (httpReg.test(url)) {
 			if (base.blockHTTP) {
 				sl.debug("block http request");
+				let w = sw.getRecentWin();
 				subject.cancel( this.abort );
+				w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.webProgress, w.XULBrowserWindow.request, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
 				return;
 			}
 			if (base.forceHTTPS) { // non common browser behaviour, experimental
@@ -277,10 +279,21 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 			subject.visitResponseHeaders(aVisitor);
 			sl.info("");
 			if (aVisitor.isPdfResponse() && !/\.pdf$/i.test(subject.name)) {
-				sl.debug("redirect pdf response mimetype");
-				subject.cancel( this.aborted );
-				sw.openPdfViewer(subject.name);
-				return;
+			//if (aVisitor.isPdfResponse() || /\.pdf$/i.test(subject.name)) {
+				// don't do anything if request comes from pdfviewer: loop!
+				// try silent
+				let w = sw.getRecentWin();
+				let winTitle = w.document.title;
+				sl.debug("isPdfResponse from window: " + winTitle);
+				if (winTitle.indexOf(PDF_VIEWER_TITLE) > -1) {
+					sl.debug("request comes from pdf viewer do nothing...");
+				}
+				else {
+					sl.debug("redirect pdf response mimetype " + subject.name);
+					subject.cancel( this.aborted );
+					w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.webProgress, w.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
+					return;
+				}
 			}
 		}
 	}
@@ -374,7 +387,7 @@ this.SebNet = {
 		}
 		p = proxies["ExceptionsList"];
 		if (typeof p === "object" && p != null) {
-			//p = p.join(",") + ",localhost,127.0.0.1";
+			p = p.join(",") + ",localhost,127.0.0.1";
 			prefs.setCharPref("network.proxy.no_proxies_on",p);
 			sl.debug("network.proxy.no_proxies_on:"+p);
 		}
@@ -385,14 +398,14 @@ this.SebNet = {
 		if ( (typeof p === "boolean") && p) {
 			return 4;
 		}
-		p = proxies["AutoConfigurationEnabledWas "];
+		p = proxies["AutoConfigurationEnabled"];
 		// auto config url
 		if ( (typeof p === "boolean") && p) {
 			return 2;
 		}
 		// system proxy
-		p = proxies["proxySettingsPolicy"];
-		if ( (typeof p === "number") && p == 0) {
+		p = su.getConfig("proxySettingsPolicy","number",0);
+		if (p === 0) {
 			return 5;
 		}
 		// http(s) proxy
@@ -477,7 +490,18 @@ this.SebNet = {
 	},
 	
 	isValidUrl : function (url) {
-		if (whiteListRegs.length == 0 && blackListRegs.length == 0) return true;
+		if (whiteListRegs.length == 0 && blackListRegs.length == 0) {
+			return true;
+		}
+		// special internal pages
+		if (sw.winTypesReg.pdfViewer.test(url)) {
+			return true;
+		}
+		
+		if (sw.winTypesReg.errorViewer.test(url)) {
+			return true;
+		}
+		 
 		var m = false;
 		var msg = "";		
 		sl.debug("check url: " + url);

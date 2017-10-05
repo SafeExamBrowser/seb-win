@@ -53,11 +53,12 @@ ul {
   background-image: url("aboutNetError_alert.svg");
 }
 
-#errorTryAgain {
+#errorTryAgain, #goBack {
   margin-top: 1.2em;
   min-width: 150px;
   cursor: pointer;
 }
+
 
 #errorContainer {
   display: none;

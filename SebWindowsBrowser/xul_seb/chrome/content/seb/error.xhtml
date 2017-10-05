@@ -11,6 +11,9 @@
   <!ENTITY % globalDTD
     SYSTEM "chrome://global/locale/global.dtd">
   %globalDTD;
+  <!ENTITY % sebDtdLocal 
+   SYSTEM "chrome://seb/locale/seb.dtd">
+  %sebDtdLocal;
 ]>
 
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
@@ -36,13 +39,19 @@
 			
 		function init() {
 			params = getParams();
-			//btn = document.getElementById("errorTryAgain");
-			//document.getElementById("tryAgain").href = params.req;
+			var elGoBack = document.getElementById("goBack");
+			if (!/^http/g.test(params.ref)) {
+				elGoBack.disabled=true;
+			}
 		}
 		
 		function retryThis(el) {
-			document.location.href = params.req;
+			document.location.replace(params.req);
 			el.disabled = true;
+		}
+		
+		function goBack() {
+			document.location.replace(params.ref);
 		}
 		]]></script>
 	</head>
@@ -62,6 +71,7 @@
 
 		</div>
 		<!-- Retry Button -->
+		<button id="goBack" autocomplete="off" onclick="goBack();">&seb.toolbar.back;</button>&nbsp;&nbsp;
 		<button id="errorTryAgain" autocomplete="off" onclick="retryThis(this);">&retry.label;</button>
 	</div>
 	</body>

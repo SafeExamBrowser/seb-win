@@ -25,9 +25,9 @@ namespace SebWindowsClient.ConfigurationUtils
                 this.scheme = RegexForFilterString(URLFromString.scheme);
                 this.user = RegexForFilterString(URLFromString.user);
                 this.password = RegexForFilterString(URLFromString.password);
-                this.host = RegexForFilterString(URLFromString.host);
+                this.host = RegexForHostFilterString(URLFromString.host);
                 this.port = URLFromString.port;
-                this.path = RegexForFilterString(URLFromString.path);
+                this.path = RegexForPathFilterString(URLFromString.path);
                 this.query = RegexForFilterString(URLFromString.query);
                 this.fragment = RegexForFilterString(URLFromString.fragment);
             }

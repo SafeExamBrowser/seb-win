@@ -82,17 +82,17 @@ namespace SebWindowsClient.ConfigurationUtils
             }
 
             // Check if Start URL gets allowed by current filter rules and if not add a rule for the Start URL
-            string startURLString = (string)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL]; ;
+            string startURLString = (string)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
 
-            if (!Uri.TryCreate(startURLString, UriKind.RelativeOrAbsolute, out Uri startURL))
+            if (Uri.TryCreate(startURLString, UriKind.Absolute, out Uri startURL))
             {
-                if (true /*testURLAllowed(startURL) != URLFilterRuleActions.allow*/)
+                if (TestURLAllowed(startURL) != URLFilterRuleActions.allow)
                 {
-                    Regex expression;
+                    SEBURLFilterRegexExpression expression;
                     // If Start URL is not allowed: Create one using the full Start URL
                     try
                     {
-                        expression = SEBURLFilterRegexExpression.RegexForHostFilterString(startURLString);
+                        expression = new SEBURLFilterRegexExpression(startURLString);
                     }
                     catch (Exception)
                     {
@@ -108,7 +108,7 @@ namespace SebWindowsClient.ConfigurationUtils
             }
             // Convert these rules and add them to the XULRunner seb keys
             CreateSebRuleLists();
-        }
+       }
 
 
         // Convert these rules and add them to the XULRunner seb keys

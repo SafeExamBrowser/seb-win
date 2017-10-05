@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SebWindowsClient.DiagnosticsUtils;
+using System;
 using System.Text;
 
 
@@ -20,7 +21,6 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             // Check if filter expression contains a scheme
             string newScheme = "";
-            Uri URLFromString = null;
 
             if (!string.IsNullOrEmpty(filterExpressionString))
             {
@@ -32,18 +32,14 @@ namespace SebWindowsClient.ConfigurationUtils
                     // (in case scheme contains a wildcard)
                     newScheme = filterExpressionString.Substring(0, schemeDelimiter);
                     filterExpressionString = "http" + filterExpressionString.Substring(schemeDelimiter);
-                    // Convert filter expression string to a NSURL
-                    if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
-                    {
-                        return;
-                    }
                 }
                 else
                 {
                     // Filter expression doesn't contain a scheme followed by an authority part,
                     // check for scheme followed by only a path (like about:blank or data:...)
-                    // Convert filter expression string to a NSURL
-                    if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
+                    // Convert filter expression string to a Uri
+                    /*
+                    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
                     {
                         return;
                     }
@@ -56,26 +52,47 @@ namespace SebWindowsClient.ConfigurationUtils
                         // Probably a relative URI without scheme
                         // Temporary prefix it with a http:// scheme
                         filterExpressionString = "http" + filterExpressionString;
-                        // Convert filter expression string to a NSURL
-                        if (!Uri.TryCreate(filterExpressionString, UriKind.RelativeOrAbsolute, out URLFromString))
+                        // Convert filter expression string to a Uri
+                        if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
                         {
                             return;
                         }
                     }
+                    */
                 }
 
-                /// Convert NSURL to a SEBURLFilterExpression
+                /// Convert Uri to a SEBURLFilterExpression
                 // Use the saved scheme instead of the temporary http://
 
-                this.scheme = newScheme;
-                string userInfo = URLFromString.UserInfo;
-                this.user = User(userInfo);
-                this.password = Password(userInfo);
-                this.host = URLFromString.Host;
-                this.port = URLFromString.Port;
-                this.path = URLFromString.AbsolutePath.TrimEnd(new char[] { '/' });
-                this.query = URLFromString.Query;
-                this.fragment = URLFromString.Fragment;
+                try
+                {
+                    UriBuilder parts = new UriBuilder(filterExpressionString);
+
+                    this.scheme = newScheme;
+                    this.user = parts.UserName;
+                    this.password = parts.Password;
+                    this.host = parts.Host;                  
+                    this.path = parts.Path.Trim(new char[] { '/' });
+
+                    int portNumber = parts.Port;
+                    // We only want a port if the filter expression string explicitely defines one!
+                    if (portNumber == -1 || filterExpressionString.IndexOf(this.host+":" + portNumber.ToString() + path) == -1)
+                    {
+                        this.port = null;
+                    }
+                    else
+                    {
+                        this.port = portNumber;
+                    }
+
+                    this.query = parts.Query;
+                    this.fragment = parts.Fragment;
+                }
+                catch (Exception ex)
+                {
+                    // This Uri might still have been relative, log this
+                    Logger.AddError("Could not read components of Uri. ", this, ex, ex.Message);
+                }
             }
         }
 

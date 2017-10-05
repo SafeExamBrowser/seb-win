@@ -39,7 +39,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 {
 
                     string expressionString = (string)URLFilterRule["expression"];
-                    if (String.IsNullOrEmpty(expressionString))
+                    if (!String.IsNullOrEmpty(expressionString))
                     {
                         Object expression;
 

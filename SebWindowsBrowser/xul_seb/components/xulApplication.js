@@ -10,8 +10,12 @@ var xulApplication = function () {};
 var cmdline = null;
 var logfile = null;
 var logenc = null;
+var filterLog = new RegExp(/(TelemetryEnvironment|ProfileAge\.jsm)/gm);
 var consoleListener = {
 	observe: function( msg ) {
+		if (filterLog.test(msg.message)) {
+			return;
+		}
 		let a = logenc.encode(msg.message + "\n");
 		logfile.write(a);
 	
@@ -69,8 +73,10 @@ xulApplication.prototype = {
 				logfile.write(a);
 				// write buffered console messages
 				for (var i=0;i<carr.length;i++) {
-					let b = logenc.encode(carr[i].message + "\n");
-					file.write(b);
+					if (!filterLog.test(carr[i].message)) {
+						let b = logenc.encode(carr[i].message + "\n");
+						file.write(b);
+					}
 				}
 				// register a console listener for writing all other messages to the logfile
 				cs.registerListener(consoleListener);

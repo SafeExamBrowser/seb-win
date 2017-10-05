@@ -90,7 +90,14 @@ let 	base = null,
 	},
 	sebReg = new RegExp(/.*?\.seb/i),
 	httpReg = new RegExp(/^http\:/i),
-	windowTitleSuffix = "";
+	windowTitleSuffix = "",
+	installedDics = {
+		"de-DE":"de-DE@dictionaries.addons.mozilla.org",
+		"de-CH":"de_CH@dicts.j3e.de",
+		"en-US":"en-US@dictionaries.addons.mozilla.org",
+		"en-GB":"marcoagpinto@mail.telepac.pt",
+		"fr-classic":"fr-dicollecte@dictionaries.addons.mozilla.org"
+	};
 	
 const	nsIX509CertDB = Ci.nsIX509CertDB,
 	nsIX509CertDB2 = Ci.nsIX509CertDB2,
@@ -100,12 +107,24 @@ const	nsIX509CertDB = Ci.nsIX509CertDB,
 	CERT_USER = 1, //reserved to windows host
 	CERT_CA = 2,
 	CERT_SSL_DEBUG = 3;
-
+	
 function nsBrowserStatusHandler() {};
 nsBrowserStatusHandler.prototype = {
 	isStarted : false,
 	win : null,
+	domWin : null,
 	baseurl : null,
+	requestURL : null,
+	lastSuccess : null,
+	firstPageFailed : false,
+	referrer : null,
+	webProgress : null,
+	request : null,
+	stateFlags : null,
+	status : null,
+	startDocumentFlags : startDocumentFlags,
+	stopDocumentFlags : stopDocumentFlags,
+	
 	onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {},
 	onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {},
 	onProgressChange : function(aWebProgress, aRequest, aCurSelfProgress,
@@ -143,157 +162,208 @@ this.SebBrowser = {
 		authMgr = Cc["@mozilla.org/network/http-auth-manager;1"].getService(Ci.nsIHttpAuthManager); // clearAll
 		cookieMgr = Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager); // removeAll
 		historySrv = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsIBrowserHistory); // removeAllPages
-		
 		sl.out("SebBrowser initialized: " + seb);
 	},
 	
 	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
 		
 		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
-			
-			sl.debug("DOCUMENT REQUEST START: " + aRequest.name + " status: " + aStatus);
+			// ignore non nsIHttpChannel requests
 			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
-				sl.debug("Request is NOT instance of Ci.nsIHttpChannel");
-				sl.debug(aRequest.name);
-				return 0;
+				sl.debug("Request is NOT instance of Ci.nsIHttpChannel: " + aRequest.name);
+				return;
 			}
-			sl.debug("Request is instance of Ci.nsIHttpChannel");
-			sl.debug(aRequest.name);
-			aRequest.QueryInterface(Ci.nsIHttpChannel);
-				
-			sl.debug("baseurl: " + this.baseurl);
-			this.isStarted = true;
-			this.win = sw.getChromeWin(aWebProgress.DOMWindow);
-			this.baseurl = btoa(aRequest.name);
-			base.startLoading(this.win);
+			sl.debug("Request is instance of Ci.nsIHttpChannel: " + aRequest.name);
+			
+			// needed?
+			if (!sw.winTypesReg.pdfViewer.test(aRequest.name) && !sw.winTypesReg.errorViewer.test(aRequest.name)) {
+				// ignore non nsIHttpChannel requests (QueryInterface failes on local resources, maybe on cached ressources too?)
+				try {
+					aRequest.QueryInterface(Ci.nsIHttpChannel);
+				}
+				catch(e) { // local chrome urls and other. Maybe something to do like handling of cached ressources?
+					sl.debug("Error QueryInterface Ci.nsIHttpChannel");
+					sl.debug(aRequest.name);
+					return;
+				}
+			}
+			
+			let w = sw.getChromeWin(aWebProgress.DOMWindow);
+			
+			if (!this.isStarted) {
+				sl.debug("REQUEST START: " + aRequest.name + " status: " + aStatus);
+				this.isStarted = true;
+				this.win = w;
+				this.domWin = aWebProgress.DOMWindow;
+				this.requestURL = aRequest.name;
+				this.baseurl = btoa(aRequest.name);
+				if (!sw.winTypesReg.errorViewer.test(this.domWin.document.URL)) {
+					this.referrer = this.domWin.document.URL;
+				}
+				this.request = aRequest;
+				this.webProgress = aWebProgress;
+				this.stateFlags = aStateFlags;
+				this.status = aStatus;
+				base.startLoading(this.win);
+			}
+			else {
+				sl.debug("SUB REQUEST START: " + aRequest.name + " status: " + aStatus);
+			}
+			
 			if (seb.quitURL === aRequest.name) {
 				if (base.quitURLRefererFilter != "") {
 					let filter = base.quitURLRefererFilter;
-					let referer = this.win.XulLibBrowser.contentDocument.location.href;
-					if (referer.indexOf(filter) < 0) {
+					
+					if (this.referrer.indexOf(filter) < 0) {
 						sl.debug("quitURL \"" + seb.quitURL + "\" is only allowed if string in referrer: \"" + filter + "\"");
-						aRequest.cancel(aStatus);
-						base.stopLoading(this.win);
+						this.onStatusChange(aWebProgress, aRequest, STATUS_QUIT_URL_WRONG_REFERRER.status, STATUS_QUIT_URL_WRONG_REFERRER.message);
 						return;
 					}
 				}
-				aRequest.cancel(aStatus);
-				base.stopLoading(this.win);
-				var tmpQuit = seb.allowQuit; // store default shutdownEnabled
-				var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
-				seb.allowQuit = true; // set to true
-				seb.quitIgnorePassword = true;
-				seb.quit();				
-				seb.allowQuit = tmpQuit; // set default shutdownEnabled
-				seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
+				this.onStatusChange(aWebProgress, aRequest, STATUS_QUIT_URL_STOP.status, STATUS_QUIT_URL_STOP.message);
 				return;
 			}
+			
 			
 			if (base.linkURLS[aRequest.name] || base.linkURLS[aRequest.name.replace(/\/$/,"")]) {
-				aRequest.cancel(aStatus);
-				base.stopLoading(this.win);
-				seb.loadAR(this.win, base.linkURLS[aRequest.name]);
+				this.onStatusChange(aWebProgress, aRequest, STATUS_LOAD_AR.status, STATUS_LOAD_AR.message);
 				return;
 			}
 			
-			if (!sn.isValidUrl(aRequest.name) || !sn.isValidUrl(aRequest.name.replace(/\/$/,""))) {
-				aRequest.cancel(aStatus);
-				base.stopLoading(this.win);
-				prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
-				return 1; // 0?
+			// special chrome pdfViewer
+			if (sw.winTypesReg.pdfViewer.test(aRequest.name)) {
+				sl.debug(PDF_VIEWER_TITLE);
+				return;
 			}
-			
+			// special chrome errorPage
+			if (sw.winTypesReg.errorViewer.test(aRequest.name)) {
+				sl.debug(ERROR_PAGE_TITLE);
+				return;
+			}
+			if (!sn.isValidUrl(aRequest.name) || !sn.isValidUrl(aRequest.name.replace(/\/$/,""))) {
+				this.onStatusChange(aWebProgress, aRequest, STATUS_INVALID_URL.status, STATUS_INVALID_URL.message);
+				return;
+			}
+		
 			if (httpReg.test(aRequest.name)) {
 				if (sn.blockHTTP) {
-					sl.debug("block http request");
-					aRequest.cancel( Cr.NS_BINDING_ABORTED );
-					base.stopLoading(this.win);
-					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
+					this.onStatusChange(aWebProgress, aRequest, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
+					return;	
 				}
 			}
-			
 			// PDF Handling
 			// don't trigger if pdf is part of the query string: infinite loop
 			// don't trigger from pdfViewer itself: infinite loop
-			if (su.getConfig("sebPdfJsEnabled","boolean", true) && /^[^\?]+\.pdf$/i.test(aRequest.name) && !sw.winTypesReg.pdfViewer.test(aRequest.name)) {
-				sl.debug("pdf start request");
-				aRequest.cancel(aStatus);
-				sw.openPdfViewer(aRequest.name);
-				base.stopLoading(this.win);
+			if (su.getConfig("sebPdfJsEnabled","boolean", true) && /^[^\?]+\.pdf$/i.test(aRequest.name)) {
+				sl.debug("redirect pdf start request");
+				this.onStatusChange(aWebProgress, aRequest, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
+				return;
+			} 
+		}
+		
+		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
+			if (aRequest && aRequest.status && (aRequest.status > 0 && aRequest.status < 10)) {
+				switch (aRequest.status) {
+					case STATUS_PDF_REDIRECT.status :
+					case STATUS_QUIT_URL_STOP.status :
+					case STATUS_QUIT_URL_WRONG_REFERRER.status :
+					case STATUS_BLOCK_HTTP.status :
+					case STATUS_INVALID_URL.status :
+						sl.debug("DOCUMENT REQUEST STOP CUSTOM STATUS: " + aRequest.name + " status: " + aRequest.status);
+					return;
+				} 
+			}
+			
+			// ignore non nsIHttpChannel requests
+			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
+				sl.debug("Request is NOT instance of Ci.nsIHttpChannel: " + aRequest.name);
 				return;
 			}
-		}
-		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
 			
-			sl.debug("DOCUMENT REQUEST STOP: " + aRequest.name + " - status: " + aStatus);
-			
-			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
-				sl.debug("Request is NOT instance of Ci.nsIHttpChannel");
-				sl.debug(aRequest.name);
-				return 0;
+			// handle requests and sub requests
+			if (aRequest.name != this.requestURL) {
+				sl.debug("SUB REQUEST STOP: " + aRequest.name);
+				return;
 			}
 			
-			sl.debug("Request is instance of Ci.nsIHttpChannel");
-			sl.debug(aRequest.name);
-			aRequest.QueryInterface(Ci.nsIHttpChannel);
+			this.isStarted = false;
+			base.stopLoading(this.win);
+			
+			if (sw.winTypesReg.pdfViewer.test(aRequest.name)) {
+				let title = PDF_VIEWER_TITLE + ": " + this.win.XulLibBrowser.contentDocument.title;
+				this.win.document.title = (windowTitleSuffix == '') ? title : title + " - " + windowTitleSuffix;
+				return;
+			}
+			
+			if (sw.winTypesReg.errorViewer.test(aRequest.name)) {
+				this.win.document.title = (windowTitleSuffix == '') ? ERROR_PAGE_TITLE : ERROR_PAGE_TITLE + " - " + windowTitleSuffix;
+				return;
+			}
+			
+			try {
+				aRequest.QueryInterface(Ci.nsIHttpChannel);
+			}
+			catch(e) { // local chrome urls and other. Maybe something to do like handling of cached ressources?
+				sl.debug("Error QueryInterface Ci.nsIHttpChannel");
+				sl.debug(aRequest.name);
+				return;
+			}
+			
 			let reqErr = false;
 			let reqStatus = false;
 			let reqSucceeded = false;
+			let notAvailable = false; // request did not started
 			try {
 				reqStatus = aRequest.responseStatus;
+				sl.debug("reqStatus: " + reqStatus);
 				reqSucceeded = aRequest.requestSucceeded;
+				sl.debug("reqSucceeded: " + reqSucceeded);
+				// a simple workaround for the errorpage back button that always links to the last page with successful response
+				if (reqSucceeded) {
+					this.lastSuccess = aRequest.name;
+				}
+				else { 
+					this.referrer = this.lastSuccess;
+				}
 			}
 			catch(e) {
-				reqErr = e;				
-			}
-			if (reqErr || !reqSucceeded || !reqStatus) {
-				sl.debug("Error document loading: " + aStatus);
-				base.stopLoading(this.win);
-				try {
-					try {
-						let mimeType = aRequest.getResponseHeader("Content-Type");
-						if (mimeTypesRegs.pdf.test(mimeType) && !/\.pdf$/i.test(aRequest.name) && su.getConfig("sebPdfJsEnabled","boolean", true)) { // pdf file requests should already catched by SebBrowser
-							sl.debug("request already aborted by httpResponseObserver, no error page!");
-							this.isStarted = false;
-							return 0;
-						}	
-					}
-					catch (e) { // there is no getResponseHeader function
-						switch (e.name) {
-							case "NS_ERROR_NOT_AVAILABLE" :
-								sl.debug("handled: NS_ERROR_NOT_AVAILABLE");
-								break;
-							default: 
-								sl.debug("not handled: " + e);
-						}
-					}
-					aRequest.cancel(aStatus);
-					
-					this.win.setTimeout(function() {
-						if (!this.isStarted) { // no new start request until now (capturing double clicks on links: experimental)
-							let flags = wnav.LOAD_FLAGS_BYPASS_HISTORY; // does not work??? why???
-							//win.content.document.location.assign("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name));
-							this.XulLibBrowser.webNavigation.loadURI("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name), flags, null, null, null);
-							this.XULBrowserWindow.isStarted = false;
-						}
-					}, 100);
-					return 0;
-				}
-				catch(e) {
-					sl.debug(e);
-				}
-				finally {
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					return 1;
-				}
-			}
-			else {
-				sl.debug("document loading succeeded: " + aStatus); // something to do?
+				reqErr = e;
+				sl.debug("reqErr.result: " + reqErr.result);
+				notAvailable = (reqErr.result === Cr.NS_ERROR_NOT_AVAILABLE);
+				sl.debug("notAvailable: " + notAvailable);
 			}
 			
-			base.stopLoading(this.win);
-			this.isStarted = false;
+			let showErrorPage = false;
+			if (su.getConfig("seb ErrorPage","boolean",true)) { // only enable if config set
+				if (reqErr || !reqSucceeded || !reqStatus) { // any error?
+					if (this.lastSuccess === null) { // firstPage failed, no referrer -> showing ErrorPage is better than blank page
+						showErrorPage = true;
+					}
+					else {
+						if (!notAvailable) { // show ErrorPage only if request is already started and aborted or any error response status from server but with html output
+							showErrorPage = true;
+						}
+					}
+				}
+				else {
+					showErrorPage = false;
+				}
+			}
+			
+			if (showErrorPage) {
+				aRequest.cancel(aStatus);
+				this.win.setTimeout(function() {
+					if (!this.XULBrowserWindow.isStarted) { // no new start request until now (capturing double clicks on links: experimental)
+						aWebProgress.DOMWindow.location.replace("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name) + "&ref=" + btoa(this.XULBrowserWindow.referrer));
+						this.XULBrowserWindow.isStarted = false;
+					}
+				}, 100);
+				return;
+			}
+			else {
+				sl.debug("document loading: " + aStatus);
+			}
+			
 			var w = aWebProgress.DOMWindow.wrappedJSObject;
 			
 			try {
@@ -302,23 +372,77 @@ this.SebBrowser = {
 			catch(e) {
 				sl.debug(e);
 			}
+			/*
 			if (this.win === seb.mainWin && su.getConfig("sebScreenshot","boolean",false)) {
 				sc.createScreenshotController(w);
 			}
+			*/ 
 			if (su.getConfig("enableBrowserWindowToolbar","boolean",false)) {
 				base.refreshNavigation(this.win);
-			} 
+			}  
 		}
 	},
 	
-	locationListener : function(aProgress, aRequest, aURI, aFlag) {},
+	locationListener : function(aProgress, aRequest, aURI, aFlag) {
+		//let w = sw.getChromeWin(aProgress.DOMWindow);
+		//let br = w.XULBrowserWindow;
+		//sl.debug("LOCATION CHANGE aURI: " + aURI.spec);
+		//sl.debug("LOCATION CHANGE aRequest.name: " + aRequest.name);
+		//br.isStarted = true;
+	},
 	
 	progressListener : function(aWebProgress, aRequest, curSelf, maxSelf, curTot, maxTot) {},
 	
 	statusListener : function(aWebProgress, aRequest, aStatus, aMessage) {
-		if (aStatus) {
-			//sl.debug("status: " + aStatus + " : " + aMessage);
-		}	
+		
+		if (aStatus > 0 && aStatus < 10) {
+			sl.debug("CUSTOM REQUEST HANDLING: " + aStatus + " - " + aMessage);
+			switch (aStatus) {
+				case STATUS_PDF_REDIRECT.status :
+					aRequest.cancel(aStatus);
+					this.isStarted = false;
+					base.stopLoading(this.win);
+					let url = aRequest.name;
+					sw.openPdfViewer(url);
+					break;  
+				case STATUS_QUIT_URL_STOP.status :
+					aRequest.cancel(aStatus);
+					this.isStarted = false; 
+					base.stopLoading(this.win);
+					var tmpQuit = seb.allowQuit; // store default shutdownEnabled
+					var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
+					seb.allowQuit = true; // set to true
+					seb.quitIgnorePassword = true;
+					seb.quit();				
+					seb.allowQuit = tmpQuit; // set default shutdownEnabled
+					seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
+					break;
+				case STATUS_QUIT_URL_WRONG_REFERRER.status : 
+					aRequest.cancel(aStatus);
+					this.isStarted = false;
+					base.stopLoading(this.win);
+					break;
+				case STATUS_LOAD_AR.status :
+					aRequest.cancel(aStatus);
+					this.isStarted = false;
+					base.stopLoading(this.win);
+					seb.loadAR(this.win, base.linkURLS[aRequest.name]);
+					break;
+				case  STATUS_INVALID_URL.status :
+					aRequest.cancel(aStatus);
+					this.isStarted = false;
+					base.stopLoading(this.win);
+					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
+					//this.onStateChange(aWebProgress, aRequest, this.stopDocumentFlags, aStatus);
+					break;
+				case STATUS_BLOCK_HTTP.status :
+					aRequest.cancel(aStatus);
+					this.isStarted = false;
+					base.stopLoading(this.win);
+					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
+					break;
+			}
+		}
 	},
 	
 	securityListener : function(aWebProgress, aRequest, aState) {},
@@ -402,11 +526,11 @@ this.SebBrowser = {
 				sl.debug("No proxy user or password defined");
 				return;
 			}
-			if (!seb.config.proxies.HTTPEnable || !seb.config.proxies.HTTPSEnable) {
+			if (!seb.config.proxies.HTTPEnable && !seb.config.proxies.HTTPSEnable) {
 				sl.debug("No http proxy enabled");
 				return;
 			}
-			if (!seb.config.proxies.HTTPProxy || !seb.config.proxies.HTTPPort) {
+			if (!seb.config.proxies.HTTPProxy && !seb.config.proxies.HTTPPort) {
 				sl.debug("No http proxy or port defined");
 				return;
 			}
@@ -420,7 +544,28 @@ this.SebBrowser = {
 	},
 	
 	initSpellChecker : function() {
+		sl.debug("initSpellChecker");
+		var spellclass = "@mozilla.org/spellchecker/myspell;1";
 		
+		if ("@mozilla.org/spellchecker/hunspell;1" in Cc) {
+			spellclass = "@mozilla.org/spellchecker/hunspell;1";
+		}
+		if ("@mozilla.org/spellchecker/engine;1" in Cc) {
+			spellclass = "@mozilla.org/spellchecker/engine;1";
+		}
+		let spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
+		let dics = [];
+		for (var dic in installedDics) {
+			let dicsDir = FileUtils.getDir("ProfD", ["extensions",installedDics[dic],"dictionaries"],false,false);
+			if (dicsDir.exists()) {
+				//sl.debug("add dicDir: " + dicsDir.path);
+				spe.addDirectory(dicsDir);
+			} 
+		}
+		spe.getDictionaryList(dics,{});
+		sl.debug("available dictionaries: " + dics.value);
+		
+		/*
 		var spellclass = "@mozilla.org/spellchecker/myspell;1";
 		if ("@mozilla.org/spellchecker/hunspell;1" in Cc) {
 			spellclass = "@mozilla.org/spellchecker/hunspell;1";
@@ -429,7 +574,7 @@ this.SebBrowser = {
 			spellclass = "@mozilla.org/spellchecker/engine;1";
 		}
 
-		spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
+		let spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
 		let dicsDir = FileUtils.getDir("ProfD", ["dictionaries"],false,false); // should only be one dic inside
 		sl.debug("dictionaries directory exists: " + dicsDir.exists());
 		if (dicsDir.exists()) {
@@ -439,6 +584,8 @@ this.SebBrowser = {
 		let dics = [];
 		spe.getDictionaryList(dics,{});
 		sl.debug("available dictionaries: " + dics.value);
+		*/
+		
 		
 		/*
 		let dic = su.getConfig("allowSpellCheckDictionary","string","");
@@ -611,8 +758,9 @@ this.SebBrowser = {
 			sl.err("no xullib.browser in ChromeWindow!");
 			return false;
 		}
+        // Changed reload from hard to soft reload, to not break offline functionality with Service Workers
 		//win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
-		win.XulLibBrowser.reload();
+        win.XulLibBrowser.reload();
 	},
 	
 	restart : function() {

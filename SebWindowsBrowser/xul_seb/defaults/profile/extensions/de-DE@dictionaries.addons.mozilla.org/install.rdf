@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>de-DE@dictionaries.addons.mozilla.org</em:id>
+    <em:type>64</em:type>
+    <em:version>2.0.6</em:version>
+    <em:name>German Dictionary</em:name>
+    <em:description>German dictionary (new Orthography) for spellchecking in Mozilla products. Using igerman98 dictionary version 20160407.</em:description>
+    <em:creator>Robert Kaiser, using igerman98 dictionary by Björn Jacke</em:creator>
+    <em:unpack>true</em:unpack>
+    <em:localized>
+      <Description>
+        <em:locale>de</em:locale>
+        <em:name>Deutsches Wörterbuch</em:name>
+        <em:description>Deutsches Wörterbuch (neue Rechtschreibung) für die Rechtschreibprüfung in Mozilla-Produkten. Verwendet das igerman98-Wörterbuch in der Version 20160407.</em:description>
+        <em:creator>Robert Kaiser, unter Verwendung des igerman98-Wörterbuchs von Björn Jacke</em:creator>
+      </Description>
+    </em:localized>
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>10.0a1</em:minVersion>
+        <em:maxVersion>*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- Thunderbird -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+        <em:minVersion>10.0a1</em:minVersion>
+        <em:maxVersion>54.0</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- SeaMonkey -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+        <em:minVersion>2.7a1</em:minVersion>
+        <em:maxVersion>*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- FennecAndroid -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{aa3c5121-dab2-40e2-81ca-7ea25febc110}</em:id>
+        <em:minVersion>10.0a1</em:minVersion>
+        <em:maxVersion>*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- BlueGriffon -->
+    <em:targetApplication>
+      <Description>
+        <em:id>bluegriffon@disruptive-innovations.com</em:id>
+        <em:minVersion>0.8</em:minVersion>
+        <em:maxVersion>1.7.2</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- toolkit -->
+    <em:targetApplication>
+      <Description>
+        <em:id>toolkit@mozilla.org</em:id>
+        <em:minVersion>10.0a1</em:minVersion>
+        <em:maxVersion>*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>

@@ -165,20 +165,17 @@ namespace SebWindowsClient.ConfigurationUtils
 			}
 			else
 			{
-				//Add the socket address if content filter is enabled
-				if ((bool)xulRunnerSettings[SEBSettings.KeyURLFilterEnableContentFilter] == true)
-				{
-					if (!String.IsNullOrWhiteSpace(xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist].ToString()))
-					{
-						xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += @";";
-					}
-					//Add the Socket address with http protocoll instead of ws protocoll for the injected iframe
-					xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += String.Format("http://{0}", SEBXULRunnerWebSocketServer.ServerAddress.Substring(5));
-				}
-			}
+                //Add the socket address 
+                if (!String.IsNullOrWhiteSpace(xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist].ToString()))
+                {
+                    xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += @";";
+                }
+                //Add the Socket address with http protocoll instead of ws protocoll for the injected iframe
+                xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += String.Format("http://{0}", SEBXULRunnerWebSocketServer.ServerAddress.Substring(5));
+            }
 
-			// Add websocket sever address to XULRunner seb settings
-			xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocket] = SEBXULRunnerWebSocketServer.ServerAddress;
+            // Add websocket sever address to XULRunner seb settings
+            xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocket] = SEBXULRunnerWebSocketServer.ServerAddress;
 			xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocketEnabled] = true;
 			Logger.AddInformation("Socket: " + xulRunnerSettings[SEBSettings.KeyBrowserMessagingSocket].ToString(), null, null);
 

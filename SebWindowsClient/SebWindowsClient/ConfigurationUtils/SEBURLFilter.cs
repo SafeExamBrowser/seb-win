@@ -124,7 +124,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsCurrent[SEBSettings.KeyUrlFilterRulesAsRegex] = true;
 
             // Set if content filter is enabled
-            SEBSettings.settingsCurrent[SEBSettings.KeyUrlFilterTrustedContent] = SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnableContentFilter];
+            SEBSettings.settingsCurrent[SEBSettings.KeyUrlFilterTrustedContent] = !(bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnableContentFilter];
         }
 
 

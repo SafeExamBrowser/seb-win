@@ -133,10 +133,10 @@
     <value>The certificate needed to decrypt settings has not been found in the Windows Certificate Store.</value>
   </data>
   <data name="closeProcesses" xml:space="preserve">
-    <value>Permitted Processes Are Already Running</value>
+    <value>Permitted or Prohibited Processes Are Running</value>
   </data>
   <data name="closeProcessesQuestion" xml:space="preserve">
-    <value>The processes below are already running, they need to be closed before starting the exam. Do you want to close those processes now (this may lead to loss of data!)? Otherwise SEB will quit and you can close those applications yourself before trying to start the exam again.</value>
+    <value>The processes below are running, they need to be closed before starting the exam. Do you want to close those processes now (this may lead to loss of data!)? Otherwise SEB will quit and you can close those applications yourself before trying to start the exam again.</value>
   </data>
   <data name="confirmQuitting" xml:space="preserve">
     <value>Quit Safe Exam Browser</value>
@@ -425,5 +425,11 @@
   </data>
   <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
     <value>To use the on-screen-keyboard, enable tablet mode and detach the keyboard</value>
+  </data>
+  <data name="tableModeNotEnabledWarningText" xml:space="preserve">
+    <value>Please enable Windows Tablet Mode and start SEB again.</value>
+  </data>
+  <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
+    <value>Enable Windows Tablet Mode</value>
   </data>
 </root>

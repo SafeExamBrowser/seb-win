@@ -124,7 +124,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permitted Processes Are Already Running.
+        ///   Looks up a localized string similar to Permitted or Prohibited Processes Are Running.
         /// </summary>
         public static string closeProcesses {
             get {
@@ -133,7 +133,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The processes below are already running, they need to be closed before starting the exam. Do you want to close those processes now (this may lead to loss of data!)? Otherwise SEB will quit and you can close those applications yourself before trying to start the exam again..
+        ///   Looks up a localized string similar to The processes below are running, they need to be closed before starting the exam. Do you want to close those processes now (this may lead to loss of data!)? Otherwise SEB will quit and you can close those applications yourself before trying to start the exam again..
         /// </summary>
         public static string closeProcessesQuestion {
             get {
@@ -804,6 +804,24 @@ namespace SebWindowsClient {
         public static string settingsUntitledFilename {
             get {
                 return ResourceManager.GetString("settingsUntitledFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enable Windows Tablet Mode and start SEB again..
+        /// </summary>
+        public static string tableModeNotEnabledWarningText {
+            get {
+                return ResourceManager.GetString("tableModeNotEnabledWarningText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Windows Tablet Mode.
+        /// </summary>
+        public static string tableModeNotEnabledWarningTitle {
+            get {
+                return ResourceManager.GetString("tableModeNotEnabledWarningTitle", resourceCulture);
             }
         }
         

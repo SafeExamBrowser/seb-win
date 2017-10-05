@@ -127,10 +127,10 @@
     <value>Das zum Entschlüsseln der Einstellungen notwendige Zertifikat wurde nicht im Windows-Zertifikatsspeicher gefunden.</value>
   </data>
   <data name="closeProcesses" xml:space="preserve">
-    <value>Zugelassene Prozesse laufen bereits</value>
+    <value>Zugelassene oder verbotene Prozesse laufen</value>
   </data>
   <data name="closeProcessesQuestion" xml:space="preserve">
-    <value>Die untenstehenden Applikationen/Prozesse laufen bereits, sie müssen geschlossen werden, bevor die Prüfung gestartet wird. Wollen Sie diese Prozesse nun beenden (dies kann zu Datenverlust führen!)? Ansonsten wird SEB geschlossen und sie können diese Applikationen selber beenden, bevor Sie die Prüfung erneut starten.</value>
+    <value>Die untenstehenden Applikationen/Prozesse laufen momentan, sie müssen geschlossen werden, bevor die Prüfung gestartet wird. Wollen Sie diese Prozesse nun beenden (dies kann zu Datenverlust führen!)? Ansonsten wird SEB geschlossen und sie können diese Applikationen selber beenden, bevor Sie die Prüfung erneut starten.</value>
   </data>
   <data name="confirmQuitting" xml:space="preserve">
     <value>Safe Exam Browser beenden</value>
@@ -347,5 +347,11 @@
   </data>
   <data name="toolTipOnScreenKeyboardNotEnabled" xml:space="preserve">
     <value>Um die Bildschirmtastatur nutzen zu können, bitte den Windows Tablet-Modus aktivieren und die physische Tastatur entfernen</value>
+  </data>
+  <data name="tableModeNotEnabledWarningText" xml:space="preserve">
+    <value>Bitte aktiviere den Windows Tablet Modus und starte SEB erneut.</value>
+  </data>
+  <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
+    <value>Windows Tablet Modus aktivieren</value>
   </data>
 </root>

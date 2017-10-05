@@ -3,10 +3,10 @@ using System.ServiceModel;
 
 namespace SEBWindowsServiceContracts
 {
-    /// <summary>
-    /// The contact for the WCF Service
-    /// </summary>
-    [ServiceContract]
+	/// <summary>
+	/// The contact for the WCF Service
+	/// </summary>
+	[ServiceContract]
     public interface IRegistryServiceContract
     {
         [OperationContract]
@@ -28,6 +28,7 @@ namespace SEBWindowsServiceContracts
     /// Don't add a value without creating the corresponding subclass of RegistryEntry
     public enum RegistryIdentifiers
     {
+		DisableChromeNotifications,
         DisableLockWorkstation,
         DisableTaskMgr,
         DisableChangePassword,
@@ -37,7 +38,8 @@ namespace SEBWindowsServiceContracts
         EnableShade,
         EnableShadeHorizon,
         EaseOfAccess,
-        DontDisplayNetworkSelectionUI
+        DontDisplayNetworkSelectionUI,
+        NoAutoRebootWithLoggedOnUsers
     }
 
 }

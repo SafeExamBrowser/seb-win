@@ -1525,11 +1525,6 @@ namespace SebWindowsConfig
 		{
 			if (radioButtonTouchOptimized.Checked == true)
 			{
-				if ((Boolean) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
-				{
-					MessageBox.Show(
-					"Touch optimization will not work when kiosk mode is set to 'Create new desktop', please change kiosk mode to 'Disable Explorer Shell' in the Security tab.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				}
 				groupBoxMainBrowserWindow.Enabled = false;
 				SEBSettings.settingsCurrent[SEBSettings.KeyBrowserViewMode] = 1;
 				SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkWidth] = "100%";
@@ -1997,7 +1992,8 @@ namespace SebWindowsConfig
 			 textBoxPermittedProcessTitle      .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyTitle];
 			 textBoxPermittedProcessDescription.Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyDescription];
 			 textBoxPermittedProcessExecutable .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyExecutable];
-			 textBoxPermittedProcessExecutables .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyWindowHandlingProcess];
+			textBoxPermittedProcessOriginalName.Text = (String) SEBSettings.permittedProcessData[SEBSettings.KeyOriginalName];
+			textBoxPermittedProcessExecutables .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyWindowHandlingProcess];
 			 textBoxPermittedProcessPath       .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyPath];
 			 textBoxPermittedProcessIdentifier .Text   =  (String)SEBSettings.permittedProcessData[SEBSettings.KeyIdentifier];
 
@@ -2051,7 +2047,8 @@ namespace SebWindowsConfig
 			 textBoxPermittedProcessTitle      .Text   = "";
 			 textBoxPermittedProcessDescription.Text   = "";
 			 textBoxPermittedProcessExecutable .Text   = "";
-			 textBoxPermittedProcessExecutables .Text   = "";
+			textBoxPermittedProcessOriginalName.Text = "";
+			textBoxPermittedProcessExecutables .Text   = "";
 			 textBoxPermittedProcessPath       .Text   = "";
 			 textBoxPermittedProcessIdentifier .Text   = "";
 
@@ -2189,6 +2186,7 @@ namespace SebWindowsConfig
 			processData[SEBSettings.KeyTitle      ] = "";
 			processData[SEBSettings.KeyDescription] = "";
 			processData[SEBSettings.KeyExecutable ] = "";
+			processData[SEBSettings.KeyOriginalName] = "";
 			processData[SEBSettings.KeyWindowHandlingProcess ] = "";
 			processData[SEBSettings.KeyPath       ] = "";
 			processData[SEBSettings.KeyIdentifier ] = "";
@@ -2238,6 +2236,7 @@ namespace SebWindowsConfig
 			{
 				buttonAddPermittedProcess_Click(this, EventArgs.Empty);
 				textBoxPermittedProcessExecutable.Text = permittedApplicationInformation.Executable;
+				textBoxPermittedProcessOriginalName.Text = permittedApplicationInformation.OriginalName;
 				textBoxPermittedProcessTitle.Text = permittedApplicationInformation.Title;
 				textBoxPermittedProcessPath.Text = permittedApplicationInformation.Path;
 			}
@@ -2249,6 +2248,7 @@ namespace SebWindowsConfig
 			if (permittedApplicationInformation != null)
 			{
 				textBoxPermittedProcessExecutable.Text = permittedApplicationInformation.Executable;
+				textBoxPermittedProcessOriginalName.Text = permittedApplicationInformation.OriginalName;
 				textBoxPermittedProcessTitle.Text = permittedApplicationInformation.Title;
 				textBoxPermittedProcessPath.Text = permittedApplicationInformation.Path;
 			}
@@ -2305,6 +2305,8 @@ namespace SebWindowsConfig
 					.Replace(Environment.SystemDirectory.ToLower(), "");
 
 				permittedApplicationInformation.Path = filePath;
+				permittedApplicationInformation.OriginalName = FileVersionInfo.GetVersionInfo(filename).OriginalFilename;
+
 				return permittedApplicationInformation;
 				//TODO (pwyss 2015/03/13): Keep a list with tools that need special configurations and fill them accordingly (WindowHandlingProcess for example)
 			}
@@ -2428,6 +2430,13 @@ namespace SebWindowsConfig
 			ignoreCellEventPermittedProcessesExecutable = false;
 		}
 
+		private void textBoxPermittedProcessOriginalName_TextChanged(object sender, EventArgs e)
+		{
+			if (SEBSettings.permittedProcessIndex < 0) return;
+			SEBSettings.permittedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyPermittedProcesses];
+			SEBSettings.permittedProcessData = (DictObj)SEBSettings.permittedProcessList[SEBSettings.permittedProcessIndex];
+			SEBSettings.permittedProcessData[SEBSettings.KeyOriginalName] = textBoxPermittedProcessOriginalName.Text;
+		}
 
 		private void textBoxPermittedProcessPath_TextChanged(object sender, EventArgs e)
 		{
@@ -2604,7 +2613,8 @@ namespace SebWindowsConfig
 			checkBoxProhibitedProcessStrongKill .Checked = (Boolean)SEBSettings.prohibitedProcessData[SEBSettings.KeyStrongKill];
 			 listBoxProhibitedProcessOS.SelectedIndex    =   (Int32)SEBSettings.prohibitedProcessData[SEBSettings.KeyOS];
 			 textBoxProhibitedProcessExecutable .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyExecutable];
-			 textBoxProhibitedProcessDescription.Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyDescription];
+			textBoxProhibitedProcessOriginalName.Text = (String) SEBSettings.prohibitedProcessData[SEBSettings.KeyOriginalName];
+			textBoxProhibitedProcessDescription.Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyDescription];
 			 textBoxProhibitedProcessIdentifier .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyIdentifier];
 			 textBoxProhibitedProcessUser       .Text    =  (String)SEBSettings.prohibitedProcessData[SEBSettings.KeyUser];
 
@@ -2632,7 +2642,8 @@ namespace SebWindowsConfig
 			checkBoxProhibitedProcessStrongKill .Checked = false;
 			 listBoxProhibitedProcessOS.SelectedIndex    = IntWin;
 			 textBoxProhibitedProcessExecutable .Text    = "";
-			 textBoxProhibitedProcessDescription.Text    = "";
+			textBoxProhibitedProcessOriginalName.Text = "";
+			textBoxProhibitedProcessDescription.Text    = "";
 			 textBoxProhibitedProcessIdentifier .Text    = "";
 			 textBoxProhibitedProcessUser       .Text    = "";
 
@@ -2762,6 +2773,7 @@ namespace SebWindowsConfig
 			processData[SEBSettings.KeyStrongKill ] = false;
 			processData[SEBSettings.KeyOS         ] = IntWin;
 			processData[SEBSettings.KeyExecutable ] = "";
+			processData[SEBSettings.KeyOriginalName] = "";
 			processData[SEBSettings.KeyDescription] = "";
 			processData[SEBSettings.KeyIdentifier ] = "";
 			processData[SEBSettings.KeyUser       ] = "";
@@ -2875,6 +2887,13 @@ namespace SebWindowsConfig
 			ignoreCellEventProhibitedProcessesExecutable = false;
 		}
 
+		private void textBoxProhibitedProcessOriginalName_TextChanged(object sender, EventArgs e)
+		{
+			if (SEBSettings.prohibitedProcessIndex < 0) return;
+			SEBSettings.prohibitedProcessList = (ListObj) SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
+			SEBSettings.prohibitedProcessData = (DictObj) SEBSettings.prohibitedProcessList[SEBSettings.prohibitedProcessIndex];
+			SEBSettings.prohibitedProcessData[SEBSettings.KeyOriginalName] = textBoxProhibitedProcessOriginalName.Text;
+		}
 
 		private void textBoxProhibitedProcessDescription_TextChanged(object sender, EventArgs e)
 		{
@@ -3392,11 +3411,6 @@ namespace SebWindowsConfig
 		private void radioCreateNewDesktop_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop] = radioCreateNewDesktop.Checked;
-			if (radioCreateNewDesktop.Checked && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] == true)
-			{
-				MessageBox.Show(
-					"Touch optimization will not work when kiosk mode is set to Create New Desktop, please change the appearance.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
 		}
 
 		private void radioKillExplorerShell_CheckedChanged(object sender, EventArgs e)
@@ -3962,6 +3976,5 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
-
 	}
 }

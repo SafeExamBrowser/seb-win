@@ -494,8 +494,8 @@ this.SebNet = {
 			return true;
 		}
 
-        // Trim a possible trailing slash "/" from the URL
-        url = url.replace(/\/+$/, '');
+    // Trim a possible trailing slash "/" from the URL
+    url = url.replace(/\/+$/, '');
 
 		// special internal pages
 		if (sw.winTypesReg.pdfViewer.test(url)) {

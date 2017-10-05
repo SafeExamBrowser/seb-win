@@ -85,7 +85,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 						}
 						catch (Exception ex)
 						{
-							Logger.Log(ex, String.Format("Unable to set the registry value for {0}", registryValue.Key));
+							Logger.Log(ex, String.Format("Unable to set the registry value for {0}: {1}: {2}", registryValue.Key, ex.Message, ex.StackTrace));
 							res = false;
 						}
 					}
@@ -93,7 +93,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 			}
 			catch (Exception ex)
 			{
-				Logger.Log(ex, "Unable to set Registry value");
+				Logger.Log(ex, string.Format("Unable to set Registry value: {0}: {1}", ex.Message, ex.StackTrace));
 				res = false;
 			}
 			
@@ -129,7 +129,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 			}
 			catch (Exception ex)
 			{
-				Logger.Log(ex, "Unable to Reset Registrysettings");
+				Logger.Log(ex, string.Format("Unable to Reset Registrysettings: {0} : {1}", ex.Message, ex.StackTrace));
 				res = false;
 			}
 			return res;
@@ -164,20 +164,28 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 					if (enable)
 					{
 						service.Start();
-						//service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                        //service.WaitForStatus(ServiceControllerStatus.Running, timeout);
 					}
 					else
 					{
 						service.Stop();
-						//service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-					}
+                        if (SetRegistryEntries(new Dictionary<RegistryIdentifiers, object>
+                        {
+                            {RegistryIdentifiers.NoAutoRebootWithLoggedOnUsers, 1 }
+                        }, null, null))
+                        {
+                            new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
+                        }
+                        //service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    }
 
 					Logger.Log(String.Format("Set windows update to {0}", enable));
 
 					return true;
 				}
-				catch
+				catch (Exception ex)
 				{
+                    Logger.Log(string.Format("Unable to disable Windows Update: {0} : ", ex.Message, ex.StackTrace));
 					return false;
 				}
 			}
@@ -196,9 +204,10 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 				return true;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return false;
+                Logger.Log(string.Format("Unable to disable Windows Update: {0} : ", ex.Message, ex.StackTrace));
+                return false;
 			}            
 		}
 

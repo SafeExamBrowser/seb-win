@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Management;
+using System.Threading;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.Win32;
 using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.DesktopUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsClient.ProcessUtils;
-using SebWindowsClient.DesktopUtils;
-using System.Threading;
-using Microsoft.VisualBasic.ApplicationServices;
 
 //
 //  SebWindowsClient.cs
@@ -47,7 +49,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 namespace SebWindowsClient
 {
-    public class SingleInstanceController : WindowsFormsApplicationBase
+	public class SingleInstanceController : WindowsFormsApplicationBase
     {
         public SingleInstanceController()
         {
@@ -288,26 +290,28 @@ namespace SebWindowsClient
             //Search for permitted Applications (used in Taskswitcher (ALT-TAB) and in foreground watchdog
             SEBWindowHandler.AllowedExecutables.Clear();
             //Add the SafeExamBrowser to the allowed executables
-            SEBWindowHandler.AllowedExecutables.Add("safeexambrowser");
+            SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("safeexambrowser"));
             //Add allowed executables from all allowedProcessList
             foreach (Dictionary<string, object> process in SEBSettings.permittedProcessList)
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
-                    if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
-                    {
-                        SEBWindowHandler.AllowedExecutables.Add(
-                        ((string)process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
-                    }
-                }
+					var processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyExecutable] ?? string.Empty).ToLower());
+					var originalProcessName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyOriginalName] ?? string.Empty).ToLower());
+
+					SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName, originalProcessName));
+
+					if (!String.IsNullOrWhiteSpace(process[SEBSettings.KeyWindowHandlingProcess].ToString()))
+					{
+						processName = Path.GetFileNameWithoutExtension(((string) process[SEBSettings.KeyWindowHandlingProcess]).ToLower());
+						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo(processName));
+					}
+				}
             }
 
 #if DEBUG
             //Add visual studio to allowed executables for debugging
-            SEBWindowHandler.AllowedExecutables.Add("devenv");
+            SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("devenv"));
 #endif
 
             //if none of the two kiosk modes are enabled, then we do not monitor the processes, otherwise we monitor the processes. The switch for monitoring processes has no longer any function.
@@ -344,10 +348,11 @@ namespace SebWindowsClient
             {
                 if ((bool)process[SEBSettings.KeyActive])
                 {
-                    //First add the executable itself
-                    SEBProcessHandler.ProhibitedExecutables.Add(
-                        ((string)process[SEBSettings.KeyExecutable]).ToLower());
-                }
+					var name = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyExecutable] ?? string.Empty);
+					var originalName = Path.GetFileNameWithoutExtension((string) process[SEBSettings.KeyOriginalName] ?? string.Empty);
+
+					SEBProcessHandler.ProhibitedExecutables.Add(new ExecutableInfo(name, originalName));
+				}
             }
             //This prevents the prohibited executables from starting up
             try
@@ -400,6 +405,29 @@ namespace SebWindowsClient
                 SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
                 Logger.AddInformation("Closing New Dekstop");
                 SEBClientInfo.SEBNewlDesktop.Close();
+            }
+        }
+
+        public static void CheckIfTabletModeIsEnabled()
+        {
+            if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
+            {
+                bool? tabletMode = null;
+                try
+                {
+                   //returns null if the key is not existing (another windows version than 10)
+                   tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1) == 1;
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Unable to check for tablet mode, assuming its not a Windows Version with a tablet mode and if so, ignore this error", null, ex, ex.StackTrace);
+                }
+                if (tabletMode != null && tabletMode == false)
+                {
+                    SEBMessageBox.Show(SEBUIStrings.tableModeNotEnabledWarningTitle, SEBUIStrings.tableModeNotEnabledWarningText, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    Logger.AddInformation("Windows Tablet mode was not enabled, exiting seb", null, null);
+                    throw new SEBNotAllowedToRunEception("SEB not running without Tablet mode...");
+                }
             }
         }
 

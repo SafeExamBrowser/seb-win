@@ -225,6 +225,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyTitle       = "title";
 		public const String KeyDescription = "description";
 		public const String KeyExecutable  = "executable";
+		public const String KeyOriginalName = "originalName";
 		public const String KeyPath        = "path";
 		public const String KeyIdentifier  = "identifier";
 		public const String KeyUser        = "user";
@@ -429,6 +430,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public static ListObj prohibitedProcessList        = new ListObj();
 		public static DictObj prohibitedProcessData        = new DictObj();
 		public static DictObj prohibitedProcessDataDefault = new DictObj();
+		private static List<string> prohibitedProcessesDefault;
 
 		public static int     urlFilterRuleIndex;
 		public static ListObj urlFilterRuleList        = new ListObj();
@@ -695,6 +697,7 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyTitle      , "SEB");
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyDescription, "");
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyExecutable, SEBClientInfo.XUL_RUNNER);
+			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyOriginalName, SEBClientInfo.XUL_RUNNER);
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyPath       , "../xulrunner/");
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyIdentifier , "Firefox");
 			SEBSettings.permittedProcessDataXulRunner.Add(SEBSettings.KeyWindowHandlingProcess , "");
@@ -712,6 +715,7 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyTitle      , "");
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyDescription, "");
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyExecutable , "");
+			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyOriginalName, "");
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyPath       , "");
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyIdentifier , "");
 			SEBSettings.permittedProcessDataDefault.Add(SEBSettings.KeyWindowHandlingProcess , "");
@@ -724,10 +728,13 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyStrongKill , false);
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyOS         , IntWin);
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyExecutable , "");
+			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyOriginalName, "");
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyDescription, "");
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyIdentifier , "");
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyWindowHandlingProcess , "");
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyUser       , "");
+
+			SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser" };
 
 			// Default settings for group "Network - Filter"
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);
@@ -870,13 +877,13 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyHookKeys, true);
 
 			// Default settings for group "Special Keys"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableEsc        , false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableEsc        , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableCtrlEsc    , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltEsc     , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltTab     , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltF4      , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableStartMenu  , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableRightMouse , false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableRightMouse , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnablePrintScreen, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltMouseWheel, false);
 
@@ -1439,14 +1446,64 @@ namespace SebWindowsClient.ConfigurationUtils
 
 			}
 
-			// If XulRunner process was not in Permitted Process List, add it
+			// If XulRunner process was not in Permitted Process List, insert it at the beginning
 			if (indexOfProcessXulRunnerExe == -1)
 			{
-				SEBSettings.permittedProcessList.Add(SEBSettings.permittedProcessDataXulRunner);
+				SEBSettings.permittedProcessList.Insert(0, SEBSettings.permittedProcessDataXulRunner);
+			}
+
+			AddDefaultProhibitedProcesses();
+		}
+
+		public static void AddDefaultProhibitedProcesses()
+		{
+			// Get the Prohibited Process list
+			SEBSettings.prohibitedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
+
+			foreach (string defaultProhibitedProcessName in prohibitedProcessesDefault)
+			{
+				// Position of this default prohibited process in Prohibited Process list
+				int indexOfProcess = -1;
+
+				string prohibitedProcessFilenameWithoutExtension = Path.GetFileNameWithoutExtension(defaultProhibitedProcessName);
+
+				// Traverse Prohibited Processes of currently opened file
+				for (int listIndex = 0; listIndex < SEBSettings.prohibitedProcessList.Count; listIndex++)
+				{
+					DictObj prohibitedProcessData = (DictObj)SEBSettings.prohibitedProcessList[listIndex];
+
+					// Check if this prohibited process already is in Prohibited Process list in current settings
+					if (Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyOriginalName]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase) ||
+						Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyExecutable]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase))
+						indexOfProcess = listIndex;
+
+				} // next listIndex
+
+				// If this default prohibited process was not in Prohibited Process list, insert it at the beginning
+				if (indexOfProcess == -1)
+				{
+					SEBSettings.prohibitedProcessList.Insert(0, prohibitetProcessDictForProcess(defaultProhibitedProcessName));
+				}
 			}
 		}
 
+		private static DictObj prohibitetProcessDictForProcess(string processName)
+		{
+			DictObj prohibitedProcessDict = new DictObj();
 
+			prohibitedProcessDict.Add(SEBSettings.KeyActive, true);
+			prohibitedProcessDict.Add(SEBSettings.KeyCurrentUser, true);
+			prohibitedProcessDict.Add(SEBSettings.KeyStrongKill, false);
+			prohibitedProcessDict.Add(SEBSettings.KeyOS, IntWin);
+			prohibitedProcessDict.Add(SEBSettings.KeyExecutable, processName);
+			prohibitedProcessDict.Add(SEBSettings.KeyOriginalName, processName);
+			prohibitedProcessDict.Add(SEBSettings.KeyDescription, "");
+			prohibitedProcessDict.Add(SEBSettings.KeyIdentifier, "");
+			prohibitedProcessDict.Add(SEBSettings.KeyWindowHandlingProcess, "");
+			prohibitedProcessDict.Add(SEBSettings.KeyUser, "");
+
+			return prohibitedProcessDict;
+		}
 
 		// **************
 		// Print settings

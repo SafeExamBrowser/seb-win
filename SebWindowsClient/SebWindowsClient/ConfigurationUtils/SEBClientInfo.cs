@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.DesktopUtils;
-using System.Xml.Serialization;
-using SebWindowsClient.CryptographyUtils;
-using System.Security.Cryptography.X509Certificates;
-using PlistCS;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+using SebWindowsClient.DesktopUtils;
+using SebWindowsClient.DiagnosticsUtils;
 //
 //  SEBClientInfo.cs
 //  SafeExamBrowser
@@ -49,7 +44,7 @@ using System.Collections;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public enum chooseFileToUploadPolicies
+	public enum chooseFileToUploadPolicies
     {
         manuallyWithFileRequester               = 0,
         attemptUploadSameFileDownloadedBefore   = 1,
@@ -96,25 +91,26 @@ namespace SebWindowsClient.ConfigurationUtils
 		#region Imports
         [DllImport("kernel32.Dll")]
         public static extern short GetVersionEx(ref OSVERSIONINFO o);
-        #endregion
+		#endregion
 
-        // Socket protocol
-        //static int ai_family   = AF_INET;
-        //static int ai_socktype = SOCK_STREAM;
-        //static int ai_protocol = IPPROTO_TCP;
+		// Socket protocol
+		//static int ai_family   = AF_INET;
+		//static int ai_socktype = SOCK_STREAM;
+		//static int ai_protocol = IPPROTO_TCP;
 
-        #region Constants
+		#region Constants
 
-        // Name and location of SEB configuration files and logfiles
-        public const string SEB_CLIENT_CONFIG = "SebClientSettings.seb";
-        public const string SEB_CLIENT_LOG    = "SebClient.log";
-        private const string XUL_RUNNER_CONFIG = "config.json";
-        public  const string XUL_RUNNER        = "firefox.exe";
-        private const string XUL_RUNNER_INI    = "seb.ini";
- 
-        // Application path contains [MANUFACTURER]\[PRODUCT_NAME]
-        // (see also "SebWindowsPackageSetup" Project in MS Visual Studio 10)
-        public const string MANUFACTURER_LOCAL     = "SafeExamBrowser";
+		// Name and location of SEB configuration files and logfiles
+		public const string SEB_CLIENT_CONFIG = "SebClientSettings.seb";
+		public const string SEB_CLIENT_LOG = "SebClient.log";
+		private const string XUL_RUNNER_CONFIG = "config.json";
+		public const string SEB_SHORTNAME = "SEB";
+		public const string XUL_RUNNER = "firefox.exe";
+		private const string XUL_RUNNER_INI = "seb.ini";
+
+		// Application path contains [MANUFACTURER]\[PRODUCT_NAME]
+		// (see also "SebWindowsPackageSetup" Project in MS Visual Studio 10)
+		public const string MANUFACTURER_LOCAL     = "SafeExamBrowser";
         //private const string MANUFACTURER         = "ETH Zuerich";
         public const string PRODUCT_NAME           = "SafeExamBrowser";
         public const string SEB_SERVICE_DIRECTORY = "SebWindowsServiceWCF";

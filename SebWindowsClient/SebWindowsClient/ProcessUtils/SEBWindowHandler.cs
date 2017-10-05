@@ -21,7 +21,7 @@ namespace SebWindowsClient.ProcessUtils
         /// <summary>
         /// A list of not allowed window titles (the title must not exactly match but only contain the values in here
         /// </summary>
-        public static List<string> AllowedExecutables = new List<string>();
+        public static List<ExecutableInfo> AllowedExecutables = new List<ExecutableInfo>();
 
         /// <summary>
         /// The possible actions for a window defined by ShowWindowAsync()
@@ -46,36 +46,59 @@ namespace SebWindowsClient.ProcessUtils
 
         private static List<IntPtr> _hiddenWindowHandles = new List<IntPtr>();
 
-        #endregion
+		#endregion
 
-        #region Public Methods
+		#region Public Methods
 
-        /// <summary>
-        /// Checks if the process that holds the windowhandle is allowed to show its window
-        /// </summary>
-        /// <param name="processName"></param>
-        /// <returns></returns>
-        public static bool IsWindowAllowedByProcessName(string processName)
-        {
-            if (String.IsNullOrWhiteSpace(processName))
-                return false;
+		/// <summary>
+		/// Checks if the process that holds the window handle is allowed to show its window.
+		/// </summary>
+		public static bool IsWindowAllowed(this Process process)
+		{
+			var processName = process.GetExecutableName();
 
-            processName = processName.ToLower();
+			if (!String.IsNullOrWhiteSpace(processName))
+			{
+				var processHasOriginalName = process.HasOriginalName(out string originalProcessName);
 
-            //If no allowed apps are specified, meaning all apps are allowed return true
-            if (AllowedExecutables.Count == 0)
-                return true;
-            //If explicitly allowed return true
-            if (AllowedExecutables.Count > 0 && AllowedExecutables.Any(ex => ex.Contains(processName) || processName.Contains(ex)))
-                return true;
+				foreach (var executable in AllowedExecutables)
+				{
+					var isAllowed = executable.HasName || executable.HasOriginalName;
 
-            //else return false
-            return false;
-        }
+					if (executable.HasName)
+					{
+						isAllowed &= executable.Name.Equals(processName, StringComparison.InvariantCultureIgnoreCase);
+					}
 
-        /// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
-        /// <returns>A dictionary that contains the handle and title (in lower case) of all the open windows.</returns>
-        public static IDictionary<IntPtr, string> GetOpenWindows()
+					if (executable.HasOriginalName && processHasOriginalName)
+					{
+						isAllowed &= executable.OriginalName.Equals(originalProcessName, StringComparison.InvariantCultureIgnoreCase);
+
+						if (!executable.HasName)
+						{
+							isAllowed &= executable.OriginalName.Equals(processName, StringComparison.InvariantCultureIgnoreCase);
+						}
+					}
+					else if (executable.HasOriginalName && !processHasOriginalName)
+					{
+						isAllowed = false;
+					}
+
+					if (isAllowed)
+					{
+						return true;
+					}
+				}
+			}
+
+			Logger.AddInformation(String.Format("Window for process '{0}' is not allowed!", processName ?? "<NULL>"));
+
+			return false;
+		}
+
+		/// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
+		/// <returns>A dictionary that contains the handle and title (in lower case) of all the open windows.</returns>
+		public static IDictionary<IntPtr, string> GetOpenWindows()
         {
             try
             {
@@ -351,15 +374,6 @@ namespace SebWindowsClient.ProcessUtils
             {
                 ForegroundWatchDog.StopWatchDog();
             }
-        }
-
-        #endregion
-
-        #region Process Extensions
-
-        public static bool IsWindowAllowed(this Process process)
-        {
-            return IsWindowAllowedByProcessName(process.GetExecutableName());
         }
 
         #endregion

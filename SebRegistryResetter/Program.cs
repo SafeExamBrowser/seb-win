@@ -134,7 +134,8 @@ namespace SebRegistryResetter
                 new RegHideFastUserSwitching(sid),
                 new RegNoClose(sid),
                 new RegNoLogoff(sid),
-                new RegDontDisplayNetworkSelectionUI(sid)
+                new RegDontDisplayNetworkSelectionUI(sid),
+                new RegNoAutoRebootWithLoggedOnUsers(sid)
             };
 
             var entriesToOne = new List<RegistryEntry>

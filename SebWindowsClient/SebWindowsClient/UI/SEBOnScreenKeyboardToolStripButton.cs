@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -56,8 +57,8 @@ namespace SebWindowsClient.UI
 
 		private void EnableOrDisableBasedOnState()
 		{
-			var tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1);
-			this.Enabled = tabletMode == 1 && GetSystemMetrics(SystemMetric.SM_CONVERTABLESLATEMODE) == 0;
+            var tabletMode = (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell", "TabletMode", 1);
+            this.Enabled = tabletMode == 1 && GetSystemMetrics(SystemMetric.SM_CONVERTABLESLATEMODE) == 0;
 			this.ToolTipText = !this.Enabled ? SEBUIStrings.toolTipOnScreenKeyboardNotEnabled : SEBUIStrings.toolTipOnScreenKeyboard;
 		}
 
@@ -123,8 +124,8 @@ namespace SebWindowsClient.UI
 						return;
 					}
 
-					if (!SEBWindowHandler.AllowedExecutables.Contains("tabtip.exe"))
-						SEBWindowHandler.AllowedExecutables.Add("tabtip.exe");
+					if (!SEBWindowHandler.AllowedExecutables.Any(e => e.Name == "tabtip"))
+						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("tabtip"));
 
 					//TODO: Use Environment Variable here, but with SEB running as 32bit it always takes X86
 					//string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -170,6 +171,8 @@ namespace SebWindowsClient.UI
 		/// The window is disabled. See http://msdn.microsoft.com/en-gb/library/windows/desktop/ms632600(v=vs.85).aspx.
 		/// </summary>
 		public const UInt32 WS_DISABLED = 0x8000000;
+		public const UInt32 WS_MINIMIZE = 0x20000000;
+		public const UInt32 WS_VISIBLE = 0x10000000;
 
 		/// <summary>
 		/// Specifies we wish to retrieve window styles.
@@ -214,7 +217,7 @@ namespace SebWindowsClient.UI
 			{
 				keyboardHandle.MaximizeWindow();
 				UInt32 style = GetWindowLong(keyboardHandle, GWL_STYLE);
-				visible = ((style & WS_DISABLED) != WS_DISABLED);
+				visible = (style & WS_DISABLED) != WS_DISABLED && (style & WS_MINIMIZE) != WS_MINIMIZE && (style & WS_VISIBLE) == WS_VISIBLE;
 			}
 
 			return visible;

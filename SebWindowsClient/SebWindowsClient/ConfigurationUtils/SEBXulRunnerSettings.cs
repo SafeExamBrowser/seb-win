@@ -165,20 +165,6 @@ namespace SebWindowsClient.ConfigurationUtils
 			}
 			else
 			{
-				// URL filter is enabled: Set trusted content flag to same value (what actually doesn't make sense, but it's implemented wrong in seb winctrl.jsm)
-				xulRunnerSettings[SEBSettings.KeyUrlFilterTrustedContent] = (bool)xulRunnerSettings[SEBSettings.KeyURLFilterEnableContentFilter];
-
-                // Convert new URL Filter rules to XUL seb2 rules
-
-
-				//add the starturl to the whitelist if not yet added
-				if (!xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist].ToString().Contains(xulRunnerSettings[SEBSettings.KeyStartURL].ToString()))
-					if (!String.IsNullOrWhiteSpace(xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist].ToString()))
-					{
-						xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += @";";
-					}
-					xulRunnerSettings[SEBSettings.KeyUrlFilterWhitelist] += xulRunnerSettings[SEBSettings.KeyStartURL].ToString();
-
 				//Add the socket address if content filter is enabled
 				if ((bool)xulRunnerSettings[SEBSettings.KeyURLFilterEnableContentFilter] == true)
 				{

@@ -399,8 +399,13 @@ namespace SebWindowsClient
 			if (userDefinedArguments == null) userDefinedArguments="";
 			try
 			{
-				// Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
-				var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
+                // Convert new URL Filter rules to XUL seb2 rules
+                // and add Start URL to allowed rules
+                SEBURLFilter urlFilter = new SEBURLFilter();
+                urlFilter.UpdateFilterRules();
+
+                // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
+                var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
 				string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
 				// Create the path to firefox.exe plus all arguments
 				StringBuilder xulRunnerPathBuilder = new StringBuilder(SEBClientInfo.XulRunnerExePath);

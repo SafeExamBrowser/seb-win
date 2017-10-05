@@ -32,7 +32,8 @@ namespace SebWindowsClient.ConfigurationUtils
 
             ListObj URLFilterRules = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterRules];
 
-            foreach (DictObj URLFilterRule in URLFilterRules) {
+            foreach (DictObj URLFilterRule in URLFilterRules)
+            {
 
                 if ((bool)URLFilterRule["active"] == true)
                 {
@@ -62,7 +63,8 @@ namespace SebWindowsClient.ConfigurationUtils
                         }
 
                         int action = (int)URLFilterRule["action"];
-                        switch (action) {
+                        switch (action)
+                        {
 
                             case (int)URLFilterRuleActions.block:
 
@@ -154,125 +156,139 @@ namespace SebWindowsClient.ConfigurationUtils
         }
 
 
-    // Filter URL and return if it is allowed or blocked
-    /*
-public URLFilterRuleActions TestURLAllowed(Uri URLToFilter)
-{
-    string URLToFilterString = URLToFilter.ToString();
-    // By default URLs are blocked
-    bool allowURL = false;
-    bool blockURL = false;
-    
-    /// Apply current filter rules (expressions/actions) to URL
-    /// Apply prohibited filter expressions
-    
-    foreach (object expression in prohibitedList) {
+        // Filter URL and return if it is allowed or blocked
+        public URLFilterRuleActions TestURLAllowed(Uri URLToFilter)
+        {
+            string URLToFilterString = URLToFilter.ToString();
+            // By default URLs are blocked
+            bool allowURL = false;
+            bool blockURL = false;
 
-        if (expression.GetType().Equals(typeof(Regex))) {
-            if (Regex.IsMatch(URLToFilterString, expression.ToString())) {
-                blockURL = true;
-                break;
-            }
-        }
-        
-        if ([expression isKindOfClass:[SEBURLFilterRegexExpression class]]) {
-            if ([self URL:(NSURL*)URLToFilter matchesFilterExpression:expression]) {
-                blockURL = YES;
-                break;
-            }
-        }
-    }
-    if (blockURL == true) {
-        return URLFilterActionBlock;
-    }
-    
-    /// Apply permitted filter expressions
-    
-    for (expression in self.permittedList) {
-        
-        if ([expression isKindOfClass:[NSRegularExpression class]]) {
-            if ([self regexFilterExpression:expression hasMatchesInString:URLToFilterString]) {
-                allowURL = YES;
-                break;
-            }
-        }
-        
-        if ([expression isKindOfClass:[SEBURLFilterRegexExpression class]]) {
-            if ([self URL:(NSURL*)URLToFilter matchesFilterExpression:expression]) {
-                allowURL = YES;
-                break;
-            }
-        }
-    }
-    // Return URLFilterActionAllow if URL is allowed or
-    // URLFilterActionUnknown if it's unknown (= it will anyways be blocked)
-    return allowURL? URLFilterActionAllow : URLFilterActionUnknown;
-}
-*/
+            /// Apply current filter rules (expressions/actions) to URL
+            /// Apply prohibited filter expressions
 
-    // Method comparing all components of a passed URL with the filter expression
-// and returning YES (= allow or block) if it matches
-public bool URLMatchesFilterExpression(Uri URLToFilter, SEBURLFilterRegexExpression filterExpression)
-{
-    Regex filterComponent;
+            foreach (object expression in prohibitedList)
+            {
 
-    // If a scheme is indicated in the filter expression, it has to match
-    filterComponent = filterExpression.scheme;
-    if (filterComponent != null &&
-        !Regex.IsMatch(URLToFilter.Scheme, filterComponent.ToString(), RegexOptions.IgnoreCase)) {
-        // Scheme of the URL to filter doesn't match the one from the filter expression: Exit with matching = NO
-        return false;
-    }
+                if (expression.GetType().Equals(typeof(Regex)))
+                {
+                    if (Regex.IsMatch(URLToFilterString, expression.ToString()))
+                    {
+                        blockURL = true;
+                        break;
+                    }
+                }
+
+                if (expression.GetType().Equals(typeof(SEBURLFilterRegexExpression)))
+                {
+                    if (URLMatchesFilterExpression(URLToFilter, (SEBURLFilterRegexExpression)expression))
+                    {
+                        blockURL = true;
+                        break;
+                    }
+                }
+            }
+            if (blockURL == true)
+            {
+                return URLFilterRuleActions.block;
+            }
+
+            /// Apply permitted filter expressions
+
+            foreach (object expression in permittedList)
+            {
+
+                if (expression.GetType().Equals(typeof(Regex)))
+                {
+                    if (Regex.IsMatch(URLToFilterString, expression.ToString()))
+                    {
+                        allowURL = true;
+                        break;
+                    }
+                }
+
+                if (expression.GetType().Equals(typeof(SEBURLFilterRegexExpression)))
+                {
+                    if (URLMatchesFilterExpression(URLToFilter, (SEBURLFilterRegexExpression)expression))
+                    {
+                        allowURL = true;
+                        break;
+                    }
+                }
+
+            }
+            // Return URLFilterActionAllow if URL is allowed or
+            // URLFilterActionUnknown if it's unknown (= it will anyways be blocked)
+            return allowURL ? URLFilterRuleActions.allow : URLFilterRuleActions.unknown;
+        }
+
+        // Method comparing all components of a passed URL with the filter expression
+        // and returning YES (= allow or block) if it matches
+        public bool URLMatchesFilterExpression(Uri URLToFilter, SEBURLFilterRegexExpression filterExpression)
+        {
+            Regex filterComponent;
+
+            // If a scheme is indicated in the filter expression, it has to match
+            filterComponent = filterExpression.scheme;
+            if (filterComponent != null &&
+                !Regex.IsMatch(URLToFilter.Scheme, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            {
+                // Scheme of the URL to filter doesn't match the one from the filter expression: Exit with matching = NO
+                return false;
+            }
 
             string userInfo = URLToFilter.UserInfo;
-    filterComponent = filterExpression.user;
-            if (filterComponent != null &&
-        !Regex.IsMatch(SEBURLFilterExpression.User(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase)) {
-        return false;
-    }
-
-    filterComponent = filterExpression.password;
-            if (filterComponent != null &&
-        !Regex.IsMatch(SEBURLFilterExpression.Password(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase))
+            filterComponent = filterExpression.user;
+            if (filterComponent != null && 
+                !Regex.IsMatch(SEBURLFilterExpression.User(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
-    }
+            }
 
-    filterComponent = filterExpression.host;
-            if (filterComponent != null &&
-        !Regex.IsMatch(URLToFilter.Host, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            filterComponent = filterExpression.password;
+            if (filterComponent != null && 
+                !Regex.IsMatch(SEBURLFilterExpression.Password(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
-    }
-    
-    if (filterExpression.port && URLToFilter.Port != -1 &&
-        URLToFilter.port.intValue != filterExpression.port.intValue) {
-        return false;
-    }
+            }
 
-    filterComponent = filterExpression.path;
+            filterComponent = filterExpression.host;
+            if (filterComponent != null && 
+                !Regex.IsMatch(URLToFilter.Host, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            {
+                return false;
+            }
+
+            if (filterExpression.port != null && URLToFilter.Port != -1 &&
+                URLToFilter.Port != filterExpression.port)
+            {
+                return false;
+            }
+
+            filterComponent = filterExpression.path;
+            if (filterComponent != null && 
+                !Regex.IsMatch(URLToFilter.AbsolutePath.TrimEnd(new char[] { '/' }), filterComponent.ToString(), RegexOptions.IgnoreCase))
+            {
+                return false;
+            }
+
+            filterComponent = filterExpression.query;
             if (filterComponent != null &&
-                ![self regexFilterExpression:filterComponent hasMatchesInString:[URLToFilter.path stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]]]) {
-        return false;
-    }
+                !Regex.IsMatch(URLToFilter.Query, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            {
+                return false;
+            }
 
-    filterComponent = filterExpression.query;
+            filterComponent = filterExpression.fragment;
             if (filterComponent != null &&
-                ![self regexFilterExpression:filterComponent hasMatchesInString:URLToFilter.query]) {
-        return false;
-    }
+                !Regex.IsMatch(URLToFilter.Fragment, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            {
+                return false;
+            }
 
-    filterComponent = filterExpression.fragment;
-            if (filterComponent != null &&
-                ![self regexFilterExpression:filterComponent hasMatchesInString:URLToFilter.fragment]) {
-        return false;
-    }
-    
-    // URL matches the filter expression
-    return true;
-}
-
+            // URL matches the filter expression
+            return true;
+        }
 
     }
-
 }

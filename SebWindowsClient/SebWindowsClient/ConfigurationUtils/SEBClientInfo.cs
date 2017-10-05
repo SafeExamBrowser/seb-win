@@ -86,7 +86,9 @@ namespace SebWindowsClient.ConfigurationUtils
     public enum URLFilterRuleActions
     {
         block = 0,
-        allow = 1
+        allow = 1,
+        ignore = 2,
+        unknown = 3
     };
 
     public class SEBClientInfo

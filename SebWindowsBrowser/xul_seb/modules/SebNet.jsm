@@ -493,6 +493,10 @@ this.SebNet = {
 		if (whiteListRegs.length == 0 && blackListRegs.length == 0) {
 			return true;
 		}
+
+        // Trim a possible trailing slash "/" from the URL
+        url = url.replace(/\/+$/, '');
+
 		// special internal pages
 		if (sw.winTypesReg.pdfViewer.test(url)) {
 			return true;

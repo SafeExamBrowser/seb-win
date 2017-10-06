@@ -30,8 +30,46 @@ namespace SebWindowsClient.ConfigurationUtils
             enableURLFilter = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnable];
             enableContentFilter = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnableContentFilter];
 
+            // Add global URLFilterRules
             ListObj URLFilterRules = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterRules];
+            ReadURLFilterRules(URLFilterRules);
 
+            // Add URLFilterRules from additional resources
+            ListObj additionalResources = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources];
+            ReadFilterRulesFromAdditionalResources(additionalResources);
+
+            // Check if Start URL gets allowed by current filter rules and if not add a rule for the Start URL
+            string startURLString = (string)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
+
+            if (Uri.TryCreate(startURLString, UriKind.Absolute, out Uri startURL))
+            {
+                if (TestURLAllowed(startURL) != URLFilterRuleActions.allow)
+                {
+                    SEBURLFilterRegexExpression expression;
+                    // If Start URL is not allowed: Create one using the full Start URL
+                    try
+                    {
+                        expression = new SEBURLFilterRegexExpression(startURLString);
+                    }
+                    catch (Exception)
+                    {
+                        prohibitedList.Clear();
+                        permittedList.Clear();
+                        return;
+                    }
+
+                    // Add this Start URL filter expression to the permitted filter list
+                    permittedList.Add(expression);
+
+                }
+            }
+            // Convert these rules and add them to the XULRunner seb keys
+            CreateSebRuleLists();
+       }
+
+
+        public void ReadURLFilterRules(ListObj URLFilterRules)
+        {
             foreach (DictObj URLFilterRule in URLFilterRules)
             {
 
@@ -80,36 +118,24 @@ namespace SebWindowsClient.ConfigurationUtils
                     }
                 }
             }
+        }
 
-            // Check if Start URL gets allowed by current filter rules and if not add a rule for the Start URL
-            string startURLString = (string)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
 
-            if (Uri.TryCreate(startURLString, UriKind.Absolute, out Uri startURL))
+        // Read URLFilterRules from additionalResources
+        public void ReadFilterRulesFromAdditionalResources(ListObj additionalResources)
+        {
+            foreach (DictObj additionalResource in additionalResources)
             {
-                if (TestURLAllowed(startURL) != URLFilterRuleActions.allow)
+                ListObj URLFilterRules = (ListObj)additionalResource[SEBSettings.KeyURLFilterRules];
+                ReadURLFilterRules(URLFilterRules);
+                // Are there further additional resources in this additional resource?
+                ListObj additionalSubResources = (ListObj)additionalResource[SEBSettings.KeyAdditionalResources];
+                if (additionalSubResources.Count != 0)
                 {
-                    SEBURLFilterRegexExpression expression;
-                    // If Start URL is not allowed: Create one using the full Start URL
-                    try
-                    {
-                        expression = new SEBURLFilterRegexExpression(startURLString);
-                    }
-                    catch (Exception)
-                    {
-                        prohibitedList.Clear();
-                        permittedList.Clear();
-                        return;
-                    }
-
-                    // Add this Start URL filter expression to the permitted filter list
-                    permittedList.Add(expression);
-
+                    ReadFilterRulesFromAdditionalResources(additionalSubResources);
                 }
             }
-            // Convert these rules and add them to the XULRunner seb keys
-            CreateSebRuleLists();
-       }
-
+        }
 
         // Convert these rules and add them to the XULRunner seb keys
         public void CreateSebRuleLists()

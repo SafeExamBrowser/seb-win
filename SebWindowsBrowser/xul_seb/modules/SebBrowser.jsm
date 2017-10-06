@@ -758,7 +758,9 @@ this.SebBrowser = {
 			sl.err("no xullib.browser in ChromeWindow!");
 			return false;
 		}
-		win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
+        // Changed reload from hard to soft reload, to not break offline functionality with Service Workers
+		//win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
+        win.XulLibBrowser.reload();
 	},
 	
 	restart : function() {

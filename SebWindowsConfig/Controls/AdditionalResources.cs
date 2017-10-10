@@ -15,8 +15,10 @@ namespace SebWindowsConfig.Controls
 	public partial class AdditionalResources : UserControl
 	{
 		private IFileCompressor _fileCompressor;
+        private SEBURLFilter urlFilter;
 
-		public AdditionalResources()
+
+        public AdditionalResources()
 		{
 			InitializeComponent();
 
@@ -39,9 +41,11 @@ namespace SebWindowsConfig.Controls
 					}
 				}
 			}
-		}
 
-		private string GetDisplayTitle(DictObj resource)
+            urlFilter = new SEBURLFilter();
+        }
+
+        private string GetDisplayTitle(DictObj resource)
 		{
 			return string.Concat( 
 				resource[SEBSettings.KeyAdditionalResourcesTitle],
@@ -179,7 +183,7 @@ namespace SebWindowsConfig.Controls
 			groupBoxAdditionalResourceDetails.Visible = selectedResource != null;
 		}
 
-		private void InitializeUrlFilters(DictObj resourceConfig)
+		public void InitializeUrlFilters(DictObj resourceConfig)
 		{
 			var filterControl = new FilterRuleControl();
 
@@ -701,9 +705,36 @@ namespace SebWindowsConfig.Controls
 		private void textBoxAdditionalResourceUrl_Leave(object sender, EventArgs e)
 		{
 			SetIconFromUrl(textBoxAdditionalResourceUrl.Text);
+            CreateURLFilterRule(textBoxAdditionalResourceUrl.Text);
 		}
 
-		private void checkBoxShowButton_CheckedChanged(object sender, EventArgs e)
+        private void CreateURLFilterRule(string resourceURLString)
+        {
+            urlFilter.UpdateFilterRules();
+
+            // Check if resource URL gets allowed by current filter rules and if not, add a rule for the resource URL
+            if (Uri.TryCreate(resourceURLString, UriKind.Absolute, out Uri resourceURL))
+            {
+                if (urlFilter.TestURLAllowed(resourceURL) != URLFilterRuleActions.allow)
+                {
+                    // If resource URL is not allowed: Create one using the full resource URL
+                    DictObj selectedResource = GetSelectedResource();
+                    ListObj resourceURLFilterRules = (ListObj)selectedResource[SEBSettings.KeyURLFilterRules];
+                    DictObj newURLFilterRule = new DictObj();
+                    newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleAction, (int)URLFilterRuleActions.allow);
+                    newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleActive, true);
+                    newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleExpression, resourceURLString);
+                    newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleRegex, false);
+                    // Add this resource URL allow rule to the URL filters of this additional resource
+                    resourceURLFilterRules.Add(newURLFilterRule);
+                    selectedResource[SEBSettings.KeyURLFilterRules] = resourceURLFilterRules;
+                    // Update UI
+                    InitializeUrlFilters(selectedResource);
+                }
+            }
+        }
+
+        private void checkBoxShowButton_CheckedChanged(object sender, EventArgs e)
 		{
 			DictObj selectedResource = GetSelectedResource();
 			selectedResource[SEBSettings.KeyAdditionalResourcesShowButton] = checkBoxShowButton.Checked;

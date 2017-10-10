@@ -2,7 +2,7 @@
 {
 	enum FilterAction
 	{
-		Allow,
-		Block
-	}
+		Block,
+        Allow
+    }
 }

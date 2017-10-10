@@ -6,7 +6,7 @@ using DictObj = System.Collections.Generic.Dictionary<string, object>;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    class SEBURLFilter
+    public class SEBURLFilter
     {
         public bool enableURLFilter;
         public bool enableContentFilter;

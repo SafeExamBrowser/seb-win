@@ -1,6 +1,7 @@
 ﻿using SebWindowsClient.DiagnosticsUtils;
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace SebWindowsClient.ConfigurationUtils
@@ -24,45 +25,54 @@ namespace SebWindowsClient.ConfigurationUtils
 
             if (!string.IsNullOrEmpty(filterExpressionString))
             {
-                int schemeDelimiter = filterExpressionString.IndexOf("://");
+                //int schemeDelimiter = filterExpressionString.IndexOf("://");
 
-                if (schemeDelimiter != -1)
-                {
-                    // Filter expression contains a scheme: save it and replace it with http
-                    // (in case scheme contains a wildcard)
-                    newScheme = filterExpressionString.Substring(0, schemeDelimiter);
-                    filterExpressionString = "http" + filterExpressionString.Substring(schemeDelimiter);
-                }
-                else
-                {
-                    // Filter expression doesn't contain a scheme followed by an authority part,
-                    // check for scheme followed by only a path (like about:blank or data:...)
-                    // Convert filter expression string to a Uri
-                    /*
-                    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
-                    {
-                        return;
-                    }
-                    try
-                    {
-                        newScheme = URLFromString.Scheme;
-                    }
-                    catch (Exception)
-                    {
-                        // Probably a relative URI without scheme
-                        // Temporary prefix it with a http:// scheme
-                        filterExpressionString = "http" + filterExpressionString;
-                        // Convert filter expression string to a Uri
-                        if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
-                        {
-                            return;
-                        }
-                    }
-                    */
-                }
+                //if (schemeDelimiter != -1)
+                //{
+                //    // Filter expression contains a scheme: save it and replace it with http
+                //    // (in case scheme contains a wildcard)
+                //    newScheme = filterExpressionString.Substring(0, schemeDelimiter);
+                //    filterExpressionString = "http" + filterExpressionString.Substring(schemeDelimiter);
+                //}
+                //else
+                //{
+                //    // Filter expression doesn't contain a scheme followed by an authority part,
+                //    // Convert filter expression string to a Uri
+
+                //    // check for scheme followed by only a path (like about:blank or data:...)
+                //    // Convert filter expression string to a Uri
+                //    Uri URLFromString;
+                //    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
+                //    {
+                //        // Probably a relative URI without scheme
+                //        // Temporary prefix it with a http:// scheme
+                //        filterExpressionString = "http://" + filterExpressionString;
+                //        newScheme = "";
+                //    }
+                //    // Convert filter expression string to a Uri
+                //    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
+                //    {
+                //        return;
+                //    }
+                //    /*
+                //    try
+                //    {
+                //        newScheme = URLFromString.Scheme;
+                //    }
+                //    catch (Exception)
+                //    {
+                //        // Probably a relative URI without scheme
+                //        // Temporary prefix it with a http:// scheme
+                //        filterExpressionString = "http://" + filterExpressionString;
+                //        newScheme = "";
+                //    }*/
+
+                //}
 
                 /// Convert Uri to a SEBURLFilterExpression
                 // Use the saved scheme instead of the temporary http://
+                string urlPartsPattern = "/(?:([^\\:]*)\\:\\/\\/)?(?:([^\\:\\@]*)(?:\\:([^\\@]*))?\\@)?(?:([^\\/\\:]*)\\.(?=[^\\.\\/\\:]*\\.[^\\.\\/\\:]*))?([^\\.\\/\\:]*)(?:\\.([^\\/\\.\\:]*))?(?:\\:([0-9]*))?(\\/[^\\?#]*(?=.*?\\/)\\/)?([^\\?#]*)?(?:\\?([^#]*))?(?:#(.*))?/";
+                string[] urlParts = Regex.Split(filterExpressionString, urlPartsPattern);
 
                 try
                 {

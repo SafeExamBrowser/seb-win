@@ -20,9 +20,6 @@ namespace SebWindowsClient.ConfigurationUtils
 
         public SEBURLFilterExpression(string filterExpressionString)
         {
-            // Check if filter expression contains a scheme
-            string newScheme = "";
-
             if (!string.IsNullOrEmpty(filterExpressionString))
             {
                 //int schemeDelimiter = filterExpressionString.IndexOf("://");
@@ -70,39 +67,45 @@ namespace SebWindowsClient.ConfigurationUtils
                 //}
 
                 /// Convert Uri to a SEBURLFilterExpression
-                // Use the saved scheme instead of the temporary http://
-                string urlPartsPattern = "/(?:([^\\:]*)\\:\\/\\/)?(?:([^\\:\\@]*)(?:\\:([^\\@]*))?\\@)?(?:([^\\/\\:]*)\\.(?=[^\\.\\/\\:]*\\.[^\\.\\/\\:]*))?([^\\.\\/\\:]*)(?:\\.([^\\/\\.\\:]*))?(?:\\:([0-9]*))?(\\/[^\\?#]*(?=.*?\\/)\\/)?([^\\?#]*)?(?:\\?([^#]*))?(?:#(.*))?/";
-                string[] urlParts = Regex.Split(filterExpressionString, urlPartsPattern);
-
-                try
+                string splitURLRegexPattern = @"(?:([^\:]*)\:\/\/)?(?:([^\:\@]*)(?:\:([^\@]*))?\@)?(?:([^\/‌​\:]*))?(?:\:([0-9]*))?([^\?#]*)?(?:\?([^#]*))?(?:#(.*))?";
+                Regex splitURLRegex = new Regex(splitURLRegexPattern);
+                Match regexMatch = splitURLRegex.Match(filterExpressionString);
+                if (regexMatch.Success == false)
                 {
-                    UriBuilder parts = new UriBuilder(filterExpressionString);
-
-                    this.scheme = newScheme;
-                    this.user = parts.UserName;
-                    this.password = parts.Password;
-                    this.host = parts.Host;                  
-                    this.path = parts.Path.Trim(new char[] { '/' });
-
-                    int portNumber = parts.Port;
-                    // We only want a port if the filter expression string explicitely defines one!
-                    if (portNumber == -1 || filterExpressionString.IndexOf(this.host+":" + portNumber.ToString() + path) == -1)
-                    {
-                        this.port = null;
-                    }
-                    else
-                    {
-                        this.port = portNumber;
-                    }
-
-                    this.query = parts.Query;
-                    this.fragment = parts.Fragment;
+                    return;
                 }
-                catch (Exception ex)
+
+                /*
+                Console.WriteLine(regexMatch.Groups[0].Value + "  (Full URL)<br>");
+                Console.WriteLine(regexMatch.Groups[1].Value + "  (Scheme)<br>");
+                Console.WriteLine(regexMatch.Groups[2].Value + "  (User)<br>");
+                Console.WriteLine(regexMatch.Groups[3].Value + "  (Password)<br>");
+                Console.WriteLine(regexMatch.Groups[4].Value + "  (Domain)<br>");
+                Console.WriteLine(regexMatch.Groups[5].Value + "  (Port)<br>");
+                Console.WriteLine(regexMatch.Groups[6].Value + "  (Path)<br>");
+                Console.WriteLine(regexMatch.Groups[7].Value + "  (Query)<br>");
+                Console.WriteLine(regexMatch.Groups[8].Value + "  (Fragment)<br>");
+                */
+
+                this.scheme = regexMatch.Groups[1].Value;
+                this.user = regexMatch.Groups[2].Value;
+                this.password = regexMatch.Groups[3].Value;
+                this.host = regexMatch.Groups[4].Value;
+                string portNumber = regexMatch.Groups[5].Value;
+
+                // We only want a port if the filter expression string explicitely defines one!
+                if (portNumber.Length == 0)
                 {
-                    // This Uri might still have been relative, log this
-                    Logger.AddError("Could not read components of Uri. ", this, ex, ex.Message);
+                    this.port = null;
                 }
+                else
+                {
+                    this.port = UInt16.Parse(portNumber);
+                }
+
+                this.path = regexMatch.Groups[6].Value.Trim(new char[] { '/' });
+                this.query = regexMatch.Groups[7].Value;
+                this.fragment = regexMatch.Groups[8].Value;
             }
         }
 

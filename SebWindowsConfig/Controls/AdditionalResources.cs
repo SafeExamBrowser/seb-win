@@ -265,9 +265,12 @@ namespace SebWindowsConfig.Controls
 				resourceData[SEBSettings.KeyAdditionalResourcesResourceIcons] = new ListObj();
 			if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesTitle))
 				resourceData[SEBSettings.KeyAdditionalResourcesTitle] = "New Resource";
-			if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesUrl))
-				resourceData[SEBSettings.KeyAdditionalResourcesUrl] = "";
-			if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData))
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesUrl))
+                resourceData[SEBSettings.KeyAdditionalResourcesUrl] = "";
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesURLFilterRules))
+                resourceData[SEBSettings.KeyAdditionalResourcesURLFilterRules] = new ListObj();
+
+            if (!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceData))
 				resourceData[SEBSettings.KeyAdditionalResourcesResourceData] = "";
 			if(!resourceData.ContainsKey(SEBSettings.KeyAdditionalResourcesResourceDataFilename))
 				resourceData[SEBSettings.KeyAdditionalResourcesResourceDataFilename] = "";
@@ -719,7 +722,14 @@ namespace SebWindowsConfig.Controls
                 {
                     // If resource URL is not allowed: Create one using the full resource URL
                     DictObj selectedResource = GetSelectedResource();
-                    ListObj resourceURLFilterRules = (ListObj)selectedResource[SEBSettings.KeyURLFilterRules];
+                    ListObj resourceURLFilterRules;
+                    if (selectedResource.TryGetValue(SEBSettings.KeyURLFilterRules, out object keyURLFilterRulesValue))
+                    {
+                        resourceURLFilterRules = (ListObj)keyURLFilterRulesValue;
+                    } else
+                    {
+                        resourceURLFilterRules = new ListObj();
+                    }
                     DictObj newURLFilterRule = new DictObj();
                     newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleAction, (int)URLFilterRuleActions.allow);
                     newURLFilterRule.Add(SEBSettings.KeyURLFilterRuleActive, true);

@@ -185,8 +185,9 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyAdditionalResourcesAutoOpen = "autoOpen";
 		public const String KeyAdditionalResourcesIdentifier = "identifier";
 		public const String KeyAdditionalResourcesTitle = "title";
-		public const String KeyAdditionalResourcesUrl = "url";
-		public const String KeyAdditionalResourcesResourceData = "resourceData";
+        public const String KeyAdditionalResourcesUrl = "url";
+        public const String KeyAdditionalResourcesURLFilterRules = KeyURLFilterRules;
+        public const String KeyAdditionalResourcesResourceData = "resourceData";
 		public const String KeyAdditionalResourcesResourceDataLauncher = "resourceDataLauncher";
 		public const String KeyAdditionalResourcesResourceDataFilename = "resourceDataFilename";
 		public const String KeyAdditionalResourcesResourceIcons = "resourceIcons";

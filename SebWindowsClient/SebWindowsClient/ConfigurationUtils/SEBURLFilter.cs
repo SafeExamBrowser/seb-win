@@ -51,7 +51,7 @@ namespace SebWindowsClient.ConfigurationUtils
                     {
                         expression = new SEBURLFilterRegexExpression(startURLString);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         prohibitedList.Clear();
                         permittedList.Clear();
@@ -93,7 +93,7 @@ namespace SebWindowsClient.ConfigurationUtils
                                 expression = new SEBURLFilterRegexExpression(expressionString);
                             }
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             prohibitedList.Clear();
                             permittedList.Clear();
@@ -126,13 +126,19 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             foreach (DictObj additionalResource in additionalResources)
             {
-                ListObj URLFilterRules = (ListObj)additionalResource[SEBSettings.KeyURLFilterRules];
-                ReadURLFilterRules(URLFilterRules);
-                // Are there further additional resources in this additional resource?
-                ListObj additionalSubResources = (ListObj)additionalResource[SEBSettings.KeyAdditionalResources];
-                if (additionalSubResources.Count != 0)
+                object URLFilterRules;
+                if (additionalResource.TryGetValue(SEBSettings.KeyURLFilterRules, out URLFilterRules))
                 {
-                    ReadFilterRulesFromAdditionalResources(additionalSubResources);
+                    ReadURLFilterRules((ListObj)URLFilterRules);
+                }
+
+                // Are there further additional resources in this additional resource?
+                if (additionalResource.TryGetValue(SEBSettings.KeyAdditionalResources, out object additionalSubResources));
+                {
+                    if (((ListObj)additionalSubResources).Count != 0)
+                    {
+                        ReadFilterRulesFromAdditionalResources((ListObj)additionalSubResources);
+                    }
                 }
             }
         }

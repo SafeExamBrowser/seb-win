@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
@@ -13,7 +14,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public ListObj permittedList = new ListObj();
         public ListObj prohibitedList = new ListObj();
 
-        // Updates filter rule arrays with current settings (UserDefaults)
+        // Updates filter rule arrays with current settings
         public void UpdateFilterRules()
         {
             if (prohibitedList.Count != 0)
@@ -25,7 +26,6 @@ namespace SebWindowsClient.ConfigurationUtils
             {
                 permittedList.Clear();
             }
-
 
             enableURLFilter = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnable];
             enableContentFilter = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnableContentFilter];
@@ -53,6 +53,7 @@ namespace SebWindowsClient.ConfigurationUtils
                     }
                     catch (Exception ex)
                     {
+                        Logger.AddError("Could not create SEBURLFilterRegexExpression: ", this, ex, ex.Message);
                         prohibitedList.Clear();
                         permittedList.Clear();
                         return;
@@ -65,7 +66,7 @@ namespace SebWindowsClient.ConfigurationUtils
             }
             // Convert these rules and add them to the XULRunner seb keys
             CreateSebRuleLists();
-       }
+        }
 
 
         public void ReadURLFilterRules(ListObj URLFilterRules)
@@ -73,15 +74,15 @@ namespace SebWindowsClient.ConfigurationUtils
             foreach (DictObj URLFilterRule in URLFilterRules)
             {
 
-                if ((bool)URLFilterRule["active"] == true)
+                if ((bool)URLFilterRule[SEBSettings.KeyURLFilterRuleActive] == true)
                 {
 
-                    string expressionString = (string)URLFilterRule["expression"];
+                    string expressionString = (string)URLFilterRule[SEBSettings.KeyURLFilterRuleExpression];
                     if (!String.IsNullOrEmpty(expressionString))
                     {
                         Object expression;
 
-                        bool regex = (bool)URLFilterRule["regex"];
+                        bool regex = (bool)URLFilterRule[SEBSettings.KeyURLFilterRuleRegex];
                         try
                         {
                             if (regex)
@@ -95,12 +96,13 @@ namespace SebWindowsClient.ConfigurationUtils
                         }
                         catch (Exception ex)
                         {
+                            Logger.AddError("Could not create SEBURLFilterRegexExpression: ", this, ex, ex.Message);
                             prohibitedList.Clear();
                             permittedList.Clear();
                             throw;
                         }
 
-                        int action = (int)URLFilterRule["action"];
+                        int action = (int)URLFilterRule[SEBSettings.KeyURLFilterRuleAction];
                         switch (action)
                         {
 
@@ -126,18 +128,21 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             foreach (DictObj additionalResource in additionalResources)
             {
-                object URLFilterRules;
-                if (additionalResource.TryGetValue(SEBSettings.KeyURLFilterRules, out URLFilterRules))
+                if ((bool)additionalResource[SEBSettings.KeyAdditionalResourcesActive])
                 {
-                    ReadURLFilterRules((ListObj)URLFilterRules);
-                }
-
-                // Are there further additional resources in this additional resource?
-                if (additionalResource.TryGetValue(SEBSettings.KeyAdditionalResources, out object additionalSubResources));
-                {
-                    if (((ListObj)additionalSubResources).Count != 0)
+                    object URLFilterRules;
+                    if (additionalResource.TryGetValue(SEBSettings.KeyURLFilterRules, out URLFilterRules))
                     {
-                        ReadFilterRulesFromAdditionalResources((ListObj)additionalSubResources);
+                        ReadURLFilterRules((ListObj)URLFilterRules);
+                    }
+
+                    // Are there further additional resources in this additional resource?
+                    if (additionalResource.TryGetValue(SEBSettings.KeyAdditionalResources, out object additionalSubResources))
+                    {
+                        if (((ListObj)additionalSubResources).Count != 0)
+                        {
+                            ReadFilterRulesFromAdditionalResources((ListObj)additionalSubResources);
+                        }
                     }
                 }
             }

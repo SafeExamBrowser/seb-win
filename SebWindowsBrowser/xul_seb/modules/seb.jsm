@@ -265,6 +265,7 @@ this.seb =  {
 		ss.setSebserverSocketHandler(win);
 		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
+		sw.setMainNavigation(win);
 		sw.setToolbar(win);
 		sw.setSize(win);
 		//sw.showContent(win); still required?
@@ -274,6 +275,7 @@ this.seb =  {
 	initSecondary : function(win) {
 		sl.debug("initSecondary");
 		base.initArsKeys(win);
+		sw.setPopupNavigation(win);
 		sw.setToolbar(win);
 		sw.setSize(win);
 		sh.createScreenKeyboardController(win);

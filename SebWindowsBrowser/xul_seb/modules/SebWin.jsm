@@ -233,19 +233,19 @@ this.SebWin = {
 	
 	openDistinctWin : function(url) {
 		sl.debug("openDistinctWin");
+		url.replace(/\/$/,"");
 		for (var i=base.wins.length-1;i>=0;i--) { 
 			//sl.debug(url + " = " + atob(base.wins[i].document.getElementsByTagName("window")[0].getAttribute("baseurl")));
 			//sl.out(url + " = " + atob(base.wins[i].XULBrowserWindow.baseurl));
 			try {
 				let a = btoa(url);
-				let b = btoa(url+"/"); // aRequest object adds a slash to urls
 				let c = base.wins[i].XULBrowserWindow.baseurl;
 				// // pdf viewer "chrome:" url is transformed to "file:" url by aRequest, so i have to pick up the ?file=.* part to compare
 				if (base.winTypesReg.pdfViewer.test(url) && base.winTypesReg.pdfViewer.test(atob(c))) {
-					a = b = btoa(url.split('?file=')[1]); // only compare file part of pdf viewer
+					a = btoa(url.split('?file=')[1]); // only compare file part of pdf viewer
 					c = btoa(atob(c).split('?file=')[1]);
 				}
-				if (a == c || b == c) {
+				if (a == c) {
 					sl.debug("url " + url + " already open: window.focus()");
 					base.wins[i].focus();
 					return;
@@ -268,6 +268,7 @@ this.SebWin = {
 	},
 	
 	toolbarIsVisible : function(win) {
+		//sl.debug("XXXX" + win.XULBrowserWindow);
 		if (win.document.fullscreenElement) {
 			return false;
 		}
@@ -300,6 +301,26 @@ this.SebWin = {
 		}
 		else {
 			return su.getConfig("newBrowserWindowNavigation","boolean",false)
+		}
+	},
+	
+	setMainNavigation : function(win) {
+		var cmdBack =  win.document.getElementById("sebCmdBack");
+		var CmdForward =  win.document.getElementById("sebCmdForward");
+		if (!su.getConfig("allowBrowsingBackForward","boolean",false)) {
+			sl.debug("setMainNavigation: disabled");
+			cmdBack.setAttribute("disabled", true);
+			CmdForward.setAttribute("disabled", true);
+		}
+	},
+	
+	setPopupNavigation : function(win) {
+		var cmdBack =  win.document.getElementById("sebCmdBack");
+		var CmdForward =  win.document.getElementById("sebCmdForward");
+		if (!su.getConfig("newBrowserWindowNavigation","boolean",false)) {
+			sl.debug("setPopupNavigation: disabled");
+			cmdBack.setAttribute("disabled", true);
+			CmdForward.setAttribute("disabled", true);
 		}
 	},
 	

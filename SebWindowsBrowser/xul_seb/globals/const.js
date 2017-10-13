@@ -16,6 +16,7 @@ const 	DEBUG_LEVEL = 1,
 	RECONF_SUCCESS = 2,
 	RECONF_ABORTED = 3,
 	RECONFIG_URL = "chrome://seb/content/reconf.xul",
+	RECONFIG_TYPE = "reconf",
 	RECONFIG_FEATURES = "chrome,dialog,modal,resizable=yes,width=800,height=600,scrollbars=yes",
 	BROWSER_UA_DESKTOP_PREF = "browserUserAgentWinDesktopMode",
 	BROWSER_UA_TOUCH_PREF = "browserUserAgentWinTouchMode",
@@ -35,7 +36,8 @@ const 	DEBUG_LEVEL = 1,
 	STATUS_DOCUMENT_STOP_ERROR = {status:4, message:"STATUS_DOCUMENT_STOP_ERROR"},
 	STATUS_LOAD_AR = {status:5, message:"STATUS_LOAD_AR"},
 	STATUS_INVALID_URL = {status:6, message:"STATUS_INVALID_URL"},
-	STATUS_BLOCK_HTTP = {status:7, message:"STATUS_BLOCK_HTTP"};
+	STATUS_BLOCK_HTTP = {status:7, message:"STATUS_BLOCK_HTTP"},
+	STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG = {status:8, message:"STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG"};
 	
 	
 

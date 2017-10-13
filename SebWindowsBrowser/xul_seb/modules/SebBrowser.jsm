@@ -84,7 +84,7 @@ let 	base = null,
 	    LOCATION_CHANGE_SAME_DOCUMENT: wpl.LOCATION_CHANGE_SAME_DOCUMENT,
 	    LOCATION_CHANGE_ERROR_PAGE: wpl.LOCATION_CHANGE_ERROR_PAGE,
 	},
-	mimeTypesRegs = {
+	mimeTypesRegs = { 
 		flash : new RegExp(/^application\/x-shockwave-flash/),
 		pdf : new RegExp(/^application\/(x-)?pdf/)
 	},
@@ -110,20 +110,17 @@ const	nsIX509CertDB = Ci.nsIX509CertDB,
 	
 function nsBrowserStatusHandler() {};
 nsBrowserStatusHandler.prototype = {
-	isStarted : false,
-	win : null,
-	domWin : null,
+	browser : null,
+	originRequestURI : null,
+	mainPageURI : null,	
 	baseurl : null,
-	requestURL : null,
 	lastSuccess : null,
-	firstPageFailed : false,
 	referrer : null,
-	webProgress : null,
+	progress : null,
 	request : null,
-	stateFlags : null,
+	flags : null,
 	status : null,
-	startDocumentFlags : startDocumentFlags,
-	stopDocumentFlags : stopDocumentFlags,
+	wintype : null,
 	
 	onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {},
 	onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {},
@@ -142,6 +139,90 @@ nsBrowserStatusHandler.prototype = {
 			return this;
 		}
 		throw Cr.NS_NOINTERFACE;
+	},
+	getLoadContext: function (aChannel) {
+		if (!aChannel)
+		    return null;
+
+		let notificationCallbacks =
+			aChannel.notificationCallbacks ? aChannel.notificationCallbacks : aChannel.loadGroup.notificationCallbacks;
+
+		if (!notificationCallbacks) {
+		    return null;
+		}
+		try {
+		    if(notificationCallbacks.getInterface(Ci.nsIXMLHttpRequest)) {
+			// ignore requests from XMLHttpRequest
+			return null;
+		    }
+		}
+		catch(e) { }
+		try {
+		    return notificationCallbacks.getInterface(Ci.nsILoadContext);
+		}
+		catch (e) {}
+		return null;
+	},
+	isFromMainWindow: function (loadContext) {
+		if (loadContext  && loadContext.isContent && this.browser.contentWindow == loadContext.associatedWindow) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	},
+
+	isLoadRequested: function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_START &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_NETWORK &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_WINDOW
+		)
+	},
+	
+	isLoadRessource : function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_START &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_REQUEST
+		)
+	},
+	
+	isLoadedRessource : function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_STOP &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_REQUEST
+		)
+	},
+	
+	isStart: function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_TRANSFERRING &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_REQUEST &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_DOCUMENT
+		);
+	},
+	
+	isRedirectionStart: function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_START &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_REQUEST &&
+		    this.redirecting
+		);
+	},
+
+	isTransferDone: function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_STOP &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_REQUEST
+		);
+	},
+
+	isLoaded: function(flags) {
+		return (
+		    flags & Ci.nsIWebProgressListener.STATE_STOP &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_NETWORK &&
+		    flags & Ci.nsIWebProgressListener.STATE_IS_WINDOW
+		);
 	},
 	setJSStatus : function(status) {},  
 	setJSDefaultStatus : function(status) {},
@@ -165,221 +246,289 @@ this.SebBrowser = {
 		sl.out("SebBrowser initialized: " + seb);
 	},
 	
-	stateListener : function(aWebProgress, aRequest, aStateFlags, aStatus) {
-		
-		if ((aStateFlags & startDocumentFlags) == startDocumentFlags) { // start document request event
-			// ignore non nsIHttpChannel requests
-			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
-				sl.debug("Request is NOT instance of Ci.nsIHttpChannel: " + aRequest.name);
-				return;
+	stateListener : function(progress, request, flags, status) {
+		if (!(request instanceof Ci.nsIChannel || "URI" in request)) {
+		    // ignore requests that are not a channel
+		    return
+		}
+		let uri = request.URI.spec.replace(/\/$/,"");
+		let loadContext = this.getLoadContext(request);
+
+		if (!this.isFromMainWindow(loadContext)) {
+			if (this.isLoadRequested(flags)) {
+				sl.info("Frame loading: " + uri);
+				//base.startLoading(sw.getChromeWin(progress.DOMWindow));
 			}
-			sl.debug("Request is instance of Ci.nsIHttpChannel: " + aRequest.name);
-			
-			// needed?
-			if (!sw.winTypesReg.pdfViewer.test(aRequest.name) && !sw.winTypesReg.errorViewer.test(aRequest.name)) {
-				// ignore non nsIHttpChannel requests (QueryInterface failes on local resources, maybe on cached ressources too?)
-				try {
-					aRequest.QueryInterface(Ci.nsIHttpChannel);
-				}
-				catch(e) { // local chrome urls and other. Maybe something to do like handling of cached ressources?
-					sl.debug("Error QueryInterface Ci.nsIHttpChannel");
-					sl.debug(aRequest.name);
+			else if (this.isLoaded(flags)) {
+				sl.info("Frame loaded: " + uri);
+				//base.stopLoading(sw.getChromeWin(progress.DOMWindow));
+			}
+			return;
+		}
+		try {
+			if (this.mainPageURI == null) { // new window request
+				if (this.isLoadRequested(flags)) {
+					sl.debug("load uri: " + uri);
+					this.request = request;
+					this.progress = progress;
+					this.flags = flags;
+					this.status = status;
+					this.wintype = sw.getWinType(sw.getChromeWin(progress.DOMWindow));
+					if (!sw.winTypesReg.errorViewer.test(progress.DOMWindow.document.URL)) {
+						this.referrer = progress.DOMWindow.document.URL;
+					}
+					this.originRequestURI = request.URI;
+					this.mainPageURI = request.URI;
+					
+					if (seb.quitURL == uri) {
+						if (base.quitURLRefererFilter != "") {
+							let filter = base.quitURLRefererFilter;
+							
+							if (this.referrer.indexOf(filter) < 0) {
+								sl.debug("quitURL \"" + seb.quitURL + "\" is only allowed if string in referrer: \"" + filter + "\"");
+								this.onStatusChange(progress, request, STATUS_QUIT_URL_WRONG_REFERRER.status, STATUS_QUIT_URL_WRONG_REFERRER.message);
+								return;
+							}
+						}
+						this.onStatusChange(progress, request, STATUS_QUIT_URL_STOP.status, STATUS_QUIT_URL_STOP.message);
+						return;
+					}
+					
+					if (base.linkURLS[uri]) {
+						this.onStatusChange(progress, request, STATUS_LOAD_AR.status, STATUS_LOAD_AR.message);
+						return;
+					}
+					
+					// special chrome pdfViewer
+					if (sw.winTypesReg.pdfViewer.test(uri)) {
+						sl.debug(PDF_VIEWER_TITLE);
+						return;
+					}
+					// special chrome errorPage
+					if (sw.winTypesReg.errorViewer.test(uri)) {
+						sl.debug(ERROR_PAGE_TITLE);
+						return;
+					}
+					
+					if (!sn.isValidUrl(uri)) {
+						this.onStatusChange(progress, request, STATUS_INVALID_URL.status, STATUS_INVALID_URL.message);
+						return;
+					}
+				
+					if (httpReg.test(uri)) {
+						if (sn.blockHTTP) {
+							this.onStatusChange(progress, request, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
+							return;	
+						}
+					}
+					
+					// PDF Handling
+					// don't trigger if pdf is part of the query string: infinite loop
+					// don't trigger from pdfViewer itself: infinite loop
+					if (su.getConfig("sebPdfJsEnabled","boolean", true) && /^[^\?]+\.pdf$/i.test(uri)) {
+						sl.debug("redirect pdf start request");
+						this.onStatusChange(progress, request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
+						return;
+					}
 					return;
 				}
-			}
-			
-			let w = sw.getChromeWin(aWebProgress.DOMWindow);
-			
-			if (!this.isStarted) {
-				sl.debug("REQUEST START: " + aRequest.name + " status: " + aStatus);
-				this.isStarted = true;
-				this.win = w;
-				this.domWin = aWebProgress.DOMWindow;
-				this.requestURL = aRequest.name;
-				this.baseurl = btoa(aRequest.name);
-				if (!sw.winTypesReg.errorViewer.test(this.domWin.document.URL)) {
-					this.referrer = this.domWin.document.URL;
+				else if (this.isRedirectionStart(flags)) {
+					sl.debug("redirected uri: " + uri);
+					this.request = request;
+					this.progress = progress;
+					this.flags = flags;
+					this.status = status; 
+					this.wintype = sw.getWinType(sw.getChromeWin(progress.DOMWindow));
+					this.redirecting = false;
+					this.mainPageURI = request.URI;
+					return;
 				}
-				this.request = aRequest;
-				this.webProgress = aWebProgress;
-				this.stateFlags = aStateFlags;
-				this.status = aStatus;
-				base.startLoading(this.win);
-			}
-			else {
-				sl.debug("SUB REQUEST START: " + aRequest.name + " status: " + aStatus);
+				else if (this.isFromMainWindow(loadContext)) { // loading ressources after main request is loaded
+					if (this.isLoadRessource(flags)) {
+						sl.info("late request start: " + uri);
+					}
+					if (this.isLoadedRessource(flags)) {
+						sl.info("late request stop: " + uri);
+					}
+					return;
+				}
+				else {
+					sl.info("main request not started yet uri: " + uri);
+					return;
+				}
+				return;
 			}
 			
-			if (seb.quitURL === aRequest.name) {
-				if (base.quitURLRefererFilter != "") {
-					let filter = base.quitURLRefererFilter;
-					
-					if (this.referrer.indexOf(filter) < 0) {
-						sl.debug("quitURL \"" + seb.quitURL + "\" is only allowed if string in referrer: \"" + filter + "\"");
-						this.onStatusChange(aWebProgress, aRequest, STATUS_QUIT_URL_WRONG_REFERRER.status, STATUS_QUIT_URL_WRONG_REFERRER.message);
+			if (!this.mainPageURI.equalsExceptRef(request.URI)) {
+				sl.info("request ignored: " + uri);
+				return;
+			}
+ 
+			//sl.debug("main request: " + uri);
+			if (this.isStart(flags)) {
+				sl.debug("main request transfer started: " + uri);
+				base.startLoading(sw.getChromeWin(progress.DOMWindow));
+				this.baseurl = btoa(this.originRequestURI.spec.replace(/\/$/,"")); // origin (not redirected) requests URI for identifiying distinct windows
+				sl.debug("baseurl: "+ this.originRequestURI.spec.replace(/\/$/,"") + " : " + this.baseurl);
+				this.request = request;
+				this.progress = progress;
+				this.flags = flags;
+				this.status = status; 
+				this.wintype = sw.getWinType(sw.getChromeWin(progress.DOMWindow));
+				return;
+			}
+			if (this.isTransferDone(flags)) {
+				sl.debug("main request transfer done: " + uri);
+				return;
+			}
+			if (this.isLoaded(flags)) {
+				// ignore custom tracing status
+				if (request && request.status && (request.status > 0 && request.status < 10)) {
+					switch (request.status) {
+						case STATUS_PDF_REDIRECT.status :
+						case STATUS_QUIT_URL_STOP.status :
+						case STATUS_QUIT_URL_WRONG_REFERRER.status :
+						case STATUS_BLOCK_HTTP.status :
+						case STATUS_INVALID_URL.status :
+						case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG :
+							sl.debug("custom request stop: " + uri + " status: " + request.status);
 						return;
 					}
 				}
-				this.onStatusChange(aWebProgress, aRequest, STATUS_QUIT_URL_STOP.status, STATUS_QUIT_URL_STOP.message);
-				return;
-			}
-			
-			
-			if (base.linkURLS[aRequest.name] || base.linkURLS[aRequest.name.replace(/\/$/,"")]) {
-				this.onStatusChange(aWebProgress, aRequest, STATUS_LOAD_AR.status, STATUS_LOAD_AR.message);
-				return;
-			}
-			
-			// special chrome pdfViewer
-			if (sw.winTypesReg.pdfViewer.test(aRequest.name)) {
-				sl.debug(PDF_VIEWER_TITLE);
-				return;
-			}
-			// special chrome errorPage
-			if (sw.winTypesReg.errorViewer.test(aRequest.name)) {
-				sl.debug(ERROR_PAGE_TITLE);
-				return;
-			}
-			if (!sn.isValidUrl(aRequest.name) || !sn.isValidUrl(aRequest.name.replace(/\/$/,""))) {
-				this.onStatusChange(aWebProgress, aRequest, STATUS_INVALID_URL.status, STATUS_INVALID_URL.message);
-				return;
-			}
-		
-			if (httpReg.test(aRequest.name)) {
-				if (sn.blockHTTP) {
-					this.onStatusChange(aWebProgress, aRequest, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
-					return;	
-				}
-			}
-			// PDF Handling
-			// don't trigger if pdf is part of the query string: infinite loop
-			// don't trigger from pdfViewer itself: infinite loop
-			if (su.getConfig("sebPdfJsEnabled","boolean", true) && /^[^\?]+\.pdf$/i.test(aRequest.name)) {
-				sl.debug("redirect pdf start request");
-				this.onStatusChange(aWebProgress, aRequest, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
-				return;
-			} 
-		}
-		
-		if ((aStateFlags & stopDocumentFlags) == stopDocumentFlags) { // stop document request event
-			if (aRequest && aRequest.status && (aRequest.status > 0 && aRequest.status < 10)) {
-				switch (aRequest.status) {
-					case STATUS_PDF_REDIRECT.status :
-					case STATUS_QUIT_URL_STOP.status :
-					case STATUS_QUIT_URL_WRONG_REFERRER.status :
-					case STATUS_BLOCK_HTTP.status :
-					case STATUS_INVALID_URL.status :
-						sl.debug("DOCUMENT REQUEST STOP CUSTOM STATUS: " + aRequest.name + " status: " + aRequest.status);
+				sl.debug("main request loaded: " + request.name);
+				let win = sw.getChromeWin(progress.DOMWindow);
+				let domWin = progress.DOMWindow;
+				base.stopLoading(win);
+				this.mainPageURI = null;
+				
+				// ReconfDialog
+				if (this.wintype == RECONFIG_TYPE) {
+					sl.debug("wintype: " + this.wintype);
 					return;
-				} 
-			}
-			
-			// ignore non nsIHttpChannel requests
-			if (!aRequest instanceof Ci.nsIHttpChannel) { // something todo?
-				sl.debug("Request is NOT instance of Ci.nsIHttpChannel: " + aRequest.name);
-				return;
-			}
-			
-			// handle requests and sub requests
-			if (aRequest.name != this.requestURL) {
-				sl.debug("SUB REQUEST STOP: " + aRequest.name);
-				return;
-			}
-			
-			this.isStarted = false;
-			base.stopLoading(this.win);
-			
-			if (sw.winTypesReg.pdfViewer.test(aRequest.name)) {
-				let title = PDF_VIEWER_TITLE + ": " + this.win.XulLibBrowser.contentDocument.title;
-				this.win.document.title = (windowTitleSuffix == '') ? title : title + " - " + windowTitleSuffix;
-				return;
-			}
-			
-			if (sw.winTypesReg.errorViewer.test(aRequest.name)) {
-				this.win.document.title = (windowTitleSuffix == '') ? ERROR_PAGE_TITLE : ERROR_PAGE_TITLE + " - " + windowTitleSuffix;
-				return;
-			}
-			
-			try {
-				aRequest.QueryInterface(Ci.nsIHttpChannel);
-			}
-			catch(e) { // local chrome urls and other. Maybe something to do like handling of cached ressources?
-				sl.debug("Error QueryInterface Ci.nsIHttpChannel");
-				sl.debug(aRequest.name);
-				return;
-			}
-			
-			let reqErr = false;
-			let reqStatus = false;
-			let reqSucceeded = false;
-			let notAvailable = false; // request did not started
-			try {
-				reqStatus = aRequest.responseStatus;
-				sl.debug("reqStatus: " + reqStatus);
-				reqSucceeded = aRequest.requestSucceeded;
-				sl.debug("reqSucceeded: " + reqSucceeded);
-				// a simple workaround for the errorpage back button that always links to the last page with successful response
-				if (reqSucceeded) {
-					this.lastSuccess = aRequest.name;
 				}
-				else { 
-					this.referrer = this.lastSuccess;
+				
+				//
+				if (!sw.winTypesReg.errorViewer.test(domWin.document.URL)) {
+					this.referrer = domWin.document.URL;
 				}
-			}
-			catch(e) {
-				reqErr = e;
-				sl.debug("reqErr.result: " + reqErr.result);
-				notAvailable = (reqErr.result === Cr.NS_ERROR_NOT_AVAILABLE);
-				sl.debug("notAvailable: " + notAvailable);
-			}
-			
-			let showErrorPage = false;
-			if (su.getConfig("seb ErrorPage","boolean",true)) { // only enable if config set
-				if (reqErr || !reqSucceeded || !reqStatus) { // any error?
-					if (this.lastSuccess === null) { // firstPage failed, no referrer -> showing ErrorPage is better than blank page
-						showErrorPage = true;
+				
+				if (sw.winTypesReg.pdfViewer.test(uri)) {
+					let title = PDF_VIEWER_TITLE + ": " + win.XulLibBrowser.contentDocument.title;
+					win.document.title = (windowTitleSuffix == '') ? title : title + " - " + windowTitleSuffix;
+					return;
+				}
+				
+				if (sw.winTypesReg.errorViewer.test(uri)) {
+					win.document.title = (windowTitleSuffix == '') ? ERROR_PAGE_TITLE : ERROR_PAGE_TITLE + " - " + windowTitleSuffix;
+					return;
+				}
+				
+				// QueryInterface nsIHttpChannel for request.responseStatus request.requestSucceeded
+				try {
+					request.QueryInterface(Ci.nsIHttpChannel);
+				}
+				catch(e) { // local chrome urls and other. Maybe something to do like handling of cached ressources?
+					sl.debug("Error QueryInterface Ci.nsIHttpChannel");
+					sl.debug(uri);
+					return;
+				}
+				
+				let reqErr = false;
+				let reqStatus = false; // throw err notAvailable if failed
+				let reqSucceeded = false; // possible content but not 200 status p.e. 404 Custom server page reqSucceeded = false, is skipped for lastSuccess bur not processed for errorPage
+				let notAvailable = false; // request did not started
+				let contentLength = 1; // use only if explicit value = 0
+				let contentType = "";
+				try {
+					reqStatus = request.responseStatus;
+					sl.debug("reqStatus: " + reqStatus);
+					reqSucceeded = request.requestSucceeded;
+					sl.debug("reqSucceeded: " + reqSucceeded);
+					try {
+						contentType = request.getResponseHeader("content-type");
+						sl.debug("contentType: " + contentType);
 					}
-					else {
-						if (!notAvailable) { // show ErrorPage only if request is already started and aborted or any error response status from server but with html output
+					catch(e) { }
+					try {
+						contentLength = request.getResponseHeader("content-length");
+						sl.debug("contentLength: " + contentLength);
+					}
+					catch(e) { }
+					// a simple workaround for the errorpage back button that always links to the last page with successful response
+					if (reqSucceeded) {
+						this.lastSuccess = uri;
+					}
+					else { 
+						this.referrer = this.lastSuccess;
+					}
+				}
+				catch(e) {
+					reqErr = e;
+					sl.debug("reqErr.result: " + reqErr.result);
+					notAvailable = (reqErr.result === Cr.NS_ERROR_NOT_AVAILABLE);
+					sl.debug("notAvailable: " + notAvailable);
+				}
+				
+				let showErrorPage = false;
+				if (su.getConfig("sebErrorPage","boolean",true)) { // only enable if config set
+					if (reqErr || !reqStatus || contentLength == 0) { // any error?
+						if (this.lastSuccess === null) { // firstPage failed, no referrer -> showing ErrorPage is better than blank page
 							showErrorPage = true;
 						}
+						else {
+							if (!notAvailable) { // show ErrorPage only if request is already started and aborted or any error response status from server but with html output
+								showErrorPage = true;
+							}
+						}
 					}
+					else {
+						showErrorPage = false;
+					}
+				}
+				
+				if (showErrorPage) {
+					request.cancel(status);
+					win.setTimeout(function() {
+						if (this.XULBrowserWindow.mainPageURI == null) { // no new start request until now (capturing double clicks on links: experimental)
+							progress.DOMWindow.location.replace("chrome://seb/content/error.xhtml?req=" + btoa(uri) + "&ref=" + btoa(this.XULBrowserWindow.referrer));
+							this.XULBrowserWindow.mainPageURI = null;
+						}
+					}, 100);
+					return;
 				}
 				else {
-					showErrorPage = false;
-				}
-			}
-			
-			if (showErrorPage) {
-				aRequest.cancel(aStatus);
-				this.win.setTimeout(function() {
-					if (!this.XULBrowserWindow.isStarted) { // no new start request until now (capturing double clicks on links: experimental)
-						aWebProgress.DOMWindow.location.replace("chrome://seb/content/error.xhtml?req=" + btoa(aRequest.name) + "&ref=" + btoa(this.XULBrowserWindow.referrer));
-						this.XULBrowserWindow.isStarted = false;
+					sl.debug("document request stop " + uri + " status: " + status);
+					try { // main window focus?
+						win.focus();
 					}
-				}, 100);
+					catch(e) {
+						sl.err("Fokus Error: " + e);
+					}
+				}
+				
+				var w = domWin.wrappedJSObject;
+			
+				try {
+					win.document.title = (windowTitleSuffix == '') ? win.XulLibBrowser.contentDocument.title : win.XulLibBrowser.contentDocument.title + " - " + windowTitleSuffix;
+				}
+				catch(e) {
+					sl.debug(e);
+				}
+				if (su.getConfig("enableBrowserWindowToolbar","boolean",false)) {
+					base.refreshNavigation(win);
+				} 
 				return;
 			}
-			else {
-				sl.debug("document loading: " + aStatus);
+			if (flags & Ci.nsIWebProgressListener.STATE_REDIRECTING) {
+				this.redirecting = true;
+				this.mainPageURI = null;
+				request.QueryInterface(Ci.nsIHttpChannel);
+				sl.debug("main request redirect from "+request.name);
+				return;
 			}
-			
-			var w = aWebProgress.DOMWindow.wrappedJSObject;
-			
-			try {
-				this.win.document.title = (windowTitleSuffix == '') ? this.win.XulLibBrowser.contentDocument.title : this.win.XulLibBrowser.contentDocument.title + " - " + windowTitleSuffix;
-			}
-			catch(e) {
-				sl.debug(e);
-			}
-			/*
-			if (this.win === seb.mainWin && su.getConfig("sebScreenshot","boolean",false)) {
-				sc.createScreenshotController(w);
-			}
-			*/ 
-			if (su.getConfig("enableBrowserWindowToolbar","boolean",false)) {
-				base.refreshNavigation(this.win);
-			}  
+		}
+		catch(e) {
+			sl.err(e);
 		}
 	},
 	
@@ -393,22 +542,25 @@ this.SebBrowser = {
 	
 	progressListener : function(aWebProgress, aRequest, curSelf, maxSelf, curTot, maxTot) {},
 	
-	statusListener : function(aWebProgress, aRequest, aStatus, aMessage) {
-		
-		if (aStatus > 0 && aStatus < 10) {
-			sl.debug("CUSTOM REQUEST HANDLING: " + aStatus + " - " + aMessage);
-			switch (aStatus) {
+	statusListener : function(progress, request, status, message) {
+		if (!(request instanceof Ci.nsIChannel || "URI" in request)) {
+		    // ignore requests that are not a channel
+		    return
+		}
+		if (status > 0 && status < 10) {
+			sl.debug("custom request handling: " + status + " - " + message);
+			let uri = request.URI.spec.replace(/\/$/,"");
+			switch (status) {
 				case STATUS_PDF_REDIRECT.status :
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					base.stopLoading(this.win);
-					let url = aRequest.name;
-					sw.openPdfViewer(url);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
+					sw.openPdfViewer(uri);
 					break;  
 				case STATUS_QUIT_URL_STOP.status :
-					aRequest.cancel(aStatus);
-					this.isStarted = false; 
-					base.stopLoading(this.win);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					var tmpQuit = seb.allowQuit; // store default shutdownEnabled
 					var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
 					seb.allowQuit = true; // set to true
@@ -418,29 +570,35 @@ this.SebBrowser = {
 					seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
 					break;
 				case STATUS_QUIT_URL_WRONG_REFERRER.status : 
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					base.stopLoading(this.win);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					break;
 				case STATUS_LOAD_AR.status :
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					base.stopLoading(this.win);
-					seb.loadAR(this.win, base.linkURLS[aRequest.name]);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
+					seb.loadAR(sw.getChromeWin(progress.DOMWindow), base.linkURLS[request.name]);
 					break;
 				case  STATUS_INVALID_URL.status :
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					base.stopLoading(this.win);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
-					//this.onStateChange(aWebProgress, aRequest, this.stopDocumentFlags, aStatus);
 					break;
 				case STATUS_BLOCK_HTTP.status :
-					aRequest.cancel(aStatus);
-					this.isStarted = false;
-					base.stopLoading(this.win);
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 					break;
+				case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status :
+					request.cancel(status);
+					this.mainPageURI = null;
+					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
+					base.openSebFileDialog(uri);
+					break;
+					
 			}
 		}
 	},
@@ -480,6 +638,8 @@ this.SebBrowser = {
 		}	
 		win.XulLibBrowser = br; // extend window property to avoid multiple getBrowser() calls
 		win.XULBrowserWindow = new nsBrowserStatusHandler();
+		win.XULBrowserWindow.browser = br;
+		
 		// hook up UI through progress listener
 		var interfaceRequestor = win.XulLibBrowser.docShell.QueryInterface(Ci.nsIInterfaceRequestor);
 		var webProgress = interfaceRequestor.getInterface(Ci.nsIWebProgress);
@@ -564,62 +724,6 @@ this.SebBrowser = {
 		}
 		spe.getDictionaryList(dics,{});
 		sl.debug("available dictionaries: " + dics.value);
-		
-		/*
-		var spellclass = "@mozilla.org/spellchecker/myspell;1";
-		if ("@mozilla.org/spellchecker/hunspell;1" in Cc) {
-			spellclass = "@mozilla.org/spellchecker/hunspell;1";
-		}
-		if ("@mozilla.org/spellchecker/engine;1" in Cc) {
-			spellclass = "@mozilla.org/spellchecker/engine;1";
-		}
-
-		let spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
-		let dicsDir = FileUtils.getDir("ProfD", ["dictionaries"],false,false); // should only be one dic inside
-		sl.debug("dictionaries directory exists: " + dicsDir.exists());
-		if (dicsDir.exists()) {
-			spe.addDirectory(dicsDir);
-		}
-		
-		let dics = [];
-		spe.getDictionaryList(dics,{});
-		sl.debug("available dictionaries: " + dics.value);
-		*/
-		
-		
-		/*
-		let dic = su.getConfig("allowSpellCheckDictionary","string","");
-		if (dic == "") {
-			sl.debug("no dictionary defined");
-			return;
-		}
-		if (dics.value.indexOf(dic) < 0) {
-			sl.debug("dictionary " + dic + " not available");
-			return;
-		}
-		sl.debug("using dictionary " + dic);
-		spe.dictionary = dic;
-		*/
-		/*
-		gSpellCheckEngine.dictionary = 'en-US';
-
-		if (gSpellCheckEngine.check("kat")) {
-			sl.debug("X");
-			// It's spelled correctly
-		}
-		else {
-			// It's spelled incorrectly but check if the user has added "kat" as a correct word..
-			var mPersonalDictionary = Cc["@mozilla.org/spellchecker/personaldictionary;1"].getService(Ci.mozIPersonalDictionary);
-			if (mPersonalDictionary.check("kat", gSpellCheckEngine.dictionary)) {
-				sl.debug("XX");
-				// It's spelled correctly accourdly to user personal dictionary
-			}
-			else {
-				sl.debug("XXX");
-				// It's spelled incorrectly
-			}
-		}
-		*/ 
 	},
 	
 	initReconf : function(win,url,handler) {
@@ -758,9 +862,9 @@ this.SebBrowser = {
 			sl.err("no xullib.browser in ChromeWindow!");
 			return false;
 		}
-    // Changed reload from hard to soft reload, to not break offline functionality with Service Workers
-		//win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
-        win.XulLibBrowser.reload();
+		// Changed reload from hard to soft reload, to not break offline functionality with Service Workers
+ 		// win.XulLibBrowser.webNavigation.reload(wnav.LOAD_FLAGS_BYPASS_CACHE);
+		win.XulLibBrowser.reload();
 	},
 	
 	restart : function() {
@@ -826,11 +930,6 @@ this.SebBrowser = {
 	
 	back : function(win) {
 		var nav = win.XulLibBrowser.webNavigation;
-        if (!su.getConfig("allowBrowsingBackForward","boolean",false) &&
-            !su.getConfig("newBrowserWindowNavigation","boolean",false)) {
-			sl.debug("navigation: back not allowed")
-			return; 
-		}
 		if (nav.canGoBack) {
 			sl.debug("navigation: back");	
 			nav.goBack();
@@ -839,11 +938,6 @@ this.SebBrowser = {
 	
 	forward : function(win) {
 		var nav = win.XulLibBrowser.webNavigation;
-		if (!su.getConfig("allowBrowsingBackForward","boolean",false) &&
-            !su.getConfig("newBrowserWindowNavigation","boolean",false)) {
-			sl.debug("navigation: forward not allowed");	
-			return; 
-		}
 		if (nav.canGoForward) {
 			sl.debug("navigation: forward");	
 			nav.goForward();

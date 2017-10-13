@@ -13,12 +13,24 @@ var logenc = null;
 var filterLog = new RegExp(/(TelemetryEnvironment|ProfileAge\.jsm)/gm);
 var consoleListener = {
 	observe: function( msg ) {
+		/*
 		if (filterLog.test(msg.message)) {
 			return;
 		}
-		let a = logenc.encode(msg.message + "\n");
-		logfile.write(a);
-	
+		*/ 
+		let a = null;
+		try { // general script error: report only exceptions
+			msg.QueryInterface(Ci.nsIScriptError);
+			//if (((msg.flags & Ci.nsIScriptError.errorFlag) == Ci.nsIScriptError.errorFlag) || ((msg.flags & Ci.nsIScriptError.exceptionFlag) == Ci.nsIScriptError.exceptionFlag)) {
+			if ((msg.flags & Ci.nsIScriptError.exceptionFlag) == Ci.nsIScriptError.exceptionFlag) {	
+				a = logenc.encode(msg.flags + " : " + msg.message + "\n");
+				logfile.write(a);
+			}
+		}
+		catch(e) { // seb debugging messages
+			a = logenc.encode(msg.message + "\n");
+			logfile.write(a);
+		}
 	},
 	QueryInterface: function (iid) {
 	if (!iid.equals(Ci.nsIConsoleListener) &&
@@ -37,11 +49,18 @@ xulApplication.prototype = {
 		entry: "m-xul-application"
 	}],	
 	QueryInterface: XPCOMUtils.generateQI([Ci.nsICommandLineHandler]),
+	debug : 0,
 	handle : function clh_handle(cmdLine) {	
 		cmdline = cmdLine;
 		try {	
 			Cc["@mozilla.org/toolkit/crash-reporter;1"].getService(Ci.nsICrashReporter).submitReports = false;
 			if (cmdLine.findFlag("silent",false) < 0) {
+				let dpos = cmdLine.findFlag("debug",false);
+				if (dpos > -1) {
+					this.debug = cmdLine.getArgument(dpos+1); // maybe in windows only dpos -> split the whole string " "
+					this._dump("debug " + this.debug);
+					//this._dump(cmdline.getArgument("debug"));
+				}
 				this.initLog();
                                 seb.initCmdLine(cmdLine);
                                 cmdLine.preventDefault = false;
@@ -73,15 +92,24 @@ xulApplication.prototype = {
 				logfile.write(a);
 				// write buffered console messages
 				for (var i=0;i<carr.length;i++) {
-					if (!filterLog.test(carr[i].message)) {
-						let b = logenc.encode(carr[i].message + "\n");
+					let msg = carr[i];
+					let b = null;
+					
+					try { // general script error: report only exceptions
+						msg.QueryInterface(Ci.nsIScriptError);
+						//if (((msg.flags & Ci.nsIScriptError.errorFlag) == Ci.nsIScriptError.errorFlag) || ((msg.flags & Ci.nsIScriptError.exceptionFlag) == Ci.nsIScriptError.exceptionFlag)) {
+						if ((msg.flags & Ci.nsIScriptError.exceptionFlag) == Ci.nsIScriptError.exceptionFlag) {	
+							b = logenc.encode(msg.flag + " : " + msg.message + "\n");
+							file.write(b);
+						}
+					}
+					catch(e) { // seb debugging messages
+						b = logenc.encode(msg.message + "\n");
 						file.write(b);
 					}
 				}
 				// register a console listener for writing all other messages to the logfile
 				cs.registerListener(consoleListener);
-				
-				
 			},
 			function onError(file) {
 				dump("error");

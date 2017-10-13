@@ -113,7 +113,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 	if ( subject instanceof this.nsIHttpChannel ) {
 		sl.info("");
 		sl.info("-> http request modify: " + subject.name);
-		origUrl = subject.URI.spec;
+		origUrl = subject.URI.spec.replace(/\/$/,"");
 		url = origUrl.split("#"); // url fragment is not transmitted to the server!
 		url = url[0];
 		
@@ -130,6 +130,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		sl.info("");
 		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) { // Check if RECONF_SUCCESS!
 			sl.debug("abort seb request");
+			let w = sw.getRecentWin();
 			if (seb.reconfState == RECONF_SUCCESS && !seb.allowLoadSettings) {
 				sl.debug("abort seb reconfigure request: Already reconfigured!");
 				subject.cancel( this.aborted );
@@ -138,8 +139,8 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			}
 			else {
 				subject.cancel( this.aborted );
+				w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
 				seb.reconfState = RECONF_NO;
-				sb.openSebFileDialog(subject.name);
 				return;
 			}
 		}
@@ -148,7 +149,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 				sl.debug("block http request");
 				let w = sw.getRecentWin();
 				subject.cancel( this.abort );
-				w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.webProgress, w.XULBrowserWindow.request, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
+				w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_BLOCK_HTTP.status, STATUS_BLOCK_HTTP.message);
 				return;
 			}
 			if (base.forceHTTPS) { // non common browser behaviour, experimental
@@ -246,7 +247,7 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 	if ( subject instanceof this.nsIHttpChannel ) {
 		sl.info("");
 		sl.info("<- http response examine: " + subject.name);
-		origUrl = subject.URI.spec;
+		origUrl = subject.URI.spec.replace(/\/$/,"");
 		url = origUrl.split("#"); // url fragment is not transmitted to the server!
 		url = url[0];
 		
@@ -291,7 +292,7 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 				else {
 					sl.debug("redirect pdf response mimetype " + subject.name);
 					subject.cancel( this.aborted );
-					w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.webProgress, w.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
+					w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
 					return;
 				}
 			}
@@ -494,8 +495,8 @@ this.SebNet = {
 			return true;
 		}
 
-    // Trim a possible trailing slash "/" from the URL
-    url = url.replace(/\/+$/, '');
+		// Trim a possible trailing slash "/" from the URL
+		url = url.replace(/\/+$/, '');
 
 		// special internal pages
 		if (sw.winTypesReg.pdfViewer.test(url)) {
@@ -508,7 +509,7 @@ this.SebNet = {
 		 
 		var m = false;
 		var msg = "";		
-		sl.debug("check url: " + url);
+		sl.info("check url: " + url);
 		msg = "NOT VALID: " + url + " is not allowed!";							
 		for (var i=0;i<blackListRegs.length;i++) {
 			if (blackListRegs[i].test(url)) {
@@ -524,7 +525,6 @@ this.SebNet = {
 			return true;
 		}
 		for (var i=0;i<whiteListRegs.length;i++) {
-			sl.debug(whiteListRegs[i]);
 			if (whiteListRegs[i].test(url)) {
 				m = true;
 				break;

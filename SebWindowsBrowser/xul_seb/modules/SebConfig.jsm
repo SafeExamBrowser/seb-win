@@ -103,7 +103,7 @@ this.SebConfig =  {
 			if (typeof obj == "object") {
 				sl.debug("custom config object found");
 				seb.config = su.mergeJSON(obj, seb.defaultConfig);
-				sl.debug(JSON.stringify(seb.config));
+				sl.info(JSON.stringify(seb.config));
 
 				if (!su.isEmpty(seb.config.sebPrefs)) {
 					base.setPrefs(seb.config.sebPrefs);

@@ -118,10 +118,25 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         private static void OnClientMessageBinary(byte[] obj)
         {
+            // Check if we're running in exam mode already, if yes, then refuse to load a .seb file
+            if (SEBClientInfo.examMode)
+            {
+                Logger.AddInformation("Reconfiguring SEB using the downloaded Config File data is not allowed because it is already running in exam mode, sending command ReconfigureAborted to browser");
+                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.SebFileTransfer, true));
+                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.ReconfigureAborted));
+
+                if (SEBClientInfo.SebWindowsClientForm != null) SebWindowsClientMain.SEBToForeground();
+                SEBMessageBox.Show(SEBUIStrings.loadingSettingsNotAllowed, SEBUIStrings.loadingSettingsNotAllowedReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                SebWindowsClientMain.LoadingSebFile(false);
+                return;
+            }
+
             HasBeenReconfiguredByMessage = true;
+            Logger.AddInformation("Received downloaded Config File data, " + obj.Length + " bytes. Sending command SebFileTransfer to browser");
             SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.SebFileTransfer, true));
             if(SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj))
             {
+                Logger.AddInformation("SEB was successfully reconfigured using the downloaded Config File data");
                 // Convert new URL Filter rules to XUL seb2 rules
                 // and add Start URL to allowed rules
                 SEBURLFilter urlFilter = new SEBURLFilter();
@@ -135,8 +150,10 @@ namespace SebWindowsClient.XULRunnerCommunication
             }
             else
             {
+                Logger.AddInformation("Reconfiguring SEB using the downloaded Config File data failed, sending command ReconfigureAborted to browser");
                 SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.ReconfigureAborted));
             }
+            HasBeenReconfiguredByMessage = false;
         }
 
         private static T DeepClone<T>(T obj)
@@ -207,6 +224,9 @@ namespace SebWindowsClient.XULRunnerCommunication
                         {
                             OnXulRunnerFullscreenchanged(sebxulMessage.Opts);
                         }
+                        break;
+                    case SEBXULMessage.SEBXULHandler.ReconfigureSuccess:
+                        SEBClientInfo.SebWindowsClientForm.ClosePreviousMainWindow();
                         break;
                 }
             }

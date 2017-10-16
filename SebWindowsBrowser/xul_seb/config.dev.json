@@ -17,7 +17,8 @@
 	"spellchecker.dictionary": "fr-classic",
 	"extensions.ui.dictionary.hidden": false,
 	"media.navigator.video.enabled" : false,
-	"media.getusermedia.audiocapture.enabled" : false
+	"media.getusermedia.audiocapture.enabled" : false,
+	"dom.allow_scripts_to_close_windows" : true
 },
 "sebPrefsMap": {
 	"browser.download.dir" 		: "downloadDirectoryWIN",
@@ -96,7 +97,7 @@
 "browserLanguage":"de-DE",
 "browserMessagingPingTime":120000,
 "browserMessagingSocket":"ws://www.simple.org:8706",
-"browserMessagingSocketEnabled":false,
+"browserMessagingSocketEnabled":true,
 "browserScreenKeyboard":false,
 "browserURLSalt":false,
 "browserUserAgent":"SEB 2.2",
@@ -177,12 +178,14 @@
 "startURL":"https://www.simple.org:8443/demo/test.html",
 "startURL_":"http://www.simple.org:8338",
 "startURL_":"https://www.google.com",
+"startURL_":"http://imdb.com",
 "startURL_":"http://get.adobe.com/de/flashplayer/about/",
 "taskBarHeight":0,
 "touchOptimized":false,
 "urlFilterTrustedContent":true,
 "urlFilterRegex":false,
 "whitelistURLFilter":[],
+"whitelistURLFilter_":["^.*?:\\/\\/((((imdb\\.com)|(.*?\\.imdb\\.com)))|(((imdb\\.com)|(.*?\\.imdb\\.com))\\/.*?))$"],
 "whitelistURLFilter_":["*www.simple.org*","http://www.imdb.com*"],
 "whitelistURLFilter_":["*www.simple.org*","*imdb.com*"],
 "whitelistURLFilter_":"*www.simple.org*;*www.bennish.net*",

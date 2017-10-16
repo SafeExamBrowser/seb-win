@@ -444,25 +444,27 @@ namespace SebWindowsClient.ProcessUtils
                         {
                             //If ShowWindowAsync failes (attention: it returns a value != zero if the state has been changed, if the state has remained unchained it returns false)
                             //Do it the hard way
+                            string windowTitle = windowHandle.GetWindowTitle();
                             if (action == ShowWindowCommand.SW_SHOWMINIMIZED)
                             {
                                 SendMessage(windowHandle, 274, (IntPtr)SC_MINIMIZE, IntPtr.Zero);
-                                Logger.AddInformation(String.Format("Window {0} minimized", windowHandle.GetWindowTitle()));
+                                Logger.AddInformation(String.Format("Window {0} minimized", windowTitle));
                             }
                             else if (action == ShowWindowCommand.SW_HIDE)
                             {
                                 //This is a drastic action! If an application cannot be handled by the previous actions, for example if it has administrator privileges, then it gets closed!
                                 SendMessage(windowHandle, 274, (IntPtr)SC_CLOSE, IntPtr.Zero);
-                                Logger.AddInformation(String.Format("Window {0} closed, because i was unable to hide it", windowHandle.GetWindowTitle()));
+                                Logger.AddInformation(String.Format("Window {0} closed, because i was unable to hide it", windowTitle));
                             }
                             else if (action == ShowWindowCommand.SW_SHOWMAXIMIZED)
                             {
                                 SendMessage(windowHandle, 274, (IntPtr)SC_MAXIMIZE, IntPtr.Zero);
-                                Logger.AddInformation(String.Format("Window {0} Maximized", windowHandle.GetWindowTitle()));
+                                Logger.AddInformation(String.Format("Window {0} Maximized", windowTitle));
                             }
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            Logger.AddError("Couldn't close Window with exception", null, ex);
                         }
                     }
                 });

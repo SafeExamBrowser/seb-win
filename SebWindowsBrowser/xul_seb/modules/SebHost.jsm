@@ -89,6 +89,7 @@ this.SebHost = {
 		base.sendHandler = {
 			"SebFile" : base.sendSebFile,
 			"ReconfigureAborted" : base.sendReconfigureAborted,
+			"ReconfigureSuccess" : base.sendReconfigureSuccess,
 			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered,
 			"FullScreenChanged" : base.sendFullScreenChanged
 		};
@@ -318,6 +319,11 @@ this.SebHost = {
 	
 	sendReconfigureAborted : function () {
 		let msg = {Handler:"ReconfigureAborted",Opts:{}};
+		base.sendMessage(JSON.stringify(msg));
+	},
+	
+	sendReconfigureSuccess : function () {
+		let msg = {Handler:"ReconfigureSuccess",Opts:{}};
 		base.sendMessage(JSON.stringify(msg));
 	},
 	

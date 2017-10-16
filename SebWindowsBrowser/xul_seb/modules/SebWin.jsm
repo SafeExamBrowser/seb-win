@@ -264,11 +264,11 @@ this.SebWin = {
 	},
 	
 	openWin : function(url) {
-		seb.mainWin.open(url);
+		return seb.mainWin.open(url);
 	},
 	
 	toolbarIsVisible : function(win) {
-		//sl.debug("XXXX" + win.XULBrowserWindow);
+		sl.debug("toolbarIsVisible");
 		if (win.document.fullscreenElement) {
 			return false;
 		}
@@ -276,6 +276,7 @@ this.SebWin = {
 			return (su.getConfig("enableBrowserWindowToolbar", "boolean", false) && (su.getConfig("allowBrowsingBackForward", "boolean", false) || su.getConfig("browserWindowAllowReload", "boolean", false)));
 		}
 		else {
+			//sl.debug("XXXX: " + win.XULBrowserWindow.baseurl);
 			return (su.getConfig("enableBrowserWindowToolbar", "boolean", false) && (su.getConfig("newBrowserWindowNavigation", "boolean", false) || su.getConfig("newBrowserWindowAllowReload", "boolean", false)));
 		}
 	},
@@ -337,7 +338,7 @@ this.SebWin = {
 		var showToolbar = base.toolbarIsVisible(win);
 		
 		if (showToolbar) {
-			tb.className = (su.getConfig("touchOptimized", "boolean", false)) ? "tbTouch" : "tbDesktop";			
+			tb.className = (su.getConfig("touchOptimized", "boolean", false)) ? "tbTouch" : "tbDesktop";
 			ib.className = (su.getConfig("touchOptimized", "boolean", false)) ? "tbTouch" : "tbDesktop";	 
 		}
 		else {
@@ -422,7 +423,8 @@ this.SebWin = {
 	},
 	
 	setMainScreen : function() {
-		if (base.mainScreen['initialized']) { return base.mainScreen; }	 
+		//if (base.mainScreen['initialized']) { return base.mainScreen; }
+		sl.debug("setMainScreen");	 
 		base.mainScreen['titlebarEnabled'] = su.getConfig("sebMainBrowserWindowTitlebarEnabled","boolean",false);
 		base.mainScreen['maximized'] = su.getConfig("sebMainBrowserWindowMaximized","boolean",true);
 		//template browserViewMode
@@ -585,6 +587,9 @@ this.SebWin = {
 					break;
 				default :
 					// do nothing
+			}
+			if ((scr.width == "100%") && (scr.height == "100%")) {
+				win.maximize();
 			}
 		}
 	},

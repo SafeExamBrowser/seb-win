@@ -58,6 +58,8 @@ namespace SebWindowsClient.ConfigurationUtils
         private const string PLAIN_DATA_MODE = "plnd";
         private const string PASSWORD_CONFIGURING_CLIENT_MODE = "pwcc";
         private const string UNENCRYPTED_MODE = "<?xm";
+        private const string MULTIPART_MODE = "mphd";
+        private const string CUSTOM_HEADER_MODE = "cmhd";
 
         // Public key hash identifier length
         private const int PUBLIC_KEY_HASH_LENGTH = 20;

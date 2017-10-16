@@ -74,7 +74,7 @@ namespace SebWindowsClient.ConfigurationUtils
             foreach (DictObj URLFilterRule in URLFilterRules)
             {
 
-                if ((bool)URLFilterRule[SEBSettings.KeyURLFilterRuleActive] == true)
+                if (URLFilterRule.ContainsKey(SEBSettings.KeyURLFilterRuleRegex) && (bool)URLFilterRule[SEBSettings.KeyURLFilterRuleActive] == true)
                 {
 
                     string expressionString = (string)URLFilterRule[SEBSettings.KeyURLFilterRuleExpression];

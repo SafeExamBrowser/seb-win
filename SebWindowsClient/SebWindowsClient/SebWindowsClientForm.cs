@@ -86,6 +86,7 @@ namespace SebWindowsClient
 
 		public Process xulRunner = new Process();
 		private int xulRunnerExitCode;
+        private static IntPtr browserMainWindowHandle;
 
 		public List<string> permittedProcessesCalls = new List<string>();
 		public List<Process> permittedProcessesReferences = new List<Process>();
@@ -467,7 +468,14 @@ namespace SebWindowsClient
 			}
 		}
 
-		private void deleteXulRunnerProfileOnNewVersionOfSEB()
+        public void ClosePreviousMainWindow()
+        {
+            browserMainWindowHandle = xulRunner.MainWindowHandle;
+            Logger.AddInformation("Attempting to close previous browser main window: " + browserMainWindowHandle);
+            ProcessUtils.SEBWindowHandler.CloseWindow(browserMainWindowHandle);
+        }
+
+        private void deleteXulRunnerProfileOnNewVersionOfSEB()
 		{
 			Logger.AddInformation("Attempting to handle Firefox profile folder...");
 
@@ -615,7 +623,7 @@ namespace SebWindowsClient
 				permittedProcessesCalls.Clear();
 				permittedProcessesReferences.Clear();
 				permittedProcessesIconImages.Clear();
-			}
+            }
 			else
 			{
 				var tS = taskbarToolStrip.Items[0];

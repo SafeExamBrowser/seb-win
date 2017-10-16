@@ -68,9 +68,9 @@
 				<image class="tbBtn" id="btnRestart" src="chrome://seb/content/images/restart.png" onclick="sb.restart();" />
 				-->
 				<hbox id="imageBox" class="tbHidden">
-					<image tooltiptext="&seb.toolbar.back;" class="tbBtn" id="btnBack" src="chrome://seb/content/images/back.png" onclick="sb.back(window)" />
-					<image tooltiptext="&seb.toolbar.forward;" class="tbBtn" id="btnForward" src="chrome://seb/content/images/forward.png" onclick="sb.forward(window)" />
-					<image tooltiptext="&seb.toolbar.reload;" class="tbBtn" id="btnReload" src="chrome://seb/content/images/reload.png" onclick="seb.reload(window);"/>
+					<image tooltiptext="&seb.toolbar.back;" class="tbBtn hidden" id="btnBack" src="chrome://seb/content/images/back.png" onclick="sb.back(window)" />
+					<image tooltiptext="&seb.toolbar.forward;" class="tbBtn hidden" id="btnForward" src="chrome://seb/content/images/forward.png" onclick="sb.forward(window)" />
+					<image tooltiptext="&seb.toolbar.reload;" class="tbBtn hidden" id="btnReload" src="chrome://seb/content/images/reload.png" onclick="seb.reload(window);"/>
 				</hbox>
 				<!--
 				<textbox class="hidden" id="locationBar" type="autocomplete" flex="1" placeholder="location" autocompletesearch="history"></textbox>

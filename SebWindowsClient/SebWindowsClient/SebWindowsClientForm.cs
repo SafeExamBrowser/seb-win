@@ -86,7 +86,7 @@ namespace SebWindowsClient
 
 		public Process xulRunner = new Process();
 		private int xulRunnerExitCode;
-        private static IntPtr browserMainWindowHandle;
+        private static IntPtr browserMainWindowHandle = new IntPtr();
 
 		public List<string> permittedProcessesCalls = new List<string>();
 		public List<Process> permittedProcessesReferences = new List<Process>();
@@ -470,9 +470,25 @@ namespace SebWindowsClient
 
         public void ClosePreviousMainWindow()
         {
-            browserMainWindowHandle = xulRunner.MainWindowHandle;
+            if (browserMainWindowHandle == new IntPtr())
+            {
+                browserMainWindowHandle = xulRunner.MainWindowHandle;
+
+            }
             Logger.AddInformation("Attempting to close previous browser main window: " + browserMainWindowHandle);
             ProcessUtils.SEBWindowHandler.CloseWindow(browserMainWindowHandle);
+
+            // Get the new main window
+            List<KeyValuePair<IntPtr, string>> openedWindows;
+            openedWindows = xulRunner.GetOpenWindows().ToList();
+
+            foreach (var openWindow in openedWindows)
+            {
+                if (openWindow.Key != browserMainWindowHandle)
+                {
+                    browserMainWindowHandle = openWindow.Key;
+                }
+            }
         }
 
         private void deleteXulRunnerProfileOnNewVersionOfSEB()

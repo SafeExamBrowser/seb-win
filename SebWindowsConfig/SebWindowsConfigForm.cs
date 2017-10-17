@@ -28,7 +28,9 @@ namespace SebWindowsConfig
 
 		public bool quittingMyself = false;
 
-		string settingsPassword = "";
+        public SEBURLFilter urlFilter;
+
+        string settingsPassword = "";
 
 		private string lastBrowserExamKey = "";
 		private string lastSettingsPassword = "";
@@ -73,7 +75,10 @@ namespace SebWindowsConfig
 
 		public SebWindowsConfigForm()
 		{
-			InitializeComponent();
+            // Initialize URL filter
+            urlFilter = new SEBURLFilter();
+
+            InitializeComponent();
 
 			// This is necessary to instanciate the password dialog
 			//SEBConfigFileManager.InitSEBConfigFileManager();
@@ -1143,7 +1148,11 @@ namespace SebWindowsConfig
 			StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(currentDireSebConfigFile).Append(@"\").Append(currentFileSebConfigFile);
 			String fileName = sebClientSettingsAppDataBuilder.ToString();
 
-			/// Generate Browser Exam Key and its salt, if settings or the settings password changed
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
+            /// Generate Browser Exam Key and its salt, in case settings or the settings password changed
 			string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			// Save current Browser Exam Key salt in case saving fails
 			byte[] currentExamKeySalt = (byte[])SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt];

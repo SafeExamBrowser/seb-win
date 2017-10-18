@@ -52,6 +52,8 @@ namespace SebWindowsClient.ConfigurationUtils
 
         // Prefixes
         private const int PREFIX_LENGTH = 4;
+        private const int MULTIPART_LENGTH = 8;
+        private const int CUSTOMHEADER_LENGTH = 4;
         private const string PUBLIC_KEY_HASH_MODE = "pkhs";
         private const string PUBLIC_SYMMETRIC_KEY_MODE = "phsk";
         private const string PASSWORD_MODE = "pswd";
@@ -175,7 +177,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 }
             }
         }
-
+            
         /// ----------------------------------------------------------------------------------------
         /// <summary>
         /// Decrypt and deserialize SEB settings
@@ -201,6 +203,56 @@ namespace SebWindowsClient.ConfigurationUtils
             prefixString = GetPrefixStringFromData(ref sebData);
 
             //// Check prefix identifying encryption modes
+
+            /// Check for new Multipart and Custom headers
+
+            // Multipart Config File: The first part containts the regular SEB key/value settings
+            // following parts can contain additional resources. An updated SEB version will be
+            // able to read and process those parts sequentially as a stream.
+            // Therefore potentially large additional resources won't have to be loaded into memory at once
+            if (prefixString.CompareTo(MULTIPART_MODE) == 0)
+            {
+                // Skip the Multipart Config File header
+                byte[] multipartConfigLengthData = GetPrefixDataFromData(ref sebData, MULTIPART_LENGTH);
+                long multipartConfigLength = BitConverter.ToInt64(multipartConfigLengthData, 0);
+                Logger.AddInformation("Multipart Config File, first part (settings) length: " + multipartConfigLength);
+
+                try
+                {
+                    Logger.AddInformation("Cropping config file, as this SEB version cannot process additional parts of multipart config files.");
+
+                    byte[] dataFirstPart = new byte[sebData.Length - multipartConfigLength];
+                    Buffer.BlockCopy(sebData, 0, dataFirstPart, 0, dataFirstPart.Length);
+                    sebData = dataFirstPart;
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Error while cropping config file", null, ex, ex.Message);
+                }
+            }
+
+            // Custom Header: Containts a 32 bit value for the length of the header
+            // followed by the custom header information. After the header, regular
+            // SEB config file data follows
+            if (prefixString.CompareTo(CUSTOM_HEADER_MODE) == 0)
+            {
+                // Skip the Custom Header
+                byte[] customHeaderLengthData = GetPrefixDataFromData(ref sebData, CUSTOMHEADER_LENGTH);
+                int customHeaderLength = BitConverter.ToInt32(customHeaderLengthData, 0);
+                Logger.AddInformation("Custom Config File Header length: " + customHeaderLength);
+                try
+                {
+                    Logger.AddInformation("Removing custom header from config file data. This SEB version cannot process this header type and will ignore it.");
+
+                    byte[] customHeaderData = GetPrefixDataFromData(ref sebData, customHeaderLength);
+
+                    Logger.AddInformation("Custom header data: " + customHeaderData);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddError("Error while removing custom header from config file data", null, ex, ex.Message);
+                }
+            }
 
             // Prefix = pksh ("Public-Symmetric Key Hash") ?
 

@@ -403,7 +403,7 @@
     <value>Are you sure? (This function doesn't log you out if you are logged in on a website)</value>
   </data>
   <data name="WlanConnectionFailedMessage" xml:space="preserve">
-    <value>Connection to WLAN failed, try again.</value>
+    <value>Connection to WiFi failed, try again.</value>
   </data>
   <data name="WlanConnectionFailedMessageTitle" xml:space="preserve">
     <value>Connection failed</value>
@@ -436,7 +436,7 @@
     <value>Opening embedded resource with permitted application failed</value>
   </data>
   <data name="prohibitedProcessDetectedQuitPassword" xml:space="preserve">
-    <value>SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: </value>
+    <value>SEB detected a prohibited process which it was unable to exit, enter the quit password to continue. </value>
   </data>
   <data name="prohibitedProcessDetectedText" xml:space="preserve">
     <value>SEB detected a prohibited process which it was unable to exit: </value>

@@ -354,4 +354,22 @@
   <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
     <value>Windows Tablet Modus aktivieren</value>
   </data>
+  <data name="errorOpeningResource" xml:space="preserve">
+    <value>Eingebettete Ressource konnte nicht mit zugelassener Applikation geöffnet werden</value>
+  </data>
+  <data name="prohibitedProcessDetectedQuitPassword" xml:space="preserve">
+    <value>SEB hat einen verbotenen Prozess detektiert, welcher nicht beendet werden konnte. Geben Sie das Beenden-Passwort ein, um fortzufahren. </value>
+  </data>
+  <data name="prohibitedProcessDetectedText" xml:space="preserve">
+    <value>SEB hat einen verbotenen Prozess detektiert, welcher nicht beendet werden konnte: </value>
+  </data>
+  <data name="prohibitedProcessDetectedTitle" xml:space="preserve">
+    <value>Verbotener Prozess detektiert</value>
+  </data>
+  <data name="unableToCloseProcessesText" xml:space="preserve">
+    <value>SEB konnte die untenstehenden Prozesse nicht beennden, schliessen Sie diese manuell und starten Sie SEB danach wieder</value>
+  </data>
+  <data name="unableToCloseProcessesTitle" xml:space="preserve">
+    <value>SEB konnte Prozesse nicht beenden</value>
+  </data>
 </root>

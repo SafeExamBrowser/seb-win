@@ -538,7 +538,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: .
+        ///   Looks up a localized string similar to SEB detected a prohibited process which it was unable to exit, enter the quit password to continue. .
         /// </summary>
         public static string prohibitedProcessDetectedQuitPassword {
             get {
@@ -988,7 +988,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connection to WLAN failed, try again..
+        ///   Looks up a localized string similar to Connection to WiFi failed, try again..
         /// </summary>
         public static string WlanConnectionFailedMessage {
             get {

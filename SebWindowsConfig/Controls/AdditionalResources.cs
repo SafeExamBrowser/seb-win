@@ -496,7 +496,7 @@ namespace SebWindowsConfig.Controls
 				}
 				catch (OutOfMemoryException)
 				{
-					MessageBox.Show("The chosen resource file is too big!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("The chosen resource file is too large!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -526,7 +526,7 @@ namespace SebWindowsConfig.Controls
 				}
 				catch (OutOfMemoryException)
 				{
-					MessageBox.Show("The chosen resource folder is too big!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("The chosen resource folder is too large!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}

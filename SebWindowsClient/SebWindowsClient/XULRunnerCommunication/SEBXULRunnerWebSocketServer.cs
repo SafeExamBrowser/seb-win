@@ -92,7 +92,6 @@ namespace SebWindowsClient.XULRunnerCommunication
                 }
                 if (IsRunning)
                     SEBMessageBox.Show(SEBUIStrings.alertWebSocketPortBlocked, SEBUIStrings.alertWebSocketPortBlockedMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
-                    //MessageBox.Show(SEBUIStrings.alertWebSocketPortBlocked);
             }
 
             try

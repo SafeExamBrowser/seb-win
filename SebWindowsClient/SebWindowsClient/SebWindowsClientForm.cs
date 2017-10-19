@@ -776,8 +776,8 @@ namespace SebWindowsClient
 
 					if (runningApplicationsToClose.Any())
 					{
-						SEBMessageBox.Show("SEB was unable to exit processes",
-							"SEB was unable to close the following processes" + "\n" + String.Join("\n", runningApplicationsToClose.Keys),
+						SEBMessageBox.Show(SEBUIStrings.unableToCloseProcessesTitle,
+							SEBUIStrings.unableToCloseProcessesText + "\n" + String.Join("\n", runningApplicationsToClose.Keys),
 							MessageBoxIcon.Error, MessageBoxButtons.OK);
 						ExitApplication();
 						return;

@@ -318,15 +318,15 @@ namespace SebWindowsClient.ProcessUtils
             }
             else
             {
-                SEBMessageBox.Show("Prohibited Process detected",
-                            "SEB detected a prohibited process which it was unable to exit: " + processName,
+                SEBMessageBox.Show(SEBUIStrings.prohibitedProcessDetectedTitle,
+                            SEBUIStrings.prohibitedProcessDetectedText + processName,
                             MessageBoxIcon.Error, MessageBoxButtons.OK);
             }
         }
 
         private void ShowPasswordDialog(string processName, string quitPassword)
         {
-            var password = SebPasswordDialogForm.ShowPasswordDialogForm("Prohibited Process detected", "SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: " + processName);
+            var password = SebPasswordDialogForm.ShowPasswordDialogForm(SEBUIStrings.prohibitedProcessDetectedTitle, SEBUIStrings.prohibitedProcessDetectedQuitPassword + processName);
 
             //cancel button has been clicked
             if (password == null)

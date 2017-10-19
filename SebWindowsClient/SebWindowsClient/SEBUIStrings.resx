@@ -391,7 +391,7 @@
     <value>Settings have been saved, use this file to start an exam with SEB.</value>
   </data>
   <data name="NoWLANInterface" xml:space="preserve">
-    <value>No WLAN Interface found</value>
+    <value>No WiFi Interface found</value>
   </data>
   <data name="WLANNotConnected" xml:space="preserve">
     <value>Not connected</value>
@@ -431,5 +431,23 @@
   </data>
   <data name="tableModeNotEnabledWarningTitle" xml:space="preserve">
     <value>Enable Windows Tablet Mode</value>
+  </data>
+  <data name="errorOpeningResource" xml:space="preserve">
+    <value>Opening embedded resource with permitted application failed</value>
+  </data>
+  <data name="prohibitedProcessDetectedQuitPassword" xml:space="preserve">
+    <value>SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: </value>
+  </data>
+  <data name="prohibitedProcessDetectedText" xml:space="preserve">
+    <value>SEB detected a prohibited process which it was unable to exit: </value>
+  </data>
+  <data name="prohibitedProcessDetectedTitle" xml:space="preserve">
+    <value>Prohibited Process detected</value>
+  </data>
+  <data name="unableToCloseProcessesText" xml:space="preserve">
+    <value>SEB was unable to terminate the following processes, close them manually and restart SEB afterwards</value>
+  </data>
+  <data name="unableToCloseProcessesTitle" xml:space="preserve">
+    <value>SEB was unable to close processes</value>
   </data>
 </root>

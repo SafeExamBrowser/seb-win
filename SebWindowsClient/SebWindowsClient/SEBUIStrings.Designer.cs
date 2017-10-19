@@ -304,6 +304,15 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opening embedded resource with permitted application failed.
+        /// </summary>
+        public static string errorOpeningResource {
+            get {
+                return ResourceManager.GetString("errorOpeningResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error when opening the file SebClientSettings.seb!.
         /// </summary>
         public static string ErrorWhenOpeningSettingsFile {
@@ -448,7 +457,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No WLAN Interface found.
+        ///   Looks up a localized string similar to No WiFi Interface found.
         /// </summary>
         public static string NoWLANInterface {
             get {
@@ -525,6 +534,33 @@ namespace SebWindowsClient {
         public static string permittedApplicationNotFoundMessage {
             get {
                 return ResourceManager.GetString("permittedApplicationNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEB detected a prohibited process which it was unable to exit, enter the quit password to continue: .
+        /// </summary>
+        public static string prohibitedProcessDetectedQuitPassword {
+            get {
+                return ResourceManager.GetString("prohibitedProcessDetectedQuitPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEB detected a prohibited process which it was unable to exit: .
+        /// </summary>
+        public static string prohibitedProcessDetectedText {
+            get {
+                return ResourceManager.GetString("prohibitedProcessDetectedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prohibited Process detected.
+        /// </summary>
+        public static string prohibitedProcessDetectedTitle {
+            get {
+                return ResourceManager.GetString("prohibitedProcessDetectedTitle", resourceCulture);
             }
         }
         
@@ -867,6 +903,24 @@ namespace SebWindowsClient {
         public static string toolTipOnScreenKeyboardNotEnabled {
             get {
                 return ResourceManager.GetString("toolTipOnScreenKeyboardNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEB was unable to terminate the following processes, close them manually and restart SEB afterwards.
+        /// </summary>
+        public static string unableToCloseProcessesText {
+            get {
+                return ResourceManager.GetString("unableToCloseProcessesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEB was unable to close processes.
+        /// </summary>
+        public static string unableToCloseProcessesTitle {
+            get {
+                return ResourceManager.GetString("unableToCloseProcessesTitle", resourceCulture);
             }
         }
         

@@ -99,7 +99,7 @@ namespace SebWindowsClient.AdditionalResourcesUtils
                 }
                 catch (Exception ex)
                 {
-                    SEBMessageBox.Show("Error", ex.Message, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    SEBMessageBox.Show(SEBUIStrings.errorOpeningResource, ex.Message, MessageBoxIcon.Error, MessageBoxButtons.OK);
                 }
             }
         }

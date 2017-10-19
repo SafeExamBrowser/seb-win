@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    class SEBURLFilterExpression
+    public class SEBURLFilterExpression
     {
         public string scheme;
         public string user;
@@ -22,70 +22,14 @@ namespace SebWindowsClient.ConfigurationUtils
         {
             if (!string.IsNullOrEmpty(filterExpressionString))
             {
-                //int schemeDelimiter = filterExpressionString.IndexOf("://");
-
-                //if (schemeDelimiter != -1)
-                //{
-                //    // Filter expression contains a scheme: save it and replace it with http
-                //    // (in case scheme contains a wildcard)
-                //    newScheme = filterExpressionString.Substring(0, schemeDelimiter);
-                //    filterExpressionString = "http" + filterExpressionString.Substring(schemeDelimiter);
-                //}
-                //else
-                //{
-                //    // Filter expression doesn't contain a scheme followed by an authority part,
-                //    // Convert filter expression string to a Uri
-
-                //    // check for scheme followed by only a path (like about:blank or data:...)
-                //    // Convert filter expression string to a Uri
-                //    Uri URLFromString;
-                //    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
-                //    {
-                //        // Probably a relative URI without scheme
-                //        // Temporary prefix it with a http:// scheme
-                //        filterExpressionString = "http://" + filterExpressionString;
-                //        newScheme = "";
-                //    }
-                //    // Convert filter expression string to a Uri
-                //    if (!Uri.TryCreate(filterExpressionString, UriKind.Absolute, out URLFromString))
-                //    {
-                //        return;
-                //    }
-                //    /*
-                //    try
-                //    {
-                //        newScheme = URLFromString.Scheme;
-                //    }
-                //    catch (Exception)
-                //    {
-                //        // Probably a relative URI without scheme
-                //        // Temporary prefix it with a http:// scheme
-                //        filterExpressionString = "http://" + filterExpressionString;
-                //        newScheme = "";
-                //    }*/
-
-                //}
-
                 /// Convert Uri to a SEBURLFilterExpression
-                string splitURLRegexPattern = @"(?:([^\:]*)\:\/\/)?(?:([^\:\@]*)(?:\:([^\@]*))?\@)?(?:([^\/‌​\:]*))?(?:\:([0-9]*))?([^\?#]*)?(?:\?([^#]*))?(?:#(.*))?";
+                string splitURLRegexPattern = @"(?:([^\:]*)\:\/\/)?(?:([^\:\@]*)(?:\:([^\@]*))?\@)?(?:([^\/‌​\:]*))?(?:\:([0-9\*]*))?([^\?#]*)?(?:\?([^#]*))?(?:#(.*))?";
                 Regex splitURLRegex = new Regex(splitURLRegexPattern);
                 Match regexMatch = splitURLRegex.Match(filterExpressionString);
-                if (regexMatch.Success == false)
+               if (regexMatch.Success == false)
                 {
                     return;
                 }
-
-                /*
-                Console.WriteLine(regexMatch.Groups[0].Value + "  (Full URL)<br>");
-                Console.WriteLine(regexMatch.Groups[1].Value + "  (Scheme)<br>");
-                Console.WriteLine(regexMatch.Groups[2].Value + "  (User)<br>");
-                Console.WriteLine(regexMatch.Groups[3].Value + "  (Password)<br>");
-                Console.WriteLine(regexMatch.Groups[4].Value + "  (Domain)<br>");
-                Console.WriteLine(regexMatch.Groups[5].Value + "  (Port)<br>");
-                Console.WriteLine(regexMatch.Groups[6].Value + "  (Path)<br>");
-                Console.WriteLine(regexMatch.Groups[7].Value + "  (Query)<br>");
-                Console.WriteLine(regexMatch.Groups[8].Value + "  (Fragment)<br>");
-                */
 
                 this.scheme = regexMatch.Groups[1].Value;
                 this.user = regexMatch.Groups[2].Value;
@@ -94,7 +38,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 string portNumber = regexMatch.Groups[5].Value;
 
                 // We only want a port if the filter expression string explicitely defines one!
-                if (portNumber.Length == 0)
+                if (portNumber.Length == 0 || portNumber=="*")
                 {
                     this.port = null;
                 }

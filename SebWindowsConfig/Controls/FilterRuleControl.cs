@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SebWindowsConfig.Entities;
+using SebWindowsClient.ConfigurationUtils;
 
 namespace SebWindowsConfig.Controls
 {
 	public partial class FilterRuleControl : UserControl
 	{
-		public FilterRuleControl()
+        public FilterRuleControl()
 		{
 			InitializeComponent();
-		}
+        }
 
-		internal delegate void DataChangedHandler(IEnumerable<FilterRule> rules);
+        internal delegate void DataChangedHandler(IEnumerable<FilterRule> rules);
 
 		internal event DataChangedHandler DataChanged;
 
@@ -64,16 +65,21 @@ namespace SebWindowsConfig.Controls
 
 		private void RemoveButton_Click(object sender, EventArgs e)
 		{
-			foreach (DataGridViewRow row in RuleDataGridView.SelectedRows)
-			{
-				RuleDataGridView.Rows.Remove(row);
-			}
+            if (RuleDataGridView.SelectedRows.Count != 0)
+            {
+                foreach (DataGridViewRow row in RuleDataGridView.SelectedRows)
+                {
+                    RuleDataGridView.Rows.Remove(row);
+                }
+            } else
+            {
+                if (RuleDataGridView.CurrentRow != null)
+                {
+                    RuleDataGridView.Rows.RemoveAt(RuleDataGridView.CurrentRow.Index);
+                }
 
-			if (RuleDataGridView.CurrentRow != null)
-			{
-				RuleDataGridView.Rows.RemoveAt(RuleDataGridView.CurrentRow.Index);
-			}
-		}
+            }
+        }
 
 		private void RuleDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
@@ -153,12 +159,7 @@ namespace SebWindowsConfig.Controls
 
 		private bool IsValidUrlRule(string rule)
 		{
-			if (rule != null && (Regex.IsMatch(rule, @"^.*\*.*:[0-9]{1,5}$") || Regex.IsMatch(rule, @"^.*\*.*:\/\/.*$")))
-			{
-				return true;
-			}
-
-			return Uri.TryCreate(rule, UriKind.RelativeOrAbsolute, out Uri uri) && Uri.IsWellFormedUriString(rule, UriKind.RelativeOrAbsolute);
+			return new SEBURLFilterExpression(rule) != null;
 		}
 	}
 }

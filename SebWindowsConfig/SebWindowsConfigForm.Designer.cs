@@ -863,9 +863,9 @@ namespace SebWindowsConfig
             this.checkBoxInsideSebEnableNetworkConnectionSelector.Location = new System.Drawing.Point(5, 205);
             this.checkBoxInsideSebEnableNetworkConnectionSelector.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxInsideSebEnableNetworkConnectionSelector.Name = "checkBoxInsideSebEnableNetworkConnectionSelector";
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Size = new System.Drawing.Size(201, 17);
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Size = new System.Drawing.Size(196, 17);
             this.checkBoxInsideSebEnableNetworkConnectionSelector.TabIndex = 8;
-            this.checkBoxInsideSebEnableNetworkConnectionSelector.Text = "Enable Network Connection Selector";
+            this.checkBoxInsideSebEnableNetworkConnectionSelector.Text = "Enable network connection selector";
             this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableNetworkConnectionSelector, "Activates the button which allows to connect to WiFi networks, introduced in Wind" +
         "ows 10.");
             this.checkBoxInsideSebEnableNetworkConnectionSelector.UseVisualStyleBackColor = true;
@@ -878,9 +878,9 @@ namespace SebWindowsConfig
             this.checkBoxInsideSebEnableSwitchUser.Location = new System.Drawing.Point(7, 27);
             this.checkBoxInsideSebEnableSwitchUser.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxInsideSebEnableSwitchUser.Name = "checkBoxInsideSebEnableSwitchUser";
-            this.checkBoxInsideSebEnableSwitchUser.Size = new System.Drawing.Size(119, 17);
+            this.checkBoxInsideSebEnableSwitchUser.Size = new System.Drawing.Size(117, 17);
             this.checkBoxInsideSebEnableSwitchUser.TabIndex = 0;
-            this.checkBoxInsideSebEnableSwitchUser.Text = "Enable Switch User";
+            this.checkBoxInsideSebEnableSwitchUser.Text = "Enable Switch user";
             this.toolTip1.SetToolTip(this.checkBoxInsideSebEnableSwitchUser, "Activates the button \"Switch User\"");
             this.checkBoxInsideSebEnableSwitchUser.UseVisualStyleBackColor = true;
             this.checkBoxInsideSebEnableSwitchUser.CheckedChanged += new System.EventHandler(this.checkBoxInsideSebEnableSwitchUser_CheckedChanged);
@@ -1278,7 +1278,7 @@ namespace SebWindowsConfig
             this.tabPageUrlFilter.Controls.Add(this.checkBoxEnableURLContentFilter);
             this.tabPageUrlFilter.Location = new System.Drawing.Point(4, 22);
             this.tabPageUrlFilter.Name = "tabPageUrlFilter";
-            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageUrlFilter.Size = new System.Drawing.Size(698, 462);
             this.tabPageUrlFilter.TabIndex = 3;
             this.tabPageUrlFilter.Text = "Filter";
@@ -1956,7 +1956,7 @@ namespace SebWindowsConfig
             // textBoxPermittedProcessOriginalName
             // 
             this.textBoxPermittedProcessOriginalName.Location = new System.Drawing.Point(199, 109);
-            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessOriginalName.Name = "textBoxPermittedProcessOriginalName";
             this.textBoxPermittedProcessOriginalName.Size = new System.Drawing.Size(565, 20);
             this.textBoxPermittedProcessOriginalName.TabIndex = 95;
@@ -2002,9 +2002,9 @@ namespace SebWindowsConfig
             this.label2.Location = new System.Drawing.Point(107, 138);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 13);
+            this.label2.Size = new System.Drawing.Size(129, 13);
             this.label2.TabIndex = 91;
-            this.label2.Text = "Window Handling Process";
+            this.label2.Text = "Window handling process";
             // 
             // textBoxPermittedProcessExecutables
             // 
@@ -2363,7 +2363,7 @@ namespace SebWindowsConfig
             // textBoxProhibitedProcessOriginalName
             // 
             this.textBoxProhibitedProcessOriginalName.Location = new System.Drawing.Point(178, 55);
-            this.textBoxProhibitedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxProhibitedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxProhibitedProcessOriginalName.Name = "textBoxProhibitedProcessOriginalName";
             this.textBoxProhibitedProcessOriginalName.Size = new System.Drawing.Size(338, 20);
             this.textBoxProhibitedProcessOriginalName.TabIndex = 15;
@@ -2943,9 +2943,9 @@ namespace SebWindowsConfig
             this.checkBoxDownloadOpenSEBFiles.Location = new System.Drawing.Point(25, 304);
             this.checkBoxDownloadOpenSEBFiles.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxDownloadOpenSEBFiles.Name = "checkBoxDownloadOpenSEBFiles";
-            this.checkBoxDownloadOpenSEBFiles.Size = new System.Drawing.Size(199, 17);
+            this.checkBoxDownloadOpenSEBFiles.Size = new System.Drawing.Size(203, 17);
             this.checkBoxDownloadOpenSEBFiles.TabIndex = 86;
-            this.checkBoxDownloadOpenSEBFiles.Text = "Download and open SEB config files";
+            this.checkBoxDownloadOpenSEBFiles.Text = "Download and open SEB Config Files";
             this.toolTip1.SetToolTip(this.checkBoxDownloadOpenSEBFiles, "Download and open .seb config files regardless if downloading and opening other f" +
         "ile types is allowed.");
             this.checkBoxDownloadOpenSEBFiles.UseVisualStyleBackColor = true;
@@ -3081,9 +3081,9 @@ namespace SebWindowsConfig
             this.label11.Location = new System.Drawing.Point(540, 494);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(217, 13);
+            this.label11.Size = new System.Drawing.Size(213, 13);
             this.label11.TabIndex = 124;
-            this.label11.Text = "Suffix to be added to every Browser Window";
+            this.label11.Text = "Suffix to be added to every browser window";
             // 
             // textBoxBrowserSuffix
             // 
@@ -3702,9 +3702,9 @@ namespace SebWindowsConfig
             this.checkBoxEnableAudioControl.Location = new System.Drawing.Point(8, 25);
             this.checkBoxEnableAudioControl.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxEnableAudioControl.Name = "checkBoxEnableAudioControl";
-            this.checkBoxEnableAudioControl.Size = new System.Drawing.Size(130, 17);
+            this.checkBoxEnableAudioControl.Size = new System.Drawing.Size(128, 17);
             this.checkBoxEnableAudioControl.TabIndex = 86;
-            this.checkBoxEnableAudioControl.Text = "Enable Audio Controls";
+            this.checkBoxEnableAudioControl.Text = "Enable audio controls";
             this.checkBoxEnableAudioControl.UseVisualStyleBackColor = true;
             this.checkBoxEnableAudioControl.CheckedChanged += new System.EventHandler(this.checkBoxEnableAudioControl_CheckedChanged);
             // 
@@ -3726,9 +3726,9 @@ namespace SebWindowsConfig
             this.checkBoxMuteAudio.Location = new System.Drawing.Point(8, 46);
             this.checkBoxMuteAudio.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxMuteAudio.Name = "checkBoxMuteAudio";
-            this.checkBoxMuteAudio.Size = new System.Drawing.Size(130, 17);
+            this.checkBoxMuteAudio.Size = new System.Drawing.Size(129, 17);
             this.checkBoxMuteAudio.TabIndex = 87;
-            this.checkBoxMuteAudio.Text = "Mute Audio on startup";
+            this.checkBoxMuteAudio.Text = "Mute audio on startup";
             this.checkBoxMuteAudio.UseVisualStyleBackColor = true;
             this.checkBoxMuteAudio.CheckedChanged += new System.EventHandler(this.checkBoxMuteAudio_CheckedChanged);
             // 

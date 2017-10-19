@@ -709,7 +709,17 @@ namespace SebWindowsConfig.Controls
 		{
 			SetIconFromUrl(textBoxAdditionalResourceUrl.Text);
             CreateURLFilterRule(textBoxAdditionalResourceUrl.Text);
-		}
+
+            // Make sure URL filter is enabled and show message box if not
+            if ((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnable] == false)
+            {
+                SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnable] = true;
+                SEBMessageBox.Show("URL Filter Enabled", "When adding an external additional resource, an according URL filter must be defined " +
+                    "and URL filtering enabled. You can edit the filter(s) for the resource in its URL Filter list. " +
+                    "You may also have to create filter rules for your exam in Network/Filter settings (SEB internally only creates a rule exactly matching the Start URL). " +
+                    "For full control of displayed content, 'Filter also embedded content' (Network/Filter tab) should be activated as well.", MessageBoxIcon.Warning, MessageBoxButtons.OK);
+            }
+        }
 
         private void CreateURLFilterRule(string resourceURLString)
         {

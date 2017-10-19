@@ -3887,9 +3887,10 @@ namespace SebWindowsConfig
 			{
 				e.Cancel = true;
 			}
-		}
+            checkBoxEnableURLFilter.Checked = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterEnable];
+        }
 
-		private void label1_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
 		{
 
 		}

@@ -267,6 +267,8 @@ namespace SebWindowsClient.ConfigurationUtils
 
             // If a scheme is indicated in the filter expression, it has to match
             filterComponent = filterExpression.scheme;
+            UriBuilder urlToFilterParts = new UriBuilder(URLToFilter);
+
             if (filterComponent != null &&
                 !Regex.IsMatch(URLToFilter.Scheme, filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
@@ -277,14 +279,14 @@ namespace SebWindowsClient.ConfigurationUtils
             string userInfo = URLToFilter.UserInfo;
             filterComponent = filterExpression.user;
             if (filterComponent != null && 
-                !Regex.IsMatch(SEBURLFilterExpression.User(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(urlToFilterParts.UserName, filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }
 
             filterComponent = filterExpression.password;
             if (filterComponent != null && 
-                !Regex.IsMatch(SEBURLFilterExpression.Password(userInfo), filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(urlToFilterParts.Password, filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }
@@ -304,21 +306,23 @@ namespace SebWindowsClient.ConfigurationUtils
 
             filterComponent = filterExpression.path;
             if (filterComponent != null && 
-                !Regex.IsMatch(URLToFilter.AbsolutePath.TrimEnd(new char[] { '/' }), filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(URLToFilter.AbsolutePath.Trim(new char[] { '/' }), filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }
 
+            string urlQuery = URLToFilter.GetComponents(UriComponents.Query, UriFormat.Unescaped);
             filterComponent = filterExpression.query;
             if (filterComponent != null &&
-                !Regex.IsMatch(URLToFilter.Query, filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(urlQuery, filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }
 
+            string urlFragment = URLToFilter.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             filterComponent = filterExpression.fragment;
             if (filterComponent != null &&
-                !Regex.IsMatch(URLToFilter.Fragment, filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(urlFragment, filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }

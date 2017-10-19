@@ -128,9 +128,11 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		aVisitor = new requestHeaderVisitor();
 		subject.visitRequestHeaders(aVisitor);
 		sl.info("");
-		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) { // Check if RECONF_SUCCESS!
+		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) {
 			sl.debug("abort seb request");
-			let w = sw.getRecentWin();
+			let url = subject.name;
+			//let w = sw.getRecentWin();
+			/*
 			if (seb.reconfState == RECONF_SUCCESS && !seb.allowLoadSettings) {
 				sl.debug("abort seb reconfigure request: Already reconfigured!");
 				subject.cancel( this.aborted );
@@ -143,6 +145,12 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 				seb.reconfState = RECONF_NO;
 				return;
 			}
+			*/ 
+			subject.cancel( this.aborted );
+			sb.openSebFileDialog(url);
+			//seb.reconfState = RECONF_NO;
+			//w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
+			return;
 		}
 		if (httpReg.test(url)) {
 			if (base.blockHTTP) {
@@ -328,8 +336,22 @@ this.SebNet = {
 		base.setSSLSecurity();
 		pdfJsEnabled = su.getConfig("sebPdfJsEnabled","boolean", true);
 		sl.debug("pdfJsEnabled:" + pdfJsEnabled);
-		base.respObs = new responseObserver();
-		base.reqObs = new requestObserver();
+		if (base.respObs == null) {
+			sl.debug("register responseObserver");
+			base.respObs = new responseObserver();
+		}
+		else {
+			sl.debug("responseObserver already registered");
+		}
+		
+		if (base.reqObs == null) {
+			sl.debug("register requestObserver");
+			base.reqObs = new requestObserver();
+		}
+		else {
+			sl.debug("requestObserver already registered");
+		}
+		
 		sl.out("SebNet initialized: " + seb);
 	},
 	
@@ -420,6 +442,8 @@ this.SebNet = {
 	
 	setListRegex : function() { // for better performance compile RegExp objects and push them into arrays
 		sl.debug("setListRegex"); 
+		base.whiteListRegs = [];
+		base.blackListRegs = [];
 		urlTrusted = su.getConfig("urlFilterTrustedContent","boolean",true);
 		//sl.debug(typeof seb.config["urlFilterRegex"]);
 		let is_regex = (typeof seb.config["urlFilterRegex"] === "boolean") ? seb.config["urlFilterRegex"] : false;

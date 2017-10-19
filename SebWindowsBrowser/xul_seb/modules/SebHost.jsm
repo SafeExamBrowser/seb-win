@@ -292,8 +292,13 @@ this.SebHost = {
 	},
 	
 	handleSebFileTransfer : function (opts) {
-		sl.debug("handleSebFileTransfer handled: " + opts);
-		sb.dialogHandler("SebFile transfer succeeded. Waiting for decrypted seb config...");
+		if (opts) {
+			sl.debug("handleSebFileTransfer handled: " + opts);
+			sb.dialogHandler("SebFile transfer succeeded. Waiting for decrypted seb config...");
+		}
+		else {
+			sl.debug("handleSebFileTransfer handled: " + opts);
+		}
 	},
 	
 	handleReconfigureAborted : function(opts) {
@@ -313,6 +318,7 @@ this.SebHost = {
 	},
 	
 	sendSebFile : function (base64) {
+		sl.debug("sendSebFile");
 		let msg = {Handler:"SebFile",Opts:{"fileBase64":base64}};
 		base.sendMessage(JSON.stringify(msg));
 	},

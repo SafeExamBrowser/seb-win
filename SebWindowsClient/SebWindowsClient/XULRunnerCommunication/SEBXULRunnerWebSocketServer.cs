@@ -122,7 +122,6 @@ namespace SebWindowsClient.XULRunnerCommunication
             if (SEBClientInfo.examMode)
             {
                 Logger.AddInformation("Reconfiguring SEB using the downloaded Config File data is not allowed because it is already running in exam mode, sending command ReconfigureAborted to browser");
-                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.SebFileTransfer, false));
                 SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.ReconfigureAborted));
 
                 if (SEBClientInfo.SebWindowsClientForm != null) SebWindowsClientMain.SEBToForeground();

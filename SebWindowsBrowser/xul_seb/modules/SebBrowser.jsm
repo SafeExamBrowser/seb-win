@@ -251,6 +251,9 @@ this.SebBrowser = {
 		    // ignore requests that are not a channel
 		    return
 		}
+		if (seb.reconfState == RECONF_START) {
+			return;
+		}
 		let uri = request.URI.spec.replace(/\/$/,"");
 		let loadContext = this.getLoadContext(request);
 
@@ -265,6 +268,7 @@ this.SebBrowser = {
 			}
 			return;
 		}
+		
 		try {
 			if (this.mainPageURI == null) { // new window request
 				if (this.isLoadRequested(flags)) {
@@ -550,6 +554,9 @@ this.SebBrowser = {
 	progressListener : function(aWebProgress, aRequest, curSelf, maxSelf, curTot, maxTot) {},
 	
 	statusListener : function(progress, request, status, message) {
+		if (seb.reconfState == RECONF_START) {
+			return;
+		}
 		if (!(request instanceof Ci.nsIChannel || "URI" in request)) {
 		    // ignore requests that are not a channel
 		    return
@@ -599,13 +606,14 @@ this.SebBrowser = {
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 					break;
+				/*
 				case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status :
 					request.cancel(status);
 					this.mainPageURI = null;
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					base.openSebFileDialog(uri);
 					break;
-					
+				*/	
 			}
 		}
 	},
@@ -738,7 +746,7 @@ this.SebBrowser = {
 		base.initBrowser(win);
 		seb.reconfState = RECONF_START;
 		base.dialogHandler = handler;
-		base.setBrowserHandler(win);
+		//base.setBrowserHandler(win);
 		base.loadPage(win,url);
 	},
 	

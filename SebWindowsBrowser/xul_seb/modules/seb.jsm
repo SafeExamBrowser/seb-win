@@ -467,11 +467,32 @@ this.seb =  {
 		if (base.reconfState == RECONF_START) { // started by link and dialog
 			sb.resetReconf();
 		}
+		base.reset();
 		sg.initCustomConfig(config);
 		sw.resetWindows();
 		base.reconfWinStart = true;
 		sw.openWin(su.getUrl());
 		//base.mainWin.document.location.reload(true);
+	},
+
+	reset: function() {
+		base.url = "";
+		//mainWin : null, oder doch?
+		//profile: {},
+		//locs : null,
+		//consts : null,
+		base.ars = {};
+		base.allowQuit = false;
+		base.quitURL = "";
+		base.quitIgnorePassword = false;
+		base.quitIgnoreWarning = false;
+		base.hostForceQuit = false;
+		//hostQuitHandler : null,
+		//reconfState : RECONF_NO,
+		//base.reconfWin = null;
+		base.lastWin = null;
+		//reconfWinStart : false,
+		base.arsKeys = {};
 	},
 
 	loadAR: function(win, id) {

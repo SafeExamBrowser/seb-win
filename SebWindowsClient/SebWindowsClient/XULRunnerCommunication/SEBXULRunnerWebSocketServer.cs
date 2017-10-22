@@ -174,7 +174,7 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         private static void OnClientConnected(IWebSocketConnection socket)
         {
-            Logger.AddInformation("WebSocket: Client Connectedon port:" + socket.ConnectionInfo.ClientPort);
+            Logger.AddInformation("WebSocket: Client connected on port:" + socket.ConnectionInfo.ClientPort);
             XULRunner = socket;
             foreach (var sebxulMessage in messageQueue)
             {

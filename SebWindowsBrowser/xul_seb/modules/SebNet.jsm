@@ -74,8 +74,7 @@ let 	seb = null,
 	reqKey = null,
 	reqSalt = null,
 	urlTrusted = true,
-	pdfJsEnabled = false,
-	blockObs = false;
+	pdfJsEnabled = false;
 
 /* request Observer */
 
@@ -106,7 +105,7 @@ let requestObserver = function () {
 };
 
 requestObserver.prototype.observe = function ( subject, topic, data ) {
-	if (blockObs) {
+	if (base.blockObs) {
 		return;
 	}			
 	var url, origUrl, aVisitor;
@@ -129,7 +128,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		subject.visitRequestHeaders(aVisitor);
 		sl.info("");
 		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) {
-			sl.debug("abort seb request");
+			sl.debug("catch seb request");
 			let url = subject.name;
 			//let w = sw.getRecentWin();
 			/*
@@ -248,7 +247,7 @@ let responseObserver = function () {
 };
 
 responseObserver.prototype.observe = function ( subject, topic, data ) {
-	if (blockObs) {
+	if (base.blockObs) {
 		return;
 	}
 	var url, origUrl, aVisitor;
@@ -326,6 +325,7 @@ this.SebNet = {
 	respObs : null,
 	forceHTTPS : false,
 	blockHTTP : false,
+	blockObs : false,
 	
 	
 	init : function(obj) {
@@ -334,6 +334,7 @@ this.SebNet = {
 		base.setListRegex();
 		base.setReqHeader();
 		base.setSSLSecurity();
+		base.blockObs = false;
 		pdfJsEnabled = su.getConfig("sebPdfJsEnabled","boolean", true);
 		sl.debug("pdfJsEnabled:" + pdfJsEnabled);
 		if (base.respObs == null) {
@@ -599,20 +600,22 @@ this.SebNet = {
 					sl.debug(blob.size);
 					sb.dialogHandler("seb file downloaded: " + blob.size);
 					sh.sendMessage(blob);
-					blockObs = false;
+					//w.XULBrowserWindow.onStatusChange(seb.mainWin.XULBrowserWindow.progress, seb.mainWin.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
+					base.blockObs = false;
 				}
 				else {
 					sl.debug("could not load seb file url: " + "\status: " + xhr.status);
 					sb.dialogHandler("could not load seb file: " + xhr.status);
-					blockObs = false;
+					base.blockObs = false;
 				}
 			}
 		}
 		xhr.onerror = function() {
-			blockObs = false;
+			base.blockObs = false;
 		}
 		xhr.responseType = "blob";
 		xhr.open("GET", url, true);
+		xhr.setRequestHeader(SEB_FILE_HEADER, "ASYNC");
 		if (sendBrowserExamKey) {
 			var k;
 			if (reqSalt) {								
@@ -624,7 +627,7 @@ this.SebNet = {
 			}
 			xhr.setRequestHeader(reqHeader, k);
 		}
-		blockObs = true;
+		base.blockObs = true;
 		xhr.send(null);
 	}
 	

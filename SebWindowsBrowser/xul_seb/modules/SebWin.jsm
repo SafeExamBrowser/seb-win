@@ -105,6 +105,13 @@ this.SebWin = {
 		win.document.getElementsByTagName("window")[0].setAttribute("windowtype",type);
 	},
 	
+	isDeprecatedMain : function (win) {
+		if (base.getWinType(win) == "main" && base.wins.length >= 1) {
+			return (win !== base.wins[0]);
+		}
+		return false;
+	},
+	
 	setSizeMode : function (win,mode) {
 		win.document.getElementsByTagName("window")[0].setAttribute("sizemode",mode);
 	},

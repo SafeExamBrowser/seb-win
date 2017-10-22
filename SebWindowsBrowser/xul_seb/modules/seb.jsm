@@ -275,10 +275,13 @@ this.seb =  {
 		sw.setMainNavigation(win);
 		sw.setToolbar(win);
 		sw.setSize(win);
+		sb.loadPage(win,base.url);
 		//sw.showContent(win); still required?
+		/*
 		if (!base.reconfWinStart) {
 			sb.loadPage(win,base.url);
 		}
+		*/ 
 	},
 
 	initSecondary : function(win) {
@@ -365,17 +368,11 @@ this.seb =  {
 	setQuitHandler : function(win) {
 		sl.debug("setQuitHandler");
 		win.addEventListener("close", base.quit, true); // controlled shutdown for main window
-		if (!base.reconfWinStart) {
-			base.quitObserver.register();
-		}
 	},
 
 	removeQuitHandler : function(win) {
 		sl.debug("removeQuitHandler");
 		win.removeEventListener("close", base.quit); // controlled shutdown for main window
-		if (!base.reconfWinStart) {
-			base.quitObserver.unregister();
-		}
 	},
 
 	/* events */
@@ -386,17 +383,13 @@ this.seb =  {
 		if (sw.getWinType(win) == "main") {
 			if (base.reconfWinStart) { // new main window is loaded 
 				sl.debug("new main window is loaded");
-				base.reconfWin = win;
 				sl.debug("send message to host for closing the old main window...");
-				sl.debug("wait until unload event, and continue initializing new window...");
+				base.removeQuitHandler(base.mainWin);
 				sh.sendReconfigureSuccess();
-				//win.setTimeout(function () { seb.onunload(null); }, 500 ); // simulation
-				return;
+				base.reconfWinStart = false;
 			}
-			else {
-				base.mainWin = win;
-				base.initMain(win);
-			}
+			base.mainWin = win;
+			base.initMain(win);
 		}
 		else {
 			base.initSecondary(win);
@@ -405,16 +398,11 @@ this.seb =  {
 
 	onunload : function(win) {
 		sl.debug("onunload");
-		if (base.reconfWinStart) {
-			sl.debug("reconf finished: old main window closed");
-			base.reconfWinStart = false;
-			base.mainWin = base.reconfWin;
-			base.initMain(base.reconfWin);
+		if (sw.isDeprecatedMain(win)) {
 			return;
 		}
 		if (sw.getWinType(win) == "main") {
 			sh.closeMessageSocket();
-			// sebserver and other handler?
 		}
 		else {
 			sw.removeWin(win);
@@ -471,7 +459,9 @@ this.seb =  {
 		sg.initCustomConfig(config);
 		sw.resetWindows();
 		base.reconfWinStart = true;
-		sw.openWin(su.getUrl());
+		var ww = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher);
+		var win = ww.openWindow(null, SEB_URL,"reconfWin", SEB_FEATURES, null);
+		//sw.openWin(su.getUrl());
 		//base.mainWin.document.location.reload(true);
 	},
 
@@ -540,9 +530,11 @@ this.seb =  {
 
 	quit: function(e) {
 		sl.debug("try to quit...");
-		if (base.reconfWinStart) {
-			sl.debug("don't use quitHandler on reconf transaction");
-			return;
+		if (e) {
+			if (sw.isDeprecatedMain(e.target)) {
+				sl.debug("don't use quitHandler on reconf transaction");
+				return;
+			}
 		}
 		var w = base.mainWin;
 

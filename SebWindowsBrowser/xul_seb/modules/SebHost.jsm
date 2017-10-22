@@ -303,8 +303,9 @@ this.SebHost = {
 	
 	handleReconfigureAborted : function(opts) {
 		sl.debug("handleReconfigureAborted handled");
-		seb.reconfState = RECONF_NO;
+		seb.reconfState = RECONF_ABORTED;
 		sb.dialogHandler("closeDialog");
+		seb.reconfWinStart = false;
 	}, 
 	
 	handleReconfigure : function (opts) {
@@ -463,7 +464,12 @@ this.SebHost = {
 			try {
 				messageSocket.send(msg);
 			}
-			catch(e){};
+			catch(e){
+				sl.debug("sendMessage error: " + e);
+			};
+		}
+		else {
+			sl.debug("Ups! messageSocket is null!!");
 		}
 	},
 	

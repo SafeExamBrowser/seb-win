@@ -42,7 +42,7 @@
 "sebScreenshot":false,
 "sebScreenshotImageType":"image/jpeg",
 "sebScreenshotSound":false,
-"sebServerEnabled":true,
+"sebServerEnabled":false,
 "sebSSLSecurityPolicy": 1,
 "SEBParams":"Config params in alphabethical order (handled by both Windows SEB and Core seb)",
 "additionalResources": [

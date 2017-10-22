@@ -5,11 +5,12 @@ const 	DEBUG_LEVEL = 1,
 	SSL_SEC_BLOCK_MIXED_ALL = 2,	// block all mixed contents
 	SSL_SEC_FORCE_HTTPS = 3,	// try redirecting http to https. Beware! this is not a common browser behaviour! The web app should be fixed instead of rewriting the request on the client side!
 	SSL_SEC_BLOCK_HTTP = 4,		// block all http requests
-	SEB_FILE_HEADER = 'X-Seb-File', // Seb File Request-Header from sebProtocolHandler
+	SEB_FILE_HEADER = 'X-Seb-File', // Seb File Request-Header
 	SEB_MIME_TYPE = 'application/seb',
 	LITTLE_ENDIAN = 0,
 	BIG_ENDIAN = 1,
 	SEB_URL = "chrome://seb/content/seb.xul",
+	SEB_FEATURES = "chrome,dialog=no,resizable=yes,scrollbars=yes",
 	HIDDEN_URL= "chrome://seb/content/hidden.xul",
 	HIDDEN_FEATURES = "chrome,modal=no,dialog,resizable=no,width=1,height=1",
 	RECONF_NO = 0,
@@ -38,7 +39,8 @@ const 	DEBUG_LEVEL = 1,
 	STATUS_LOAD_AR = {status:5, message:"STATUS_LOAD_AR"},
 	STATUS_INVALID_URL = {status:6, message:"STATUS_INVALID_URL"},
 	STATUS_BLOCK_HTTP = {status:7, message:"STATUS_BLOCK_HTTP"},
-	STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG = {status:8, message:"STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG"};
+	STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG = {status:8, message:"STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG"},
+	STATUS_SEB_FILE_DOWNLOAD = {status:8, message:"STATUS_SEB_FILE_DOWNLOAD"};
 	
 	
 

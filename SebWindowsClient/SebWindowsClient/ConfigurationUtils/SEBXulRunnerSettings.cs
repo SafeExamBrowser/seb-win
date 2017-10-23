@@ -189,11 +189,13 @@ namespace SebWindowsClient.ConfigurationUtils
 			
 			if ((bool)xulRunnerSettings[SEBSettings.KeyTouchOptimized] == true)
 			{
-				// Switch off XULRunner seb reload warning
-				xulRunnerSettings[SEBSettings.KeyShowReloadWarning] = false;
+                // Switch off XULRunner seb reload warnings
+                xulRunnerSettings[SEBSettings.KeyShowReloadWarning] = false;
+                xulRunnerSettings[SEBSettings.KeyNewBrowserWindowShowReloadWarning] = false;
 
-				// Set correct task bar height according to display dpi
-				xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
+
+                // Set correct task bar height according to display dpi
+                xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
 			}
 
 			xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion;

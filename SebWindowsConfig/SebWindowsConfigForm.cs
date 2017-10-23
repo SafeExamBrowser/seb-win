@@ -378,6 +378,8 @@ namespace SebWindowsConfig
 			checkBoxAllowNavigationNewWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowNavigation];
             checkBoxAllowReload.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload];
             checkBoxShowReloadWarning.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning];
+            checkBoxAllowReloadNewWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowAllowReload];
+            checkBoxShowReloadWarningNewWindow.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowShowReloadWarning];
             checkBoxEnableZoomPage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomPage];
             checkBoxEnableZoomText.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableZoomText];
             radioButtonUseZoomPage.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyZoomMode] == 0);
@@ -1714,12 +1716,32 @@ namespace SebWindowsConfig
 			checkBoxEnableAltMouseWheel.Checked = checkBoxAllowBrowsingBackForward.Checked;
 		}
 
-		private void checkBoxAllowNavigationNewWindow_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxAllowReload_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] = checkBoxAllowReload.Checked;
+        }
+
+        private void checkBoxShowReloadWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning] = checkBoxShowReloadWarning.Checked;
+        }
+
+        private void checkBoxAllowNavigationNewWindow_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowNavigation] = checkBoxAllowNavigationNewWindow.Checked;
 		}
 
-		private void checkBoxRemoveProfile_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxAllowReloadNewWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowAllowReload] = checkBoxAllowReloadNewWindow.Checked;
+        }
+
+        private void checkBoxShowReloadWarningNewWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowShowReloadWarning] = checkBoxShowReloadWarningNewWindow.Checked;
+        }
+
+        private void checkBoxRemoveProfile_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile] = checkBoxRemoveProfile.Checked;
 		}
@@ -1738,16 +1760,6 @@ namespace SebWindowsConfig
 		private void checkBoxShowReloadButton_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadButton] = checkBoxShowReloadButton.Checked;
-		}
-
-        private void checkBoxAllowReload_CheckedChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] = checkBoxAllowReload.Checked;
-        }
-
-        private void checkBoxShowReloadWarning_CheckedChanged(object sender, EventArgs e)
-		{
-			SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning] = checkBoxShowReloadWarning.Checked;
 		}
 
 		private void radioButtonUseZoomPage_CheckedChanged(object sender, EventArgs e)
@@ -3986,5 +3998,5 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
-	}
+    }
 }

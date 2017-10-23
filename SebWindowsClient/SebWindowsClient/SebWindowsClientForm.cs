@@ -383,7 +383,19 @@ namespace SebWindowsClient
 			//}
 		}
 
-		private static T DeepClone<T>(T obj)
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Show an alert that reconfiguring SEB isn't allowed, because running in exam mode
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public static void ShowReconfigureNotAllowed()
+        {
+            SEBMessageBox.Show(SEBUIStrings.loadingSettingsNotAllowed, SEBUIStrings.loadingSettingsNotAllowedReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
+        }
+
+
+        private static T DeepClone<T>(T obj)
 		{
 			using (var ms = new MemoryStream())
 			{
@@ -996,12 +1008,12 @@ namespace SebWindowsClient
 			if (!String.IsNullOrEmpty(SEBClientInfo.getSebSetting(SEBSettings.KeyRestartExamURL)[SEBSettings.KeyRestartExamURL].ToString()) || (bool)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL] == true)
 				taskbarToolStrip.Items.Add(new SEBRestartExamToolStripButton());
 
-			//Add the ReloadhBrowserButton
+			//Add the ReloadBrowserButton
 			if ((bool)SEBClientInfo.getSebSetting(SEBSettings.KeyShowReloadButton)[SEBSettings.KeyShowReloadButton])
 			{
 				var button = new SEBReloadBrowserToolStripButton();
 
-				button.Enabled = SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] as bool? == true;
+				button.Enabled = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserWindowAllowReload] || (bool)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowAllowReload];
 
 				taskbarToolStrip.Items.Add(button);
 			}

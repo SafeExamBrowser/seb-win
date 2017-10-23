@@ -425,16 +425,30 @@ this.seb =  {
 	reload: function(win) {
 		sl.debug("try reload...");
 		win = (win === null) ? sw.getRecentWin() : win;
-		if (su.getConfig("showReloadWarning","boolean",true)) {
-			//var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
-			var result = prompt.confirm(null, su.getLocStr("seb.reload.warning.title"), su.getLocStr("seb.reload.warning"));
-			if (result) {
-				sb.reload(win);
+		if (win == base.mainWin) {
+			if (su.getConfig("browserWindowAllowReload","boolean",true)) {
+				if (su.getConfig("showReloadWarning","boolean",true)) {
+					//var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
+					var result = prompt.confirm(null, su.getLocStr("seb.reload.warning.title"), su.getLocStr("seb.reload.warning"));
+					if (result) {
+						sb.reload(win);	
+					}
+				} else {
+					sb.reload(win);
+				}
 			}
-		}
-		else {
-			sb.reload(win);
-		}
+        } else {
+            if (su.getConfig("newBrowserWindowAllowReload","boolean",true)) {
+                if (su.getConfig("newBrowserWindowShowReloadWarning","boolean",true)) {
+                    var result = prompt.confirm(null, su.getLocStr("seb.reload.warning.title"), su.getLocStr("seb.reload.warning"));
+                    if (result) {
+                        sb.reload(win);
+                    }
+                } else {
+                    sb.reload(win);
+                }
+            }
+        }
 	},
 
 	reconfigure: function(config) {

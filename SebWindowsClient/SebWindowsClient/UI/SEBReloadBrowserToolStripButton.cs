@@ -30,7 +30,7 @@ namespace SebWindowsClient.UI
 
                 if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized])
                 {
-                    if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning])
+                    if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadWarning] || (bool)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowShowReloadWarning])
                     {
                         if (
                         SEBMessageBox.Show(SEBUIStrings.reloadPage, SEBUIStrings.reloadPageMessage,

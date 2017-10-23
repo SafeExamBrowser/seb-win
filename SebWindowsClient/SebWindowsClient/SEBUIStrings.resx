@@ -450,4 +450,7 @@
   <data name="unableToCloseProcessesTitle" xml:space="preserve">
     <value>SEB was unable to close processes</value>
   </data>
+  <data name="loadingString" xml:space="preserve">
+    <value>Loading</value>
+  </data>
 </root>

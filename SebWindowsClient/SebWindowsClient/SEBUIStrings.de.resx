@@ -372,4 +372,7 @@
   <data name="unableToCloseProcessesTitle" xml:space="preserve">
     <value>SEB konnte Prozesse nicht beenden</value>
   </data>
+  <data name="loadingString" xml:space="preserve">
+    <value>Laden</value>
+  </data>
 </root>

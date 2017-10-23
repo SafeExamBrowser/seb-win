@@ -117,95 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="LicenseInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="LicenseInfo.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="LicenseInfo.Text" xml:space="preserve">
+    <value>© 2010-2017 Daniel R. Schneider, Damian Büchel, Dirk Bauer, ETH Zürich, Lehrentwicklung und -technologie (LET), basierend auf der Originalidee des Safe Exam Browser von Stefan Schneider, Universität von Giessen.
+
+Projekt-Konzept: Thomas Piendl, Daniel R. Schneider, Damian Büchel, Dirk Bauer, Kai Reuter, Tobias Halbherr, Karsten Burger, Marco Lehre, Brigitte Schmucki, Oliver Rahs.
+
+Danksagungen und Details über die Lizenzierung finden sich unter safeexambrowser.org.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="LicenseInfo.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 6.75pt</value>
-  </data>
-  <data name="LicenseInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 138</value>
-  </data>
-  <data name="LicenseInfo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 13, 3</value>
-  </data>
-  <data name="LicenseInfo.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="LicenseInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 168</value>
-  </data>
-  <data name="LicenseInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="LicenseInfo.Text" xml:space="preserve">
-    <value>© 2010-2017 Daniel R. Schneider, Damian Büchel, Dirk Bauer, ETH Zürich, Educational Development and Technology (LET), Pascal Wyss, Viktor Tomas, Stefan Schneider, Oliver Rahs, based on the original idea of Safe Exam Browser by Stefan Schneider, University of Giessen.
-Project concept: Dr. Thomas Piendl, Daniel R. Schneider, Damian Büchel, Dr. Dirk Bauer, Kai Reuter, Tobias Halbherr, Stefan Schneider, Karsten Burger, Marco Lehre, Brigitte Schmucki, Oliver Rahs.
-Acknowledgements and details about licences can be found at safeexambrowser.org.</value>
-  </data>
-  <data name="&gt;&gt;LicenseInfo.Name" xml:space="preserve">
-    <value>LicenseInfo</value>
-  </data>
-  <data name="&gt;&gt;LicenseInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;LicenseInfo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;LicenseInfo.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="Version.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="Version.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="Version.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 6.75pt</value>
-  </data>
-  <data name="Version.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 114</value>
-  </data>
-  <data name="Version.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Version.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 18</value>
-  </data>
-  <data name="Version.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;Version.Name" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="&gt;&gt;Version.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Version.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Version.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>574, 318</value>
-  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIAAoIAQAZgAAAICAAAABACAAKAgBAI4gBABAQAAAAQAgAChCAAC2KAUAMDAAAAEA
@@ -6377,17 +6296,5 @@ Acknowledgements and details about licences can be found at safeexambrowser.org.
         AAAAAAAA57ZSIOW1UkDjtFGA4bJRUN+xUDAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAD4DwAA8AMAAOAB
         AADAAQAAwAAAAIAAAACAAAAAgAAAAAAAAAAAAAAAAAEAAKABAACAAwAAmA8AAP9/AAA=
 </value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>About Safe Exam Browser</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>AboutWindow</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

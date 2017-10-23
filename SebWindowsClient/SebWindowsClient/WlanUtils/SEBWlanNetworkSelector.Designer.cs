@@ -37,8 +37,8 @@
             // 
             // listNetworks
             // 
-            resources.ApplyResources(this.listNetworks, "listNetworks");
             this.listNetworks.BackColor = System.Drawing.SystemColors.Window;
+            resources.ApplyResources(this.listNetworks, "listNetworks");
             this.listNetworks.FormattingEnabled = true;
             this.listNetworks.Name = "listNetworks";
             this.listNetworks.SelectedIndexChanged += new System.EventHandler(this.listNetworks_SelectedIndexChanged);
@@ -59,8 +59,8 @@
             // 
             // buttonRefresh
             // 
-            resources.ApplyResources(this.buttonRefresh, "buttonRefresh");
             this.buttonRefresh.BackgroundImage = global::SebWindowsClient.Properties.Resources.refresh;
+            resources.ApplyResources(this.buttonRefresh, "buttonRefresh");
             this.buttonRefresh.FlatAppearance.BorderSize = 0;
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.UseVisualStyleBackColor = true;

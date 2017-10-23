@@ -37,8 +37,8 @@
             // 
             // ButtonMute
             // 
-            this.ButtonMute.BackgroundImage = global::SebWindowsClient.Properties.Resources.audioControlmute;
             resources.ApplyResources(this.ButtonMute, "ButtonMute");
+            this.ButtonMute.BackgroundImage = global::SebWindowsClient.Properties.Resources.audioControlmute;
             this.ButtonMute.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.ButtonMute.FlatAppearance.BorderSize = 0;
             this.ButtonMute.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;

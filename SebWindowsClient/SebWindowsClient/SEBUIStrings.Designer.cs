@@ -430,6 +430,15 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string loadingString {
+            get {
+                return ResourceManager.GetString("loadingString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Locate Third Party Application.
         /// </summary>
         public static string locatePermittedApplication {

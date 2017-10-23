@@ -32,20 +32,21 @@ namespace SebWindowsClient
 
         private void Progress()
         {
-            switch (lblLoading.Text)
+            if (lblLoading.Text == SEBUIStrings.loadingString)
             {
-                case "Loading":
-                    lblLoading.Text = "Loading .";
-                    break;
-                case "Loading .":
-                    lblLoading.Text = "Loading ..";
-                    break;
-                case "Loading ..":
-                    lblLoading.Text = "Loading ...";
-                    break;
-                default:
-                    lblLoading.Text = "Loading";
-                    break;
+                lblLoading.Text = SEBUIStrings.loadingString + " .";
+            }
+            else if (lblLoading.Text == SEBUIStrings.loadingString + " .")
+            {
+                lblLoading.Text = SEBUIStrings.loadingString + " ..";
+            }
+            else if (lblLoading.Text == SEBUIStrings.loadingString + " ..")
+            {
+                lblLoading.Text = SEBUIStrings.loadingString + " ...";
+            }
+            else
+            {
+                lblLoading.Text = SEBUIStrings.loadingString;
             }
         }
 
@@ -102,6 +103,5 @@ namespace SebWindowsClient
         }
 
         #endregion
-
     }
 }

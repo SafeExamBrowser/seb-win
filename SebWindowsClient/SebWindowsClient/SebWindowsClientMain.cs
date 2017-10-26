@@ -489,6 +489,13 @@ namespace SebWindowsClient
             //{
             try
             {
+                if (SEBClientInfo.SebWindowsClientForm.InvokeRequired)
+                {
+                    SEBClientInfo.SebWindowsClientForm.Invoke((MethodInvoker)delegate { SEBToForeground(); });
+                    return;
+                }
+                // this code will run on main (UI) thread 
+
                 //SetForegroundWindow(SEBClientInfo.SebWindowsClientForm.Handle);
                 SebApplicationChooserForm.forceSetForegroundWindow(SEBClientInfo.SebWindowsClientForm.Handle);
                 SEBClientInfo.SebWindowsClientForm.Activate();

@@ -1544,9 +1544,9 @@ namespace SebWindowsConfig
 
 				if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] == false)
 				{
-					checkBoxEnableTouchExit.Checked = true;
-				}
-				SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] = true;
+                    checkBoxEnableTouchExit.Checked = (bool)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
+                }
+                SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] = true;
 				SEBSettings.settingsCurrent[SEBSettings.KeyBrowserScreenKeyboard] = true;
 				checkBoxEnableTouchExit.Enabled = true;
 			}

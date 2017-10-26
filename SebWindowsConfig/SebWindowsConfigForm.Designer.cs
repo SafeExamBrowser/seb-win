@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -1467,8 +1467,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -3080,7 +3080,7 @@ namespace SebWindowsConfig
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(540, 517);
+            this.label11.Location = new System.Drawing.Point(540, 527);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(213, 13);
@@ -3093,7 +3093,7 @@ namespace SebWindowsConfig
             this.textBoxBrowserSuffix.AcceptsTab = true;
             this.textBoxBrowserSuffix.AllowDrop = true;
             this.textBoxBrowserSuffix.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxBrowserSuffix.Location = new System.Drawing.Point(543, 534);
+            this.textBoxBrowserSuffix.Location = new System.Drawing.Point(543, 544);
             this.textBoxBrowserSuffix.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.textBoxBrowserSuffix.Name = "textBoxBrowserSuffix";
             this.textBoxBrowserSuffix.Size = new System.Drawing.Size(214, 19);
@@ -3107,7 +3107,7 @@ namespace SebWindowsConfig
             this.groupBox14.Controls.Add(this.textBoxUserAgentMacCustom);
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacDefault);
             this.groupBox14.Controls.Add(this.radioButtonUserAgentMacCustom);
-            this.groupBox14.Location = new System.Drawing.Point(543, 248);
+            this.groupBox14.Location = new System.Drawing.Point(543, 277);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(500, 103);
             this.groupBox14.TabIndex = 74;
@@ -3161,7 +3161,7 @@ namespace SebWindowsConfig
             this.groupBox13.Controls.Add(this.textBoxUserAgentTouchModeCustom);
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchDefault);
             this.groupBox13.Controls.Add(this.radioButtonUserAgentTouchCustom);
-            this.groupBox13.Location = new System.Drawing.Point(543, 386);
+            this.groupBox13.Location = new System.Drawing.Point(543, 396);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(500, 123);
             this.groupBox13.TabIndex = 73;
@@ -3247,7 +3247,7 @@ namespace SebWindowsConfig
             this.groupBox12.Controls.Add(this.textBoxUserAgentDesktopModeCustom);
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopDefault);
             this.groupBox12.Controls.Add(this.radioButtonUserAgentDesktopCustom);
-            this.groupBox12.Location = new System.Drawing.Point(24, 386);
+            this.groupBox12.Location = new System.Drawing.Point(24, 396);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(500, 123);
             this.groupBox12.TabIndex = 72;
@@ -3335,7 +3335,7 @@ namespace SebWindowsConfig
             this.groupBox11.Controls.Add(this.checkBoxBlockPopUpWindows);
             this.groupBox11.Location = new System.Drawing.Point(24, 202);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(500, 168);
+            this.groupBox11.Size = new System.Drawing.Size(500, 178);
             this.groupBox11.TabIndex = 71;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Browser security";
@@ -3343,7 +3343,7 @@ namespace SebWindowsConfig
             // checkBoxShowReloadWarningNewWindow
             // 
             this.checkBoxShowReloadWarningNewWindow.AutoSize = true;
-            this.checkBoxShowReloadWarningNewWindow.Location = new System.Drawing.Point(259, 118);
+            this.checkBoxShowReloadWarningNewWindow.Location = new System.Drawing.Point(259, 124);
             this.checkBoxShowReloadWarningNewWindow.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxShowReloadWarningNewWindow.Name = "checkBoxShowReloadWarningNewWindow";
             this.checkBoxShowReloadWarningNewWindow.Size = new System.Drawing.Size(228, 17);
@@ -3356,7 +3356,7 @@ namespace SebWindowsConfig
             // checkBoxAllowReloadNewWindow
             // 
             this.checkBoxAllowReloadNewWindow.AutoSize = true;
-            this.checkBoxAllowReloadNewWindow.Location = new System.Drawing.Point(259, 99);
+            this.checkBoxAllowReloadNewWindow.Location = new System.Drawing.Point(259, 105);
             this.checkBoxAllowReloadNewWindow.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxAllowReloadNewWindow.Name = "checkBoxAllowReloadNewWindow";
             this.checkBoxAllowReloadNewWindow.Size = new System.Drawing.Size(186, 17);
@@ -3397,7 +3397,7 @@ namespace SebWindowsConfig
             // checkBoxAllowReload
             // 
             this.checkBoxAllowReload.AutoSize = true;
-            this.checkBoxAllowReload.Location = new System.Drawing.Point(14, 99);
+            this.checkBoxAllowReload.Location = new System.Drawing.Point(14, 105);
             this.checkBoxAllowReload.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxAllowReload.Name = "checkBoxAllowReload";
             this.checkBoxAllowReload.Size = new System.Drawing.Size(122, 17);
@@ -3411,7 +3411,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxAllowNavigationNewWindow.AutoSize = true;
             this.checkBoxAllowNavigationNewWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowNavigationNewWindow.Location = new System.Drawing.Point(259, 78);
+            this.checkBoxAllowNavigationNewWindow.Location = new System.Drawing.Point(259, 84);
             this.checkBoxAllowNavigationNewWindow.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxAllowNavigationNewWindow.Name = "checkBoxAllowNavigationNewWindow";
             this.checkBoxAllowNavigationNewWindow.Size = new System.Drawing.Size(206, 17);
@@ -3439,7 +3439,7 @@ namespace SebWindowsConfig
             // checkBoxShowReloadWarning
             // 
             this.checkBoxShowReloadWarning.AutoSize = true;
-            this.checkBoxShowReloadWarning.Location = new System.Drawing.Point(14, 118);
+            this.checkBoxShowReloadWarning.Location = new System.Drawing.Point(14, 124);
             this.checkBoxShowReloadWarning.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxShowReloadWarning.Name = "checkBoxShowReloadWarning";
             this.checkBoxShowReloadWarning.Size = new System.Drawing.Size(164, 17);
@@ -3468,7 +3468,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxDisableLocalStorage.AutoSize = true;
             this.checkBoxDisableLocalStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxDisableLocalStorage.Location = new System.Drawing.Point(259, 142);
+            this.checkBoxDisableLocalStorage.Location = new System.Drawing.Point(259, 150);
             this.checkBoxDisableLocalStorage.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxDisableLocalStorage.Name = "checkBoxDisableLocalStorage";
             this.checkBoxDisableLocalStorage.Size = new System.Drawing.Size(154, 17);
@@ -3497,7 +3497,7 @@ namespace SebWindowsConfig
             // checkBoxRemoveProfile
             // 
             this.checkBoxRemoveProfile.AutoSize = true;
-            this.checkBoxRemoveProfile.Location = new System.Drawing.Point(14, 142);
+            this.checkBoxRemoveProfile.Location = new System.Drawing.Point(14, 150);
             this.checkBoxRemoveProfile.Name = "checkBoxRemoveProfile";
             this.checkBoxRemoveProfile.Size = new System.Drawing.Size(125, 17);
             this.checkBoxRemoveProfile.TabIndex = 6;
@@ -3511,7 +3511,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxAllowBrowsingBackForward.AutoSize = true;
             this.checkBoxAllowBrowsingBackForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowBrowsingBackForward.Location = new System.Drawing.Point(14, 79);
+            this.checkBoxAllowBrowsingBackForward.Location = new System.Drawing.Point(14, 85);
             this.checkBoxAllowBrowsingBackForward.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxAllowBrowsingBackForward.Name = "checkBoxAllowBrowsingBackForward";
             this.checkBoxAllowBrowsingBackForward.Size = new System.Drawing.Size(209, 17);
@@ -3549,7 +3549,7 @@ namespace SebWindowsConfig
             // labelUseSEBWithoutBrowser
             // 
             this.labelUseSEBWithoutBrowser.AutoSize = true;
-            this.labelUseSEBWithoutBrowser.Location = new System.Drawing.Point(46, 540);
+            this.labelUseSEBWithoutBrowser.Location = new System.Drawing.Point(46, 550);
             this.labelUseSEBWithoutBrowser.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelUseSEBWithoutBrowser.Name = "labelUseSEBWithoutBrowser";
             this.labelUseSEBWithoutBrowser.Size = new System.Drawing.Size(436, 13);
@@ -3560,7 +3560,7 @@ namespace SebWindowsConfig
             // checkBoxUseSebWithoutBrowser
             // 
             this.checkBoxUseSebWithoutBrowser.AutoSize = true;
-            this.checkBoxUseSebWithoutBrowser.Location = new System.Drawing.Point(24, 521);
+            this.checkBoxUseSebWithoutBrowser.Location = new System.Drawing.Point(24, 531);
             this.checkBoxUseSebWithoutBrowser.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxUseSebWithoutBrowser.Name = "checkBoxUseSebWithoutBrowser";
             this.checkBoxUseSebWithoutBrowser.Size = new System.Drawing.Size(185, 17);

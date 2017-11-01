@@ -256,9 +256,35 @@ namespace SebWindowsClient.ProcessUtils
     class ProcessWatchDog
     {
         private List<ProcessInfo> _processesToWatch = new List<ProcessInfo>();
+        private System.Timers.Timer checkRunningProcessesTimer;
+        private List<String> runningProcesses;
 
         public ProcessWatchDog()
         {
+            runningProcesses = Process.GetProcesses().Select(p => p.ProcessName).ToList();
+            checkRunningProcessesTimer = new System.Timers.Timer()
+            {
+                Interval = 10000,
+                AutoReset = true,
+                Enabled = false
+            };
+            checkRunningProcessesTimer.Elapsed += CheckRunningProcessesTimer_Elapsed;
+        }
+
+        private void CheckRunningProcessesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            checkRunningProcessesTimer.Enabled = false;
+            foreach (var process in Process.GetProcesses())
+            {
+                if(!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
+                {
+                    if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    {
+                        ShowMessageOrPasswordDialog(process.ProcessName);
+                    }
+                }
+            }
+            checkRunningProcessesTimer.Enabled = true;
         }
 
         public void StartWatchDog()
@@ -286,6 +312,7 @@ namespace SebWindowsClient.ProcessUtils
 					}
 				}
             }
+            checkRunningProcessesTimer.Enabled = true;
         }
 
         private void ProcessStarted(object sender, EventArgs e)
@@ -303,7 +330,8 @@ namespace SebWindowsClient.ProcessUtils
 
         public void StopWatchDog()
         {
-            foreach(var processInfo in _processesToWatch)
+            checkRunningProcessesTimer.Enabled = false;
+            foreach (var processInfo in _processesToWatch)
                 processInfo.Dispose();
 
             _processesToWatch.Clear();

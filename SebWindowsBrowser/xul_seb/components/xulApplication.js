@@ -61,12 +61,26 @@ xulApplication.prototype = {
 					this._dump("debug " + this.debug);
 					//this._dump(cmdline.getArgument("debug"));
 				}
+				//this.deletePrefs();
 				this.initLog();
                                 seb.initCmdLine(cmdLine);
                                 cmdLine.preventDefault = false;
                         }
 		}
 		catch (e) { this._dump(e); }			
+	},
+	
+	deletePrefs : function () {
+		let prefsPath = OS.Path.join(OS.Constants.Path.profileDir,"prefs.js");
+		this._dump("prefs.js: " + prefsPath);
+		OS.File.remove(prefsPath,{ignoreAbsent:true}).then(
+			function onSuccess() {
+				dump("prefs.js deleted");
+			},
+			function onError() {
+				dump("error");
+			}
+		); 
 	},
 	
 	initLog : function(cmdLine) {

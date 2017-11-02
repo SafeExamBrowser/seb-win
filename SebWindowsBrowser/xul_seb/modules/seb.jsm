@@ -97,20 +97,10 @@ this.seb =  {
 					return;
 				}
 				if (base.config["removeBrowserProfile"]) {
-					sl.debug("removeProfile");
-					for (var i=0;i<base.profile.dirs.length;i++) { // don't delete data folder
-						sl.debug("try to remove everything from profile folder: " + base.profile.dirs[i].path);
-						let entries = base.profile.dirs[i].directoryEntries;
-						while(entries.hasMoreElements()) {
-							let entry = entries.getNext();
-							entry.QueryInterface(Ci.nsIFile);
-							try {
-								sl.debug("remove: " + entry.path);
-								entry.remove(true);
-							}
-							catch(e) { sl.err(e); }
-						}
-					}
+					base.removeBrowserProfileFiles(true);
+				}
+				else {
+					base.removeBrowserProfileFiles();
 				}
 				if (typeof base.hostQuitHandler === 'function') {
 					sl.debug("apply hostQuitHandler");
@@ -156,7 +146,7 @@ this.seb =  {
 			try {
 				prefs.readUserPrefs(prefFile);
 				prefs.readUserPrefs(null); // tricky: for current prefs file use profile prefs, so my original prefs will never be overridden ;-)
-				prefs.savePrefFile(null);
+				//prefs.savePrefFile(null);
 			}
 			catch (e) { sl.err(e); }
 		}
@@ -194,7 +184,7 @@ this.seb =  {
 						sl.debug("push local profile: " + localProfilePath);
 						base.profile["dirs"].push(localProfileDir);
 					}
-				}
+				}e
 			}
 			if (defaultProfile.exists()) {
 				let entries = defaultProfile.directoryEntries;
@@ -368,11 +358,13 @@ this.seb =  {
 	setQuitHandler : function(win) {
 		sl.debug("setQuitHandler");
 		win.addEventListener("close", base.quit, true); // controlled shutdown for main window
+		base.quitObserver.register();
 	},
 
 	removeQuitHandler : function(win) {
 		sl.debug("removeQuitHandler");
 		win.removeEventListener("close", base.quit); // controlled shutdown for main window
+		base.quitObserver.unregister();
 	},
 
 	/* events */
@@ -399,12 +391,16 @@ this.seb =  {
 	onunload : function(win) {
 		sl.debug("onunload");
 		if (sw.isDeprecatedMain(win)) {
+			sl.debug("deprecated win");
 			return;
 		}
 		if (sw.getWinType(win) == "main") {
+			sl.debug("close message socket");
+			//base.removeBrowserProfileFiles();
 			sh.closeMessageSocket();
 		}
 		else {
+			sl.debug("remove secondary win");
 			sw.removeWin(win);
 		}
 	},
@@ -437,18 +433,20 @@ this.seb =  {
 					sb.reload(win);
 				}
 			}
-        } else {
-            if (su.getConfig("newBrowserWindowAllowReload","boolean",true)) {
-                if (su.getConfig("newBrowserWindowShowReloadWarning","boolean",true)) {
-                    var result = prompt.confirm(null, su.getLocStr("seb.reload.warning.title"), su.getLocStr("seb.reload.warning"));
-                    if (result) {
-                        sb.reload(win);
-                    }
-                } else {
-                    sb.reload(win);
-                }
-            }
-        }
+		} 
+		else {
+		    if (su.getConfig("newBrowserWindowAllowReload","boolean",true)) {
+			if (su.getConfig("newBrowserWindowShowReloadWarning","boolean",true)) {
+			    var result = prompt.confirm(null, su.getLocStr("seb.reload.warning.title"), su.getLocStr("seb.reload.warning"));
+			    if (result) {
+				sb.reload(win);
+			    }
+			} 
+			else {
+			    sb.reload(win);
+			}
+		    }
+		}
 	},
 
 	reconfigure: function(config) {
@@ -499,6 +497,47 @@ this.seb =  {
 		base.arsKeys = {};
 	},
 
+	removeBrowserProfileFiles : function (all) {
+		try {
+			let alltxt = (all) ? "all " : "";
+			let profileFiles = su.getConfig("removeBrowserProfileFiles","object",[]);
+			//sl.debug("profileFilesType: " + typeof profileFiles);
+			for (var i=0;i<base.profile.dirs.length;i++) { // don't delete data folder
+				sl.debug("try to remove files " + alltxt + "from profile folder: " + base.profile.dirs[i].path);
+				let entries = base.profile.dirs[i].directoryEntries;
+				if (all) {
+					sl.debug("removeBrowserProfileFiles all");
+					while(entries.hasMoreElements()) {
+						let entry = entries.getNext();
+						entry.QueryInterface(Ci.nsIFile);
+						try {
+							sl.debug("remove: " + entry.path);
+							entry.remove(true);
+						}
+						catch(e) { sl.err(e); }
+					}
+				}
+				else {
+					sl.debug("removeBrowserProfileFiles from array");
+					while(entries.hasMoreElements()) {
+						let entry = entries.getNext();
+						entry.QueryInterface(Ci.nsIFile);
+						if (profileFiles.includes(entry.leafName)) {
+							try {
+								sl.debug("remove: " + entry.path);
+								entry.remove(true);
+							}
+							catch(e) { sl.err(e); }
+						}
+					}
+				}
+			}
+		}
+		catch (e) {
+			dump(e);
+		}
+	},
+	
 	loadAR: function(win, id) {
 		sl.debug("try to load additional ressource:" + id);
 		let ar = base.ars[id];

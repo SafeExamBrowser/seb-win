@@ -255,6 +255,7 @@ namespace SebWindowsClient.ProcessUtils
 
     class ProcessWatchDog
     {
+		private ProcessInfo explorerInfo;
         private List<ProcessInfo> _processesToWatch = new List<ProcessInfo>();
 
         public ProcessWatchDog()
@@ -265,6 +266,9 @@ namespace SebWindowsClient.ProcessUtils
         {
             if (_processesToWatch.Count == 0)
             {
+				explorerInfo = new ProcessInfo("explorer.exe");
+				explorerInfo.Started += ExplorerStarted;
+
                 foreach (var executable in SEBProcessHandler.ProhibitedExecutables)
                 {
 					if (executable.HasName)
@@ -288,7 +292,23 @@ namespace SebWindowsClient.ProcessUtils
             }
         }
 
-        private void ProcessStarted(object sender, EventArgs e)
+		private void ExplorerStarted(object sender, EventArgs e)
+		{
+			Logger.AddWarning("Windows explorer has been restarted!", this);
+
+			var success = SEBProcessHandler.KillExplorerShell();
+
+			if (success)
+			{
+				Logger.AddInformation("Successfully terminated Windows explorer.", this);
+			}
+			else
+			{
+				Logger.AddError("Failed to terminate Windows explorer!", this, null);
+			}
+		}
+
+		private void ProcessStarted(object sender, EventArgs e)
         {
             var processName = ((ProcessInfo) sender).ProcessName;
 
@@ -303,6 +323,8 @@ namespace SebWindowsClient.ProcessUtils
 
         public void StopWatchDog()
         {
+			explorerInfo?.Dispose();
+
             foreach(var processInfo in _processesToWatch)
                 processInfo.Dispose();
 

@@ -294,7 +294,7 @@ this.SebHost = {
 	handleSebFileTransfer : function (opts) {
 		if (opts) {
 			sl.debug("handleSebFileTransfer handled: " + opts);
-			sb.dialogHandler("SebFile transfer succeeded. Waiting for decrypted seb config...");
+			sb.dialogHandler("SEB Config File transfer succeeded. Waiting for new SEB settings...");
 		}
 		else {
 			sl.debug("handleSebFileTransfer handled: " + opts);

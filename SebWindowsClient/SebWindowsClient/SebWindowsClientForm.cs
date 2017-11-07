@@ -1193,7 +1193,7 @@ namespace SebWindowsClient
             return true;
         }
 
-        private void PlaceFormOnDesktop(bool KeyboardShown, bool isInitial = false)
+        public void PlaceFormOnDesktop(bool KeyboardShown, bool isInitial = false)
         {
             if (KeyboardShown && TapTipHandler.IsKeyboardDocked() && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
             {

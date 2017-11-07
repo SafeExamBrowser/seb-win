@@ -33,7 +33,7 @@ this.EXPORTED_SYMBOLS = ["SebUtils"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ appinfo, io, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services,
+	{ appinfo, io, prefs, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services,
 	{ FileUtils } = Cu.import("resource://gre/modules/FileUtils.jsm",{});
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
@@ -63,11 +63,14 @@ this.SebUtils =  {
 	checkCRT : /\.crt$/i,
 	checkJSON : /^\s*?\{.*\}\s*?$/,
 	checkBase64 : /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/,
+	userAgent : "",
 	
 	init : function(obj) {
 		base = this;
-		seb = obj;
-		sl.out("SebUtils initialized: " + seb);
+		seb = obj;		
+		var httpHandler = Cc["@mozilla.org/network/protocol;1?name=http"].getService(Ci.nsIHttpProtocolHandler);
+		base.userAgent = httpHandler.userAgent;
+		sl.out("SebUtils initialized: " + seb + " " + base.userAgent);
 	},
 	
 	getCmd : function (k) { // convert strings to data types

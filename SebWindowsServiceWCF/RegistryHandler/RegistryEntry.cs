@@ -183,7 +183,7 @@ namespace SebWindowsServiceWCF.RegistryHandler
     {
         public RegNoClose(string SID) : base(SID)
         {
-            this.RegistryPath = String.Format(@"HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer",this.SID);
+            this.RegistryPath = String.Format(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer", this.SID);
             this.DataItemName = "NoClose";
             //DWORD
             this.DataType = typeof(Int32);

@@ -1763,135 +1763,133 @@ namespace SebWindowsClient
         /// ----------------------------------------------------------------------------------------
         public void CloseSEBForm(bool reconfiguring = false)
 		{
+			if (!reconfiguring)
 			{
-				//Restore Registry Values
-				try
-				{
-					Logger.AddInformation("restoring registry entries");
-
-					if (!SebWindowsServiceHandler.IsServiceAvailable)
-					{
-						Logger.AddInformation("Restarting Service Connection");
-						SebWindowsServiceHandler.Reconnect();
-					}
-
-					Logger.AddInformation("windows service is available");
-					if (!SebWindowsServiceHandler.ResetRegistry())
-					{
-						Logger.AddWarning("Unable to reset Registry values", this, null);
-					}
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to reset Registry values",this,ex);
-				}
-
-				try
-				{
-					Logger.AddInformation("attempting to reset workspacearea");
-					SEBWorkingAreaHandler.ResetWorkspaceArea();
-					Logger.AddInformation("workspace area resetted");
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to reset WorkingArea",this,ex);
-				}
-
-				// ShutDown Processes
-
-				//Deregister SEB closed Event
-				if (xulRunner != null)
-				{
-					xulRunner.Exited -= XulRunner_Exited;   
-				}
-
-				Logger.AddInformation("closing processes that where started by seb");
-
-				for(int i = 0; i < permittedProcessesReferences.Count; i++)
-				{
-					try
-					{
-						var proc = permittedProcessesReferences[i];
-
-						if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
-						{
-							//Get Process from WindowHandle by Name
-							var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
-							var currentProcessData = (Dictionary<string, object>)permittedProcessSettings[i];
-							var title = (string)currentProcessData[SEBSettings.KeyIdentifier];
-							proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
-						}
-						if (proc != null && !proc.HasExited)
-						{
-							if (reconfiguring && proc.ProcessName.Contains("firefox"))
-							{
-								continue;
-							}
-							Logger.AddInformation("attempting to close " + proc.ProcessName);
-							SEBNotAllowedProcessController.CloseProcess(proc);   
-						}
-					}
-					catch (Exception ex)
-					{
-						Logger.AddError("Unable to Shutdown Process",null, ex);
-					}
-					
-				}
-				Logger.AddInformation("clearing running processes list");
-				//permittedProcessesReferences.Clear();
-
-				//Disable Watchdogs
-				Logger.AddInformation("disabling foreground watchdog");
-				SEBWindowHandler.DisableForegroundWatchDog();
-				Logger.AddInformation("disabling process watchdog");
-				SEBProcessHandler.DisableProcessWatchDog();
-
-				//Restore the hidden Windows
-				try
-				{
-					Logger.AddInformation("restoring hidden windows");
-					SEBWindowHandler.RestoreHiddenWindows();
-				}
-				catch (Exception ex)
-				{
-					Logger.AddError("Unable to restore hidden windows", null, ex);
-				}
-
-				//Reset the Wallpaper
-			   SEBDesktopWallpaper.Reset();
-
-				// Restart the explorer.exe shell
-				if (SEBClientInfo.ExplorerShellWasKilled && !reconfiguring)
-				{
-					try
-					{
-						Logger.AddInformation("Attempting to start explorer shell");
-						SEBProcessHandler.StartExplorerShell();
-						Logger.AddInformation("Successfully started explorer shell");
-					}
-					catch (Exception ex)
-					{
-						Logger.AddError("Unable to StartExplorerShell",null,ex);
-					}
-				}
-
-				// Clean clipboard
-			   SEBClipboard.CleanClipboard();
-			   Logger.AddInformation("Clipboard deleted.", null, null);
-
-			   if (!reconfiguring)
-			   {
-				   Logger.AddInformation("disabling filtered keys");
-				   SebKeyCapture.FilterKeys = false;
-			   }
-
-				Logger.AddInformation("returning from closesebform");
+				Logger.AddInformation("disabling filtered keys");
+				SebKeyCapture.FilterKeys = false;
 			}
+
+			//Restore Registry Values
+			try
+			{
+				Logger.AddInformation("restoring registry entries");
+
+				if (!SebWindowsServiceHandler.IsServiceAvailable)
+				{
+					Logger.AddInformation("Restarting Service Connection");
+					SebWindowsServiceHandler.Reconnect();
+				}
+
+				Logger.AddInformation("windows service is available");
+				if (!SebWindowsServiceHandler.ResetRegistry())
+				{
+					Logger.AddWarning("Unable to reset Registry values", this, null);
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.AddError("Unable to reset Registry values",this,ex);
+			}
+
+			try
+			{
+				Logger.AddInformation("attempting to reset workspacearea");
+				SEBWorkingAreaHandler.ResetWorkspaceArea();
+				Logger.AddInformation("workspace area resetted");
+			}
+			catch (Exception ex)
+			{
+				Logger.AddError("Unable to reset WorkingArea",this,ex);
+			}
+
+			// ShutDown Processes
+
+			//Deregister SEB closed Event
+			if (xulRunner != null)
+			{
+				xulRunner.Exited -= XulRunner_Exited;   
+			}
+
+			Logger.AddInformation("closing processes that where started by seb");
+
+			for(int i = 0; i < permittedProcessesReferences.Count; i++)
+			{
+				try
+				{
+					var proc = permittedProcessesReferences[i];
+
+					if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
+					{
+						//Get Process from WindowHandle by Name
+						var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
+						var currentProcessData = (Dictionary<string, object>)permittedProcessSettings[i];
+						var title = (string)currentProcessData[SEBSettings.KeyIdentifier];
+						proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
+					}
+					if (proc != null && !proc.HasExited)
+					{
+						if (reconfiguring && proc.ProcessName.Contains("firefox"))
+						{
+							continue;
+						}
+						Logger.AddInformation("attempting to close " + proc.ProcessName);
+						SEBNotAllowedProcessController.CloseProcess(proc);   
+					}
+				}
+				catch (Exception ex)
+				{
+					Logger.AddError("Unable to Shutdown Process",null, ex);
+				}
+					
+			}
+			Logger.AddInformation("clearing running processes list");
+			//permittedProcessesReferences.Clear();
+
+			//Disable Watchdogs
+			Logger.AddInformation("disabling foreground watchdog");
+			SEBWindowHandler.DisableForegroundWatchDog();
+			Logger.AddInformation("disabling process watchdog");
+			SEBProcessHandler.DisableProcessWatchDog();
+
+			//Restore the hidden Windows
+			try
+			{
+				Logger.AddInformation("restoring hidden windows");
+				SEBWindowHandler.RestoreHiddenWindows();
+			}
+			catch (Exception ex)
+			{
+				Logger.AddError("Unable to restore hidden windows", null, ex);
+			}
+
+			//Reset the Wallpaper
+			SEBDesktopWallpaper.Reset();
+
+			// Restart the explorer.exe shell
+			if (SEBClientInfo.ExplorerShellWasKilled && !reconfiguring)
+			{
+				try
+				{
+					Logger.AddInformation("Attempting to start explorer shell");
+					SEBProcessHandler.StartExplorerShell();
+					Logger.AddInformation("Successfully started explorer shell");
+				}
+				catch (Exception ex)
+				{
+					Logger.AddError("Unable to StartExplorerShell",null,ex);
+				}
+			}
+
+			// Clean clipboard
+			SEBClipboard.CleanClipboard();
+			Logger.AddInformation("Clipboard deleted.", null, null);
 
 			if (!reconfiguring)
 			{
 				Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
 			}
+
+			Logger.AddInformation("returning from closesebform");
 		}
 
 		/// <summary>

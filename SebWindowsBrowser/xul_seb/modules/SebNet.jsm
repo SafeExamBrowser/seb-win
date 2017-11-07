@@ -590,7 +590,7 @@ this.SebNet = {
 	
 	downloadSebFile : function(url) {
 		var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
-		sb.dialogHandler("seb file download");
+		sb.dialogHandler("Downloading SEB Config File");
 		xhr.onload = function() {
 			if (xhr.readyState === 4) {
 				sl.debug("async get request done: " + xhr.status);
@@ -598,14 +598,14 @@ this.SebNet = {
 					sl.debug(xhr.response);
 					var blob = xhr.response;
 					sl.debug(blob.size);
-					sb.dialogHandler("seb file downloaded: " + blob.size);
+					sb.dialogHandler("SEB Config File downloaded: " + blob.size);
 					sh.sendMessage(blob);
 					//w.XULBrowserWindow.onStatusChange(seb.mainWin.XULBrowserWindow.progress, seb.mainWin.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
 					base.blockObs = false;
 				}
 				else {
 					sl.debug("could not load seb file url: " + "\status: " + xhr.status);
-					sb.dialogHandler("could not load seb file: " + xhr.status);
+					sb.dialogHandler("Could not load SEB Config File: " + xhr.status);
 					base.blockObs = false;
 				}
 			}

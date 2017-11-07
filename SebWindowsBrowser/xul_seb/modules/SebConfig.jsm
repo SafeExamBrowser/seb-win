@@ -52,7 +52,7 @@ XPCOMUtils.defineLazyModuleGetter(this,"su","resource://modules/SebUtils.jsm","S
 /* ModuleGlobals */
 let	base = null,
 	seb = null,
-	uaReg = new RegExp(/rv\:(.+)?\).*?(seb\/.*)$/ig);
+	uaReg = new RegExp(/^.*?rv\:(.+)?\).*?(seb\/.*)$/);
 
 this.SebConfig =  {
 	defaultFile : null,
@@ -62,7 +62,6 @@ this.SebConfig =  {
 	init : function(obj) {
 		base = this;
 		seb = obj;
-		sl.out("SebConfig initialized: " + seb);
 		base.prefsMap["browserUserAgent"] = base.browserUserAgent;
 		base.prefsMap["browserZoomFull"] = base.browserZoomFull;
 		base.prefsMap["zoomMaxPercent"] = base.zoomMaxPercent;
@@ -70,6 +69,7 @@ this.SebConfig =  {
 		base.prefsMap["pluginEnableFlash"] = base.pluginEnableFlash;
 		base.prefsMap["pluginEnableJava"] = base.pluginEnableJava;
 		base.prefsMap["spellcheckDefault"] = base.spellcheckDefault;
+		sl.out("SebConfig initialized: " + seb);
 	},
 
 	initConfig : function(callback) {
@@ -193,18 +193,21 @@ this.SebConfig =  {
 		switch (uaPref) {
 			case BROWSER_UA_DESKTOP_DEFAULT :
 			case BROWSER_UA_TOUCH_DEFAULT :
-				var httpHandler = Cc["@mozilla.org/network/protocol;1?name=http"].getService(Ci.nsIHttpProtocolHandler);
-				var userAgent = httpHandler.userAgent;
-				var match = uaReg.exec(userAgent);
+				var match = uaReg.exec(su.userAgent);
 				if (match) {
-					ret = userAgent.replace(match[2],"Firefox/"+match[1]) + " " + bua;
+					//sl.out(match[0]);
+					//sl.out(match[1]);
+					//sl.out(match[2]);
+					ret = su.userAgent.replace(match[2],"Firefox/"+match[1]) + " " + bua;
 					if (topt === true) {
-						ret = ret.replace(match[1],match[1]+"; Touch");
+						sl.out("ret=" + ret);
+						ret = ret.replace(match[1]+")",match[1]+"; Touch)");
 					}
 				}
 				else {
-					sl.err("Error matching user-agent: " + userAgent);
-					ret = userAgent;
+					sl.debug("Could not match seb user-agent: " + su.userAgent);
+					sl.debug("Maybe User-Agent is already configured in prefs.js");
+					ret = su.userAgent;
 				}
 				break;
 			case BROWSER_UA_DESKTOP_CUSTOM :
@@ -218,7 +221,6 @@ this.SebConfig =  {
 				}
 				ret = ret + " " + bua;
 				break;
-				
 		}
 		return ret;
 	},

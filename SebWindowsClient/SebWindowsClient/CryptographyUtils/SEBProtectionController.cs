@@ -612,6 +612,7 @@ namespace SebWindowsClient.CryptographyUtils
                 browserFiles.Sort();
                 fileNames.AddRange(browserFiles);
 			}
+            Logger.AddInformation("All SEB files: " + Environment.NewLine + string.Join(Environment.NewLine, fileNames.ToArray()));
             return ComputeHashForFiles(fileNames);
         }
 

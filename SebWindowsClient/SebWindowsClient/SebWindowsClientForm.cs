@@ -689,10 +689,14 @@ namespace SebWindowsClient
 					if (permittedProcessOS == SEBSettings.operatingSystems.operatingSystemWin && permittedProcessActive)
 					{
 						string title = ((string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyTitle));
-						string executable = ((string)permittedProcess[SEBSettings.KeyExecutable]).ToLower();
-						if (String.IsNullOrEmpty(title)) title = executable;
+                        string executable = ((string)permittedProcess[SEBSettings.KeyExecutable]).ToLower();
+                        string originalName = ((string)permittedProcess[SEBSettings.KeyOriginalName]).ToLower();
+                        if (String.IsNullOrEmpty(title)) title = executable;
 						string identifier = ((string)permittedProcess[SEBSettings.KeyIdentifier]).ToLower();
-						if (!(executable.Contains(SEBClientInfo.XUL_RUNNER) && !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser)))
+                        if (!(executable.Contains(SEBClientInfo.XUL_RUNNER) && 
+                            !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser)) && 
+                            !(title.Equals(SEBClientInfo.SEB_SHORTNAME) && 
+                            (executable.Equals("xulrunner.exe") || originalName.Equals("xulrunner.exe"))))
 						{
 							// Check if the process is already running
 							//runningApplications = Process.GetProcesses();
@@ -825,10 +829,16 @@ namespace SebWindowsClient
 						string windowHandlingProcesses = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyWindowHandlingProcess);
 						string title = (string)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyTitle);
 						string executable = (string)permittedProcess[SEBSettings.KeyExecutable];
-						if (String.IsNullOrEmpty(title)) title = executable;
-						if (!(executable.Contains(SEBClientInfo.XUL_RUNNER) && !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser)))
+                        string originalName = ((string)permittedProcess[SEBSettings.KeyOriginalName]).ToLower();
+                        if (String.IsNullOrEmpty(title)) title = executable;
+                        // Do not add XULRunner to taskbar if browser is disabled and SEB if xulrunner.exe is executable or original name (settings generated in SEB 2.1.x)
+                        if (!(executable.Contains(SEBClientInfo.XUL_RUNNER) && 
+                            !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser)) && 
+                            !(title.Equals(SEBClientInfo.SEB_SHORTNAME) &&
+                            (executable.Equals("xulrunner.exe") || originalName.Equals("xulrunner.exe"))))
+
 						{
-							var toolStripButton = new SEBToolStripButton();
+                    var toolStripButton = new SEBToolStripButton();
 
 							//Do not add processes that do not have an Icon in Taskbar
 							if (!(Boolean)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyIconInTaskbar))

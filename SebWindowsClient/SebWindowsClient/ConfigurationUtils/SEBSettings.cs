@@ -1443,7 +1443,8 @@ namespace SebWindowsClient.ConfigurationUtils
 				if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals("xulrunner.exe"))
 				{
 					((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyExecutable] = SEBClientInfo.XUL_RUNNER;
-					((DictObj) SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyIdentifier] = "Firefox";
+                    ((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyOriginalName] = SEBClientInfo.XUL_RUNNER;
+                    ((DictObj) SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyIdentifier] = "Firefox";
 					indexOfProcessXulRunnerExe = listIndex;
 				}
 

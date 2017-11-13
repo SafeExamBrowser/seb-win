@@ -434,8 +434,9 @@ namespace SebWindowsClient.ConfigurationUtils
 		public static DictObj prohibitedProcessData        = new DictObj();
 		public static DictObj prohibitedProcessDataDefault = new DictObj();
 		private static List<string> prohibitedProcessesDefault;
+        private static List<string> prohibitedProcessesDefaultStrict;
 
-		public static int     urlFilterRuleIndex;
+        public static int     urlFilterRuleIndex;
 		public static ListObj urlFilterRuleList        = new ListObj();
 		public static DictObj urlFilterRuleData        = new DictObj();
 		public static DictObj urlFilterRuleDataDefault = new DictObj();
@@ -740,9 +741,10 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyUser       , "");
 
 			SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser" };
+            SEBSettings.prohibitedProcessesDefaultStrict = new List<string> { "Skype", "SkypeHost", "g2mcomm.exe", "g2mstart.exe", "g2mlauncher.exe", "TeamViewer", "vncserver", "vncviewer", "vncserverui", "chromoting", "Mikogo-host", "AeroAdmin", "beamyourscreen-host", "RemotePCDesktop", "RPCService", "RPCSuite", "join.me" };
 
-			// Default settings for group "Network - Filter"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);
+            // Default settings for group "Network - Filter"
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLContentFilter, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyURLFilterRules        , new ListObj());
 
@@ -1465,10 +1467,22 @@ namespace SebWindowsClient.ConfigurationUtils
 			// Get the Prohibited Process list
 			SEBSettings.prohibitedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
 
-			foreach (string defaultProhibitedProcessName in prohibitedProcessesDefault)
-			{
-				// Position of this default prohibited process in Prohibited Process list
-				int indexOfProcess = -1;
+            // Insert strictly prohibited processes unconditionally
+            InsertProhibitedProcessesFromArray(prohibitedProcessesDefaultStrict);
+
+            // Insert default prohibited processes only in Disable Explorer Shell kiosk mode
+            //if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] == true)
+            //{
+                InsertProhibitedProcessesFromArray(prohibitedProcessesDefault);
+            //}
+        }
+
+        private static void InsertProhibitedProcessesFromArray(List<string> newProhibitedProcesses)
+        {
+            foreach (string defaultProhibitedProcessName in newProhibitedProcesses)
+            {
+                // Position of this default prohibited process in Prohibited Process list
+                int indexOfProcess = -1;
 
 				string prohibitedProcessFilenameWithoutExtension = Path.GetFileNameWithoutExtension(defaultProhibitedProcessName);
 

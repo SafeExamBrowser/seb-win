@@ -18,7 +18,7 @@
 	"media.getusermedia.audiocapture.enabled" : false
 },
 "sebPrefsMap": {
-	"browser.download.dir" 		: "downloadDirectoryWIN",
+	"browser.download.lastDir" 	: "downloadDirectoryWin",
 	"dom.disable_open_during_load" 	: "blockPopUpWindows",
 	"javascript.enabled" 		: "enableJavaScript",
 	"media.navigator.video.enabled" : "allowVideoCapture",

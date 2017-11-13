@@ -21,7 +21,7 @@
 	"dom.allow_scripts_to_close_windows" : true
 },
 "sebPrefsMap": {
-	"browser.download.dir" 		: "downloadDirectoryWIN",
+	"browser.download.lastDir" 		: "downloadDirectoryWin",
 	"dom.disable_open_during_load" 	: "blockPopUpWindows",
 	"javascript.enabled" 		: "enableJavaScript",
 	"media.navigator.video.enabled" : "allowVideoCapture",
@@ -109,7 +109,8 @@
 "browserViewMode":1,
 "browserWindowAllowReload":true,
 "browserWindowTitleSuffix": "",
-"downloadDirectoryWin":"",
+"downloadAndOpenSebConfig": true, 
+"downloadDirectoryWin":"/tmp",
 "embeddedCertificates":
 [
 	{

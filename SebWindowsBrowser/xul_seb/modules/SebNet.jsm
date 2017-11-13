@@ -128,6 +128,11 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		subject.visitRequestHeaders(aVisitor);
 		sl.info("");
 		if ( aVisitor.isSebRequest() && base.isValidUrl(subject.name) ) {
+			if (!su.getConfig("downloadAndOpenSebConfig","boolean", false)) {
+				sl.debug("seb requests are not allowed");
+				subject.cancel( this.aborted );
+				return;
+			}
 			sl.debug("catch seb request");
 			let url = subject.name;
 			//let w = sw.getRecentWin();
@@ -145,7 +150,8 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 				return;
 			}
 			*/ 
-			subject.cancel( this.aborted );
+			
+			
 			sb.openSebFileDialog(url);
 			//seb.reconfState = RECONF_NO;
 			//w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
@@ -261,6 +267,11 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 		// check seb file if seb.reconfigState = RECONF_START
 		if (seb.reconfState == RECONF_START) {
 			if (sebFileReg.test(subject.name)) { // direct seb file
+				if (!su.getConfig("downloadAndOpenSebConfig","boolean", false)) {
+					sl.debug("seb responses are not allowed");
+					subject.cancel( this.aborted );
+					return;
+				}
 				sl.debug("abort seb response: direct seb file download");
 				subject.cancel( this.aborted );
 				base.downloadSebFile(url);
@@ -274,6 +285,11 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 			sl.info("");
 			if ( aVisitor.isSebResponse() ) {
 				//uri = subject.URI;
+				if (!su.getConfig("downloadAndOpenSebConfig","boolean", false)) {
+					sl.debug("seb responses are not allowed");
+					subject.cancel( this.aborted );
+					return;
+				}
 				sl.debug("abort seb response: seb file attachment");
 				subject.cancel( this.aborted );
 				base.downloadSebFile(subject.name);

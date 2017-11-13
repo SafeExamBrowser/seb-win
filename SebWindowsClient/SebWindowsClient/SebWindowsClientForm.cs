@@ -838,7 +838,7 @@ namespace SebWindowsClient
                             (executable.Equals("xulrunner.exe") || originalName.Equals("xulrunner.exe"))))
 
 						{
-                    var toolStripButton = new SEBToolStripButton();
+                            var toolStripButton = new SEBToolStripButton();
 
 							//Do not add processes that do not have an Icon in Taskbar
 							if (!(Boolean)SEBSettings.valueForDictionaryKey(permittedProcess, SEBSettings.KeyIconInTaskbar))

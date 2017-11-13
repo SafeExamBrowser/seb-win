@@ -707,7 +707,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyUser       , "");
 
             SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser", "Firefox" };
-            SEBSettings.prohibitedProcessesDefaultStrict = new List<string> { "TeamViewer", "Skype" };
+            SEBSettings.prohibitedProcessesDefaultStrict = new List<string> { "TeamViewer", "Skype", "SkypeHost" };
 
             // Default settings for group "Network - Filter"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);
@@ -1488,6 +1488,48 @@ namespace SebWindowsClient.ConfigurationUtils
             prohibitedProcessDict.Add(SEBSettings.KeyUser, "");
 
             return prohibitedProcessDict;
+        }
+
+        public static bool CheckForDefaultProhibitedProcesses(bool remove)
+        {
+            // Get the Prohibited Process list
+            SEBSettings.prohibitedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
+            bool prohibitedProcessFound = false;
+
+            foreach (string defaultProhibitedProcessName in prohibitedProcessesDefault)
+            {
+                string prohibitedProcessFilenameWithoutExtension = Path.GetFileNameWithoutExtension(defaultProhibitedProcessName);
+                int listIndex = 0;
+                // Traverse Prohibited Processes of currently opened file
+                while (listIndex < SEBSettings.prohibitedProcessList.Count)
+                {
+                    DictObj prohibitedProcessData = (DictObj)SEBSettings.prohibitedProcessList[listIndex];
+
+                    // Check if this prohibited process already is in Prohibited Process list in current settings
+                    if (Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyOriginalName]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase) ||
+                        Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyExecutable]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        prohibitedProcessFound = true;
+                        if (remove)
+                        {
+                            SEBSettings.prohibitedProcessList.RemoveAt(listIndex);
+                        } else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        listIndex++;
+                    }
+                } // next listIndex
+                if (prohibitedProcessFound && !remove)
+                {
+                    break;
+                }
+            }
+
+            return prohibitedProcessFound;
         }
 
         // **************

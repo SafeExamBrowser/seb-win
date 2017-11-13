@@ -28,59 +28,59 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebPasswordDialogForm));
-            this.txtSEBPassword = new System.Windows.Forms.MaskedTextBox();
-            this.btnOk = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.lblSEBPassword = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // txtSEBPassword
-            // 
-            resources.ApplyResources(this.txtSEBPassword, "txtSEBPassword");
-            this.txtSEBPassword.Name = "txtSEBPassword";
-            this.txtSEBPassword.PasswordChar = '●';
-            this.txtSEBPassword.Enter += new System.EventHandler(this.txtSEBPassword_Enter);
-            this.txtSEBPassword.Leave += new System.EventHandler(this.txtSEBPassword_Leave);
-            // 
-            // btnOk
-            // 
-            resources.ApplyResources(this.btnOk, "btnOk");
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Name = "btnOk";
-            this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // lblSEBPassword
-            // 
-            resources.ApplyResources(this.lblSEBPassword, "lblSEBPassword");
-            this.lblSEBPassword.Name = "lblSEBPassword";
-            // 
-            // SebPasswordDialogForm
-            // 
-            this.AcceptButton = this.btnOk;
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ControlBox = false;
-            this.Controls.Add(this.lblSEBPassword);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOk);
-            this.Controls.Add(this.txtSEBPassword);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "SebPasswordDialogForm";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebPasswordDialogForm));
+			this.txtSEBPassword = new System.Windows.Forms.MaskedTextBox();
+			this.btnOk = new System.Windows.Forms.Button();
+			this.btnCancel = new System.Windows.Forms.Button();
+			this.lblSEBPassword = new System.Windows.Forms.Label();
+			this.SuspendLayout();
+			// 
+			// txtSEBPassword
+			// 
+			resources.ApplyResources(this.txtSEBPassword, "txtSEBPassword");
+			this.txtSEBPassword.Name = "txtSEBPassword";
+			this.txtSEBPassword.PasswordChar = '●';
+			this.txtSEBPassword.Enter += new System.EventHandler(this.txtSEBPassword_Enter);
+			this.txtSEBPassword.Leave += new System.EventHandler(this.txtSEBPassword_Leave);
+			// 
+			// btnOk
+			// 
+			resources.ApplyResources(this.btnOk, "btnOk");
+			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnOk.Name = "btnOk";
+			this.btnOk.UseVisualStyleBackColor = true;
+			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+			// 
+			// btnCancel
+			// 
+			resources.ApplyResources(this.btnCancel, "btnCancel");
+			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.UseVisualStyleBackColor = true;
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+			// 
+			// lblSEBPassword
+			// 
+			resources.ApplyResources(this.lblSEBPassword, "lblSEBPassword");
+			this.lblSEBPassword.Name = "lblSEBPassword";
+			// 
+			// SebPasswordDialogForm
+			// 
+			this.AcceptButton = this.btnOk;
+			resources.ApplyResources(this, "$this");
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnCancel;
+			this.ControlBox = false;
+			this.Controls.Add(this.lblSEBPassword);
+			this.Controls.Add(this.btnCancel);
+			this.Controls.Add(this.btnOk);
+			this.Controls.Add(this.txtSEBPassword);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.Name = "SebPasswordDialogForm";
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 

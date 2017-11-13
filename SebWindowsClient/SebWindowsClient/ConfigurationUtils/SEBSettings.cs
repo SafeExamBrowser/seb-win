@@ -1527,10 +1527,53 @@ namespace SebWindowsClient.ConfigurationUtils
 			return prohibitedProcessDict;
 		}
 
-		// **************
-		// Print settings
-		// **************
-		public static void PrintSettingsRecursively(object objectSource, StreamWriter fileWriter, String indenting)
+        public static bool CheckForDefaultProhibitedProcesses(bool remove)
+        {
+            // Get the Prohibited Process list
+            SEBSettings.prohibitedProcessList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyProhibitedProcesses];
+            bool prohibitedProcessFound = false;
+
+            foreach (string defaultProhibitedProcessName in prohibitedProcessesDefault)
+            {
+                string prohibitedProcessFilenameWithoutExtension = Path.GetFileNameWithoutExtension(defaultProhibitedProcessName);
+                int listIndex = 0;
+                // Traverse Prohibited Processes of currently opened file
+                while (listIndex < SEBSettings.prohibitedProcessList.Count)
+                {
+                    DictObj prohibitedProcessData = (DictObj)SEBSettings.prohibitedProcessList[listIndex];
+
+                    // Check if this prohibited process already is in Prohibited Process list in current settings
+                    if (Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyOriginalName]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase) ||
+                        Path.GetFileNameWithoutExtension((string)prohibitedProcessData[SEBSettings.KeyExecutable]).Equals(prohibitedProcessFilenameWithoutExtension, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        prohibitedProcessFound = true;
+                        if (remove)
+                        {
+                            SEBSettings.prohibitedProcessList.RemoveAt(listIndex);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        listIndex++;
+                    }
+                } // next listIndex
+                if (prohibitedProcessFound && !remove)
+                {
+                    break;
+                }
+            }
+
+            return prohibitedProcessFound;
+        }
+
+        // **************
+        // Print settings
+        // **************
+        public static void PrintSettingsRecursively(object objectSource, StreamWriter fileWriter, String indenting)
 		{
 
 			// Determine the type of the input object

@@ -177,8 +177,11 @@ namespace SebWindowsConfig
 				if (indexOfCertificateRef != -1) comboBoxCryptoIdentity.SelectedIndex = indexOfCertificateRef+1;
 			}
 
-			// GUI-related part: Update the widgets
-			currentDireSebConfigFile = Path.GetDirectoryName(fileName);
+            // Check if default permitted processes should be removed from settings
+            CheckAndOptionallyRemoveDefaultProhibitedProcesses();
+
+            // GUI-related part: Update the widgets
+            currentDireSebConfigFile = Path.GetDirectoryName(fileName);
 			currentFileSebConfigFile = Path.GetFileName     (fileName);
 			currentPathSebConfigFile = Path.GetFullPath     (fileName);
 
@@ -213,11 +216,29 @@ namespace SebWindowsConfig
 		}
 
 
+        private void CheckAndOptionallyRemoveDefaultProhibitedProcesses()
+        {
+            if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
+            {
+                if (SEBSettings.CheckForDefaultProhibitedProcesses(false))
+                {
+                    var messageBoxResult = SEBMessageBox.Show("Default Prohibited Processes Found", "Settings contain at least one of the default prohibited processes (mostly web browsers), " +
+                        "which should not run when SEB is used with the Disable Explorer Shell kiosk mode. " +
+                        "As your settings are not using Disable Explorer Shell, " +
+                        "do you want to remove those default prohibited processes from the configuration?", MessageBoxIcon.Question, MessageBoxButtons.YesNo, neverShowTouchOptimized: true);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        SEBSettings.CheckForDefaultProhibitedProcesses(true);
+                    }
+                }
+            }
+        }
 
-		// ********************************************************
-		// Write the settings to the configuration file and save it
-		// ********************************************************
-		private Boolean SaveConfigurationFileFromEditor(String fileName)
+
+        // ********************************************************
+        // Write the settings to the configuration file and save it
+        // ********************************************************
+        private Boolean SaveConfigurationFileFromEditor(String fileName)
 		{
 			Cursor.Current = Cursors.WaitCursor;
 			// Get settings password
@@ -3450,9 +3471,15 @@ namespace SebWindowsConfig
 			{
 				MessageBox.Show("Touch optimization will not work when kiosk mode is set to Create New Desktop, please change the appearance.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
-		}
 
-		private void radioKillExplorerShell_CheckedChanged(object sender, EventArgs e)
+            if (radioCreateNewDesktop.Checked)
+            {
+                CheckAndOptionallyRemoveDefaultProhibitedProcesses();
+                UpdateAllWidgetsOfProgram();
+            }
+        }
+
+        private void radioKillExplorerShell_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] = radioKillExplorerShell.Checked;
 			checkBoxMonitorProcesses.Enabled = !radioKillExplorerShell.Checked;

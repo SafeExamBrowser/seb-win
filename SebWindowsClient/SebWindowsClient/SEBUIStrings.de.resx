@@ -375,4 +375,61 @@
   <data name="loadingString" xml:space="preserve">
     <value>Laden</value>
   </data>
+  <data name="cannotOpenSEBConfig" xml:space="preserve">
+    <value>SEB-Einstellungen können nicht geöffnet werden</value>
+  </data>
+  <data name="cannotOpenSEBConfigMessage" xml:space="preserve">
+    <value>Das Öffnen von externen SEB-Konfigurationen wird durch die lokalen Client-Einstellungen nicht erlaubt. Starten Sie die SEB-Applikation direkt.</value>
+  </data>
+  <data name="cannotOpenSEBLink" xml:space="preserve">
+    <value>SEB-Link kann nicht geöffnet werden</value>
+  </data>
+  <data name="cannotOpenSEBLinkMessage" xml:space="preserve">
+    <value>Öffnen des SEB-Links ist fehlgeschlagen. Überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.</value>
+  </data>
+  <data name="NoWLANInterface" xml:space="preserve">
+    <value>Kein WLAN-Interface gefunden</value>
+  </data>
+  <data name="openingSettingsFailed" xml:space="preserve">
+    <value>Öffnen der Einstellungen fehlgeschlagen</value>
+  </data>
+  <data name="openingSettingsFailedMessage" xml:space="preserve">
+    <value>Die Konfigurationsdatei konnte nicht geöffnet werden.</value>
+  </data>
+  <data name="reconfiguringLocalSettingsFailedWrongCurrentAdminPwd" xml:space="preserve">
+    <value>Ohne das aktuelle Administrator-Passwort können diese Einstellungen nicht verwendet werden.</value>
+  </data>
+  <data name="settingsDuplicateSuffix" xml:space="preserve">
+    <value> Kopie</value>
+  </data>
+  <data name="unconfirmedPasswordMessage" xml:space="preserve">
+    <value>Bitte zuerst das %s bestätigen.</value>
+  </data>
+  <data name="unconfirmedPasswordTitle" xml:space="preserve">
+    <value>Passwort nicht korrekt bestätigt</value>
+  </data>
+  <data name="WlanConnecting" xml:space="preserve">
+    <value>Verbinden...</value>
+  </data>
+  <data name="WlanConnectionFailedMessage" xml:space="preserve">
+    <value>Verbindung mit dem WLAN-Netzwerk ist fehlgeschlagen, bitte erneut versuchen.</value>
+  </data>
+  <data name="WlanConnectionFailedMessageTitle" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen</value>
+  </data>
+  <data name="WlanNoNetworkInterfaceFound" xml:space="preserve">
+    <value>Kein Netzwerk-Interface gefunden</value>
+  </data>
+  <data name="WlanNoNetworksFound" xml:space="preserve">
+    <value>Keine bekannten Netzwerke gefunden</value>
+  </data>
+  <data name="WLANNotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="WlanThatYouHaveUsedBefore" xml:space="preserve">
+    <value>die Sie zuvor benutzt haben.</value>
+  </data>
+  <data name="WlanYouCanOnlyConnectToNetworks" xml:space="preserve">
+    <value>Sie können sich nur mit Netzwerken verbinden</value>
+  </data>
 </root>

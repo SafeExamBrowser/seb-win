@@ -79,6 +79,24 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot Open SEB Config.
+        /// </summary>
+        public static string cannotOpenSEBConfig {
+            get {
+                return ResourceManager.GetString("cannotOpenSEBConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opening an external SEB config is disabled in current settings. Start the SEB application directly..
+        /// </summary>
+        public static string cannotOpenSEBConfigMessage {
+            get {
+                return ResourceManager.GetString("cannotOpenSEBConfigMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot Open SEB Link.
         /// </summary>
         public static string cannotOpenSEBLink {
@@ -997,7 +1015,7 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connection to WiFi failed, try again..
+        ///   Looks up a localized string similar to Connection to WiFi network failed, try again..
         /// </summary>
         public static string WlanConnectionFailedMessage {
             get {

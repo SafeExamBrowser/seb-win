@@ -168,14 +168,23 @@ namespace SebWindowsClient
 				// Check if client settings were already set
 				if (SebWindowsClientMain.clientSettingsSet == false)
 				{
+                    // Client settings not set: SEB was started opening a .seb file or seb(s) link
 					// We need to set the client settings first
 					if (SEBClientInfo.SetSebClientConfiguration())
 					{
 						SebWindowsClientMain.clientSettingsSet = true;
 						Logger.AddInformation("SEB client configuration set in LoadFile(URI).", null, null);
 					}
-				}
-				byte[] sebSettings = null;
+				} else
+                {
+                    // SEB was already running when trying to open a .seb file or seb(s) link:
+                    // Check if settings forbid to open SEB Config Files
+                    if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyDownloadAndOpenSebConfig) == false)
+                    {
+                        return false;
+                    }
+                }
+                byte[] sebSettings = null;
 				Uri uri;
 				try
 				{

@@ -168,21 +168,12 @@ namespace SebWindowsClient
 				// Check if client settings were already set
 				if (SebWindowsClientMain.clientSettingsSet == false)
 				{
-                    // Client settings not set: SEB was started opening a .seb file or seb(s) link
 					// We need to set the client settings first
 					if (SEBClientInfo.SetSebClientConfiguration())
 					{
 						SebWindowsClientMain.clientSettingsSet = true;
 						Logger.AddInformation("SEB client configuration set in LoadFile(URI).", null, null);
 					}
-				} else
-                {
-                    // SEB was already running when trying to open a .seb file or seb(s) link:
-                    // Check if settings forbid to open SEB Config Files
-                    if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyDownloadAndOpenSebConfig) == false)
-                    {
-                        return false;
-                    }
                 }
                 byte[] sebSettings = null;
 				Uri uri;
@@ -205,7 +196,14 @@ namespace SebWindowsClient
 					return false;
 				}
 
-				if (uri.Scheme == "seb" || uri.Scheme == "sebs")
+                // Check if settings forbid to open SEB Config Files
+                if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyDownloadAndOpenSebConfig) == false)
+                {
+                    SEBMessageBox.Show(SEBUIStrings.cannotOpenSEBConfig, SEBUIStrings.cannotOpenSEBConfigMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    return false;
+                }
+
+                if (uri.Scheme == "seb" || uri.Scheme == "sebs")
 				// The URI is holding a seb:// or sebs:// (secure) web address for a .seb settings file: download it
 				{
 					// But only download and use the seb:// link to a .seb file if this is enabled

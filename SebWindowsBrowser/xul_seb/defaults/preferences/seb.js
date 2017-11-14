@@ -23,6 +23,8 @@ pref("browser.chromeURL", "chrome://seb/content/seb.xul");
 pref("browser.startup.homepage_override.mstone", "ignore");
 pref("browser.download.manager.retention", 0);
 pref("browser.download.manager.useWindow", false);
+pref("browser.download.folderList", 2);
+pref("browser.download.useDownloadDir", true);
 pref("browser.link.open_newwindow", 2);
 pref("browser.startup.homepage_override.mstone", "ignore");
 pref("browser.zoom.full", true);

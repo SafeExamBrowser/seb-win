@@ -21,7 +21,8 @@
 	"dom.allow_scripts_to_close_windows" : true
 },
 "sebPrefsMap": {
-	"browser.download.lastDir" 		: "downloadDirectoryWin",
+	"browser.download.dir" 		: "downloadDirectoryWin",
+	"browser.download.lastDir" 	: "downloadDirectoryWin",
 	"dom.disable_open_during_load" 	: "blockPopUpWindows",
 	"javascript.enabled" 		: "enableJavaScript",
 	"media.navigator.video.enabled" : "allowVideoCapture",

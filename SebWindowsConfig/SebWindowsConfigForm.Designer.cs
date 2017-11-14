@@ -1172,13 +1172,11 @@ namespace SebWindowsConfig
             this.radioCreateNewDesktop.Location = new System.Drawing.Point(18, 19);
             this.radioCreateNewDesktop.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.radioCreateNewDesktop.Name = "radioCreateNewDesktop";
-            this.radioCreateNewDesktop.Size = new System.Drawing.Size(120, 17);
+            this.radioCreateNewDesktop.Size = new System.Drawing.Size(213, 17);
             this.radioCreateNewDesktop.TabIndex = 82;
             this.radioCreateNewDesktop.TabStop = true;
-            this.radioCreateNewDesktop.Text = "Create new desktop";
-            this.toolTip1.SetToolTip(this.radioCreateNewDesktop, "This kiosk mode may prevent specific third party software to run correctly togeth" +
-        "er with SEB, like some screen recording software or the Windows onscreen keyboar" +
-        "d.");
+            this.radioCreateNewDesktop.Text = "Create new desktop (n/a in this version)";
+            this.toolTip1.SetToolTip(this.radioCreateNewDesktop, resources.GetString("radioCreateNewDesktop.ToolTip"));
             this.radioCreateNewDesktop.UseVisualStyleBackColor = true;
             this.radioCreateNewDesktop.CheckedChanged += new System.EventHandler(this.radioCreateNewDesktop_CheckedChanged);
             // 

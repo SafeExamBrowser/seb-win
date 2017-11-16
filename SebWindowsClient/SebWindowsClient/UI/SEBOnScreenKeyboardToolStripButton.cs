@@ -125,7 +125,7 @@ namespace SebWindowsClient.UI
 					}
 
 					if (!SEBWindowHandler.AllowedExecutables.Any(e => e.Name == "tabtip"))
-						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("tabtip"));
+						SEBWindowHandler.AllowedExecutables.Add(new ExecutableInfo("tabtip", "tabtip"));
 
 					//TODO: Use Environment Variable here, but with SEB running as 32bit it always takes X86
 					//string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);

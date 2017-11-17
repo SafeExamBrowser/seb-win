@@ -549,6 +549,9 @@ namespace SebWindowsClient.ProcessUtils
 
     public class ForegroundWatchDog
     {
+		private System.Timers.Timer timer = new System.Timers.Timer();
+		private List<IntPtr> windows = new List<IntPtr>();
+
         public delegate void ForegroundWindowChangedEventHandler(IntPtr windowHandle);
 
         public event ForegroundWindowChangedEventHandler OnForegroundWindowChanged;
@@ -578,16 +581,23 @@ namespace SebWindowsClient.ProcessUtils
                     WINEVENT_OUTOFCONTEXT);
             SetWinEventHook(EVENT_SYSTEM_CAPTURESTART, EVENT_SYSTEM_CAPTURESTART, IntPtr.Zero, dele, 0, 0,
                 WINEVENT_OUTOFCONTEXT);
+
+			windows.AddRange(SEBWindowHandler.GetOpenWindows().Keys);
+			timer.Interval = 1000;
+			timer.AutoReset = false;
+			timer.Elapsed += Timer_Elapsed;
         }
 
-        public void StartWatchDog()
+		public void StartWatchDog()
         {
             running = true;
+			timer.Start();
         }
 
         public void StopWatchDog()
         {
             running = false;
+			timer.Stop();
         }
 
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
@@ -610,6 +620,32 @@ namespace SebWindowsClient.ProcessUtils
             if (!hwnd.IsAllowed())
                 hwnd.HideWindow();
         }
+
+		private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			var currentWindows = SEBWindowHandler.GetOpenWindows();
+			var newWindows = currentWindows.Keys.Where(w => !windows.Contains(w)).ToList();
+
+			foreach (var window in newWindows)
+			{
+				var process = SEBWindowHandler.GetProcess(window);
+				var windowName = currentWindows[window] ?? $"<UNTITLED / handle = {window}>";
+
+				if (process == null)
+				{
+					Logger.AddWarning($"Failed to check if window '{windowName}' is allowed.", this);
+				}
+				else if (!process.IsWindowAllowed())
+				{
+					Logger.AddWarning($"Window '{windowName}' is not allowed and will be hidden!", this);
+					window.HideWindow();
+				}
+
+				windows.Add(window);
+			}
+
+			timer.Start();
+		}
 
         #region DLL Imports
 

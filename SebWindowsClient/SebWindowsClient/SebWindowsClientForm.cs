@@ -827,11 +827,10 @@ namespace SebWindowsClient
                     if (!executable.Contains(SEBClientInfo.XUL_RUNNER))
                     {
                         // Autostart processes which have the according flag set
-                        Logger.AddInformation("Permitted process to autostart: " + executable);
-
                         Process newProcess = null;
                         if ((Boolean)permittedProcess[SEBSettings.KeyAutostart])
                         {
+                            Logger.AddInformation("Permitted process to start automatically (autostart = true): " + executable);
                             string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
                             if (fullPathArgumentsCall != null)
                             {
@@ -840,9 +839,12 @@ namespace SebWindowsClient
                             }
                             else
                             {
-                                Logger.AddWarning("Permitted process couldn't be added to autostart, because it didn't had a valid path/arguments call", null);
+                                Logger.AddWarning("Permitted process wasn't added to autostart, because it didn't had a valid path/arguments call set", null);
                                 newProcess = null;
                             }
+                        } else
+                        {
+                            Logger.AddInformation("Permitted process with autostart = false: " + executable);
                         }
                         // Save the process reference if the process was started, otherwise null
                         permittedProcessesReferences.Add(newProcess);

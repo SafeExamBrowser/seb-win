@@ -283,18 +283,18 @@ namespace SebWindowsClient.ProcessUtils
 
 		private void ExplorerStarted(object sender, EventArgs e)
 		{
-			Logger.AddWarning("Windows explorer has been restarted!", this);
+			Logger.AddWarning("Windows Explorer has been restarted!", this);
 
 			var success = SEBProcessHandler.KillExplorerShell();
 
 			if (success)
 			{
 				SEBClientInfo.SebWindowsClientForm?.Invoke(new Action(() => SEBClientInfo.SebWindowsClientForm?.PlaceFormOnDesktop(false)));
-				Logger.AddInformation("Successfully terminated Windows explorer.", this);
+				Logger.AddInformation("Successfully terminated Windows Explorer.", this);
 			}
 			else
 			{
-				Logger.AddError("Failed to terminate Windows explorer!", this, null);
+				Logger.AddError("Failed to terminate Windows Explorer!", this, null);
 			}
 		}
 

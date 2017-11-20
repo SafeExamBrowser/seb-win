@@ -827,12 +827,22 @@ namespace SebWindowsClient
                     if (!executable.Contains(SEBClientInfo.XUL_RUNNER))
                     {
                         // Autostart processes which have the according flag set
+                        Logger.AddInformation("Permitted process to autostart: " + executable);
+
                         Process newProcess = null;
                         if ((Boolean)permittedProcess[SEBSettings.KeyAutostart])
                         {
                             string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
-                            if (fullPathArgumentsCall != null) newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
-                            else newProcess = null;
+                            if (fullPathArgumentsCall != null)
+                            {
+                                Logger.AddInformation("Adding permitted process to autostart with path " + fullPathArgumentsCall);
+                                newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
+                            }
+                            else
+                            {
+                                Logger.AddWarning("Permitted process couldn't be added to autostart, because it didn't had a valid path/arguments call", null);
+                                newProcess = null;
+                            }
                         }
                         // Save the process reference if the process was started, otherwise null
                         permittedProcessesReferences.Add(newProcess);
@@ -1707,7 +1717,7 @@ namespace SebWindowsClient
                 {
                     Logger.AddInformation("Attempting to reset workspacearea");
                     SEBWorkingAreaHandler.ResetWorkspaceArea();
-                    Logger.AddInformation("Aorkspace area resetted");
+                    Logger.AddInformation("Workspace area resetted");
                 }
                 catch (Exception ex)
                 {

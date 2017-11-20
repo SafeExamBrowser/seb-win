@@ -450,7 +450,7 @@ namespace SebWindowsClient
 #endif
 
 			//Process watching
-			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyMonitorProcesses)[SEBSettings.KeyMonitorProcesses] || (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
+			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop] || (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
 			{
 				#region Foreground Window Watching (Allowed Executables)
 

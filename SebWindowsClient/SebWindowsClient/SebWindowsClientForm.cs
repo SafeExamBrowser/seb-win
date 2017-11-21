@@ -1082,13 +1082,21 @@ namespace SebWindowsClient
 						Process newProcess = null;
 						if ((Boolean)permittedProcess[SEBSettings.KeyAutostart])
 						{
-							string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
-							if (fullPathArgumentsCall != null) newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
-							else newProcess = null;
+                            Logger.AddInformation("Permitted process to start automatically (autostart = true): " + executable);
+                            string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
+                            if (fullPathArgumentsCall != null)
+                            {
+                                Logger.AddInformation("Adding permitted process to autostart with path/arguments " + fullPathArgumentsCall);
+                                newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
+                            }
+                            else
+                            {
+                                Logger.AddWarning("Permitted process wasn't added to autostart, because it didn't had a valid path/arguments call set", null);
+                                newProcess = null;
+                            }
 						}
 						// Save the process reference if the process was started, otherwise null
 						permittedProcessesReferences.Add(newProcess);
-						permittedProcessesIndex++;
 					}
 					else
 					{
@@ -1098,11 +1106,11 @@ namespace SebWindowsClient
 							StartXulRunner((string)permittedProcessesCalls[permittedProcessesIndex]);
 							// Save the process reference of XULRunner
 							permittedProcessesReferences.Add(xulRunner);
-							permittedProcessesIndex++;
 						}
 					}
-				}
-			}
+                    permittedProcessesIndex++;
+                }
+            }
 
 			SEBToForeground();
 		}

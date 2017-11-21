@@ -848,7 +848,6 @@ namespace SebWindowsClient
                         }
                         // Save the process reference if the process was started, otherwise null
                         permittedProcessesReferences.Add(newProcess);
-                        permittedProcessesIndex++;
                     }
                     else
                     {
@@ -858,9 +857,9 @@ namespace SebWindowsClient
                             StartXulRunner((string)permittedProcessesCalls[permittedProcessesIndex]);
                             // Save the process reference of XULRunner
                             permittedProcessesReferences.Add(xulRunner);
-                            permittedProcessesIndex++;
                         }
                     }
+                    permittedProcessesIndex++;
                 }
             }
 

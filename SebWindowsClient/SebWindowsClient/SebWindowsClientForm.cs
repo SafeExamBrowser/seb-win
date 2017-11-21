@@ -1843,14 +1843,24 @@ namespace SebWindowsClient
 				{
 					var proc = permittedProcessesReferences[i];
 
-					if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
-					{
-						//Get Process from WindowHandle by Name
-						var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
-						var currentProcessData = (Dictionary<string, object>)permittedProcessSettings[i];
-						var title = (string)currentProcessData[SEBSettings.KeyIdentifier];
-						proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
-					}
+					//if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
+					//{
+					//	//Get Process from WindowHandle by Name
+					//	var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
+     //                   string executable = proc.GetExecutableName();
+     //                   string title = null;
+     //                   foreach (DictObj permittedProcessDict in permittedProcessSettings)
+     //                   {
+     //                       if (((string)permittedProcessDict[SEBSettings.KeyExecutable]).Contains(executable))
+     //                       {
+     //                           title = (string)permittedProcessDict[SEBSettings.KeyIdentifier];
+     //                       }
+     //                   }
+     //                   if (title != null)
+     //                   {
+     //                       proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
+     //                   }
+     //               }
 					if (proc != null && !proc.HasExited)
 					{
 						if (reconfiguring && proc.ProcessName.Contains("firefox"))

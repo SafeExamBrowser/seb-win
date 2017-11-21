@@ -198,7 +198,8 @@ namespace SebWindowsClient.ConfigurationUtils
                 xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
 			}
 
-			xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion;
+			xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion + 
+                (String.IsNullOrEmpty((String)xulRunnerSettings[SEBSettings.KeyBrowserUserAgent]) ? "" : " " + xulRunnerSettings[SEBSettings.KeyBrowserUserAgent]);
 
 			// Set onscreen keyboard settings flag when touch optimized is enabled
 			xulRunnerSettings[SEBSettings.KeyBrowserScreenKeyboard] = (bool)xulRunnerSettings[SEBSettings.KeyTouchOptimized];

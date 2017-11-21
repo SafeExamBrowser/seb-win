@@ -30,7 +30,7 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -392,6 +392,8 @@ namespace SebWindowsConfig
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxUserAgent = new System.Windows.Forms.TextBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1465,8 +1467,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -3053,6 +3055,8 @@ namespace SebWindowsConfig
             // 
             // tabPageBrowser
             // 
+            this.tabPageBrowser.Controls.Add(this.label12);
+            this.tabPageBrowser.Controls.Add(this.textBoxUserAgent);
             this.tabPageBrowser.Controls.Add(this.label11);
             this.tabPageBrowser.Controls.Add(this.textBoxBrowserSuffix);
             this.tabPageBrowser.Controls.Add(this.groupBox14);
@@ -3096,8 +3100,7 @@ namespace SebWindowsConfig
             this.textBoxBrowserSuffix.Name = "textBoxBrowserSuffix";
             this.textBoxBrowserSuffix.Size = new System.Drawing.Size(214, 19);
             this.textBoxBrowserSuffix.TabIndex = 123;
-            this.toolTip1.SetToolTip(this.textBoxBrowserSuffix, "This text is displayed as the title of the confirmation alert and as tool tip on " +
-        "the icon");
+            this.toolTip1.SetToolTip(this.textBoxBrowserSuffix, "This text is appended to the title string of any SEB browser window.");
             this.textBoxBrowserSuffix.TextChanged += new System.EventHandler(this.textBoxBrowserSuffix_TextChanged);
             // 
             // groupBox14
@@ -5027,6 +5030,31 @@ namespace SebWindowsConfig
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(540, 204);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(178, 13);
+            this.label12.TabIndex = 126;
+            this.label12.Text = "Suffix to be added to any user agent";
+            // 
+            // textBoxUserAgent
+            // 
+            this.textBoxUserAgent.AcceptsReturn = true;
+            this.textBoxUserAgent.AcceptsTab = true;
+            this.textBoxUserAgent.AllowDrop = true;
+            this.textBoxUserAgent.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxUserAgent.Location = new System.Drawing.Point(543, 221);
+            this.textBoxUserAgent.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.textBoxUserAgent.Name = "textBoxUserAgent";
+            this.textBoxUserAgent.Size = new System.Drawing.Size(500, 19);
+            this.textBoxUserAgent.TabIndex = 125;
+            this.toolTip1.SetToolTip(this.textBoxUserAgent, "This string is appended to any user agent, in addition to the user agents generat" +
+        "ed with the other setting options.");
+            this.textBoxUserAgent.TextChanged += new System.EventHandler(this.textBoxUserAgent_TextChanged);
+            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5503,6 +5531,8 @@ namespace SebWindowsConfig
 		private System.Windows.Forms.Label ProhibitedProcessOriginalNameLabel;
         private System.Windows.Forms.CheckBox checkBoxShowReloadWarningNewWindow;
         private System.Windows.Forms.CheckBox checkBoxAllowReloadNewWindow;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxUserAgent;
     }
 }
 

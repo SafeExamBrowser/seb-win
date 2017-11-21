@@ -392,9 +392,11 @@ namespace SebWindowsConfig
             checkBoxAllowDictionaryLookup.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictionaryLookup]; checkBoxRemoveProfile.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRemoveBrowserProfile];
 			checkBoxDisableLocalStorage.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDisableLocalStorage];
 			checkBoxUseSebWithoutBrowser    .Checked = !((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableSebBrowser]);
-			// BEWARE: you must invert this value since "Use Without" is "Not Enable"!
+            // BEWARE: you must invert this value since "Use Without" is "Not Enable"!
 
-			textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
+            textBoxUserAgent.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgent];
+
+            textBoxUserAgentMacCustom.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMacCustom];
 			radioButtonUserAgentMacDefault.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 0);
 			radioButtonUserAgentMacCustom.Checked = ((int)SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentMac] == 1);
 			textBoxUserAgentMacCustom.TextChanged += textBoxUserAgentMacCustom_TextChanged;
@@ -1790,10 +1792,14 @@ namespace SebWindowsConfig
 			//else SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentDesktopMode] = 0;
 		}
 
-		private void textBoxUserAgentTouchModeIPad_TextChanged(object sender, EventArgs e)
+        private void textBoxUserAgent_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgent] = textBoxUserAgent.Text;
+        }
+
+        private void textBoxUserAgentTouchModeIPad_TextChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyBrowserUserAgentTouchModeIPad] = textBoxUserAgentTouchModeIPad.Text;
-
 		}
 
 		private void textBoxUserAgentDesktopModeCustom_TextChanged(object sender, EventArgs e)
@@ -3998,5 +4004,6 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
+
     }
 }

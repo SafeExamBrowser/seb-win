@@ -1081,13 +1081,21 @@ namespace SebWindowsClient
 						Process newProcess = null;
 						if ((Boolean)permittedProcess[SEBSettings.KeyAutostart])
 						{
-							string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
-							if (fullPathArgumentsCall != null) newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
-							else newProcess = null;
+                            Logger.AddInformation("Permitted process to start automatically (autostart = true): " + executable);
+                            string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
+                            if (fullPathArgumentsCall != null)
+                            {
+                                Logger.AddInformation("Adding permitted process to autostart with path/arguments " + fullPathArgumentsCall);
+                                newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
+                            }
+                            else
+                            {
+                                Logger.AddWarning("Permitted process wasn't added to autostart, because it didn't had a valid path/arguments call set", null);
+                                newProcess = null;
+                            }
 						}
 						// Save the process reference if the process was started, otherwise null
 						permittedProcessesReferences.Add(newProcess);
-						permittedProcessesIndex++;
 					}
 					else
 					{
@@ -1097,11 +1105,11 @@ namespace SebWindowsClient
 							StartXulRunner((string)permittedProcessesCalls[permittedProcessesIndex]);
 							// Save the process reference of XULRunner
 							permittedProcessesReferences.Add(xulRunner);
-							permittedProcessesIndex++;
 						}
 					}
-				}
-			}
+                    permittedProcessesIndex++;
+                }
+            }
 
 			SEBToForeground();
 		}
@@ -1834,14 +1842,24 @@ namespace SebWindowsClient
 				{
 					var proc = permittedProcessesReferences[i];
 
-					if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
-					{
-						//Get Process from WindowHandle by Name
-						var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
-						var currentProcessData = (Dictionary<string, object>)permittedProcessSettings[i];
-						var title = (string)currentProcessData[SEBSettings.KeyIdentifier];
-						proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
-					}
+					//if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
+					//{
+					//	//Get Process from WindowHandle by Name
+					//	var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
+     //                   string executable = proc.GetExecutableName();
+     //                   string title = null;
+     //                   foreach (DictObj permittedProcessDict in permittedProcessSettings)
+     //                   {
+     //                       if (((string)permittedProcessDict[SEBSettings.KeyExecutable]).Contains(executable))
+     //                       {
+     //                           title = (string)permittedProcessDict[SEBSettings.KeyIdentifier];
+     //                       }
+     //                   }
+     //                   if (title != null)
+     //                   {
+     //                       proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
+     //                   }
+     //               }
 					if (proc != null && !proc.HasExited)
 					{
 						if (reconfiguring && proc.ProcessName.Contains("firefox"))

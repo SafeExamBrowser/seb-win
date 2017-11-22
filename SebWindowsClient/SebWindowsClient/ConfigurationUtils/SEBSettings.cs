@@ -1439,19 +1439,21 @@ namespace SebWindowsClient.ConfigurationUtils
 			{
 				SEBSettings.permittedProcessData = (DictObj)SEBSettings.permittedProcessList[listIndex];
 
-				//Backwards Compatibility: Use Firefox instead of Xulrunner as SEB Browser
-				if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals("xulrunner.exe"))
-				{
-					((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyExecutable] = SEBClientInfo.XUL_RUNNER;
+                // Check if XulRunner process is in Permitted Process List
+                if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals(SEBClientInfo.XUL_RUNNER))
+                {
+                    indexOfProcessXulRunnerExe = listIndex;
+                    break;
+                }
+                else if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals("xulrunner.exe"))
+                {
+                    //Backwards Compatibility: Use Firefox instead of Xulrunner as SEB Browser
+                    ((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyExecutable] = SEBClientInfo.XUL_RUNNER;
                     ((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyOriginalName] = SEBClientInfo.XUL_RUNNER;
-                    ((DictObj) SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyIdentifier] = "Firefox";
-					indexOfProcessXulRunnerExe = listIndex;
-				}
-
-				// Check if XulRunner process is in Permitted Process List
-				if (SEBSettings.permittedProcessData[SEBSettings.KeyExecutable].Equals(SEBClientInfo.XUL_RUNNER))
-					indexOfProcessXulRunnerExe = listIndex;
-
+                    ((DictObj)SEBSettings.permittedProcessList[listIndex])[SEBSettings.KeyIdentifier] = "Firefox";
+                    indexOfProcessXulRunnerExe = listIndex;
+                    break;
+                }
 			}
 
 			// If XulRunner process was not in Permitted Process List, insert it at the beginning

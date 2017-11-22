@@ -101,26 +101,6 @@ namespace SebWindowsClient
 
         public void InitializeForNonTouch()
         {
-            this.Font = DefaultFont;
-            this.lblSEBPassword.Left = (int)(12 * SEBClientInfo.scaleFactor);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Width = (int)(365 * SEBClientInfo.scaleFactor);
-            this.Height = (int)(175 * SEBClientInfo.scaleFactor);
-            this.Top = Screen.PrimaryScreen.Bounds.Height / 2 - this.Height / 2;
-            this.Left = Screen.PrimaryScreen.Bounds.Width / 2 - this.Width / 2;
-            this.btnCancel.BackColor = SystemColors.Control;
-            this.btnCancel.FlatStyle = FlatStyle.Standard;
-            this.btnCancel.Height = (int)(23 * SEBClientInfo.scaleFactor);
-            this.btnCancel.Width = (int)(75 * SEBClientInfo.scaleFactor);
-            this.btnCancel.Left = (int)(180 * SEBClientInfo.scaleFactor);
-            this.btnOk.BackColor = SystemColors.Control;
-            this.btnOk.FlatStyle = FlatStyle.Standard;
-            this.btnOk.Height = (int)(23 * SEBClientInfo.scaleFactor);
-            this.btnOk.Width = (int)(75 * SEBClientInfo.scaleFactor);
-            this.btnOk.Left = (int)(94 * SEBClientInfo.scaleFactor);
-            this.txtSEBPassword.Width = (int)(325 * SEBClientInfo.scaleFactor);
-            this.txtSEBPassword.Left = (int)(12 * SEBClientInfo.scaleFactor);
-            this.txtSEBPassword.Height = (int)(20 * SEBClientInfo.scaleFactor);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

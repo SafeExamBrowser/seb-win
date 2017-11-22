@@ -6,7 +6,7 @@ using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient
 {
-    public partial class SEBLoading : Form
+	public partial class SEBLoading : Form
     {
         #region instance
         public SEBLoading()
@@ -37,7 +37,15 @@ namespace SebWindowsClient
         /// </summary>
         static public void StartLoading()
         {
-                SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
+			// Set the threads desktop to the new desktop if "Create new Desktop" is activated
+			if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop] || SEBClientInfo.CreateNewDesktopOldValue)
+			{
+				SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop);
+			}
+			else
+			{
+				SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
+			}
 
             // Instance a loading screen form given the image names
             loading = new SEBLoading();

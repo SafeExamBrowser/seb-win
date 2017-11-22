@@ -763,12 +763,11 @@ namespace SebWindowsClient
             {
                 Logger.AddError("Unable to add WLANControl",this,ex);
             }
-            
 
-            //Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
 
-            if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
-            {
+			//Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
+			if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true && !(Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+			{
                 var sebOnScreenKeyboardToolStripButton = new SEBOnScreenKeyboardToolStripButton();
                 taskbarToolStrip.Items.Add(sebOnScreenKeyboardToolStripButton);
                 TapTipHandler.RegisterXulRunnerEvents();
@@ -831,13 +830,24 @@ namespace SebWindowsClient
                         Process newProcess = null;
                         if ((Boolean)permittedProcess[SEBSettings.KeyAutostart])
                         {
+                            Logger.AddInformation("Permitted process to start automatically (autostart = true): " + executable);
                             string fullPathArgumentsCall = permittedProcessesCalls[permittedProcessesIndex];
-                            if (fullPathArgumentsCall != null) newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
-                            else newProcess = null;
+                            if (fullPathArgumentsCall != null)
+                            {
+                                Logger.AddInformation("Adding permitted process to autostart with path " + fullPathArgumentsCall);
+                                newProcess = CreateProcessWithExitHandler(fullPathArgumentsCall);
+                            }
+                            else
+                            {
+                                Logger.AddWarning("Permitted process wasn't added to autostart, because it didn't had a valid path/arguments call set", null);
+                                newProcess = null;
+                            }
+                        } else
+                        {
+                            Logger.AddInformation("Permitted process with autostart = false: " + executable);
                         }
                         // Save the process reference if the process was started, otherwise null
                         permittedProcessesReferences.Add(newProcess);
-                        permittedProcessesIndex++;
                     }
                     else
                     {
@@ -847,9 +857,9 @@ namespace SebWindowsClient
                             StartXulRunner((string)permittedProcessesCalls[permittedProcessesIndex]);
                             // Save the process reference of XULRunner
                             permittedProcessesReferences.Add(xulRunner);
-                            permittedProcessesIndex++;
                         }
                     }
+                    permittedProcessesIndex++;
                 }
             }
 
@@ -1194,7 +1204,7 @@ namespace SebWindowsClient
             return true;
         }
 
-        private void PlaceFormOnDesktop(bool KeyboardShown, bool isInitial = false)
+        public void PlaceFormOnDesktop(bool KeyboardShown, bool isInitial = false)
         {
             if (KeyboardShown && TapTipHandler.IsKeyboardDocked() && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTouchOptimized))
             {
@@ -1708,7 +1718,7 @@ namespace SebWindowsClient
                 {
                     Logger.AddInformation("Attempting to reset workspacearea");
                     SEBWorkingAreaHandler.ResetWorkspaceArea();
-                    Logger.AddInformation("Aorkspace area resetted");
+                    Logger.AddInformation("Workspace area resetted");
                 }
                 catch (Exception ex)
                 {
@@ -1729,14 +1739,6 @@ namespace SebWindowsClient
                     try
                     {
                         var proc = permittedProcessesReferences[i];
-                        if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
-                        {
-                            //Get Process from WindowHandle by Name
-                            var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
-                            var currentProcessData = (Dictionary<string, object>)permittedProcessSettings[i];
-                            var title = (string)currentProcessData[SEBSettings.KeyIdentifier];
-                            proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
-                        }
                         if (proc != null && !proc.HasExited)
                         {
                             Logger.AddInformation("Attempting to close " + proc.ProcessName);
@@ -1836,7 +1838,13 @@ namespace SebWindowsClient
         /// </summary>
         public void ExitApplication(bool showLoadingScreen = true)
         {
-            Thread loadingThread = null;
+			// Only show the loading screen when not in CreateNewDesktop-Mode
+			if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
+			{
+				showLoadingScreen = false;
+			}
+
+			Thread loadingThread = null;
             if (showLoadingScreen)
             {
                 SEBSplashScreen.CloseSplash();

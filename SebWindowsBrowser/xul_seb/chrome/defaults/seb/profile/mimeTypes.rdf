@@ -3,10 +3,15 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Seq RDF:about="urn:schemes:root">
     <RDF:li RDF:resource="urn:scheme:seb"/>
+    <RDF:li RDF:resource="urn:scheme:sebs"/>
   </RDF:Seq>
   <RDF:Description RDF:about="urn:scheme:seb"
                    NC:value="seb">
     <NC:handlerProp RDF:resource="urn:scheme:handler:seb"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:scheme:sebs"
+                   NC:value="sebs">
+    <NC:handlerProp RDF:resource="urn:scheme:handler:sebs"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:root"
                    NC:en-US_defaultHandlersVersion="-1" />
@@ -14,6 +19,9 @@
     <NC:Protocol-Schemes RDF:resource="urn:schemes:root"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:scheme:handler:seb"
+                   NC:useSystemDefault="true"
+                   NC:alwaysAsk="false" />
+  <RDF:Description RDF:about="urn:scheme:handler:sebs"
                    NC:useSystemDefault="true"
                    NC:alwaysAsk="false" />
   <RDF:Seq RDF:about="urn:mimetypes:root">

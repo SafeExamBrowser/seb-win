@@ -44,8 +44,8 @@ namespace SebWindowsClient
 {
 	public class Worker
     {
-        // This method will be called when the thread is started. 
-        public void ShowPasswordDialogInThread()
+		// This method will be called when the thread is started. 
+		public void ShowPasswordDialogInThread()
         {
             dialogResultText = SebPasswordDialogForm.ShowPasswordDialogForm(dialogTitle, dialogText);
         }
@@ -142,6 +142,7 @@ namespace SebWindowsClient
                 Worker workerObject = new Worker();
                 Thread workerThread = new Thread(workerObject.ShowPasswordDialogInThread);
 
+				workerThread.SetApartmentState(ApartmentState.STA);
                 workerObject.dialogTitle = title;
                 workerObject.dialogText = passwordRequestText;
 

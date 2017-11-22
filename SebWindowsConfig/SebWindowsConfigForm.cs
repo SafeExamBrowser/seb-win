@@ -3443,6 +3443,8 @@ namespace SebWindowsConfig
 		private void radioCreateNewDesktop_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop] = radioCreateNewDesktop.Checked;
+			checkBoxMonitorProcesses.Enabled = !radioCreateNewDesktop.Checked;
+			checkBoxMonitorProcesses.Checked = radioCreateNewDesktop.Checked;
 
 			if (radioCreateNewDesktop.Checked && (Boolean) SEBSettings.settingsCurrent[SEBSettings.KeyTouchOptimized] == true)
 			{
@@ -3454,11 +3456,7 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] = radioKillExplorerShell.Checked;
 			checkBoxMonitorProcesses.Enabled = !radioKillExplorerShell.Checked;
-
-			if (radioKillExplorerShell.Checked)
-			{
-				checkBoxMonitorProcesses.Checked = true;
-			}
+			checkBoxMonitorProcesses.Checked = radioKillExplorerShell.Checked;
 		}
 
 		private void checkBoxAllowWlan_CheckedChanged(object sender, EventArgs e)

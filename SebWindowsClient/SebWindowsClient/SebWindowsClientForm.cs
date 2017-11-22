@@ -1008,11 +1008,10 @@ namespace SebWindowsClient
 			{
 				Logger.AddError("Unable to add WLANControl",this,ex);
 			}
-			
 
-			//Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
 
-			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
+			// Add the OnScreenKeyboardControl (only if not in Create New Desktop Mode)
+			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true && !(Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
 			{
 				var sebOnScreenKeyboardToolStripButton = new SEBOnScreenKeyboardToolStripButton();
 				taskbarToolStrip.Items.Add(sebOnScreenKeyboardToolStripButton);
@@ -1915,9 +1914,15 @@ namespace SebWindowsClient
 		/// </summary>
 		public void ExitApplication(bool showLoadingScreen = true)
 		{
-			Thread loadingThread = null;
+			// Only show the loading screen when not in CreateNewDesktop-Mode
+			if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
+			{
+				showLoadingScreen = false;
+			}
+
 			if (showLoadingScreen)
 			{
+				Thread loadingThread = null;
 				SEBSplashScreen.CloseSplash();
 				loadingThread = new Thread(SEBLoading.StartLoading);
 				loadingThread.Start();

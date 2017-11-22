@@ -116,7 +116,7 @@ namespace SebWindowsClient
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
+        //[STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
@@ -153,10 +153,16 @@ namespace SebWindowsClient
 
         public static void StartSplash()
         {
-            // Instance a splash form given the image names
-            splash = new SEBSplashScreen();
-            // Run the form
-            Application.Run(splash);
+			// Set the threads desktop to the new desktop if "Create new Desktop" is activated
+			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+			{
+				SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop);
+			}
+
+			// Instance a splash form given the image names
+			splash = new SEBSplashScreen();
+			// Run the form
+			Application.Run(splash);
         }
 
         public static void CloseSplash()
@@ -261,12 +267,36 @@ namespace SebWindowsClient
             //on NT4/NT5 ++ a new desktop is created
             if (SEBClientInfo.IsNewOS)
             {
+				sessionCreateNewDesktop = (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop];
+				if (sessionCreateNewDesktop)
+				{
+					SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
+					SEBDesktopController OriginalInput = SEBDesktopController.OpenInputDesktop();
 
-                    SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
-                    SEBClientInfo.DesktopName = SEBClientInfo.OriginalDesktop.DesktopName;
-            }
+					SEBClientInfo.SEBNewlDesktop = SEBDesktopController.CreateDesktop(SEBClientInfo.SEB_NEW_DESKTOP_NAME);
+					SEBDesktopController.Show(SEBClientInfo.SEBNewlDesktop.DesktopName);
+					if (!SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop))
+					{
+						Logger.AddError("SetThreadDesktop failed! Looks like the thread has hooks or windows in the current desktop.", null, null);
+						SEBDesktopController.Show(SEBClientInfo.OriginalDesktop.DesktopName);
+						SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
+						SEBClientInfo.SEBNewlDesktop.Close();
+						SEBMessageBox.Show(SEBUIStrings.createNewDesktopFailed, SEBUIStrings.createNewDesktopFailedReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
+						
+						return false;
+					}
+					SEBClientInfo.DesktopName = SEBClientInfo.SEB_NEW_DESKTOP_NAME;
+				}
+				else
+				{
+					SEBClientInfo.OriginalDesktop = SEBDesktopController.GetCurrent();
+					SEBClientInfo.DesktopName = SEBClientInfo.OriginalDesktop.DesktopName;
+					//If you kill the explorer shell you don't need this!
+					//SebWindowsClientForm.SetVisibility(false);
+				}
+			}
 
-            Logger.AddInformation("Successfully InitSebSettings");
+			Logger.AddInformation("Successfully InitSebSettings");
             return true;
         }
 
@@ -315,17 +345,19 @@ namespace SebWindowsClient
 #endif
 
             //if none of the two kiosk modes are enabled, then we do not monitor the processes, otherwise we monitor the processes. The switch for monitoring processes has no longer any function.
-            //if create new desktop is active, then we switch automatically to kill explorer shell, the create new desktop kiosk mode is no longer possible
-            if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] ||
-                (bool) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
+            if ((bool) SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] || (bool) SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
             {
                 MonitorProcesses();
-                KillExplorerShell();
             }
 
-            Logger.AddInformation("Successfully InitSEBDesktop");
+			if ((Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyKillExplorerShell)[SEBSettings.KeyKillExplorerShell])
+			{
+				KillExplorerShell();
+			}
 
-            return true;
+			Logger.AddInformation("Successfully InitSEBDesktop");
+
+			return true;
         }
 
         private static void MonitorProcesses()

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Windows.Forms;
+using PlistCS;
 using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
-using PlistCS;
+using ListObj = System.Collections.Generic.List<object>;
 
 //
 //  SEBConfigFileManager.cs
@@ -46,7 +46,7 @@ using PlistCS;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public class SEBConfigFileManager
+	public class SEBConfigFileManager
     {
         public static SebPasswordDialogForm sebPasswordDialogForm;
 
@@ -89,9 +89,12 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBClientInfo.SebWindowsClientForm.CloseSEBForm(true);
             Logger.AddInformation("Succesfully CloseSEBForm for reconfiguration");
             SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
+			
+			// We need to check if setting for createNewDesktop changed
+			SEBClientInfo.CreateNewDesktopOldValue = (bool) SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop);
 
-            if ((int)sebPreferencesDict[SEBSettings.KeySebConfigPurpose] == (int)SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam)
-            {
+			if ((int) sebPreferencesDict[SEBSettings.KeySebConfigPurpose] == (int) SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam)
+			{
                 ///
                 /// If these SEB settings are meant to start an exam
                 ///
@@ -110,8 +113,26 @@ namespace SebWindowsClient.ConfigurationUtils
                 //Re-initialize logger
                 SEBClientInfo.InitializeLogger();
 
-                // Re-Initialize SEB according to the new settings
-                Logger.AddInformation("Attemting to InitSEBDesktop for reconfiguration");
+				// Check if SEB is running on the standard desktop and the new settings demand to run in new desktop (createNewDesktop = true)
+				// or the other way around!
+				if (SEBClientInfo.CreateNewDesktopOldValue != (bool) SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop))
+				{
+					// If it did, SEB needs to quit and be restarted manually for the new setting to take effekt
+					if (SEBClientInfo.CreateNewDesktopOldValue == false)
+					{
+						SEBMessageBox.Show(SEBUIStrings.settingsRequireNewDesktop, SEBUIStrings.settingsRequireNewDesktopReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+					else
+					{
+						SEBMessageBox.Show(SEBUIStrings.settingsRequireNotNewDesktop, SEBUIStrings.settingsRequireNotNewDesktopReason, MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+
+					//SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
+					SEBClientInfo.SebWindowsClientForm.ExitApplication();
+				}
+
+				// Re-Initialize SEB according to the new settings
+				Logger.AddInformation("Attemting to InitSEBDesktop for reconfiguration");
                 if (!SebWindowsClientMain.InitSEBDesktop()) return false;
                 Logger.AddInformation("Sucessfully InitSEBDesktop for reconfiguration");
                 // Re-open the main form
@@ -163,7 +184,20 @@ namespace SebWindowsClient.ConfigurationUtils
 
                 if (SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
                 {
-                    if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+					// Activate SebWindowsClient so the message box gets focus
+					//SEBClientInfo.SebWindowsClientForm.Activate();
+
+					// Check if setting for createNewDesktop changed
+					if (SEBClientInfo.CreateNewDesktopOldValue != (bool) SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyCreateNewDesktop))
+					{
+						// If it did, SEB needs to quit and be restarted manually for the new setting to take effekt
+						SEBMessageBox.Show(SEBUIStrings.sebReconfiguredRestartNeeded, SEBUIStrings.sebReconfiguredRestartNeededReason, MessageBoxIcon.Warning, MessageBoxButtons.OK);
+						
+						//SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
+						SEBClientInfo.SebWindowsClientForm.ExitApplication();
+					}
+
+					if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
                         SEBClientInfo.SebWindowsClientForm.ExitApplication();

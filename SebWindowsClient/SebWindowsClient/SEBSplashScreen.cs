@@ -74,10 +74,19 @@ namespace SebWindowsClient
         /// </summary>
         public static void StartSplash()
         {
-            SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
+			// Set the threads desktop to the new desktop if "Create new Desktop" is activated
+			if (SEBClientInfo.SEBNewlDesktop != null && (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyCreateNewDesktop)[SEBSettings.KeyCreateNewDesktop])
+			{
+				SEBDesktopController.SetCurrent(SEBClientInfo.SEBNewlDesktop);
+			}
+			else
+			{
+				SEBDesktopController.SetCurrent(SEBClientInfo.OriginalDesktop);
+			}
 
-            splash = new SEBSplashScreen();
-            splash.ShowDialog();
+			// Instance a splash form given the image names
+			splash = new SEBSplashScreen();
+			splash.ShowDialog();
         }
 
         /// <summary>

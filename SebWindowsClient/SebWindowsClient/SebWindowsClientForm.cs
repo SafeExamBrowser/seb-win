@@ -769,6 +769,7 @@ namespace SebWindowsClient
 				foreach (string applicationToClose in runningApplicationsToClose.Keys)
 				{
 					applicationsListToClose.AppendLine("    " + applicationToClose);
+					Logger.AddWarning("Found application which needs to be closed: " + applicationToClose);
 				}
 				if (SEBMessageBox.Show(SEBUIStrings.closeProcesses, SEBUIStrings.closeProcessesQuestion + "\n\n" + applicationsListToClose.ToString(), MessageBoxIcon.Error, MessageBoxButtons.OKCancel) == DialogResult.OK)
 				{
@@ -789,6 +790,11 @@ namespace SebWindowsClient
 						if (runningApplicationsToClose[application].Count == closedProcesses)
 						{
 							closedApplications.Add(application);
+							Logger.AddInformation("Successfully closed application: " + application);
+						}
+						else
+						{
+							Logger.AddWarning("Failed to close application: " + application);
 						}
 					}
 
@@ -802,6 +808,9 @@ namespace SebWindowsClient
 						SEBMessageBox.Show(SEBUIStrings.unableToCloseProcessesTitle,
 							SEBUIStrings.unableToCloseProcessesText + "\n" + String.Join("\n", runningApplicationsToClose.Keys),
 							MessageBoxIcon.Error, MessageBoxButtons.OK);
+
+						Logger.AddWarning("Failed to close all running applications!");
+
 						ExitApplication();
 						return;
 					}
@@ -810,6 +819,8 @@ namespace SebWindowsClient
 				}
 				else
 				{
+					Logger.AddInformation("User aborted when prompted to close all running applications!");
+
 					ExitApplication();
 					return;
 				}
@@ -1459,30 +1470,20 @@ namespace SebWindowsClient
 			// the user will be asked to quit all those processes him/herself or to let SEB kill them
 			// Prohibited processes with the strongKill flag set can be killed without user consent
 
-			var prohibitedProcessList = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
+			var prohibitedProcessList = (List<object>) SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
+			var infos = SEBProcessHandler.GetExecutableInfos();
 
 			if (prohibitedProcessList.Any())
 			{
 				var runningApplications = Process.GetProcesses().Select(p =>
 				{
-					var runningProcessName = p.ProcessName;
-					var originalProcessName = string.Empty;
-					var hasOriginalName = false;
-
-					try
-					{
-						hasOriginalName = p.HasOriginalName(out originalProcessName);
-					}
-					catch (Exception e)
-					{
-						Logger.AddError(String.Format("Failed to verify original name of process '{0}'!", runningProcessName), null, e);
-					}
+					var executableInfo = infos.FirstOrDefault(i => i.ProcessId == p.Id);
 
 					return new
 					{
-						Name = runningProcessName,
-						OriginalName = originalProcessName,
-						HasOriginalName = hasOriginalName,
+						Name = p.ProcessName,
+						OriginalName = executableInfo?.OriginalName ?? string.Empty,
+						HasOriginalName = executableInfo?.HasOriginalName ?? false,
 						Process = p
 					};
 				}).ToList();

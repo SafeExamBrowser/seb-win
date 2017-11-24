@@ -4,13 +4,15 @@ namespace SebWindowsClient.ProcessUtils
 {
 	public class ExecutableInfo
 	{
+		public int? ProcessId { get; }
 		public string Name { get; }
 		public string OriginalName { get; }
 
-		public ExecutableInfo(string name, string originalName = null)
+		public ExecutableInfo(string name, string originalName = null, int? processId = null)
 		{
 			Name = name ?? string.Empty;
 			OriginalName = originalName ?? string.Empty;
+			ProcessId = processId;
 		}
 
 		public bool HasName

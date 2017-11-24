@@ -197,6 +197,49 @@ namespace SebWindowsClient.ProcessUtils
 			return false;
 		}
 
+		public static IList<ExecutableInfo> GetExecutableInfos()
+		{
+			var infos = new List<ExecutableInfo>();
+			var query = "SELECT ProcessId, Name, ExecutablePath FROM Win32_Process";
+
+			try
+			{
+				using (var searcher = new ManagementObjectSearcher(query))
+				using (var results = searcher.Get())
+				{
+					var processes = results.Cast<ManagementObject>().ToList();
+
+					foreach (var processData in processes)
+					{
+						var id = Convert.ToInt32(processData["ProcessId"]);
+						var name = Path.GetFileNameWithoutExtension(processData["Name"] as string);
+						var executablePath = processData["ExecutablePath"] as string;
+						string originalName = null;
+
+						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+						{
+							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+
+							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+							if (!String.IsNullOrWhiteSpace(originalName) && !name.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+							{
+								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, name));
+							}
+						}
+
+						infos.Add(new ExecutableInfo(name, originalName, id));
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError("Failed to retrieve executable infos!", null, e, e.Message);
+			}
+
+			return infos;
+		}
+
 		#endregion
 
 		#region Private Methods

@@ -5,7 +5,7 @@ using SebWindowsClient.ConfigurationUtils;
 
 namespace SebWindowsClient.DiagnosticsUtils
 {
-    public class Logger
+	public class Logger
     {
         //TODO: Change signature of methods and make singleton
         public static void AddError(string message, object eventSource, Exception exception, string details = null)
@@ -13,7 +13,7 @@ namespace SebWindowsClient.DiagnosticsUtils
             Log(Severity.Error, message, eventSource, exception, details);
         }
 
-        public static void AddWarning(string message, object eventSource, Exception exception = null, string details = null)
+        public static void AddWarning(string message, object eventSource = null, Exception exception = null, string details = null)
         {
             Log(Severity.Warning, message, eventSource, exception, details);
         }

@@ -579,19 +579,22 @@ namespace SebWindowsClient
                 foreach (string applicationToClose in runningApplicationsToClose)
                 {
                     applicationsListToClose.AppendLine("    " + applicationToClose);
-                }
+					Logger.AddWarning("Found application which needs to be closed: " + applicationToClose);
+				}
                 if (SEBMessageBox.Show(SEBUIStrings.closeProcesses, SEBUIStrings.closeProcessesQuestion + "\n\n" + applicationsListToClose.ToString(), MessageBoxIcon.Error, MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
                     foreach (Process processToClose in runningProcessesToClose)
                     {
                         SEBNotAllowedProcessController.CloseProcess(processToClose);
-                    }
+						Logger.AddInformation("Successfully closed process: " + processToClose);
+					}
                     runningProcessesToClose.Clear();
                     runningApplicationsToClose.Clear();
                 }
                 else
                 {
-                    ExitApplication();
+					Logger.AddInformation("User aborted when prompted to close all running applications!");
+					ExitApplication();
                     return;
                 }
             }            
@@ -1378,29 +1381,19 @@ namespace SebWindowsClient
 			// Prohibited processes with the strongKill flag set can be killed without user consent
 
 			var prohibitedProcessList = (List<object>) SEBClientInfo.getSebSetting(SEBSettings.KeyProhibitedProcesses)[SEBSettings.KeyProhibitedProcesses];
+			var infos = SEBProcessHandler.GetExecutableInfos();
 
 			if (prohibitedProcessList.Any())
 			{
 				var runningApplications = Process.GetProcesses().Select(p =>
 				{
-					var runningProcessName = p.ProcessName;
-					var originalProcessName = string.Empty;
-					var hasOriginalName = false;
-
-					try
-					{
-						hasOriginalName = p.HasOriginalName(out originalProcessName);
-					}
-					catch (Exception e)
-					{
-						Logger.AddError(String.Format("Failed to verify original name of process '{0}'!", runningProcessName), null, e);
-					}
+					var executableInfo = infos.FirstOrDefault(i => i.ProcessId == p.Id);
 
 					return new
 					{
-						Name = runningProcessName,
-						OriginalName = originalProcessName,
-						HasOriginalName = hasOriginalName,
+						Name = p.ProcessName,
+						OriginalName = executableInfo?.OriginalName ?? string.Empty,
+						HasOriginalName = executableInfo?.HasOriginalName ?? false,
 						Process = p
 					};
 				}).ToList();

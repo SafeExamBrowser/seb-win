@@ -585,8 +585,8 @@ namespace SebWindowsClient
                 {
                     foreach (Process processToClose in runningProcessesToClose)
                     {
+						Logger.AddInformation("Closing process: " + processToClose.ProcessName);
                         SEBNotAllowedProcessController.CloseProcess(processToClose);
-						Logger.AddInformation("Successfully closed process: " + processToClose);
 					}
                     runningProcessesToClose.Clear();
                     runningApplicationsToClose.Clear();

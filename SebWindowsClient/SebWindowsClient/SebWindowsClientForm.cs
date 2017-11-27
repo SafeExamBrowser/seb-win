@@ -496,8 +496,9 @@ namespace SebWindowsClient
             {
                 // Check if permitted third party applications are already running
                 List<Process> runningApplications = new List<Process>();
-                runningApplications = Process.GetProcesses().ToList();
-                //Process[] runningApplications = Process.GetProcesses();
+                var allProcesses = Process.GetProcesses();
+                SEBProcessHandler.LogAllRunningProcesses(allProcesses);
+                runningApplications = allProcesses.ToList();
                 for (int i = 0; i < permittedProcessList.Count; i++)
                 {
                     Dictionary<string, object> permittedProcess = (Dictionary<string, object>)permittedProcessList[i];

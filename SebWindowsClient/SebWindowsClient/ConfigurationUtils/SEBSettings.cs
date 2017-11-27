@@ -707,7 +707,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.prohibitedProcessDataDefault.Add(SEBSettings.KeyUser       , "");
 
             SEBSettings.prohibitedProcessesDefault = new List<string> { "Chrome", "Chromium", "Vivaldi", "Opera", "browser", "slimjet", "UCBrowser", "Firefox" };
-            SEBSettings.prohibitedProcessesDefaultStrict = new List<string> { "Skype", "SkypeHost", "g2mcomm.exe", "g2mstart.exe", "g2mlauncher.exe", "TeamViewer", "vncserver", "vncviewer", "vncserverui", "chromoting", "Mikogo-host", "AeroAdmin", "beamyourscreen-host", "RemotePCDesktop", "RPCService", "RPCSuite", "join.me" };
+            SEBSettings.prohibitedProcessesDefaultStrict = new List<string> { "Skype", "SkypeHost", "g2mcomm.exe", "g2mstart.exe", "g2mlauncher.exe", "TeamViewer", "vncserver", "vncviewer", "vncserverui", "chromoting", "Mikogo-host", "AeroAdmin", "beamyourscreen-host", "RemotePCDesktop", "RPCService", "RPCSuite", "join.me", "CamRecorder" };
 
             // Default settings for group "Network - Filter"
             SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableURLFilter       , false);

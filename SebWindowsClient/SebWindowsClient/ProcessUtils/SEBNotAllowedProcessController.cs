@@ -89,7 +89,7 @@ namespace SebWindowsClient.ProcessUtils
                         processToClose.Refresh();
                     }
 
-                    Logger.AddInformation("Process " + name + " hasnt closed yet, try again");
+                    Logger.AddInformation("Process " + name + " hasn't exited yet, try again");
                     //If the process handles the mainWindow
                     if (processToClose != null && !processToClose.HasExited && processToClose.MainWindowHandle != IntPtr.Zero)
                     {

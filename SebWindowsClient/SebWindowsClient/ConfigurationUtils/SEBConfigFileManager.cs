@@ -82,7 +82,7 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBClientInfo.SebWindowsClientForm.closeSebClient = false;
             Logger.AddInformation("Attempting to CloseSEBForm for reconfiguration");
             SEBClientInfo.SebWindowsClientForm.CloseSEBForm();
-            Logger.AddInformation("Succesfully CloseSEBForm for reconfiguration");
+            Logger.AddInformation("Successfully CloseSEBForm for reconfiguration");
             SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
 			//SEBClientInfo.SebWindowsClientForm.Close();
 			//SEBClientInfo.SebWindowsClientForm.Dispose();
@@ -129,7 +129,7 @@ namespace SebWindowsClient.ConfigurationUtils
 				}
 
 				// Re-Initialize SEB according to the new settings
-				Logger.AddInformation("Attemting to InitSEBDesktop for reconfiguration");
+				Logger.AddInformation("Attempting to InitSEBDesktop for reconfiguration");
                 if (!SebWindowsClientMain.InitSEBDesktop()) return false;
                 Logger.AddInformation("Sucessfully InitSEBDesktop for reconfiguration");
                 // Re-open the main form

@@ -292,7 +292,7 @@ namespace SebWindowsClient
                     SebWindowsClientMain.LoadingSebFile(false);
                     return false;
                 }
-                Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
+                Logger.AddInformation("Successfully read the new configuration, length is " + sebSettings.Length);
                 // Decrypt, parse and store new settings and restart SEB if this was successfull
                 Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 
@@ -765,7 +765,7 @@ namespace SebWindowsClient
             }
             catch (Exception ex)
             {
-                Logger.AddError("Unable to add WLANControl",this,ex);
+                Logger.AddError("Unable to add WiFi Control",this,ex);
             }
 
 
@@ -796,7 +796,7 @@ namespace SebWindowsClient
             }
             catch (Exception ex)
             {
-                Logger.AddError("Unable to add the Batterystatuscontrol",this,ex);
+                Logger.AddError("Unable to add the Battery Status Control",this,ex);
             }
 
             //KeyboardLayout Chooser
@@ -1106,7 +1106,7 @@ namespace SebWindowsClient
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Error when trying to start permitted process by clicking in SEB taskbar: ", null, ex);
+                    Logger.AddError("Error when trying to start permitted process by clicking in SEB task bar: ", null, ex);
                 }
             }
         }
@@ -1192,7 +1192,7 @@ namespace SebWindowsClient
                 this.taskbarToolStrip.ImageScalingSize = new Size(taskbarHeight - 8, taskbarHeight -8);
             }
 
-            Logger.AddInformation("Taskbarheight from settings: " +sebTaskBarHeight.ToString() + " Current taskbar height: " + taskbarHeight.ToString());
+            Logger.AddInformation("Task bar height from settings: " +sebTaskBarHeight.ToString() + " Current task bar height: " + taskbarHeight.ToString());
 
             //Modify Working Area
             SEBWorkingAreaHandler.SetTaskBarSpaceHeight(taskbarHeight);
@@ -1562,9 +1562,9 @@ namespace SebWindowsClient
             if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyShowTaskBar))
             {
                 //this.Show();
-                Logger.AddInformation("Attempting to position the taskbar");
+                Logger.AddInformation("Attempting to position the task bar");
                 SetFormOnDesktop();
-                Logger.AddInformation("Finished taskbar positioning");
+                Logger.AddInformation("Finished task bar positioning");
                 //if (!this.Controls.Contains(this.taskbarToolStrip))
                 //{
                 //    this.Controls.Add(this.taskbarToolStrip);
@@ -1574,7 +1574,7 @@ namespace SebWindowsClient
             }
             else
             {
-                Logger.AddInformation("Hiding the taskbar");
+                Logger.AddInformation("Hiding the task bar");
                 //this.Hide();
                 this.Visible = false;
                 this.Height = 1;
@@ -1710,13 +1710,13 @@ namespace SebWindowsClient
 
                 try
                 {
-                    Logger.AddInformation("Attempting to reset workspacearea");
+                    Logger.AddInformation("Attempting to reset WorkspaceArea");
                     SEBWorkingAreaHandler.ResetWorkspaceArea();
                     Logger.AddInformation("Workspace area resetted");
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddError("Unable to reset WorkingArea",this,ex);
+                    Logger.AddError("Unable to reset WorkspaceArea", this,ex);
                 }
 
                 // ShutDown Processes

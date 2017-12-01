@@ -61,7 +61,7 @@ namespace SebWindowsClient.ProcessUtils
                 //Wait until the explorer is up again because its functions are needed in the next call
                 for (int i = 0; i < 6; i++)
                 {
-                    Logger.AddInformation("waiting for explorer shell to get up " + i + " seconds");
+                    Logger.AddInformation("Waiting for Explorer Shell to get up " + i + " seconds.");
                     if (FindWindow("Shell_TrayWnd", null) != IntPtr.Zero)
                         break;
                     Thread.Sleep(1000);
@@ -69,7 +69,7 @@ namespace SebWindowsClient.ProcessUtils
                 //Sleep six seconds to get the explorer running
                 if (waitForStartup)
                 {
-                    Logger.AddInformation("waiting for explorer shell to finish starting 6 seconds");
+                    Logger.AddInformation("Waiting 6 seconds for Explorer Shell to finish starting.");
                     Thread.Sleep(6000);
                 }
                     
@@ -173,10 +173,15 @@ namespace SebWindowsClient.ProcessUtils
 
 			try
 			{
-				using (var searcher = new ManagementObjectSearcher(query))
+                var regularProcessName = process.ProcessName ?? "<NULL>";
+                Logger.AddInformation(String.Format("Trying to retrieve original name of process " + regularProcessName));
+
+                using (var searcher = new ManagementObjectSearcher(query))
 				using (var results = searcher.Get())
 				{
-					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
+                    Logger.AddInformation(String.Format("Got a result for the query for process " + regularProcessName));
+
+                    var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
 					if (processData != null)
 					{
@@ -214,10 +219,14 @@ namespace SebWindowsClient.ProcessUtils
 
 			try
 			{
-				using (var searcher = new ManagementObjectSearcher(query))
+                Logger.AddInformation(String.Format("Trying to retrieve executable infos for all running processes"));
+
+                using (var searcher = new ManagementObjectSearcher(query))
 				using (var results = searcher.Get())
 				{
-					var processes = results.Cast<ManagementObject>().ToList();
+                    Logger.AddInformation(String.Format("Got executable infos for all running processes"));
+
+                    var processes = results.Cast<ManagementObject>().ToList();
 
 					foreach (var processData in processes)
 					{

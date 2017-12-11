@@ -1474,10 +1474,10 @@ namespace SebWindowsClient.ConfigurationUtils
             InsertProhibitedProcessesFromArray(prohibitedProcessesDefaultStrict);
 
             // Insert default prohibited processes only in Disable Explorer Shell kiosk mode
-            //if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] == true)
-            //{
+            if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] == true)
+            {
                 InsertProhibitedProcessesFromArray(prohibitedProcessesDefault);
-            //}
+            }
         }
 
         private static void InsertProhibitedProcessesFromArray(List<string> newProhibitedProcesses)

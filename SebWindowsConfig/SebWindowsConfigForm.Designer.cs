@@ -238,6 +238,8 @@ namespace SebWindowsConfig
             this.checkBoxOpenDownloads = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowDownUploads = new System.Windows.Forms.CheckBox();
             this.tabPageBrowser = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxUserAgent = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxBrowserSuffix = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
@@ -392,8 +394,6 @@ namespace SebWindowsConfig
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBoxUserAgent = new System.Windows.Forms.TextBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1174,11 +1174,13 @@ namespace SebWindowsConfig
             this.radioCreateNewDesktop.Location = new System.Drawing.Point(18, 19);
             this.radioCreateNewDesktop.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.radioCreateNewDesktop.Name = "radioCreateNewDesktop";
-            this.radioCreateNewDesktop.Size = new System.Drawing.Size(213, 17);
+            this.radioCreateNewDesktop.Size = new System.Drawing.Size(120, 17);
             this.radioCreateNewDesktop.TabIndex = 82;
             this.radioCreateNewDesktop.TabStop = true;
-            this.radioCreateNewDesktop.Text = "Create new desktop (n/a in this version)";
-            this.toolTip1.SetToolTip(this.radioCreateNewDesktop, resources.GetString("radioCreateNewDesktop.ToolTip"));
+            this.radioCreateNewDesktop.Text = "Create new desktop";
+            this.toolTip1.SetToolTip(this.radioCreateNewDesktop, "This kiosk mode may prevent specific third party software to run correctly togeth" +
+        "er with SEB, like some screen recording software or the Windows onscreen keyboar" +
+        "d.");
             this.radioCreateNewDesktop.UseVisualStyleBackColor = true;
             this.radioCreateNewDesktop.CheckedChanged += new System.EventHandler(this.radioCreateNewDesktop_CheckedChanged);
             // 
@@ -3078,6 +3080,31 @@ namespace SebWindowsConfig
             this.tabPageBrowser.TabIndex = 14;
             this.tabPageBrowser.Text = "Browser";
             this.tabPageBrowser.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(540, 204);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(178, 13);
+            this.label12.TabIndex = 126;
+            this.label12.Text = "Suffix to be added to any user agent";
+            // 
+            // textBoxUserAgent
+            // 
+            this.textBoxUserAgent.AcceptsReturn = true;
+            this.textBoxUserAgent.AcceptsTab = true;
+            this.textBoxUserAgent.AllowDrop = true;
+            this.textBoxUserAgent.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxUserAgent.Location = new System.Drawing.Point(543, 221);
+            this.textBoxUserAgent.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.textBoxUserAgent.Name = "textBoxUserAgent";
+            this.textBoxUserAgent.Size = new System.Drawing.Size(500, 19);
+            this.textBoxUserAgent.TabIndex = 125;
+            this.toolTip1.SetToolTip(this.textBoxUserAgent, "This string is appended to any user agent, in addition to the user agents generat" +
+        "ed with the other setting options.");
+            this.textBoxUserAgent.TextChanged += new System.EventHandler(this.textBoxUserAgent_TextChanged);
             // 
             // label11
             // 
@@ -5029,31 +5056,6 @@ namespace SebWindowsConfig
             this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(540, 204);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(178, 13);
-            this.label12.TabIndex = 126;
-            this.label12.Text = "Suffix to be added to any user agent";
-            // 
-            // textBoxUserAgent
-            // 
-            this.textBoxUserAgent.AcceptsReturn = true;
-            this.textBoxUserAgent.AcceptsTab = true;
-            this.textBoxUserAgent.AllowDrop = true;
-            this.textBoxUserAgent.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxUserAgent.Location = new System.Drawing.Point(543, 221);
-            this.textBoxUserAgent.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.textBoxUserAgent.Name = "textBoxUserAgent";
-            this.textBoxUserAgent.Size = new System.Drawing.Size(500, 19);
-            this.textBoxUserAgent.TabIndex = 125;
-            this.toolTip1.SetToolTip(this.textBoxUserAgent, "This string is appended to any user agent, in addition to the user agents generat" +
-        "ed with the other setting options.");
-            this.textBoxUserAgent.TextChanged += new System.EventHandler(this.textBoxUserAgent_TextChanged);
             // 
             // SebWindowsConfigForm
             // 

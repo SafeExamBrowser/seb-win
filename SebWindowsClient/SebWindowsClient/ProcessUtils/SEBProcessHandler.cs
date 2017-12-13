@@ -166,53 +166,105 @@ namespace SebWindowsClient.ProcessUtils
                 .Where(oW => oW.Key.GetProcess().GetExecutableName() == process.GetExecutableName());
         }
 
-		public static bool HasOriginalName(this Process process, out string originalName)
-		{
-			var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
+        public static bool HasOriginalName(this Process process, out string originalName)
+        {
+            var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
 
-			originalName = string.Empty;
+            originalName = string.Empty;
 
-			try
-			{
-				using (var searcher = new ManagementObjectSearcher(query))
-				using (var results = searcher.Get())
-				{
-					var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
+            try
+            {
+                var regularProcessName = process.ProcessName ?? "<NULL>";
+                Logger.AddInformation(String.Format("Trying to retrieve original name of process " + regularProcessName));
 
-					if (processData != null)
-					{
-						var executablePath = processData["ExecutablePath"] as string;
+                using (var searcher = new ManagementObjectSearcher(query))
+                using (var results = searcher.Get())
+                {
+                    Logger.AddInformation(String.Format("Got a result for the query for process " + regularProcessName));
 
-						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
-						{
-							var processName = process.GetExecutableName();
-							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+                    var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
-							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+                    if (processData != null)
+                    {
+                        var executablePath = processData["ExecutablePath"] as string;
 
-							if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
-							{
-								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
-							}
+                        if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+                        {
+                            var processName = process.GetExecutableName();
+                            var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
 
-							return true;
-						}
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
-			}
+                            originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
 
-			return false;
-		}
+                            if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
+                            }
 
-		#endregion
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
+            }
 
-		#region Screensaver & Sleep
+            return false;
+        }
 
-		[FlagsAttribute]
+        public static IList<ExecutableInfo> GetExecutableInfos()
+        {
+            var infos = new List<ExecutableInfo>();
+            var query = "SELECT ProcessId, Name, ExecutablePath FROM Win32_Process";
+
+            try
+            {
+                Logger.AddInformation(String.Format("Trying to retrieve executable infos for all running processes"));
+
+                using (var searcher = new ManagementObjectSearcher(query))
+                using (var results = searcher.Get())
+                {
+                    Logger.AddInformation(String.Format("Got executable infos for all running processes"));
+
+                    var processes = results.Cast<ManagementObject>().ToList();
+
+                    foreach (var processData in processes)
+                    {
+                        var id = Convert.ToInt32(processData["ProcessId"]);
+                        var name = Path.GetFileNameWithoutExtension(processData["Name"] as string);
+                        var executablePath = processData["ExecutablePath"] as string;
+                        string originalName = null;
+
+                        if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+                        {
+                            var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+
+                            originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+                            if (!String.IsNullOrWhiteSpace(originalName) && !name.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, name));
+                            }
+                        }
+
+                        infos.Add(new ExecutableInfo(name, originalName, id));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.AddError("Failed to retrieve executable infos!", null, e, e.Message);
+            }
+
+            return infos;
+        }
+
+        #endregion
+
+        #region Screensaver & Sleep
+
+        [FlagsAttribute]
         public enum EXECUTION_STATE : uint
         {
             ES_SYSTEM_REQUIRED = 0x00000001,

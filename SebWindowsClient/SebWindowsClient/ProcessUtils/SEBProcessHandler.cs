@@ -13,10 +13,10 @@ using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ProcessUtils
 {
-    /// <summary>
-    /// Offers methods to handle windows
-    /// </summary>
-    public static class SEBProcessHandler
+	/// <summary>
+	/// Offers methods to handle windows
+	/// </summary>
+	public static class SEBProcessHandler
     {
 
         #region Public Members
@@ -73,7 +73,7 @@ namespace SebWindowsClient.ProcessUtils
                     Logger.AddInformation("waiting for explorer shell to finish starting 6 seconds");
                     Thread.Sleep(6000);
                 }
-
+                    
             }
         }
 
@@ -174,9 +174,14 @@ namespace SebWindowsClient.ProcessUtils
 
             try
             {
+                var regularProcessName = process.ProcessName ?? "<NULL>";
+                Logger.AddInformation(String.Format("Trying to retrieve original name of process " + regularProcessName));
+
                 using (var searcher = new ManagementObjectSearcher(query))
                 using (var results = searcher.Get())
                 {
+                    Logger.AddInformation(String.Format("Got a result for the query for process " + regularProcessName));
+
                     var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
                     if (processData != null)
@@ -206,6 +211,53 @@ namespace SebWindowsClient.ProcessUtils
             }
 
             return false;
+        }
+
+        public static IList<ExecutableInfo> GetExecutableInfos()
+        {
+            var infos = new List<ExecutableInfo>();
+            var query = "SELECT ProcessId, Name, ExecutablePath FROM Win32_Process";
+
+            try
+            {
+                Logger.AddInformation(String.Format("Trying to retrieve executable infos for all running processes"));
+
+                using (var searcher = new ManagementObjectSearcher(query))
+                using (var results = searcher.Get())
+                {
+                    Logger.AddInformation(String.Format("Got executable infos for all running processes"));
+
+                    var processes = results.Cast<ManagementObject>().ToList();
+
+                    foreach (var processData in processes)
+                    {
+                        var id = Convert.ToInt32(processData["ProcessId"]);
+                        var name = Path.GetFileNameWithoutExtension(processData["Name"] as string);
+                        var executablePath = processData["ExecutablePath"] as string;
+                        string originalName = null;
+
+                        if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+                        {
+                            var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+
+                            originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+
+                            if (!String.IsNullOrWhiteSpace(originalName) && !name.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, name));
+                            }
+                        }
+
+                        infos.Add(new ExecutableInfo(name, originalName, id));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.AddError("Failed to retrieve executable infos!", null, e, e.Message);
+            }
+
+            return infos;
         }
 
         #endregion
@@ -281,9 +333,9 @@ namespace SebWindowsClient.ProcessUtils
             checkRunningProcessesTimer.Enabled = false;
             foreach (var process in Process.GetProcesses())
             {
-                if (!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
+                if(!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
                 {
-                    if (process.ProcessName == "explorer.exe")
+                    if(process.ProcessName == "explorer.exe")
                     {
                         ExplorerStarted();
                     }

@@ -307,18 +307,7 @@ namespace SebWindowsClient.ProcessUtils
         public ProcessWatchDog()
         {
             runningProcesses = Process.GetProcesses().Select(p => p.ProcessName).ToList();
-
-            foreach (var process in Process.GetProcesses())
-            {
-                if (!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
-                {
-                    if (!SEBNotAllowedProcessController.CloseProcess(process))
-                    {
-                        ShowMessageOrPasswordDialog(process.ProcessName);
-                    }
-                }
-            }
-
+            
             checkRunningProcessesTimer = new System.Timers.Timer()
             {
                 Interval = 2000,
@@ -331,21 +320,37 @@ namespace SebWindowsClient.ProcessUtils
         private void CheckRunningProcessesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             checkRunningProcessesTimer.Enabled = false;
+            string originalName;
             foreach (var process in Process.GetProcesses())
             {
                 if(!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
                 {
+                    Logger.AddWarning(string.Format("Detected Process {0} started", process.ProcessName));
+                    process.HasOriginalName(out originalName);
                     if(process.ProcessName == "explorer.exe")
                     {
                         ExplorerStarted();
                     }
-                    else if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    else if(SEBProcessHandler.ProhibitedExecutables.Where(x => x.Name.ToLower() == process.ProcessName.ToLower() || x.OriginalName.ToLower() == originalName.ToLower()).Count() > 0)
                     {
-                        ShowMessageOrPasswordDialog(process.ProcessName);
+                        KillAStartedProcess(process, originalName);
+                    }
+                    else
+                    {
+                        runningProcesses.Add(process.ProcessName);
                     }
                 }
             }
             checkRunningProcessesTimer.Enabled = true;
+        }
+
+        private void KillAStartedProcess(Process process, string originalName)
+        {
+            if (!SEBNotAllowedProcessController.CloseProcess(process))
+            {
+                ShowMessageOrPasswordDialog(String.Format("{0} [OriginalName: {1}]", process.ProcessName, originalName));
+            }
+            
         }
 
         public void StartWatchDog()

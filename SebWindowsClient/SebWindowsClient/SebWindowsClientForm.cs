@@ -1721,12 +1721,13 @@ namespace SebWindowsClient
                 try
                 {
                     Logger.AddInformation("killing processes that are not allowed to run");
-                    bool bClientRegistryAndProcesses = CheckProhibitedProcesses();
+                    var res = CheckProhibitedProcesses();
                 }
                 catch (Exception ex)
                 {
                     Logger.AddError("Unable to kill processes that are running before start", this, ex);
                 }
+
 
                 Logger.AddInformation("attempting to start socket server");
                 SEBXULRunnerWebSocketServer.StartServer();
@@ -1755,6 +1756,13 @@ namespace SebWindowsClient
                     Logger.AddError("Unable to addPermittedProcessesToTS", this, ex);
                 }
 
+                //if none of the two kiosk modes are enabled, then we do not monitor the processes, otherwise we monitor the processes. The switch for monitoring processes has no longer any function.
+                if ((bool)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] || (bool)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop])
+                {
+                    Logger.AddInformation("checking for processes that are starting from now on");
+                    MonitorProcesses();
+                }
+
                 if (sebCloseDialogForm == null)
                 {
                     Logger.AddInformation("creating close dialog form");
@@ -1780,6 +1788,43 @@ namespace SebWindowsClient
 				return false;
 			}
 		}
+
+        private static void MonitorProcesses()
+        {
+
+            //This prevents the not allowed executables from poping up
+            try
+            {
+                SEBWindowHandler.EnableForegroundWatchDog();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to EnableForegroundWatchDog", null, ex);
+            }
+
+            //Handle prohibited executables watching
+            SEBProcessHandler.ProhibitedExecutables.Clear();
+            //Add prohibited executables
+            foreach (Dictionary<string, object> process in SEBSettings.prohibitedProcessList)
+            {
+                if ((bool)process[SEBSettings.KeyActive])
+                {
+                    var name = Path.GetFileNameWithoutExtension((string)process[SEBSettings.KeyExecutable] ?? string.Empty);
+                    var originalName = Path.GetFileNameWithoutExtension((string)process[SEBSettings.KeyOriginalName] ?? string.Empty);
+
+                    SEBProcessHandler.ProhibitedExecutables.Add(new ExecutableInfo(name, originalName));
+                }
+            }
+            //This prevents the prohibited executables from starting up
+            try
+            {
+                SEBProcessHandler.EnableProcessWatchDog();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddError("Unable to EnableProcessWatchDog", null, ex);
+            }
+        }
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>

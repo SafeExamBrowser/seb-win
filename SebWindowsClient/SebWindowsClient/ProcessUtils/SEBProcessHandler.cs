@@ -210,12 +210,6 @@ namespace SebWindowsClient.ProcessUtils
 
 		#endregion
 
-		#region Private Methods
-
-
-
-		#endregion
-
 		#region Screensaver & Sleep
 
 		[FlagsAttribute]
@@ -255,17 +249,27 @@ namespace SebWindowsClient.ProcessUtils
 
     class ProcessWatchDog
     {
-		private ProcessInfo explorerInfo;
-        private List<ProcessInfo> _processesToWatch = new List<ProcessInfo>();
         private System.Timers.Timer checkRunningProcessesTimer;
         private List<String> runningProcesses;
 
         public ProcessWatchDog()
         {
             runningProcesses = Process.GetProcesses().Select(p => p.ProcessName).ToList();
+
+            foreach (var process in Process.GetProcesses())
+            {
+                if (!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
+                {
+                    if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    {
+                        ShowMessageOrPasswordDialog(process.ProcessName);
+                    }
+                }
+            }
+
             checkRunningProcessesTimer = new System.Timers.Timer()
             {
-                Interval = 10000,
+                Interval = 2000,
                 AutoReset = true,
                 Enabled = false
             };
@@ -279,7 +283,11 @@ namespace SebWindowsClient.ProcessUtils
             {
                 if(!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
                 {
-                    if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    if(process.ProcessName == "explorer.exe")
+                    {
+                        ExplorerStarted();
+                    }
+                    else if (!SEBNotAllowedProcessController.CloseProcess(process))
                     {
                         ShowMessageOrPasswordDialog(process.ProcessName);
                     }
@@ -290,74 +298,28 @@ namespace SebWindowsClient.ProcessUtils
 
         public void StartWatchDog()
         {
-            if (_processesToWatch.Count == 0)
-            {
-				explorerInfo = new ProcessInfo("explorer.exe");
-				explorerInfo.Started += ExplorerStarted;
-
-                foreach (var executable in SEBProcessHandler.ProhibitedExecutables)
-                {
-					if (executable.HasName)
-					{
-						var processInfo = new ProcessInfo(executable.Name);
-
-						processInfo.Started += ProcessStarted;
-
-						_processesToWatch.Add(processInfo);
-					}
-
-					if (executable.HasOriginalName && !executable.NamesAreEqual)
-					{
-						var processInfo = new ProcessInfo(executable.OriginalName);
-
-						processInfo.Started += ProcessStarted;
-
-						_processesToWatch.Add(processInfo);
-					}
-				}
-            }
             checkRunningProcessesTimer.Enabled = true;
         }
 
-		private void ExplorerStarted(object sender, EventArgs e)
-		{
-			Logger.AddWarning("Windows explorer has been restarted!", this);
-
-			var success = SEBProcessHandler.KillExplorerShell();
-
-			if (success)
-			{
-				Logger.AddInformation("Successfully terminated Windows explorer.", this);
-			}
-			else
-			{
-				Logger.AddError("Failed to terminate Windows explorer!", this, null);
-			}
-		}
-
-		private void ProcessStarted(object sender, EventArgs e)
+        private void ExplorerStarted()
         {
-            var processName = ((ProcessInfo) sender).ProcessName;
+            Logger.AddWarning("Windows explorer has been restarted!", this);
 
-			foreach (var process in Process.GetProcesses().Where(p => processName.Equals(p.ProcessName, StringComparison.InvariantCultureIgnoreCase)))
-			{
-                if (!SEBNotAllowedProcessController.CloseProcess(process))
-                {
-                    ShowMessageOrPasswordDialog(processName);
-                }
+            var success = SEBProcessHandler.KillExplorerShell();
+
+            if (success)
+            {
+                Logger.AddInformation("Successfully terminated Windows explorer.", this);
+            }
+            else
+            {
+                Logger.AddError("Failed to terminate Windows explorer!", this, null);
             }
         }
 
         public void StopWatchDog()
         {
-
-            explorerInfo?.Dispose();
-
             checkRunningProcessesTimer.Enabled = false;
-            foreach (var processInfo in _processesToWatch)
-                processInfo.Dispose();
-
-            _processesToWatch.Clear();
         }
 
         private void ShowMessageOrPasswordDialog(string processName)

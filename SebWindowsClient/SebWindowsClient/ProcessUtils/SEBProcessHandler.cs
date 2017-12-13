@@ -13,10 +13,10 @@ using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ProcessUtils
 {
-	/// <summary>
-	/// Offers methods to handle windows
-	/// </summary>
-	public static class SEBProcessHandler
+    /// <summary>
+    /// Offers methods to handle windows
+    /// </summary>
+    public static class SEBProcessHandler
     {
 
         #region Public Members
@@ -62,7 +62,7 @@ namespace SebWindowsClient.ProcessUtils
                 //Wait until the explorer is up again because its functions are needed in the next call
                 for (int i = 0; i < 6; i++)
                 {
-                    Logger.AddInformation("Waiting for Explorer Shell to get up " + i + " seconds.");
+                    Logger.AddInformation("waiting for explorer shell to get up " + i + " seconds");
                     if (FindWindow("Shell_TrayWnd", null) != IntPtr.Zero)
                         break;
                     Thread.Sleep(1000);
@@ -70,10 +70,10 @@ namespace SebWindowsClient.ProcessUtils
                 //Sleep six seconds to get the explorer running
                 if (waitForStartup)
                 {
-                    Logger.AddInformation("Waiting 6 seconds for Explorer Shell to finish starting.");
+                    Logger.AddInformation("waiting for explorer shell to finish starting 6 seconds");
                     Thread.Sleep(6000);
                 }
-                    
+
             }
         }
 
@@ -166,111 +166,53 @@ namespace SebWindowsClient.ProcessUtils
                 .Where(oW => oW.Key.GetProcess().GetExecutableName() == process.GetExecutableName());
         }
 
-		public static bool HasOriginalName(this Process process, out string originalName)
-		{
-			var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
+        public static bool HasOriginalName(this Process process, out string originalName)
+        {
+            var query = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + process.Id;
 
-			originalName = string.Empty;
+            originalName = string.Empty;
 
-			try
-			{
-                var regularProcessName = process.ProcessName ?? "<NULL>";
-                Logger.AddInformation(String.Format("Trying to retrieve original name of process " + regularProcessName));
-
+            try
+            {
                 using (var searcher = new ManagementObjectSearcher(query))
-				using (var results = searcher.Get())
-				{
-                    Logger.AddInformation(String.Format("Got a result for the query for process " + regularProcessName));
-
+                using (var results = searcher.Get())
+                {
                     var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
-					if (processData != null)
-					{
-						var executablePath = processData["ExecutablePath"] as string;
+                    if (processData != null)
+                    {
+                        var executablePath = processData["ExecutablePath"] as string;
 
-						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
-						{
-							var processName = process.GetExecutableName();
-							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
+                        if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+                        {
+                            var processName = process.GetExecutableName();
+                            var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
 
-							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
+                            originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
 
-							if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
-							{
-								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
-							}
+                            if (!String.IsNullOrWhiteSpace(originalName) && !processName.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, processName));
+                            }
 
-							return true;
-						}
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
-			}
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.AddError(String.Format("Failed to retrieve the original name of process '{0}'!", process.ProcessName ?? "<NULL>"), null, e, e.Message);
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		public static IList<ExecutableInfo> GetExecutableInfos()
-		{
-			var infos = new List<ExecutableInfo>();
-			var query = "SELECT ProcessId, Name, ExecutablePath FROM Win32_Process";
+        #endregion
 
-			try
-			{
-                Logger.AddInformation(String.Format("Trying to retrieve executable infos for all running processes"));
+        #region Screensaver & Sleep
 
-                using (var searcher = new ManagementObjectSearcher(query))
-				using (var results = searcher.Get())
-				{
-                    Logger.AddInformation(String.Format("Got executable infos for all running processes"));
-
-                    var processes = results.Cast<ManagementObject>().ToList();
-
-					foreach (var processData in processes)
-					{
-						var id = Convert.ToInt32(processData["ProcessId"]);
-						var name = Path.GetFileNameWithoutExtension(processData["Name"] as string);
-						var executablePath = processData["ExecutablePath"] as string;
-						string originalName = null;
-
-						if (!String.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
-						{
-							var executableInfo = FileVersionInfo.GetVersionInfo(executablePath);
-
-							originalName = Path.GetFileNameWithoutExtension(executableInfo.OriginalFilename);
-
-							if (!String.IsNullOrWhiteSpace(originalName) && !name.Equals(originalName, StringComparison.InvariantCultureIgnoreCase))
-							{
-								Logger.AddInformation(String.Format("Process '{0}' has been renamed from '{1}' to '{2}'!", executablePath, originalName, name));
-							}
-						}
-
-						infos.Add(new ExecutableInfo(name, originalName, id));
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.AddError("Failed to retrieve executable infos!", null, e, e.Message);
-			}
-
-			return infos;
-		}
-
-		#endregion
-
-		#region Private Methods
-
-
-
-		#endregion
-
-		#region Screensaver & Sleep
-
-		[FlagsAttribute]
+        [FlagsAttribute]
         public enum EXECUTION_STATE : uint
         {
             ES_SYSTEM_REQUIRED = 0x00000001,
@@ -307,80 +249,77 @@ namespace SebWindowsClient.ProcessUtils
 
     class ProcessWatchDog
     {
-		private ProcessInfo explorerInfo;
-        private List<ProcessInfo> _processesToWatch = new List<ProcessInfo>();
+        private System.Timers.Timer checkRunningProcessesTimer;
+        private List<String> runningProcesses;
 
         public ProcessWatchDog()
         {
+            runningProcesses = Process.GetProcesses().Select(p => p.ProcessName).ToList();
+
+            foreach (var process in Process.GetProcesses())
+            {
+                if (!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
+                {
+                    if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    {
+                        ShowMessageOrPasswordDialog(process.ProcessName);
+                    }
+                }
+            }
+
+            checkRunningProcessesTimer = new System.Timers.Timer()
+            {
+                Interval = 2000,
+                AutoReset = true,
+                Enabled = false
+            };
+            checkRunningProcessesTimer.Elapsed += CheckRunningProcessesTimer_Elapsed;
+        }
+
+        private void CheckRunningProcessesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            checkRunningProcessesTimer.Enabled = false;
+            foreach (var process in Process.GetProcesses())
+            {
+                if (!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
+                {
+                    if (process.ProcessName == "explorer.exe")
+                    {
+                        ExplorerStarted();
+                    }
+                    else if (!SEBNotAllowedProcessController.CloseProcess(process))
+                    {
+                        ShowMessageOrPasswordDialog(process.ProcessName);
+                    }
+                }
+            }
+            checkRunningProcessesTimer.Enabled = true;
         }
 
         public void StartWatchDog()
         {
-            if (_processesToWatch.Count == 0)
-            {
-				explorerInfo = new ProcessInfo("explorer.exe");
-				explorerInfo.Started += ExplorerStarted;
-
-                foreach (var executable in SEBProcessHandler.ProhibitedExecutables)
-                {
-					if (executable.HasName)
-					{
-						var processInfo = new ProcessInfo(executable.Name);
-
-						processInfo.Started += ProcessStarted;
-
-						_processesToWatch.Add(processInfo);
-					}
-
-					if (executable.HasOriginalName && !executable.NamesAreEqual)
-					{
-						var processInfo = new ProcessInfo(executable.OriginalName);
-
-						processInfo.Started += ProcessStarted;
-
-						_processesToWatch.Add(processInfo);
-					}
-				}
-            }
+            checkRunningProcessesTimer.Enabled = true;
         }
 
-		private void ExplorerStarted(object sender, EventArgs e)
-		{
-			Logger.AddWarning("Windows explorer has been restarted!", this);
-
-			var success = SEBProcessHandler.KillExplorerShell();
-
-			if (success)
-			{
-				Logger.AddInformation("Successfully terminated Windows explorer.", this);
-			}
-			else
-			{
-				Logger.AddError("Failed to terminate Windows explorer!", this, null);
-			}
-		}
-
-		private void ProcessStarted(object sender, EventArgs e)
+        private void ExplorerStarted()
         {
-            var processName = ((ProcessInfo) sender).ProcessName;
+            Logger.AddWarning("Windows explorer has been restarted!", this);
 
-			foreach (var process in Process.GetProcesses().Where(p => processName.Equals(p.ProcessName, StringComparison.InvariantCultureIgnoreCase)))
-			{
-                if (!SEBNotAllowedProcessController.CloseProcess(process))
-                {
-                    ShowMessageOrPasswordDialog(processName);
-                }
+            var success = SEBProcessHandler.KillExplorerShell();
+
+            if (success)
+            {
+                Logger.AddInformation("Successfully terminated Windows explorer.", this);
+            }
+            else
+            {
+                Logger.AddError("Failed to terminate Windows explorer!", this, null);
             }
         }
 
         public void StopWatchDog()
         {
-			explorerInfo?.Dispose();
-
-            foreach(var processInfo in _processesToWatch)
-                processInfo.Dispose();
-
-            _processesToWatch.Clear();
+            checkRunningProcessesTimer.Enabled = false;
         }
 
         private void ShowMessageOrPasswordDialog(string processName)

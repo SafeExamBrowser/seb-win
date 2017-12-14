@@ -220,15 +220,33 @@ namespace SebWindowsClient.ProcessUtils
             }
         }
 
-        #endregion
+		public static IList<IntPtr> GetWindowsByThread(int threadId)
+		{
+			var windows = new List<IntPtr>();
+			EnumThreadDelegate callback = delegate (IntPtr hWnd, IntPtr lParam)
+			{
+				if (IsWindowVisible(hWnd))
+				{
+					windows.Add(hWnd);
+				}
 
-        #region WindowHandle Extensions (IntPtr)
+				return true;
+			};
 
-        /// <summary>
-        /// Hides the specified window
-        /// </summary>
-        /// <param name="handle">The handle of the window</param>
-        public static void HideWindow(this IntPtr handle)
+			EnumThreadWindows((uint) threadId, callback, IntPtr.Zero);
+
+			return windows;
+		}
+
+		#endregion
+
+		#region WindowHandle Extensions (IntPtr)
+
+		/// <summary>
+		/// Hides the specified window
+		/// </summary>
+		/// <param name="handle">The handle of the window</param>
+		public static void HideWindow(this IntPtr handle)
         {
             EditWindowByHandle(handle, ShowWindowCommand.SW_HIDE);
         }
@@ -472,11 +490,20 @@ namespace SebWindowsClient.ProcessUtils
 
         delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
-        #endregion
+		#endregion
 
-        #region DLL Imports
+		#region DLL Imports
 
-        [DllImport("user32.dll", SetLastError = true)]
+		public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		static extern bool EnumThreadWindows(uint dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool IsWindowVisible(IntPtr hWnd);
+
+		[DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
         [DllImport("user32.dll")]
@@ -496,9 +523,6 @@ namespace SebWindowsClient.ProcessUtils
 
         [DllImport("USER32.DLL")]
         static extern int GetWindowTextLength(IntPtr hWnd);
-
-        [DllImport("USER32.DLL")]
-        static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("USER32.DLL")]
         static extern IntPtr GetShellWindow();

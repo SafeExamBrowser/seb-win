@@ -489,26 +489,35 @@ namespace SebWindowsClient
 
         public void ClosePreviousMainWindow()
         {
-            if (browserMainWindowHandle == new IntPtr())
-            {
-                browserMainWindowHandle = xulRunner.MainWindowHandle;
+			Logger.AddInformation("Attempting to close previous browser window(s)...");
 
-            }
-            Logger.AddInformation("Attempting to close previous browser main window: " + browserMainWindowHandle);
-            ProcessUtils.SEBWindowHandler.CloseWindow(browserMainWindowHandle);
+			try
+			{
+				xulRunner.Refresh();
 
-            // Get the new main window
-            List<KeyValuePair<IntPtr, string>> openedWindows;
-            openedWindows = xulRunner.GetOpenWindows().ToList();
+				if (xulRunner.MainWindowHandle != IntPtr.Zero)
+				{
+					var windows = SEBWindowHandler.GetWindowsByThread(xulRunner.Threads[0].Id).Where(w => w != xulRunner.MainWindowHandle).ToList();
 
-            foreach (var openWindow in openedWindows)
-            {
-                if (openWindow.Key != browserMainWindowHandle)
-                {
-                    browserMainWindowHandle = openWindow.Key;
-                }
-            }
-        }
+					Logger.AddInformation("Handle of new main browser window found: " + xulRunner.MainWindowHandle);
+					Logger.AddInformation("Sending close message to other window(s): " + String.Join(", ", windows));
+
+					foreach (var window in windows)
+					{
+						SEBWindowHandler.CloseWindow(window);
+					}
+				}
+				else
+				{
+					Logger.AddInformation("No window handle for browser process available! Falling back to manually retrieved handle...");
+
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError("Failed to close the previous browser window!", this, e);
+			}
+		}
 
         private void deleteXulRunnerProfileOnNewVersionOfSEB()
 		{

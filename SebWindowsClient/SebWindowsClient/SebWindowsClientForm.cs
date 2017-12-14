@@ -86,7 +86,7 @@ namespace SebWindowsClient
 
 		public Process xulRunner = new Process();
 		private int xulRunnerExitCode;
-        private static IntPtr browserMainWindowHandle = new IntPtr();
+        private IntPtr xulRunnerWindowHandle = IntPtr.Zero;
 
 		public List<string> permittedProcessesCalls = new List<string>();
 		public List<Process> permittedProcessesReferences = new List<Process>();
@@ -477,6 +477,8 @@ namespace SebWindowsClient
 				xulRunner.EnableRaisingEvents = true;
 				xulRunner.Exited += XulRunner_Exited;
 
+				SaveXulRunnerWindowHandle();
+
 				return true;
 
 			}
@@ -485,6 +487,28 @@ namespace SebWindowsClient
 				Logger.AddError("An error occurred starting XULRunner, path: "+xulRunnerPath+" desktop name: "+desktopName+" ", this, ex, ex.Message);
 				return false;
 			}
+		}
+
+		private void SaveXulRunnerWindowHandle()
+		{
+			var timer = new System.Timers.Timer();
+
+			timer.Interval = 500;
+			timer.AutoReset = true;
+			timer.Elapsed += (o, args) =>
+			{
+				var windows = SEBWindowHandler.GetWindowsByThread(xulRunner.Threads[0].Id);
+
+				if (windows.Any())
+				{
+					xulRunnerWindowHandle = windows.First();
+					timer.Stop();
+
+					Logger.AddInformation("Found handle to main browser window: " + xulRunnerWindowHandle);
+				}
+			};
+
+			timer.Start();
 		}
 
         public void ClosePreviousMainWindow()
@@ -509,8 +533,14 @@ namespace SebWindowsClient
 				}
 				else
 				{
-					Logger.AddInformation("No window handle for browser process available! Falling back to manually retrieved handle...");
+					var windows = SEBWindowHandler.GetWindowsByThread(xulRunner.Threads[0].Id);
 
+					Logger.AddInformation("No window handle for browser process available! Falling back to manually retrieved handle...");
+					Logger.AddInformation("Open browser windows: " + String.Join(", ", windows));
+					Logger.AddInformation("Sending close message to old main browser window: " + xulRunnerWindowHandle);
+
+					SEBWindowHandler.CloseWindow(xulRunnerWindowHandle);
+					SaveXulRunnerWindowHandle();
 				}
 			}
 			catch (Exception e)

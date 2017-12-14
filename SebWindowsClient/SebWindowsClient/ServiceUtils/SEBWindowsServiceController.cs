@@ -116,7 +116,8 @@ namespace SebWindowsClient.ServiceUtils
                 {RegistryIdentifiers.EnableShade, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? 1 : 0},
                 {RegistryIdentifiers.EnableShadeHorizon, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? "True" : "False"},
                 {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? "" : "SebDummy.exe"},
-                {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1}
+                {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1},
+                {RegistryIdentifiers.fDenyTSConnections, 1}
             };
 
             return SetRegistryAccordingToConfiguration(valuesToSet);

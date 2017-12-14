@@ -244,4 +244,16 @@ namespace SebWindowsServiceWCF.RegistryHandler
             this.DataType = typeof(Int32);
         }
     }
+
+    public class RegfDenyTSConnections : RegistryEntry
+    {
+        public RegfDenyTSConnections(string SID)
+            : base(SID)
+        {
+            this.RegistryPath = @"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server";
+            this.DataItemName = "fDenyTSConnections";
+            //DWORD
+            this.DataType = typeof(Int32);
+        }
+    }
 }

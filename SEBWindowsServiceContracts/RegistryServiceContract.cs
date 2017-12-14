@@ -39,7 +39,8 @@ namespace SEBWindowsServiceContracts
         EnableShadeHorizon,
         EaseOfAccess,
         DontDisplayNetworkSelectionUI,
-        NoAutoRebootWithLoggedOnUsers
+        NoAutoRebootWithLoggedOnUsers,
+        fDenyTSConnections
     }
 
 }

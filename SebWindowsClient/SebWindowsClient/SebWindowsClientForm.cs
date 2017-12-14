@@ -1722,6 +1722,7 @@ namespace SebWindowsClient
             {
                 SebWindowsClientMain.CheckIfTabletModeIsEnabled();
                 SebWindowsClientMain.CheckIfInsideVirtualMachine();
+                SebWindowsClientMain.CheckIfRunViaRemoteConnection();
                 SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
 
                 //Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)

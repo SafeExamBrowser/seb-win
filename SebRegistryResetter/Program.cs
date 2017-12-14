@@ -218,7 +218,7 @@ namespace SebRegistryResetter
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Please not that RDP has been disabled!");
+            Console.WriteLine("Please note that RDP has been disabled!");
             Console.WriteLine("Finished, press any key to exit the application");
             Console.ReadKey();
         }

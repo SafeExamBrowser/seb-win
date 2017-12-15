@@ -443,7 +443,7 @@ namespace SebWindowsClient
         {
             if(System.Windows.Forms.SystemInformation.TerminalServerSession)
             {
-                SEBMessageBox.Show("SEB runs via terminal session", "It is forbidden to run SEB via terminal session", MessageBoxIcon.Error, MessageBoxButtons.OK);
+                SEBMessageBox.Show(SEBUIStrings.detectedRemoteConnection, SEBUIStrings.detectedRemoteConnectionMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
                 Logger.AddError("Forbidden to run SEB via Terminal Session!", null, null);
                 Logger.AddInformation("Safe Exam Browser is exiting", null, null);
                 throw new SEBNotAllowedToRunEception("Forbidden to run SEB via Terminal Session!");

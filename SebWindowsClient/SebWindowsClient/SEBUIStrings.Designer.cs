@@ -19,7 +19,7 @@ namespace SebWindowsClient {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SEBUIStrings {
@@ -210,6 +210,24 @@ namespace SebWindowsClient {
         public static string decryptingSettingsFailedReason {
             get {
                 return ResourceManager.GetString("decryptingSettingsFailedReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Connection Detected.
+        /// </summary>
+        public static string detectedRemoteConnection {
+            get {
+                return ResourceManager.GetString("detectedRemoteConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not allowed to run SEB in a remote session! SEB will quit now..
+        /// </summary>
+        public static string detectedRemoteConnectionMessage {
+            get {
+                return ResourceManager.GetString("detectedRemoteConnectionMessage", resourceCulture);
             }
         }
         

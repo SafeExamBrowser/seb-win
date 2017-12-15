@@ -156,6 +156,12 @@
   <data name="detectedVirtualMachineForbiddenMessage" xml:space="preserve">
     <value>SEB darf nicht auf einer virtuellen Maschine ausgeführt werden! SEB wird jetzt beendet.</value>
   </data>
+  <data name="detectedRemoteConnection" xml:space="preserve">
+    <value>Remote Session erkannt</value>
+  </data>
+  <data name="detectedRemoteConnectionMessage" xml:space="preserve">
+    <value>SEB darf nicht in einer Remote Session ausgeführt werden! SEB wird jetzt beendet.</value>
+  </data>
   <data name="enterAdminPasswordRequired" xml:space="preserve">
     <value>In diesen Einstellungen benutztes SEB-Administrator-Passwort eingeben:</value>
   </data>

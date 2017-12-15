@@ -162,6 +162,12 @@
   <data name="detectedVirtualMachineForbiddenMessage" xml:space="preserve">
     <value>It is not allowed to run SEB on a virtual machine! SEB will quit now.</value>
   </data>
+  <data name="detectedRemoteConnection" xml:space="preserve">
+    <value>Remote Connection Detected</value>
+  </data>
+  <data name="detectedRemoteConnectionMessage" xml:space="preserve">
+    <value>It is not allowed to run SEB in a remote session! SEB will quit now.</value>
+  </data>
   <data name="enterAdminPasswordRequired" xml:space="preserve">
     <value>Enter the SEB administrator password used in these settings:</value>
   </data>

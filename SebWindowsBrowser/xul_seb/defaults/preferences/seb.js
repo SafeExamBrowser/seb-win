@@ -62,4 +62,5 @@ pref("datareporting.policy.dataSubmissionEnabled.v2", false);
 pref("browser.shell.skipDefaultBrowserCheckOnFirstRun", true);
 pref("browser.shell.defaultBrowserCheckCount",1);
 pref("browser.shell.checkDefaultBrowser",false);
+pref("dom.ipc.plugins.flash.disable-protected-mode", true);
 //see also: https://www.ghacks.net/2015/08/18/a-comprehensive-list-of-firefox-privacy-and-security-settings/

@@ -183,7 +183,7 @@
     <Compile Include="SebWindowsClientMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceUtils\SEBWindowsServiceController.cs" />
-    <Compile Include="Dialog.cs" />
+    <Compile Include="ThreadedDialog.cs" />
     <Compile Include="UI\IconExtractor.cs" />
     <Compile Include="UI\SEBAdditionalResourceMenuItem.cs">
       <SubType>Component</SubType>

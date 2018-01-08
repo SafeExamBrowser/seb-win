@@ -338,7 +338,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 {
                     i--;
                     // Prompt for password
-                    password = Dialog.ShowPasswordDialogForm(SEBUIStrings.loadingSettings, enterPasswordString);
+                    password = ThreadedDialog.ShowPasswordDialogForm(SEBUIStrings.loadingSettings, enterPasswordString);
                     if (password == null) return null;
                     //error = nil;
                     sebDataDecrypted = SEBProtectionController.DecryptDataWithPassword(sebData, password);
@@ -455,7 +455,7 @@ namespace SebWindowsClient.ConfigurationUtils
                     {
                         i--;
                         // Prompt for password
-                        password = Dialog.ShowPasswordDialogForm(SEBUIStrings.reconfiguringLocalSettings, enterPasswordString);
+                        password = ThreadedDialog.ShowPasswordDialogForm(SEBUIStrings.reconfiguringLocalSettings, enterPasswordString);
                         // If cancel was pressed, abort
                         if (password == null) return null;
                         string hashedPassword = SEBProtectionController.ComputePasswordHash(password);
@@ -542,7 +542,7 @@ namespace SebWindowsClient.ConfigurationUtils
                         {
                             i--;
                             // Prompt for password
-                            password = Dialog.ShowPasswordDialogForm(SEBUIStrings.reconfiguringLocalSettings, enterPasswordString);
+                            password = ThreadedDialog.ShowPasswordDialogForm(SEBUIStrings.reconfiguringLocalSettings, enterPasswordString);
                             // If cancel was pressed, abort
                             if (password == null) return null;
                             if (password.Length == 0)
@@ -652,7 +652,7 @@ namespace SebWindowsClient.ConfigurationUtils
             {
                 i--;
                 // Prompt for password
-                password = Dialog.ShowPasswordDialogForm(SEBUIStrings.loadingSettings + (String.IsNullOrEmpty(SEBClientInfo.LoadingSettingsFileName) ? "" : ": " + SEBClientInfo.LoadingSettingsFileName), enterPasswordString);
+                password = ThreadedDialog.ShowPasswordDialogForm(SEBUIStrings.loadingSettings + (String.IsNullOrEmpty(SEBClientInfo.LoadingSettingsFileName) ? "" : ": " + SEBClientInfo.LoadingSettingsFileName), enterPasswordString);
                 // If cancel was pressed, abort
                 if (password == null) return false;
                 if (password.Length == 0)

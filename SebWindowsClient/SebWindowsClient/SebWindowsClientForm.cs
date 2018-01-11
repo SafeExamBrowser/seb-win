@@ -317,7 +317,13 @@ namespace SebWindowsClient
 				}
 				Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
 
-				ReconfigureWithSettings(sebSettings);
+				if (!ReconfigureWithSettings(sebSettings))
+				{
+					Logger.AddInformation("ReconfigureWithSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
+					Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
+
+					return false;
+				}
 			}
 			return true;
 		}

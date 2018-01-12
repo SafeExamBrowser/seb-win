@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html [
+  <!ENTITY % htmlDTD
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "DTD/xhtml1-strict.dtd">
+  %htmlDTD;
+  <!ENTITY % netErrorDTD
+    SYSTEM "chrome://global/locale/netError.dtd">
+  %netErrorDTD;
+  <!ENTITY % globalDTD
+    SYSTEM "chrome://global/locale/global.dtd">
+  %globalDTD;
+  <!ENTITY % sebDtdLocal 
+   SYSTEM "chrome://seb/locale/seb.dtd">
+  %sebDtdLocal;
+]>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<link rel="stylesheet" href="chrome://seb/content/css/neterror.css" type="text/css" media="all" />
+		<script type="application/javascript"><![CDATA[
+		var params;
+		function getParams() { // window object or url string
+			var qs = {};
+			var queryString;
+			queryString = document.location.search.slice(1);
+			var re = /([^&=]+)=([^&]*)/g;
+			var m;
+			while (m = re.exec(queryString)) {
+				qs[m[1]] = atob(m[2]);
+			}
+			return qs;
+		}
+			
+		function init() {
+			params = getParams();
+			var elGoBack = document.getElementById("goBack");
+			if (!/^http/g.test(params.ref)) {
+				elGoBack.disabled=true;
+			}
+		}
+		
+		function retryThis(el) {
+			document.location.replace(params.req);
+			el.disabled = true;
+		}
+		
+		function goBack() {
+			document.location.replace(params.ref);
+		}
+		]]></script>
+	</head>
+	<body onload="init()">
+	<div id="errorPageContainer">
+		<div id="errorTitle">
+			<h1 id="errorTitleText">&generic.title;</h1>
+		</div>
+		<!-- LONG CONTENT (the section most likely to require scrolling) -->
+		<div id="errorLongContent">
+			<!-- Short Description -->
+			<div id="errorShortDesc">
+				<p id="errorShortDescText"></p>
+			</div>
+			<!-- Long Description (Note: See netError.dtd for used XHTML tags) -->
+			<div id="errorLongDesc">&generic.longDesc;</div>
+
+		</div>
+		<!-- Retry Button -->
+		<button id="goBack" autocomplete="off" onclick="goBack();">&seb.toolbar.back;</button>&nbsp;&nbsp;
+		<button id="errorTryAgain" autocomplete="off" onclick="retryThis(this);">&retry.label;</button>
+	</div>
+	</body>
+</html>

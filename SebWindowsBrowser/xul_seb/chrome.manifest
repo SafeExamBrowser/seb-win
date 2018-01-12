@@ -1,0 +1,12 @@
+component {2971c315-b871-32cd-b33f-bfee4fcbf682} components/xulApplication.js
+contract @mozilla.org/commandlinehandler/profile-after-change;1?type=xulApplication {2971c315-b871-32cd-b33f-bfee4fcbf682}
+category command-line-handler m-xul-application @mozilla.org/commandlinehandler/profile-after-change;1?type=xulApplication
+component {789409b9-2e3c-4682-a6d1-71ca80a76456} components/sebProtocol.js
+contract @mozilla.org/network/protocol;1?name=seb {789409b9-2e3c-4682-a6d1-71ca80a76456}
+component {789409b9-2e3c-3682-a6d1-71ca80a76453} components/sebsProtocol.js
+contract @mozilla.org/network/protocol;1?name=sebs {789409b9-2e3c-3682-a6d1-71ca80a76453}
+resource modules file:modules/
+resource globals file:globals/
+manifest chrome/seb.manifest
+manifest chrome/pdfjs.manifest
+manifest chrome/branding.manifest

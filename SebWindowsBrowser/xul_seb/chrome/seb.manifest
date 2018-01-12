@@ -1,0 +1,4 @@
+content seb file:content/seb/
+locale seb en-US file:locale/seb/en-US/
+locale seb de-DE file:locale/seb/de-DE/
+locale seb fr-FR file:locale/seb/fr-FR/

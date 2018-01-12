@@ -1,0 +1,171 @@
+{
+"sebPrefs": {},
+"sebPrefsMap": {
+	"general.useragent.override" 	: "browserUserAgent",
+	"browser.download.dir" 		: "downloadDirectoryWIN",
+	"dom.disable_open_during_load" 	: "blockPopUpWindows",
+	"javascript.enabled" 		: "enableJavaScript",
+	"browser.zoom.full" 		: { "cb" : "browserZoomFull" },
+	"zoom.maxPercent" 		: { "cb" : "zoomMaxPercent" },
+	"zoom.minPercent" 		: { "cb" : "zoomMinPercent" },
+	"plugin.state.flash"		: { "cb" : "pluginEnableFlash" },
+	"plugin.state.java"		: { "cb" : "pluginEnableJava" },
+	"layout.spellcheckDefault" 	: { "cb" : "spellcheckDefault" }
+},
+"browserUserAgent":"Mozilla/5.0 (Windows NT 6.3; rv:37.0) Gecko/20100101 Firefox/37.0 SEB 2.1",
+"startURL":"https://192.168.224.1:8443/demo/end.html",
+"startURL_":"http://www.google.de",
+"restartExamURL":"https://www.google.de",
+"sendBrowserExamKey":true,
+"sendBrowserExamKey":true,
+"browserRequestHeader":"X-SafeExamBrowser-RequestHash",
+"browserExamKey":"SEBKEY",
+"browserURLSalt":false,
+"urlFilterRegex":false,
+"urlFilterTrustedContent":true,
+"blacklistURLFilter":[],
+"whitelistURLFilter":[],
+"removeProfile":true,
+"allowQuit":true,
+"quitURL":"http://seb/quit.html",
+"hashedQuitPassword":"",
+"embeddedCertificates":
+[
+	{
+	"certificateData":"MIIDVDCCAjygAwIBAgIEAWXr1jALBgkqhkiG9w0BAQswXzESMBAGA1UEAwwJZXFzb2Z0IENBMQ8wDQYDVQQKDAZlcXNvZnQxCzAJBgNVBAYTAkRFMSswKQYJKoZIhvcNAQkBFhxzY2huZWlkZXJAaHJ6LnVuaS1tYXJidXJnLmRlMB4XDTE1MDUyNDE5MTcyNVoXDTI1MDUyMTE5MTcyNVowXzESMBAGA1UEAwwJbG9jYWxob3N0MQ8wDQYDVQQKDAZlcXNvZnQxCzAJBgNVBAYTAkRFMSswKQYJKoZIhvcNAQkBFhxzY2huZWlkZXJAaHJ6LnVuaS1tYXJidXJnLmRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwmphqbslzE72aheED/uKYNnt2yO/ws7pMexKHMRU2S0C0TSn3o/0NJnAsKClywq8UG+fu30Q04s6tfLMeY/0knn+RyqJF/YCbNpnmI4XriYH+mGe3gcevLTfmcunbXvb69UBGcqfJtR3/r3fqv3zEpxi8Q3mOR5Y0oSEm9YDm7hmBWfFfSpIPME3QXk7xwexkFH320Zj4UZuwz+B41StAwEG9J9zoMmrLMrgsGYxntaOSFs0sj79+1K13DaxRWvxrXkyPw0QWeY4aGia0QSrqTe5VrwCV+D44epNIPAiwHhtNPq4Ej1PZhVgLaT8x+ShFTQ/vN+LGuUOhadVEXREqQIDAQABoxowGDAWBgNVHSUBAf8EDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQsFAAOCAQEAgPit+T8sv1yzh1e9GVJwdcK3UhOPlT7eNSMq02xmkwGSYy5saaKecBroTxbEwVg0XJ+51vVvmHtNfmXzAhk5Yab1wodLfJXxw7OEt7xTOFngNAH7FugXsKYX/oBV14WKtboAsGj6oMlrX/G8IDs4Mp6G1kmX7PgyacW2QdPp9NUgTEVPoEGZPKux32VCdNF6GkDWQ+nsVeyKu+KpUFbERj4OU44GaMdsPoHXxkANIdEbf/irAKcl2R1UNlzNscvMwgdtK8vyCpSynHWu1bby2JV+WNXgt4Ebvx7FaDCyxW1MFIdCR0uZng2wkvOvhMwlptp32OfgLDJwM3mOmW2Aeg==",
+	"type":0,
+	"name":"192.168.224.1:8443"
+	},
+	{
+	"certificateData":"MIIDVDCCAjygAwIBAgIEAWXr1jALBgkqhkiG9w0BAQswXzESMBAGA1UEAwwJZXFzb2Z0IENBMQ8wDQYDVQQKDAZlcXNvZnQxCzAJBgNVBAYTAkRFMSswKQYJKoZIhvcNAQkBFhxzY2huZWlkZXJAaHJ6LnVuaS1tYXJidXJnLmRlMB4XDTE1MDUyNDE5MTcyNVoXDTI1MDUyMTE5MTcyNVowXzESMBAGA1UEAwwJbG9jYWxob3N0MQ8wDQYDVQQKDAZlcXNvZnQxCzAJBgNVBAYTAkRFMSswKQYJKoZIhvcNAQkBFhxzY2huZWlkZXJAaHJ6LnVuaS1tYXJidXJnLmRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwmphqbslzE72aheED/uKYNnt2yO/ws7pMexKHMRU2S0C0TSn3o/0NJnAsKClywq8UG+fu30Q04s6tfLMeY/0knn+RyqJF/YCbNpnmI4XriYH+mGe3gcevLTfmcunbXvb69UBGcqfJtR3/r3fqv3zEpxi8Q3mOR5Y0oSEm9YDm7hmBWfFfSpIPME3QXk7xwexkFH320Zj4UZuwz+B41StAwEG9J9zoMmrLMrgsGYxntaOSFs0sj79+1K13DaxRWvxrXkyPw0QWeY4aGia0QSrqTe5VrwCV+D44epNIPAiwHhtNPq4Ej1PZhVgLaT8x+ShFTQ/vN+LGuUOhadVEXREqQIDAQABoxowGDAWBgNVHSUBAf8EDDAKBggrBgEFBQcDATANBgkqhkiG9w0BAQsFAAOCAQEAgPit+T8sv1yzh1e9GVJwdcK3UhOPlT7eNSMq02xmkwGSYy5saaKecBroTxbEwVg0XJ+51vVvmHtNfmXzAhk5Yab1wodLfJXxw7OEt7xTOFngNAH7FugXsKYX/oBV14WKtboAsGj6oMlrX/G8IDs4Mp6G1kmX7PgyacW2QdPp9NUgTEVPoEGZPKux32VCdNF6GkDWQ+nsVeyKu+KpUFbERj4OU44GaMdsPoHXxkANIdEbf/irAKcl2R1UNlzNscvMwgdtK8vyCpSynHWu1bby2JV+WNXgt4Ebvx7FaDCyxW1MFIdCR0uZng2wkvOvhMwlptp32OfgLDJwM3mOmW2Aeg==", 
+	"type":0,
+	"name":"192.168.224.1:8442"
+	},
+	{
+	"certificateData":"MIIFbDCCBFSgAwIBAgIHF5Bg2a/NhDANBgkqhkiG9w0BAQsFADBaMQswCQYDVQQGEwJERTETMBEGA1UEChMKREZOLVZlcmVpbjEQMA4GA1UECxMHREZOLVBLSTEkMCIGA1UEAxMbREZOLVZlcmVpbiBQQ0EgR2xvYmFsIC0gRzAxMB4XDTE0MDUxMjE1MDU0NVoXDTE5MDcwOTIzNTkwMFowgY8xCzAJBgNVBAYTAkRFMR0wGwYDVQQKExRVbml2ZXJzaXRhZXQgTWFyYnVyZzEfMB0GA1UECxMWSG9jaHNjaHVscmVjaGVuemVudHJ1bTEdMBsGA1UEAxMUVW5pIE1hcmJ1cmcgQ0EgLSBHMDIxITAfBgkqhkiG9w0BCQEWEnBraUB1bmktbWFyYnVyZy5kZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOtputnG9ibUbBWLIdkya5GO9oRENnkMGdJStSBmitoqfY5HBasdSD4ckfZRLC435+3704pPKMLYhkMkEp1vCZezDhvO9sb6GJOhp+hBZf1NzF3c9cdzWD+bk9lRDu3GnrqriPO0AbyQCEuTSPqU4AJ0n2nXi7YayXggV6MM2+lAn5EjiYXb+koJUbf24Un4c7C71veBXyKxcsXCifFjVQHozQmgeCbp96uSiIBEiCmM20eDY3x3JVLiWFpLvMX0bxH7Gkge0xY7g3d5/xlZZhZFxUB7GA5YOqlnOqWszYeeM8UFRnQI2Nkk6D036UDLJV+I4OCGJ3tK2MXCFAsXS9sCAwEAAaOCAf8wggH7MBIGA1UdEwEB/wQIMAYBAf8CAQEwDgYDVR0PAQH/BAQDAgEGMBEGA1UdIAQKMAgwBgYEVR0gADAdBgNVHQ4EFgQU8XpfsK40LX+ME5/XLwIhmAmPKvMwHwYDVR0jBBgwFoAUSbfGz+g9H3/qRHsTKffxCnA+3mQwHQYDVR0RBBYwFIEScGtpQHVuaS1tYXJidXJnLmRlMIGIBgNVHR8EgYAwfjA9oDugOYY3aHR0cDovL2NkcDEucGNhLmRmbi5kZS9nbG9iYWwtcm9vdC1jYS9wdWIvY3JsL2NhY3JsLmNybDA9oDugOYY3aHR0cDovL2NkcDIucGNhLmRmbi5kZS9nbG9iYWwtcm9vdC1jYS9wdWIvY3JsL2NhY3JsLmNybDCB1wYIKwYBBQUHAQEEgcowgccwMwYIKwYBBQUHMAGGJ2h0dHA6Ly9vY3NwLnBjYS5kZm4uZGUvT0NTUC1TZXJ2ZXIvT0NTUDBHBggrBgEFBQcwAoY7aHR0cDovL2NkcDEucGNhLmRmbi5kZS9nbG9iYWwtcm9vdC1jYS9wdWIvY2FjZXJ0L2NhY2VydC5jcnQwRwYIKwYBBQUHMAKGO2h0dHA6Ly9jZHAyLnBjYS5kZm4uZGUvZ2xvYmFsLXJvb3QtY2EvcHViL2NhY2VydC9jYWNlcnQuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQDgx8fFzvw6Eg40QWI1vS4xXzlssRCtkJLAc8rvlHxxmDt6bBAO0WC/Pgra7gLjrY1gy07TQocUL9UVifmzCvk17yV55vevEosTtJwPoR3dxPrDp2dJMqOlyOriNoazTVYm36z+/fk6CMY1yIYEVROeWVwgxsyjHWQJHwggphXnbMFJO2KkPj8gkU+dFTaBNV29wy+aE8vtqkQcAH27GVm7mAt1HzN4hM+Rr9GSDZaeki11qHr7VMTj0BebXzt4KGkkewg426f7uG6IdLa2Q6YOOTjcyhSGD+hCEmEnzQeRkBzN4Wm7sZZOWd7OYZzo1U8RekFHKGID5ejhrtD2hrOj", 
+	"type":1,
+	"name":"Uni Marburg CA - G02"
+	}
+],
+ "additionalResources": 
+[
+	{
+	"identifier": "0",
+	"additionalResources": 
+	[
+		{
+		"identifier": "0.0",
+		"additionalResources": [],
+		"active": true,
+		"autoOpen": false,
+		"title": "Test2",
+		"url": "",
+		"resourceDataFilename": "",
+		"resourceDataLauncher": 0
+		}
+	],
+	"active": true,
+	"autoOpen": false,
+	"title": "Test Image",
+	"url": "",
+	"resourceDataFilename": "TestImage.jpg",
+	"resourceDataLauncher": 0
+	},
+		{
+	"identifier": "1",
+	"additionalResources": [],
+	"active": true,
+	"autoOpen": false,
+	"title": "Test PDF (Mac)",
+	"resourceDataFilename": "pdfjs.pdf",
+	"resourceDataLauncher": 0
+	},
+	{
+	"identifier": "2",
+	"additionalResources": [],
+	"active": true,
+	"autoOpen": false,
+	"title": "Test PDF (Windows)",
+	"resourceDataFilename": "test.pdf",
+	"resourceDataLauncher": 0
+	},
+	{
+	"identifier": "3",
+	"additionalResources": [],
+	"active": true,
+	"autoOpen": false,
+	"title": "",
+	"url_": "http://async5.org/moz/pdfjs.pdf",
+	"url": "http://www.google.de",
+	"url_" : "https://192.168.224.1:8443/demo/start.html",
+	"resourceDataFilename": "",
+	"resourceDataLauncher": 0
+	}
+],
+"browserMessagingSocketEnabled":true,
+"browserMessagingSocket":"ws://192.168.224.1:8706",
+"browserMessagingPingTime":120000,
+"proxies": {},
+"browserViewMode":0,
+"showTaskBar":true,
+"taskBarHeight":0,
+"touchOptimized":false,
+"mainBrowserWindowTitlebarEnabled":true,
+"mainBrowserWindowMaximized":true,
+"mainBrowserWindowWidth":"100%",
+"mainBrowserWindowHeight":"100%",
+"mainBrowserWindowPositioning":1,
+"mainBrowserRestart":true,
+"mainBrowserLoad":"https://duckduckgo.com",
+"mainBrowserLoadReferrerInString":"end.html",
+"allowBrowsingBackForward":true,
+"mainBrowserBypassCache":true,
+"newBrowserWindowByLinkTitlebarEnabled":true,
+"newBrowserWindowMaximized":false,
+"newBrowserWindowByLinkWidth":"800",
+"newBrowserWindowByLinkHeight":"600",
+"newBrowserWindowByLinkPositioning":1,
+"browserScreenKeyboard":false,
+"enableJava":false,
+"enableJavaScript":true,
+"enablePlugIns":true,
+"zoomMode":0,
+"enableZoomPage":true,
+"enableZoomText":false,
+"allowSpellCheck":false,
+"sebServerEnabled":true,
+"sebServer": {
+	"url"    : "https://192.168.224.1:8442/websocket/index.html",
+	"socket" : "wss://192.168.224.1:8442"
+},
+"sebScreenshot":false,
+"sebScreenshotImageType":"image/jpeg",
+"sebScreenshotSound":false,
+"sebPdfJsEnabled":true,
+"enableBrowserWindowToolbar":true,
+
+"DESCRIPTION":"*** the config params above are already migrated ****",
+
+"newBrowserWindowByLinkPolicy":2,
+"newBrowserWindowByScriptPolicy":2,
+"allowFlashFullscreen":false,
+"enableURLContentFilter":false,
+"enableJava":false,
+"downloadPDFFiles":false,
+"allowDownUploads":false,
+"enableJavaScript":true,
+"enableURLFilter":false,
+"chooseFileToUploadPolicy":0,
+"hashedAdminPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d85e",
+"showMenuBar":true,
+"newBrowserWindowByScriptBlockForeign":false,
+"enableLogging":false,
+"logDirectoryWIN":"",
+"monitorProcesses":false,
+"downloadDirectoryWIN":"",
+"downloadAndOpenSebConfig":true,
+"newBrowserWindowByLinkBlockForeign":false,
+"blockPopUpWindows":false,
+"enablePlugIns":true,
+"openDownloads":false
+}

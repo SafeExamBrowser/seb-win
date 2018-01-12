@@ -1,0 +1,112 @@
+#sebBackground {	
+	background-color : #3A6EA5;
+}
+
+#sebWindow {
+	background-color : #3A6EA5;
+} 
+
+#sebErrPage {
+	background-color : #3A6EA5;
+}
+
+#sebLoadPage {
+	background-color : #3A6EA5;
+	background-image: url("chrome://seb/content/images/loader.gif");
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+#loadingBox {
+	width: 20px;
+	height: 20px;
+	position: fixed;
+	top: 2px;
+	right: 10px;
+}
+
+#loadingImage {
+	width: 18px;
+	height: 18px;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+.tbTouch {
+	max-height: 48px;
+	min-height: 48px;
+}
+
+.tbDesktop {
+	max-height: 24px;
+	min-height: 24px;
+}
+
+.tbHidden {
+	max-height: 1px;
+	min-height: 1px;
+}
+
+#toolBar {
+	display: block;
+	background-color : #eee;
+	white-space: nowrap;
+}
+
+#imageBox {
+	position: fixed;
+	right: 35px;
+}
+
+.tbTouch > .tbBtn	{
+	height: 32px;
+	width: 32px;
+}
+
+.tbDesktop > .tbBtn	{
+	height: 20px;
+	width: 20px;
+}
+
+
+
+.tbBtn {
+	cursor: pointer;
+	border: none;
+	background-color: #eee;
+	margin-top: 2px;
+	margin-left: 10px;	
+}
+
+#locationBar {
+	border: none;
+	font-size: 0.8em;
+	vertical-align: top;
+	margin-left: 10px;
+	margin-right: 20px;
+	width: 400px;
+}
+
+.winHiddenChromeMargin {
+	margin-top: 6px;
+}
+
+.disabled  {
+	opacity : 0.3;
+	cursor : default;
+}
+
+.enabled {
+	opacity : 1;
+	cursor : pointer;
+}
+
+button[dlgtype="extra1"] {
+	display: none;
+}

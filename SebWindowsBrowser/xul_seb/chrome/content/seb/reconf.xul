@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://seb/content/css/seb.css" type="text/css"?>
+<!DOCTYPE window [
+	<!ENTITY % sebDtdLocal SYSTEM "chrome://seb/locale/seb.dtd">
+	%sebDtdLocal;
+	<!ENTITY % sebDtdConst SYSTEM "chrome://seb/content/seb.dtd">
+	%sebDtdConst;
+]>
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	id="dlgReconf" 
+	title="&seb.reconf.title;"
+	windowtype="reconf"
+	onload="init();"
+	buttons="extra1,cancel"
+	defaultButton="extra1"
+	ondialogcancel="return cancelDialog()"
+	>
+	<script type="application/x-javascript"><![CDATA[
+		var ms = null;
+		var br = null;
+		var load = null;
+		
+		function msg(txt, append) {
+			switch (txt) {
+				case "closeDialog" :
+					window.close();
+					break;
+				default :
+					if (!append) {
+						ms.value = "";
+					}
+					ms.value += txt;
+			}
+		}
+		
+		function init() {
+			ms = document.getElementById("msgBox");
+			br = document.getElementById("brSebFile");
+			load = document.getElementById("loadingBox");
+			var sebFileUrl = window.arguments[0];
+			window.arguments[1].call(null,window,sebFileUrl,msg); // delegate to SebBrowser.jsm
+		}
+		
+		function cancelDialog() {
+			msg("reconfigureAborted");
+			window.arguments[2].call(null,window);
+			return false;
+		}
+		
+		
+	]]></script>
+	<vbox flex="1">
+		<label id="lbReconf" value="&seb.reconf.title;"/>
+		<spacer></spacer>
+		<browser flex="1" id="seb.browser" src="about:blank" type="content-primary" />
+		<label id="msgBox" value="..."/>
+		<spacer></spacer>
+	</vbox>
+	<vbox id="loadingBox" class="hidden">
+		<hbox>
+			<spacer></spacer>
+			<image id="loadingImage" src="chrome://seb/content/images/loading.gif" />
+		</hbox>
+	</vbox>
+</dialog>

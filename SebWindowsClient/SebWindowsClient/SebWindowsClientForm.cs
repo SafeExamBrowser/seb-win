@@ -242,9 +242,16 @@ namespace SebWindowsClient
 								String.Format("File downloaded from {0}, checking if it's a valid seb file", uri));
 							if (ReconfigureWithSettings(sebSettings, true))
 							{
-								Logger.AddInformation("Succesfully read the new configuration, length is " +
-													  sebSettings.Length);
+								Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
+
 								return true;
+							}
+							else
+							{
+								Logger.AddInformation("ReconfigureWithSettings for SEB-link returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
+								Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
+
+								return false;
 							}
 						}
 						catch (WebException wex)

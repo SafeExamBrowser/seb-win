@@ -35,6 +35,7 @@ namespace SEBWindowsServiceContracts
         HideFastUserSwitching,
         NoLogoff,
         NoClose,
+		NoCloseWin7,
         EnableShade,
         EnableShadeHorizon,
         EaseOfAccess,

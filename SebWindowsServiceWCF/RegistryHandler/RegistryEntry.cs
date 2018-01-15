@@ -189,7 +189,19 @@ namespace SebWindowsServiceWCF.RegistryHandler
             this.DataType = typeof(Int32);
         }
     }
-    public class RegEnableShade : RegistryEntry
+
+	public class RegNoCloseWin7 : RegistryEntry
+	{
+		public RegNoCloseWin7(string SID) : base(SID)
+		{
+			this.RegistryPath = String.Format(@"HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer", this.SID);
+			this.DataItemName = "NoClose";
+			//DWORD
+			this.DataType = typeof(Int32);
+		}
+	}
+
+	public class RegEnableShade : RegistryEntry
     {
         public RegEnableShade(string SID) : base(SID)
         {

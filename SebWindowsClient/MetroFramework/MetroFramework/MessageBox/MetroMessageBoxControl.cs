@@ -95,6 +95,13 @@ namespace MetroFramework
             titleLabel.Text = _properties.Title;
             messageLabel.Text = _properties.Message;
 
+			var messageLines = messageLabel.Text?.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Length;
+
+			if (messageLines > 2)
+			{
+				Padding = new Padding(0, Padding.Top - (messageLines.Value * 25), 0, Padding.Bottom - (messageLines.Value * 25));
+			}
+
             switch (_properties.Icon)
             {
                 case MessageBoxIcon.Exclamation:

@@ -40,6 +40,7 @@ namespace MetroFramework
 
 		private void InitializeSize()
         {
+			this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
             this.Padding = new Padding(0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2), 0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2));
         }
@@ -97,7 +98,7 @@ namespace MetroFramework
 
 			var messageLines = messageLabel.Text?.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Length;
 
-			if (messageLines > 2)
+			if (messageLines > 1)
 			{
 				Padding = new Padding(0, Padding.Top - (messageLines.Value * 25), 0, Padding.Bottom - (messageLines.Value * 25));
 			}

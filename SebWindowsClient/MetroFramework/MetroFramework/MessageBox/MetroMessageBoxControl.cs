@@ -230,7 +230,7 @@ namespace MetroFramework
 			{
 				var messageLines = messageLabel.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Length;
 				var words = messageLabel.Text.Split(' ').Length;
-				var factor = Convert.ToInt32(messageLines + (words * 0.1 * Math.Floor(1024.0 / Screen.PrimaryScreen.Bounds.Width)));
+				var factor = Convert.ToInt32(messageLines + (words * 0.1 * 1024.0 / Screen.PrimaryScreen.Bounds.Width));
 
 				if (messageLines > 1 || words > 25)
 				{

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
 using System.Windows.Forms;
 //
 //  SEBMessageBox.cs
@@ -42,7 +38,7 @@ using MetroFramework;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public class SEBMessageBox
+	public class SEBMessageBox
     {        
         // **********************************
         // Output an error or warning message
@@ -55,16 +51,16 @@ namespace SebWindowsClient.ConfigurationUtils
             DialogResult messageBoxResult;
             if (!neverShowTouchOptimized && (Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyTouchOptimized)[SEBSettings.KeyTouchOptimized] == true)
             {
-                messageBoxResult =
-                    MetroMessageBox.Show(
-                        new Form()
-                        {
-                            TopMost = true,
-                            Top = 0,
-                            Left = 0,
-                            Width = Screen.PrimaryScreen.Bounds.Width,
-                            Height = Screen.PrimaryScreen.Bounds.Height
-                        }, messageText, messageTitle, messageButtons, messageBoxIcon);
+				var owner = SEBClientInfo.SebWindowsClientForm ?? new Form()
+				{
+					TopMost = true,
+					Top = 0,
+					Left = 0,
+					Width = Screen.PrimaryScreen.Bounds.Width,
+					Height = Screen.PrimaryScreen.Bounds.Height
+				};
+
+				messageBoxResult = MetroMessageBox.Show(owner, messageText, messageTitle, messageButtons, messageBoxIcon);
             }
             else
             {

@@ -40,6 +40,7 @@ namespace MetroFramework
 
 		private void InitializeSize()
         {
+			this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
             this.Padding = new Padding(0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2), 0, (int)((Screen.PrimaryScreen.Bounds.Height - 280) / 2));
         }
@@ -94,6 +95,8 @@ namespace MetroFramework
         {
             titleLabel.Text = _properties.Title;
             messageLabel.Text = _properties.Message;
+
+			AdjustSize();
 
             switch (_properties.Icon)
             {
@@ -216,7 +219,27 @@ namespace MetroFramework
             }
         }
 
-        private void EnableButton(MetroButton button)
+		/// <summary>
+		/// A nasty hack to adjust the message box size for long messages:
+		/// - For each text line, the size is increased by 25px
+		/// - A text line is assumed to hold ~10 words on a 1024px-wide screen => for every 10 words, the size is increased by 25px
+		/// </summary>
+		private void AdjustSize()
+		{
+			if (messageLabel.Text != null && messageLabel.Text.Length > 0)
+			{
+				var messageLines = messageLabel.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Length;
+				var words = messageLabel.Text.Split(' ').Length;
+				var factor = Convert.ToInt32(messageLines + (words * 0.1 * 1024.0 / Screen.PrimaryScreen.Bounds.Width));
+
+				if (messageLines > 1 || words > 25)
+				{
+					Padding = new Padding(0, Padding.Top - (factor * 25), 0, Padding.Bottom - (factor * 25));
+				}
+			}
+		}
+
+		private void EnableButton(MetroButton button)
         { EnableButton(button, true); }
 
         private void EnableButton(MetroButton button, bool enabled)

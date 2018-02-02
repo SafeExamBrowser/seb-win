@@ -409,27 +409,30 @@ namespace SebWindowsConfig.Controls
 		{
 			var node = treeViewAdditionalResources.SelectedNode;
 
-			if (node.Level == 0)
+			if (node != null)
 			{
-				SEBSettings.additionalResourcesList.RemoveAt(node.Index);
-			}
-			else if (node.Level == 1)
-			{
-				DictObj rootResource = (DictObj)SEBSettings.additionalResourcesList[node.Parent.Index];
-				ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
-				level1List.RemoveAt(node.Index);
-			}
-			else if (node.Level == 2)
-			{
-				DictObj rootResource = (DictObj)SEBSettings.additionalResourcesList[treeViewAdditionalResources.SelectedNode.Parent.Parent.Index];
-				ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
-				DictObj level1Resource = (DictObj)level1List[treeViewAdditionalResources.SelectedNode.Parent.Index];
-				ListObj level2List = (ListObj)level1Resource[SEBSettings.KeyAdditionalResources];
-				level2List.RemoveAt(node.Index);
-			}
-			node.Remove();
+				if (node.Level == 0)
+				{
+					SEBSettings.additionalResourcesList.RemoveAt(node.Index);
+				}
+				else if (node.Level == 1)
+				{
+					DictObj rootResource = (DictObj)SEBSettings.additionalResourcesList[node.Parent.Index];
+					ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
+					level1List.RemoveAt(node.Index);
+				}
+				else if (node.Level == 2)
+				{
+					DictObj rootResource = (DictObj)SEBSettings.additionalResourcesList[treeViewAdditionalResources.SelectedNode.Parent.Parent.Index];
+					ListObj level1List = (ListObj)rootResource[SEBSettings.KeyAdditionalResources];
+					DictObj level1Resource = (DictObj)level1List[treeViewAdditionalResources.SelectedNode.Parent.Index];
+					ListObj level2List = (ListObj)level1Resource[SEBSettings.KeyAdditionalResources];
+					level2List.RemoveAt(node.Index);
+				}
+				node.Remove();
 
-			UpdateAdditionalResourceIdentifiers();
+				UpdateAdditionalResourceIdentifiers();
+			}
 		}
 
 		private void checkBoxAdditionalResourceActive_CheckedChanged(object sender, EventArgs e)

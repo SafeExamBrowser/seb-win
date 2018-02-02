@@ -1601,8 +1601,11 @@ namespace SebWindowsClient
 		{
 			//SetForegroundWindow(this.Handle);
 			//this.Activate();
-			sebApplicationChooserForm.fillListApplications();
-			sebApplicationChooserForm.Visible = true;
+			sebApplicationChooserForm.BeginInvoke(new Action(() =>
+			{
+				sebApplicationChooserForm.fillListApplications();
+				sebApplicationChooserForm.Visible = true;
+			}));
 			//sebCloseDialogForm.Activate();
 		}
 
@@ -1613,7 +1616,7 @@ namespace SebWindowsClient
 		/// ----------------------------------------------------------------------------------------
 		public void SelectNextListItem()
 		{
-			sebApplicationChooserForm.SelectNextListItem();
+			sebApplicationChooserForm.BeginInvoke(new Action(sebApplicationChooserForm.SelectNextListItem));
 			//sebApplicationChooserForm.Visible = true;
 			//sebCloseDialogForm.Activate();
 		}
@@ -1625,7 +1628,7 @@ namespace SebWindowsClient
 		/// ----------------------------------------------------------------------------------------
 		public void HideApplicationChooserForm()
 		{
-			sebApplicationChooserForm.Visible = false;
+			sebApplicationChooserForm.BeginInvoke(new Action(() => sebApplicationChooserForm.Visible = false));
 			//sebCloseDialogForm.Activate();
 		}
 

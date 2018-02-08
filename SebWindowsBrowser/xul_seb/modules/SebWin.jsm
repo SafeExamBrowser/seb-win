@@ -267,7 +267,7 @@ this.SebWin = {
 	},
 	
 	openPdfViewer : function(url) {
-		base.openDistinctWin(pdfViewer+url);
+		base.openDistinctWin(pdfViewer+encodeURIComponent(url));
 	},
 	
 	openWin : function(url) {

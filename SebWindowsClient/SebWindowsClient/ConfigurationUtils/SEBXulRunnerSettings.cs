@@ -134,6 +134,29 @@ namespace SebWindowsClient.ConfigurationUtils
 
             return objXULRunnerConfig;
         }
+
+        private static string GetStartupPathOrUrl()
+        {
+            var compareTimeStamp = (Convert.ToDateTime(Convert.ToString(DateTime.Now.ToString())) - (Convert.ToDateTime(SEBSettings.settingsCurrent[SEBSettings.KeyTimeStamp])));
+            Logger.AddInformation("Timestamp difference (min) " + (int)compareTimeStamp.TotalMinutes);
+
+            if (((int)compareTimeStamp.TotalMinutes >= 1) && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == true)
+            {
+                Logger.AddInformation("Using Server URL " + (int)compareTimeStamp.TotalMinutes);
+                string UniqueName = "&unique=" + System.Net.Dns.GetHostName();
+                var BuildURL = SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebServerURL].ToString() + SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebAUTH_KEY].ToString();
+
+                    return BuildURL.ToString() + UniqueName;
+                
+
+            }
+            else
+            {
+                return SEBClientInfo.getSebSetting(SEBSettings.KeyStartURL)[SEBSettings.KeyStartURL].ToString();
+            }
+
+        }
+
         /// <summary>
         /// JSON Serialization of Settings Dictionary
         /// </summary>
@@ -146,6 +169,8 @@ namespace SebWindowsClient.ConfigurationUtils
                 xulRunnerSettings[SEBSettings.KeyBrowserExamKey] = browserExamKey;
                 xulRunnerSettings[SEBSettings.KeyBrowserURLSalt] = true;
             }
+
+            xulRunnerSettings[SEBSettings.KeyStartURL] = GetStartupPathOrUrl();
 
             // Eventually update setting 
             if ((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL] == true) 

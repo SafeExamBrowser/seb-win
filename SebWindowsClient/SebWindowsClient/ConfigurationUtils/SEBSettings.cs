@@ -83,8 +83,13 @@ namespace SebWindowsClient.ConfigurationUtils
         // Group "General"
         public const String KeyStartURL             = "startURL";
         public const String KeySebServerURL         = "sebServerURL";
+        public const String KeySebAUTH_KEY          = "AUTH_KEY";
+        public const String KeySebUnique_KEY        = "Unique_KEY";
+        public const String KeyTimeStamp            = "";
         public const String KeyHashedAdminPassword  = "hashedAdminPassword";
         public const String KeyAllowQuit            = "allowQuit";
+        public const String KeySEBServer            = "SEBServer";
+        public const String KeySEBManager           = "SEBManager";
         public const String KeyIgnoreExitKeys       = "ignoreExitKeys";
         public const String KeyHashedQuitPassword   = "hashedQuitPassword";
         public const String KeyExitKey1             = "exitKey1";
@@ -526,7 +531,12 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyStartURL           , "http://www.safeexambrowser.org/start");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebServerURL       , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedAdminPassword, "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySebAUTH_KEY        , "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySebUnique_KEY      , "");
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyTimeStamp          , File.GetLastWriteTime(SEBClientInfo.SebClientSettingsAppDataFile).ToString());
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowQuit          , true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySEBServer          , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeySEBManager         , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyIgnoreExitKeys     , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedQuitPassword , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyExitKey1,  2);

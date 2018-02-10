@@ -280,6 +280,8 @@ namespace SebWindowsConfig
             // Group "General"
             textBoxStartURL    .Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
             textBoxSebServerURL.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL];
+            textBoxAUTH_KEY.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY];
+            textBoxUnique_KEY.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebUnique_KEY];
 
             // If an admin password is saved in the settings (as a hash), 
             // then we fill a placeholder string into the admin password text fields
@@ -299,7 +301,8 @@ namespace SebWindowsConfig
                 textBoxAdminPassword       .Text = "";
                 textBoxConfirmAdminPassword.Text = "";
             }
-
+            checkBoxSEBServer.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer];
+            checkBoxSEBManager.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBManager];
             checkBoxAllowQuit         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowQuit];
             checkBoxIgnoreExitKeys    .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyIgnoreExitKeys];
 
@@ -865,6 +868,7 @@ namespace SebWindowsConfig
         private void textBoxSebServerURL_TextChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL] = textBoxSebServerURL.Text;
+            textBoxSebServerURL.Enabled = !textBoxSebServerURL.Enabled;
         }
 
         private void textBoxAdminPassword_TextChanged(object sender, EventArgs e)
@@ -4022,5 +4026,42 @@ namespace SebWindowsConfig
             SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = listBoxMinMacOSVersion.SelectedIndex;
         }
 
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxSEBServer_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] = checkBoxSEBServer.Checked;
+            textBoxStartURL.Enabled = !checkBoxSEBServer.Checked;
+            groupBoxServer.Enabled = checkBoxSEBServer.Checked;
+        }
+
+        private void checkBoxSEBManager_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySEBManager] = checkBoxSEBManager.Checked;
+            textBoxSebServerURL.Text = "SecureExamination.org/Manage/pages/api.php?code=";
+            textBoxSebServerURL.Enabled = !textBoxSebServerURL.Enabled;
+            textBoxAUTH_KEY.Enabled = checkBoxSEBServer.Checked;
+        }
+
+        private void textBoxSebServerURL_TextChanged_1(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL] = textBoxSebServerURL.Text;
+        }
+
+        private void textBoxAUTH_KEY_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY] = textBoxAUTH_KEY.Text;
+        }
+
+
+
+        private void textBoxUnique_KEY_TextChanged(object sender, EventArgs e)
+        {
+            //SEBSettings.settingsCurrent[SEBSettings.KeySebUnique_KEY] = textBoxUnique_KEY.Text;
+            textBoxUnique_KEY.Text = System.Net.Dns.GetHostName();
+        }
     } // end of   class     SebWindowsConfigForm
 }     // end of   namespace SebWindowsConfig

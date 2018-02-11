@@ -140,7 +140,7 @@ namespace SebWindowsClient.ConfigurationUtils
             var compareTimeStamp = (Convert.ToDateTime(Convert.ToString(DateTime.Now.ToString())) - (Convert.ToDateTime(SEBSettings.settingsCurrent[SEBSettings.KeyTimeStamp])));
             Logger.AddInformation("Timestamp difference (min) " + (int)compareTimeStamp.TotalMinutes);
 
-            if (((int)compareTimeStamp.TotalMinutes >= 1) && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == true)
+            if (((int)compareTimeStamp.TotalMinutes >= (int)SEBClientInfo.getSebSetting(SEBSettings.KeySebAPI_Refresh)[SEBSettings.KeySebAPI_Refresh]) && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == true)
             {
                 Logger.AddInformation("Using Server URL " + (int)compareTimeStamp.TotalMinutes);
                 string UniqueName = "&unique=" + System.Net.Dns.GetHostName();

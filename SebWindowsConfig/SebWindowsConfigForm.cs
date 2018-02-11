@@ -1,4 +1,7 @@
 ﻿using System;
+// Get registery
+using Microsoft.Win32;
+//
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -280,8 +283,9 @@ namespace SebWindowsConfig
             // Group "General"
             textBoxStartURL    .Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
             textBoxSebServerURL.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL];
-            textBoxAUTH_KEY.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY];
-            textBoxUnique_KEY.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebUnique_KEY];
+            textBoxAUTH_KEY.Text     = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY];
+            textBoxAPI_Refresh.Text  = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh];
+            textBoxUnique_KEY.Text   = System.Net.Dns.GetHostName();
 
             // If an admin password is saved in the settings (as a hash), 
             // then we fill a placeholder string into the admin password text fields
@@ -4057,11 +4061,34 @@ namespace SebWindowsConfig
         }
 
 
-
         private void textBoxUnique_KEY_TextChanged(object sender, EventArgs e)
         {
-            //SEBSettings.settingsCurrent[SEBSettings.KeySebUnique_KEY] = textBoxUnique_KEY.Text;
-            textBoxUnique_KEY.Text = System.Net.Dns.GetHostName();
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void API_Delay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxAPI_Refresh_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh] = textBoxAPI_Refresh.Text;
+            if (System.Text.RegularExpressions.Regex.IsMatch(textBoxAPI_Refresh.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers.");
+                textBoxAPI_Refresh.Text = textBoxAPI_Refresh.Text.Remove(textBoxAPI_Refresh.Text.Length - 1);
+            }
+        }
+
+        private void groupBoxServer_Enter(object sender, EventArgs e)
+        {
+
         }
     } // end of   class     SebWindowsConfigForm
 }     // end of   namespace SebWindowsConfig

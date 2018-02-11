@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using SebWindowsClient.DiagnosticsUtils;
@@ -352,10 +353,33 @@ namespace SebWindowsClient.ConfigurationUtils
 			return setSebClientConfiguration;
 		}
 
-		/// <summary>
-		/// Initialise Logger if it's enabled.
-		/// </summary>
-		public static void InitializeLogger()
+        public static string MachineGUID()
+        {
+            if (Environment.Is64BitOperatingSystem)
+            {
+                RegistryKey localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry64);
+                localKey = localKey.OpenSubKey(@"SOFTWARE\Microsoft\Cryptography");
+                if (localKey != null)
+                {
+                    return localKey.GetValue("MachineGuid").ToString();
+                }
+            }
+            else
+            {
+                RegistryKey localKey32 = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
+                localKey32 = localKey32.OpenSubKey(@"SOFTWARE\Microsoft\Cryptography");
+                if (localKey32 != null)
+                {
+                    return localKey32.GetValue("MachineGuid").ToString();
+                }
+            }
+            return "OS not found";
+        }
+
+        /// <summary>
+        /// Initialise Logger if it's enabled.
+        /// </summary>
+        public static void InitializeLogger()
 		{
 			if ((Boolean)getSebSetting(SEBSettings.KeyEnableLogging)[SEBSettings.KeyEnableLogging])
 			{

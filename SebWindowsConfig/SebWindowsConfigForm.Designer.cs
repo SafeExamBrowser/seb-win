@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -358,6 +358,8 @@
             this.buttonRevertToLastOpened = new System.Windows.Forms.Button();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.groupBoxServer = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxAPI_Refresh = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBoxUnique_KEY = new System.Windows.Forms.TextBox();
@@ -407,8 +409,8 @@
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBoxAPI_Refresh = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxMachineGUID = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -1660,8 +1662,8 @@
             // 
             // Type
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle2;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -4653,6 +4655,8 @@
             // 
             // groupBoxServer
             // 
+            this.groupBoxServer.Controls.Add(this.textBoxMachineGUID);
+            this.groupBoxServer.Controls.Add(this.label18);
             this.groupBoxServer.Controls.Add(this.label15);
             this.groupBoxServer.Controls.Add(this.textBoxAPI_Refresh);
             this.groupBoxServer.Controls.Add(this.label14);
@@ -4670,7 +4674,7 @@
             this.groupBoxServer.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxServer.Name = "groupBoxServer";
             this.groupBoxServer.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBoxServer.Size = new System.Drawing.Size(423, 136);
+            this.groupBoxServer.Size = new System.Drawing.Size(423, 170);
             this.groupBoxServer.TabIndex = 66;
             this.groupBoxServer.TabStop = false;
             this.groupBoxServer.Text = "SEB Server Settings";
@@ -4678,12 +4682,34 @@
         "to exit SEB.");
             this.groupBoxServer.Enter += new System.EventHandler(this.groupBoxServer_Enter);
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Enabled = false;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(207, 136);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(50, 13);
+            this.label15.TabIndex = 71;
+            this.label15.Text = "Minute(s)";
+            // 
+            // textBoxAPI_Refresh
+            // 
+            this.textBoxAPI_Refresh.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAPI_Refresh.Location = new System.Drawing.Point(160, 131);
+            this.textBoxAPI_Refresh.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxAPI_Refresh.Name = "textBoxAPI_Refresh";
+            this.textBoxAPI_Refresh.Size = new System.Drawing.Size(43, 19);
+            this.textBoxAPI_Refresh.TabIndex = 70;
+            this.textBoxAPI_Refresh.TextChanged += new System.EventHandler(this.textBoxAPI_Refresh_TextChanged);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Enabled = false;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(4, 105);
+            this.label14.Location = new System.Drawing.Point(4, 133);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(152, 13);
@@ -4692,7 +4718,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(354, 105);
+            this.button1.Location = new System.Drawing.Point(354, 133);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(56, 24);
@@ -5236,27 +5262,28 @@
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
-            // textBoxAPI_Refresh
+            // textBoxMachineGUID
             // 
-            this.textBoxAPI_Refresh.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAPI_Refresh.Location = new System.Drawing.Point(160, 103);
-            this.textBoxAPI_Refresh.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxAPI_Refresh.Name = "textBoxAPI_Refresh";
-            this.textBoxAPI_Refresh.Size = new System.Drawing.Size(43, 19);
-            this.textBoxAPI_Refresh.TabIndex = 70;
-            this.textBoxAPI_Refresh.TextChanged += new System.EventHandler(this.textBoxAPI_Refresh_TextChanged);
+            this.textBoxMachineGUID.Enabled = false;
+            this.textBoxMachineGUID.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxMachineGUID.Location = new System.Drawing.Point(160, 104);
+            this.textBoxMachineGUID.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxMachineGUID.Name = "textBoxMachineGUID";
+            this.textBoxMachineGUID.Size = new System.Drawing.Size(250, 19);
+            this.textBoxMachineGUID.TabIndex = 72;
+            this.textBoxMachineGUID.TextChanged += new System.EventHandler(this.textBoxMachineGUID_TextChanged);
             // 
-            // label15
+            // label18
             // 
-            this.label15.AutoSize = true;
-            this.label15.Enabled = false;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(207, 108);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(50, 13);
-            this.label15.TabIndex = 71;
-            this.label15.Text = "Minute(s)";
+            this.label18.AutoSize = true;
+            this.label18.Enabled = false;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(66, 104);
+            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(78, 13);
+            this.label18.TabIndex = 73;
+            this.label18.Text = "Machine GUID";
             // 
             // SebWindowsConfigForm
             // 
@@ -5760,6 +5787,8 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBoxAPI_Refresh;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBoxMachineGUID;
+        private System.Windows.Forms.Label label18;
     }
 }
 

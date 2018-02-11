@@ -1,7 +1,4 @@
 ﻿using System;
-// Get registery
-using Microsoft.Win32;
-//
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -266,10 +263,6 @@ namespace SebWindowsConfig
             return true;
         }
 
-
-
-        
-
         // *****************************************************
         // Set the widgets to the new settings of SebStarter.ini
         // *****************************************************
@@ -286,6 +279,8 @@ namespace SebWindowsConfig
             textBoxAUTH_KEY.Text     = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY];
             textBoxAPI_Refresh.Text  = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh];
             textBoxUnique_KEY.Text   = System.Net.Dns.GetHostName();
+            textBoxMachineGUID.Text  = SEBClientInfo.MachineGUID();
+
 
             // If an admin password is saved in the settings (as a hash), 
             // then we fill a placeholder string into the admin password text fields
@@ -4087,6 +4082,11 @@ namespace SebWindowsConfig
         }
 
         private void groupBoxServer_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxMachineGUID_TextChanged(object sender, EventArgs e)
         {
 
         }

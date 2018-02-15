@@ -145,9 +145,9 @@
             // UrlFilterGroupBox
             // 
             this.UrlFilterGroupBox.Location = new System.Drawing.Point(9, 337);
-            this.UrlFilterGroupBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UrlFilterGroupBox.Margin = new System.Windows.Forms.Padding(2);
             this.UrlFilterGroupBox.Name = "UrlFilterGroupBox";
-            this.UrlFilterGroupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UrlFilterGroupBox.Padding = new System.Windows.Forms.Padding(2);
             this.UrlFilterGroupBox.Size = new System.Drawing.Size(918, 249);
             this.UrlFilterGroupBox.TabIndex = 34;
             this.UrlFilterGroupBox.TabStop = false;
@@ -184,6 +184,7 @@
             this.checkBoxShowButton.TabIndex = 21;
             this.checkBoxShowButton.Text = "Show button (B)";
             this.checkBoxShowButton.UseVisualStyleBackColor = true;
+            this.checkBoxShowButton.Visible = false;
             this.checkBoxShowButton.CheckedChanged += new System.EventHandler(this.checkBoxShowButton_CheckedChanged);
             // 
             // checkBoxAdditionalResourceAutoOpen
@@ -227,6 +228,7 @@
             this.comboBoxModifiers.Name = "comboBoxModifiers";
             this.comboBoxModifiers.Size = new System.Drawing.Size(92, 21);
             this.comboBoxModifiers.TabIndex = 27;
+            this.comboBoxModifiers.Visible = false;
             this.comboBoxModifiers.SelectedIndexChanged += new System.EventHandler(this.comboBoxModifiers_SelectedIndexChanged);
             // 
             // textBoxKey
@@ -236,6 +238,7 @@
             this.textBoxKey.Name = "textBoxKey";
             this.textBoxKey.Size = new System.Drawing.Size(23, 20);
             this.textBoxKey.TabIndex = 25;
+            this.textBoxKey.Visible = false;
             this.textBoxKey.TextChanged += new System.EventHandler(this.textBoxKey_TextChanged);
             // 
             // label7
@@ -246,6 +249,7 @@
             this.label7.Size = new System.Drawing.Size(25, 13);
             this.label7.TabIndex = 26;
             this.label7.Text = "Key";
+            this.label7.Visible = false;
             // 
             // label6
             // 
@@ -255,6 +259,7 @@
             this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 23;
             this.label6.Text = "Referer filter";
+            this.label6.Visible = false;
             // 
             // label8
             // 
@@ -264,6 +269,7 @@
             this.label8.Size = new System.Drawing.Size(49, 13);
             this.label8.TabIndex = 26;
             this.label8.Text = "Modifiers";
+            this.label8.Visible = false;
             // 
             // textBoxRefererFilter
             // 
@@ -271,6 +277,7 @@
             this.textBoxRefererFilter.Name = "textBoxRefererFilter";
             this.textBoxRefererFilter.Size = new System.Drawing.Size(403, 20);
             this.textBoxRefererFilter.TabIndex = 22;
+            this.textBoxRefererFilter.Visible = false;
             this.textBoxRefererFilter.TextChanged += new System.EventHandler(this.textBoxRefererFilter_TextChanged);
             // 
             // groupBox2
@@ -306,6 +313,7 @@
             this.textBoxConfirmBoxText.Name = "textBoxConfirmBoxText";
             this.textBoxConfirmBoxText.Size = new System.Drawing.Size(301, 20);
             this.textBoxConfirmBoxText.TabIndex = 29;
+            this.textBoxConfirmBoxText.Visible = false;
             this.textBoxConfirmBoxText.TextChanged += new System.EventHandler(this.textBoxConfirmBoxText_TextChanged);
             // 
             // checkBoxConfirm
@@ -318,6 +326,7 @@
             this.checkBoxConfirm.TabIndex = 28;
             this.checkBoxConfirm.Text = "Show confirm box";
             this.checkBoxConfirm.UseVisualStyleBackColor = true;
+            this.checkBoxConfirm.Visible = false;
             this.checkBoxConfirm.CheckedChanged += new System.EventHandler(this.checkBoxConfirm_CheckedChanged);
             // 
             // label10
@@ -328,6 +337,7 @@
             this.label10.Size = new System.Drawing.Size(82, 13);
             this.label10.TabIndex = 30;
             this.label10.Text = "Confirm box text";
+            this.label10.Visible = false;
             // 
             // labelAdditionalResourcesFilename
             // 
@@ -348,6 +358,7 @@
             this.checkBoxResetSession.TabIndex = 24;
             this.checkBoxResetSession.Text = "Reset browser session";
             this.checkBoxResetSession.UseVisualStyleBackColor = true;
+            this.checkBoxResetSession.Visible = false;
             this.checkBoxResetSession.CheckedChanged += new System.EventHandler(this.checkBoxResetSession_CheckedChanged);
             // 
             // comboBoxAdditionalResourcesChooseFileToLaunch

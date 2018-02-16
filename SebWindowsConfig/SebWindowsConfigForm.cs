@@ -961,6 +961,70 @@ namespace SebWindowsConfig
             this.Close();
         }
 
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxSEBServer_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] = checkBoxSEBServer.Checked;
+            textBoxStartURL.Enabled = !checkBoxSEBServer.Checked;
+            groupBoxServer.Enabled = checkBoxSEBServer.Checked;
+        }
+
+        private void checkBoxSEBManager_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySEBManager] = checkBoxSEBManager.Checked;
+            textBoxSebServerURL.Text = "SecureExamination.org/Manage/pages/api.php?code=";
+            textBoxSebServerURL.Enabled = !textBoxSebServerURL.Enabled;
+            textBoxAUTH_KEY.Enabled = checkBoxSEBServer.Checked;
+        }
+
+        private void textBoxSebServerURL_TextChanged_1(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL] = textBoxSebServerURL.Text;
+        }
+
+        private void textBoxAUTH_KEY_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY] = textBoxAUTH_KEY.Text;
+        }
+
+
+        private void textBoxUnique_KEY_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void API_Delay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void groupBoxServer_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxMachineGUID_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxAPI_Refresh_ValueChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh] = textBoxAPI_Refresh.Text;
+        }
 
 
         // *******************
@@ -1887,6 +1951,7 @@ namespace SebWindowsConfig
         private void checkBoxDownloadOpenSEBFiles_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig] = checkBoxDownloadOpenSEBFiles.Checked;
+            checkBoxDownloadOpenSEBFilesFromAPIONLY.Enabled = checkBoxDownloadOpenSEBFiles.Checked;
         }
 
         private void checkBoxOpenDownloads_CheckedChanged(object sender, EventArgs e)
@@ -4023,72 +4088,6 @@ namespace SebWindowsConfig
         private void listBoxMinMacOSVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = listBoxMinMacOSVersion.SelectedIndex;
-        }
-
-        private void textBox7_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBoxSEBServer_CheckedChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] = checkBoxSEBServer.Checked;
-            textBoxStartURL.Enabled = !checkBoxSEBServer.Checked;
-            groupBoxServer.Enabled = checkBoxSEBServer.Checked;
-        }
-
-        private void checkBoxSEBManager_CheckedChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeySEBManager] = checkBoxSEBManager.Checked;
-            textBoxSebServerURL.Text = "SecureExamination.org/Manage/pages/api.php?code=";
-            textBoxSebServerURL.Enabled = !textBoxSebServerURL.Enabled;
-            textBoxAUTH_KEY.Enabled = checkBoxSEBServer.Checked;
-        }
-
-        private void textBoxSebServerURL_TextChanged_1(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeySebServerURL] = textBoxSebServerURL.Text;
-        }
-
-        private void textBoxAUTH_KEY_TextChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeySebAUTH_KEY] = textBoxAUTH_KEY.Text;
-        }
-
-
-        private void textBoxUnique_KEY_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label17_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void API_Delay_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxAPI_Refresh_TextChanged(object sender, EventArgs e)
-        {
-            SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh] = textBoxAPI_Refresh.Text;
-            if (System.Text.RegularExpressions.Regex.IsMatch(textBoxAPI_Refresh.Text, "[^0-9]"))
-            {
-                MessageBox.Show("Please enter only numbers.");
-                textBoxAPI_Refresh.Text = textBoxAPI_Refresh.Text.Remove(textBoxAPI_Refresh.Text.Length - 1);
-            }
-        }
-
-        private void groupBoxServer_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxMachineGUID_TextChanged(object sender, EventArgs e)
-        {
-
         }
     } // end of   class     SebWindowsConfigForm
 }     // end of   namespace SebWindowsConfig

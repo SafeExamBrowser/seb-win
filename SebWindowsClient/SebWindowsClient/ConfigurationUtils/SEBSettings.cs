@@ -98,6 +98,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeySebMode              = "sebMode";
         public const String KeyBrowserMessagingSocket = "browserMessagingSocket";
         public const String KeyBrowserMessagingPingTime = "browserMessagingPingTime";
+        public const String KeyDownloadAndOpenSebConfigFromAPIONLY = "downloadAndOpenSebConfigFromAPIONLY";
 
         // Group "Config File"
         public const String KeySebConfigPurpose        = "sebConfigPurpose";
@@ -545,7 +546,8 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebMode, 0);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserMessagingSocket, SEBXULRunnerWebSocketServer.ServerAddress);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyBrowserMessagingPingTime, 120000);
-
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadAndOpenSebConfigFromAPIONLY, false);
+ 
             // Default settings for group "Config File"
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebConfigPurpose       , 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPreferencesWindow , true);

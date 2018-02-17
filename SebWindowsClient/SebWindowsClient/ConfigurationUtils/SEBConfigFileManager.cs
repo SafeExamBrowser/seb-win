@@ -193,10 +193,14 @@ namespace SebWindowsClient.ConfigurationUtils
 						SEBClientInfo.SebWindowsClientForm.ExitApplication();
 					}
 
-					if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+                    //Check if SEB Server is being used, if so then ignore dialog.
+                    if ((Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == false)
                     {
-                        //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
-                        SEBClientInfo.SebWindowsClientForm.ExitApplication();
+                        if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
+                            SEBClientInfo.SebWindowsClientForm.ExitApplication();
+                        }
                     }
 
                     return true; //reading preferences was successful

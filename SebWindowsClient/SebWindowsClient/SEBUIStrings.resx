@@ -129,6 +129,12 @@
   <data name="cannotOpenSEBLinkMessage" xml:space="preserve">
     <value>Opening the SEB link failed. Check your internet connection and try again.</value>
   </data>
+  <data name="cannotOpenSEBLinkAPI" xml:space="preserve">
+    <value>Seb Server domain.</value>
+  </data>
+    <data name="cannotOpenSEBLinkMessageAPI" xml:space="preserve">
+    <value>Seb Server Security: Domain does not equal Seb Server domain. Download and Configuration has been halted, please contact your Administrator.</value>
+  </data>
   <data name="certificateNotFoundInStore" xml:space="preserve">
     <value>The certificate needed to decrypt settings has not been found in the Windows Certificate Store.</value>
   </data>

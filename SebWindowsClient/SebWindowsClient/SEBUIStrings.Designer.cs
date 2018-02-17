@@ -88,11 +88,29 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seb Server domain..
+        /// </summary>
+        public static string cannotOpenSEBLinkAPI {
+            get {
+                return ResourceManager.GetString("cannotOpenSEBLinkAPI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opening the SEB link failed. Check your internet connection and try again..
         /// </summary>
         public static string cannotOpenSEBLinkMessage {
             get {
                 return ResourceManager.GetString("cannotOpenSEBLinkMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seb Server Security: Domain does not equal Seb Server domain. Download and Configuration has been halted, please contact your Administrator..
+        /// </summary>
+        public static string cannotOpenSEBLinkMessageAPI {
+            get {
+                return ResourceManager.GetString("cannotOpenSEBLinkMessageAPI", resourceCulture);
             }
         }
         

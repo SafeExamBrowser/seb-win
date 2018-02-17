@@ -280,7 +280,7 @@ namespace SebWindowsConfig
             textBoxAPI_Refresh.Text  = (String)SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh];
             textBoxUnique_KEY.Text   = System.Net.Dns.GetHostName();
             textBoxMachineGUID.Text  = SEBClientInfo.MachineGUID();
-
+            checkBoxDownloadOpenSEBFilesFromAPIONLY.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfigFromAPIONLY];
 
             // If an admin password is saved in the settings (as a hash), 
             // then we fill a placeholder string into the admin password text fields
@@ -970,7 +970,7 @@ namespace SebWindowsConfig
         {
             SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] = checkBoxSEBServer.Checked;
             textBoxStartURL.Enabled = !checkBoxSEBServer.Checked;
-            groupBoxServer.Enabled = checkBoxSEBServer.Checked;
+            groupBoxSEBServer.Enabled = checkBoxSEBServer.Checked;
         }
 
         private void checkBoxSEBManager_CheckedChanged(object sender, EventArgs e)
@@ -1016,16 +1016,15 @@ namespace SebWindowsConfig
 
         }
 
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBoxAPI_Refresh_ValueChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeySebAPI_Refresh] = textBoxAPI_Refresh.Text;
         }
 
+        private void checkBoxDownloadOpenSEBFilesFromAPIONLY_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfigFromAPIONLY] = checkBoxDownloadOpenSEBFilesFromAPIONLY.Checked;
+        }
 
         // *******************
         // Group "Config File"

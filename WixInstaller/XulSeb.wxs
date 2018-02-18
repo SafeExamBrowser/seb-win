@@ -3,70 +3,70 @@
     <Fragment>
         <DirectoryRef Id="XubSebInstallFolder">
             <Directory Id="dirDD176E2E563B4C72FBEA500AEAF4D310" Name="xul_seb">
-                <Component Id="cmp0E201E75E49DE246779DE582F6920ECA" Guid="{45017CD0-A6A3-462A-8A0B-41C99B9AC6CD}">
+                <Component Id="cmp0E201E75E49DE246779DE582F6920ECA" Guid="{527D5C91-D777-4461-9540-6596DC774798}">
                     <File Id="fil2157420A393383351FE09E2F74E44186" KeyPath="yes" Source="SourceDir\chrome.manifest" />
                 </Component>
-                <Component Id="cmpA17C22E0B9D0373C5EF10D3060B6C910" Guid="{57A49D1A-EC59-4B6F-8EDC-B6C72F6B4685}">
+                <Component Id="cmpA17C22E0B9D0373C5EF10D3060B6C910" Guid="{3AA95660-625C-42FB-A7F0-E51D8E7BCCAA}">
                     <File Id="fil03BC6543C9BF2DEAC94591BCE084D405" KeyPath="yes" Source="SourceDir\seb.ini" />
                 </Component>
                 <Directory Id="dir46870CAEA22AA04F00F229E05A171AD8" Name="chrome">
-                    <Component Id="cmp745302F7B3FE5787A807060FB7241EE8" Guid="{67D805A8-7D44-4CD8-ADB6-87E8D8A6321A}">
+                    <Component Id="cmp745302F7B3FE5787A807060FB7241EE8" Guid="{2D39AAE9-2801-4374-B380-C5458505D66C}">
                         <File Id="fil6137CFD28600D846C1EC95F016BDBA1F" KeyPath="yes" Source="SourceDir\chrome\branding.jar" />
                     </Component>
-                    <Component Id="cmp288FF95612FF50C8763F657B73BE804B" Guid="{AA246E42-C4AA-4CB4-994B-886F861E7305}">
+                    <Component Id="cmp288FF95612FF50C8763F657B73BE804B" Guid="{D0FBE5AC-B43E-44D0-BACB-E8515B111744}">
                         <File Id="fil92B6D8C887A889245FBF77BAE2829395" KeyPath="yes" Source="SourceDir\chrome\branding.manifest" />
                     </Component>
-                    <Component Id="cmpBE993F6351E76C512EF44CEB361217D5" Guid="{EF05DDCC-186C-4878-B707-E7EDCE8F69F2}">
+                    <Component Id="cmpBE993F6351E76C512EF44CEB361217D5" Guid="{44474217-83A3-44D1-B256-E76779E1D80C}">
                         <File Id="fil9EEEA1C6BFCCF3D29630D142802CB741" KeyPath="yes" Source="SourceDir\chrome\seb.manifest" />
                     </Component>
-                    <Component Id="cmp17C33DB021662E8B82E90E579AF117E0" Guid="{9981C658-0CE3-431E-8032-91C5A7669B39}">
+                    <Component Id="cmp17C33DB021662E8B82E90E579AF117E0" Guid="{819340B2-1E15-4B92-943E-F55E44FED7E3}">
                         <File Id="fil7D346459A0A3B7A4B89ABDF96D6613E0" KeyPath="yes" Source="SourceDir\chrome\xullib.manifest" />
                     </Component>
                     <Directory Id="dir841D760C9271EABA284CA3B7CF05953D" Name="content">
                         <Directory Id="dir9772A6DBE020B0184089393E170E7501" Name="seb">
-                            <Component Id="cmp55197644ED25EFAA573BA1442F24F65A" Guid="{BF4C57AB-B22D-4C1F-B335-99F5B61A7A42}">
+                            <Component Id="cmp55197644ED25EFAA573BA1442F24F65A" Guid="{8E765C82-3612-4B64-89AB-6894C4066D80}">
                                 <File Id="fil0471AD605BF5C273C137595AA477E3C0" KeyPath="yes" Source="SourceDir\chrome\content\seb\err.xul" />
                             </Component>
-                            <Component Id="cmpE1E105BF2799D86896ED065AD728EAB9" Guid="{948F3DD6-6D9F-4DE2-9048-498B8834EDFB}">
+                            <Component Id="cmpE1E105BF2799D86896ED065AD728EAB9" Guid="{73C747F2-D5DB-4F99-A2F2-8DE3571B7BC2}">
                                 <File Id="fil251EBA8186E25710400FAE4519BEE3AD" KeyPath="yes" Source="SourceDir\chrome\content\seb\load.xul" />
                             </Component>
-                            <Component Id="cmp755FF566C8ABA4D30054F148596376F6" Guid="{9161D1A5-DFEC-466D-BF8B-9EE2FB110B66}">
+                            <Component Id="cmp755FF566C8ABA4D30054F148596376F6" Guid="{DB3B3D10-C863-4838-823D-51539CF662CF}">
                                 <File Id="filC757577C563290D670AA9452587F010A" KeyPath="yes" Source="SourceDir\chrome\content\seb\seb.properties" />
                             </Component>
-                            <Component Id="cmp58A2F0421A949C83F979CB3F70A2E989" Guid="{09B7B2DE-9E12-4E42-B575-DAF8CECEE1F5}">
+                            <Component Id="cmp58A2F0421A949C83F979CB3F70A2E989" Guid="{F996ECE3-683E-4F73-8C32-C2BB95DCBDC1}">
                                 <File Id="filD5320BE061A4AC397BE7116DBF6194FA" KeyPath="yes" Source="SourceDir\chrome\content\seb\seb.xul" />
                             </Component>
                             <Directory Id="dir6F422FD0B34072C3D098607391E64BC6" Name="css">
-                                <Component Id="cmp3B41B09177330041EC5B6099CF74CEF6" Guid="{109CB433-8B2E-4B16-9F29-0375CA68666D}">
+                                <Component Id="cmp3B41B09177330041EC5B6099CF74CEF6" Guid="{CD1CA9A2-4034-4D4A-8CEA-78E8F5D37F2F}">
                                     <File Id="fil58FFD087AA8CE27E029B055012955D90" KeyPath="yes" Source="SourceDir\chrome\content\seb\css\seb.css" />
                                 </Component>
                             </Directory>
                             <Directory Id="dirB141E8120A8C514A304353448876DB7B" Name="images">
-                                <Component Id="cmpBD4093EA9779BDB4CE197B2045F6A575" Guid="{333A226B-082D-49FA-B510-F0BCBB67D095}">
+                                <Component Id="cmpBD4093EA9779BDB4CE197B2045F6A575" Guid="{40642836-E6DE-4F3A-8288-3554289E4F18}">
                                     <File Id="filE222E66AC42BC899A44605B63DC1A669" KeyPath="yes" Source="SourceDir\chrome\content\seb\images\loader.gif" />
                                 </Component>
-                                <Component Id="cmp0C5D39B9BE3D4C7D2831D7442AE7BE23" Guid="{EA0E2D80-0F7D-43AE-A555-8A9C1305F4C6}">
+                                <Component Id="cmp0C5D39B9BE3D4C7D2831D7442AE7BE23" Guid="{07878872-4FB7-40F7-A084-C3F87369908C}">
                                     <File Id="filEF1982F09506BC67639A9AA3A2BC7963" KeyPath="yes" Source="SourceDir\chrome\content\seb\images\loader_stop.gif" />
                                 </Component>
                             </Directory>
                             <Directory Id="dirEEB15A67A363A2A9672A2E420E08E6C6" Name="sounds">
-                                <Component Id="cmpC0A3E0A90A41A49BE0D42A7BE2810FC8" Guid="{260660E3-04F7-40AD-A8CB-5168F0F9097F}">
+                                <Component Id="cmpC0A3E0A90A41A49BE0D42A7BE2810FC8" Guid="{36749825-25E9-4C8D-907C-35784F75AA2D}">
                                     <File Id="filF231948818DE8DC1B60E5EDC0BD0796A" KeyPath="yes" Source="SourceDir\chrome\content\seb\sounds\snapshot.mp3" />
                                 </Component>
-                                <Component Id="cmpABE23AE7425580AE8538968BC641FF55" Guid="{A7CAA527-275E-415F-BE16-49B3296EBF97}">
+                                <Component Id="cmpABE23AE7425580AE8538968BC641FF55" Guid="{1C6B311F-F183-4C13-8CFA-1094AC5AD664}">
                                     <File Id="fil75B866C964A869436F21790D04069E64" KeyPath="yes" Source="SourceDir\chrome\content\seb\sounds\snapshot.ogg" />
                                 </Component>
-                                <Component Id="cmp483CA4639059C42FBAAF6AC0343D5307" Guid="{19B64D89-0C8D-4C93-AFFA-AC0C8B94F31A}">
+                                <Component Id="cmp483CA4639059C42FBAAF6AC0343D5307" Guid="{762A77D6-0574-4037-8159-A2FC0A817398}">
                                     <File Id="fil8C4183BEA927469E2B1A3E0199A75A9F" KeyPath="yes" Source="SourceDir\chrome\content\seb\sounds\snapshot.wav" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="dir0B8508D796C692C1681862D843CB5DE4" Name="xullib">
-                            <Component Id="cmpB5FA43709C97E6EAE6C190B14CA1FF63" Guid="{CEDF4CCA-B4D3-448D-9CD9-A8707C906817}">
+                            <Component Id="cmpB5FA43709C97E6EAE6C190B14CA1FF63" Guid="{3935A52A-D750-48DE-ADD8-55EDBA55DEE7}">
                                 <File Id="fil4FFA279ACC7250338013F96A7856763C" KeyPath="yes" Source="SourceDir\chrome\content\xullib\window.xul" />
                             </Component>
                             <Directory Id="dir5E67D30BA3EE9B1D8F95905B573E7376" Name="js">
-                                <Component Id="cmp49CAF11D697CC81EA7C33D387A119554" Guid="{CBC5D29D-DEA5-47C5-9FBB-447D9CAD7623}">
+                                <Component Id="cmp49CAF11D697CC81EA7C33D387A119554" Guid="{4D639510-1145-4F12-A433-1D55E0970B42}">
                                     <File Id="fil20E8E6971D5680A10CD6F568703EECD4" KeyPath="yes" Source="SourceDir\chrome\content\xullib\js\onload.js" />
                                 </Component>
                             </Directory>
@@ -74,64 +74,64 @@
                     </Directory>
                     <Directory Id="dir6EDDFF5AE67D9468099E13B87E98F71C" Name="defaults">
                         <Directory Id="dir9AF967A795635C2A5914C9CCBEEFE034" Name="seb">
-                            <Component Id="cmp357240B59AA8E8FBD77CCF2C0F49C0A9" Guid="{FA5A941B-CE62-4452-B606-03D50A8F4457}">
+                            <Component Id="cmp357240B59AA8E8FBD77CCF2C0F49C0A9" Guid="{606906E7-2866-4153-9CD1-7AE6D3C42EEE}">
                                 <File Id="fil4EDBD02619924F0A48501646FECFD34B" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\.gitignore" />
                             </Component>
-                            <Component Id="cmpDAA042F31EB4B15529B530523454C45A" Guid="{66CB6068-4B1A-4B9E-835F-852B8B3625DE}">
+                            <Component Id="cmpDAA042F31EB4B15529B530523454C45A" Guid="{AFA2153A-4507-4119-AD25-1B6D3AA08857}">
                                 <File Id="fil5CFB4E47BA0B7EDCF686CFAC204D9FA1" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.debug.json" />
                             </Component>
-                            <Component Id="cmp3414D9FD9EAB771C1500C528C8E606ED" Guid="{5CA45EF2-9EBF-43DF-BDBD-25E17F28DF71}">
+                            <Component Id="cmp3414D9FD9EAB771C1500C528C8E606ED" Guid="{183A1637-ADD6-4962-9EC0-6A5E3EF53DB7}">
                                 <File Id="filE7A39F2097A8477052700A226169648C" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.demo.json" />
                             </Component>
-                            <Component Id="cmpFBF2AD1E0E398A57CAA100262A483386" Guid="{304ED4E2-6F2E-44F2-9BA3-30AAFCF09867}">
+                            <Component Id="cmpFBF2AD1E0E398A57CAA100262A483386" Guid="{3F0FEF98-79C6-4EE3-8549-4DAA2541ADFA}">
                                 <File Id="fil85075259C2DE53A3AEF14021DFCE234C" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.demo.left.json" />
                             </Component>
-                            <Component Id="cmpC5B76D35E2B7152CF88FD73FE66C9C83" Guid="{34AA5898-3419-4C01-BDD6-5527A283E0B0}">
+                            <Component Id="cmpC5B76D35E2B7152CF88FD73FE66C9C83" Guid="{2632E071-BF17-4ED6-B2E1-FC0FB89F6231}">
                                 <File Id="fil5F3B7A116FFBB80728DC90FC76C25AA5" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.demo.nat.json" />
                             </Component>
-                            <Component Id="cmp20188320434F275AB9F9A6D8A2CC76A8" Guid="{7F47576D-33C0-4841-817C-063097961D38}">
+                            <Component Id="cmp20188320434F275AB9F9A6D8A2CC76A8" Guid="{656DF161-91CA-430D-8BC5-D214A3BE5478}">
                                 <File Id="fil76EF7095200D40897C57F31BE197940B" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.demo.right.json" />
                             </Component>
-                            <Component Id="cmp96525E504D50BF03A1F40FAD1A065F87" Guid="{D8AE4549-9D7C-46C4-92FF-E1A4636CC638}">
+                            <Component Id="cmp96525E504D50BF03A1F40FAD1A065F87" Guid="{2D5F046B-E9AD-47EA-ABDE-99C9E70EE43E}">
                                 <File Id="fil4554C60D83436C284C190A6E69D00847" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.json" />
                             </Component>
-                            <Component Id="cmpF6A8AB91EC7FD9D65AB3C0EAFCAE627F" Guid="{768C3772-5876-4739-8268-68E012144D84}">
+                            <Component Id="cmpF6A8AB91EC7FD9D65AB3C0EAFCAE627F" Guid="{1F18A608-84A4-4B89-9F67-B9E2B6F8C8BD}">
                                 <File Id="fil4BE76F86A348D7EAB041E170940F3987" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.local.json" />
                             </Component>
-                            <Component Id="cmpD4C06B507B8308D675FA36E4E9CB02F7" Guid="{6F424348-C3B2-4B6F-A771-F347D2B49332}">
+                            <Component Id="cmpD4C06B507B8308D675FA36E4E9CB02F7" Guid="{F51F8629-3354-4303-8CDA-82E3CBF42F34}">
                                 <File Id="filAC9440F55D686EED300E2441BF05841E" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.macctrl.json" />
                             </Component>
-                            <Component Id="cmp0EEB5CE24CBF59F6E12199324D5A3CE6" Guid="{00EE8C39-5112-4726-B922-EB291D9C79B1}">
+                            <Component Id="cmp0EEB5CE24CBF59F6E12199324D5A3CE6" Guid="{C724B89E-77CE-453D-BFB8-AFA4FAEABB45}">
                                 <File Id="filEA6833C6DCAF3B2B93A5B6EFC72FD27E" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\config.winctrl.json" />
                             </Component>
-                            <Component Id="cmpFC0867CB3907233BA3B2FEBA1D9344F0" Guid="{78C80BBC-68FF-4511-9C37-CAC896BEEB46}">
+                            <Component Id="cmpFC0867CB3907233BA3B2FEBA1D9344F0" Guid="{B139475D-8A13-4FF0-B31A-EA885DF2344D}">
                                 <File Id="filF9C621E5E06985B303F9B604B291F5F4" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\linuxctrl.json" />
                             </Component>
-                            <Component Id="cmpADB2AA9DEEC6D893D36D7972E416F2A1" Guid="{DE1F712D-2DE8-4C52-B39B-A78F418B14F6}">
+                            <Component Id="cmpADB2AA9DEEC6D893D36D7972E416F2A1" Guid="{618FD585-0723-4669-9D29-5C519987D8C1}">
                                 <File Id="filFB33DFC507F6CF5538A5DD67433BE861" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\macctrl.json" />
                             </Component>
-                            <Component Id="cmp73C9F116D67CDCA6773AF0DABC846E5D" Guid="{BEA8A2D3-E0AB-4B49-ACDD-B17F84D51965}">
+                            <Component Id="cmp73C9F116D67CDCA6773AF0DABC846E5D" Guid="{32F17BF0-F40F-4D56-B916-81EABCBBA486}">
                                 <File Id="fil7C9B9A46BA7EC72F97B870D4CAF0631A" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\winctrl.json" />
                             </Component>
                             <Directory Id="dir4E6093CBDE20A2123A9BF7DD1D87C311" Name="preferences">
-                                <Component Id="cmp5700268CA354486BEA9D843E20AB0CEC" Guid="{9A6D0BA3-9D73-494D-8693-94F51A31357D}">
+                                <Component Id="cmp5700268CA354486BEA9D843E20AB0CEC" Guid="{53EA9595-8A19-412D-ABC1-EA0EC2295643}">
                                     <File Id="filDD13D44D1B252A4AF4F085C6290F8A34" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\preferences\debug.js" />
                                 </Component>
-                                <Component Id="cmp65A35B32DD868ED0B8B34B3018E210A5" Guid="{4C1DBDF2-0A2D-4071-87F3-6F8C8761C2BC}">
+                                <Component Id="cmp65A35B32DD868ED0B8B34B3018E210A5" Guid="{F1F0AD93-405C-45EF-B773-DFAB11544FAE}">
                                     <File Id="fil577344E7C142611C31DC9B8951B2288C" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\preferences\prefs.js" />
                                 </Component>
                             </Directory>
                             <Directory Id="dirC21C29E32F94140D76A6282F840F6BD7" Name="profile">
-                                <Component Id="cmp7EBC45B99BC70B4C8DEC2292A87A0DF8" Guid="{171C8492-2BFE-4783-9709-D8E7EC68D566}">
+                                <Component Id="cmp7EBC45B99BC70B4C8DEC2292A87A0DF8" Guid="{248D489C-832D-4A3C-9C00-AC2F8C22AD33}">
                                     <File Id="fil08403326D9C9244039487DE54CB6711B" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\profile\cert8.db" />
                                 </Component>
-                                <Component Id="cmp6F9E8DC8B44DEAF8E38995190D9A887E" Guid="{BADC672B-38A0-45FB-B28C-7537D03EA2EF}">
+                                <Component Id="cmp6F9E8DC8B44DEAF8E38995190D9A887E" Guid="{17EDF031-9021-4B9B-9E4F-8C1ECA53FA5E}">
                                     <File Id="filCD326760D233EF7FE01BD0CC4E49D328" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\profile\cert_override.txt" />
                                 </Component>
-                                <Component Id="cmp1DC584C792C296E9F96125C581D8F0B4" Guid="{94DB14AB-C60A-4406-8AC4-BD7BD6D6CF8A}">
+                                <Component Id="cmp1DC584C792C296E9F96125C581D8F0B4" Guid="{2723118C-DC0E-4E21-8290-9885123696B7}">
                                     <File Id="fil85257CB420025C46ABC474F6B5127441" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\profile\key3.db" />
                                 </Component>
-                                <Component Id="cmpE2B571B7C51D656E2747D6FC7B19C851" Guid="{0FB0143A-BF3E-4B66-889E-0AEB87C03185}">
+                                <Component Id="cmpE2B571B7C51D656E2747D6FC7B19C851" Guid="{E83F8359-E475-4726-9D79-614B5DE35E10}">
                                     <File Id="fil7861D4874D6E9A4CE08C6A1206A51B6C" KeyPath="yes" Source="SourceDir\chrome\defaults\seb\profile\mimeTypes.rdf" />
                                 </Component>
                             </Directory>
@@ -140,26 +140,26 @@
                     <Directory Id="dir165744249FDA0B495601AE85FAD1089E" Name="locale">
                         <Directory Id="dir7716F94E64DC58F22DEF495538D3D038" Name="seb">
                             <Directory Id="dirA4C937BD7D018B04A7A1328F1382D992" Name="de-DE">
-                                <Component Id="cmp52525CFC8F2E228729FB014B4F5A00AF" Guid="{3F0D630E-2260-4EA9-8D71-909E24CB99A3}">
+                                <Component Id="cmp52525CFC8F2E228729FB014B4F5A00AF" Guid="{BD15EBB9-58BF-4DEF-BFEA-6894C3FB2D8C}">
                                     <File Id="fil483C91FCA91D76D5B3091C64420D6F19" KeyPath="yes" Source="SourceDir\chrome\locale\seb\de-DE\seb.dtd" />
                                 </Component>
-                                <Component Id="cmp54116DC8491FEFC3938646051F786AF9" Guid="{74AB553C-8E09-405D-9EF7-92DD0497D625}">
+                                <Component Id="cmp54116DC8491FEFC3938646051F786AF9" Guid="{8A9B623A-AA32-4A80-875C-BAA5D6DE076F}">
                                     <File Id="fil5DBEEA0D173022904B61823BF4E80A54" KeyPath="yes" Source="SourceDir\chrome\locale\seb\de-DE\seb.properties" />
                                 </Component>
                             </Directory>
                             <Directory Id="dirC2110EE11520FBE45071AC5E54D9CAB8" Name="en-US">
-                                <Component Id="cmp34155A641E7C57BE9E254CDA08C486C0" Guid="{A62E6222-3CCB-497C-8925-74A171333CAF}">
+                                <Component Id="cmp34155A641E7C57BE9E254CDA08C486C0" Guid="{CFA8AAC5-6385-42EC-8499-AE7EDEC23180}">
                                     <File Id="filC17F4EED8AF3894898CBF645E26D4107" KeyPath="yes" Source="SourceDir\chrome\locale\seb\en-US\seb.dtd" />
                                 </Component>
-                                <Component Id="cmpD54AB71789453CA0F9C0F4B0A4A053D6" Guid="{F5477C29-702B-4F14-947B-98E1DB09D0CA}">
+                                <Component Id="cmpD54AB71789453CA0F9C0F4B0A4A053D6" Guid="{4311353E-2274-425C-9706-84397625CB7A}">
                                     <File Id="filFCEE892B5BA3CB4A1328A36BD008FAD4" KeyPath="yes" Source="SourceDir\chrome\locale\seb\en-US\seb.properties" />
                                 </Component>
                             </Directory>
                             <Directory Id="dir50BD199D02D4123120BE8F041141753B" Name="fr-FR">
-                                <Component Id="cmp619E357E4939D34F72E4422DF6D39069" Guid="{8A5F0C72-8A43-40AF-8FCB-F17A33AA4400}">
+                                <Component Id="cmp619E357E4939D34F72E4422DF6D39069" Guid="{C0613ED5-3D91-4A37-9637-B865FBDE2DCF}">
                                     <File Id="fil442EDF34D0E907DA9FF3210F5B83A020" KeyPath="yes" Source="SourceDir\chrome\locale\seb\fr-FR\seb.dtd" />
                                 </Component>
-                                <Component Id="cmp3BF2339D018470B5846FBA4B6B8C8AA2" Guid="{CCC7BD05-9C4F-40F0-837A-50B347B3F867}">
+                                <Component Id="cmp3BF2339D018470B5846FBA4B6B8C8AA2" Guid="{4EEEC2B8-F89B-4429-8005-81BB31C15B8F}">
                                     <File Id="fil108DEE2AC184DBF90D84B8F44A72E91C" KeyPath="yes" Source="SourceDir\chrome\locale\seb\fr-FR\seb.properties" />
                                 </Component>
                             </Directory>
@@ -167,27 +167,27 @@
                     </Directory>
                 </Directory>
                 <Directory Id="dir3DEB7BCE89BBFD121138BAA6E2488193" Name="components">
-                    <Component Id="cmp948AC24CC2DCBF096F69E09B7A84CDA7" Guid="{01A37812-E838-43FE-AE76-2448C7B1870A}">
+                    <Component Id="cmp948AC24CC2DCBF096F69E09B7A84CDA7" Guid="{7EF3F75F-19F4-4AA0-BBDB-C85570C0F02F}">
                         <File Id="fil03C1742B19D52B0333E728512CB2FD63" KeyPath="yes" Source="SourceDir\components\xulApplication.js" />
                     </Component>
                 </Directory>
                 <Directory Id="dir28929925EDBD9687F567F2C7D172706B" Name="modules">
-                    <Component Id="cmpD76C31D3DD7E059D36C2F5901317A6EF" Guid="{05095A5F-961B-497E-BBD5-3D13736F37DF}">
+                    <Component Id="cmpD76C31D3DD7E059D36C2F5901317A6EF" Guid="{0B9208CD-6D1E-4F4F-8300-7E1F67BA72E2}">
                         <File Id="fil2391FE6066DB4FDCD68BB03AD2D412B4" KeyPath="yes" Source="SourceDir\modules\linuxctrl.jsm" />
                     </Component>
-                    <Component Id="cmp4480494F15BBDB864D7B136E38DEDA3A" Guid="{3D6B7840-23D5-431A-BE99-9DDF646BAA04}">
+                    <Component Id="cmp4480494F15BBDB864D7B136E38DEDA3A" Guid="{73EC3BD0-70C4-4867-87F0-C2692CFDA5C3}">
                         <File Id="fil8EBDA76704CDAE08F63DDD51849D5C69" KeyPath="yes" Source="SourceDir\modules\macctrl.jsm" />
                     </Component>
-                    <Component Id="cmpD4F9941C73F9B1DDD6351C9D39887D75" Guid="{110884E7-90D4-4A63-8FAA-E751B6B31364}">
+                    <Component Id="cmpD4F9941C73F9B1DDD6351C9D39887D75" Guid="{0591D4E4-EB40-4D7A-8332-306D0390800A}">
                         <File Id="fil976B6E2FD5BEE877D4B80F40BC866F3D" KeyPath="yes" Source="SourceDir\modules\screen.jsm" />
                     </Component>
-                    <Component Id="cmp4B7F3330FF60358A4FFE1F03E1AF9443" Guid="{8B7D57C8-4B24-457E-BD93-632AC754B9B7}">
+                    <Component Id="cmp4B7F3330FF60358A4FFE1F03E1AF9443" Guid="{063689CF-6A06-42FA-902B-E3F1F6DA9E2E}">
                         <File Id="fil22705779D13AF778C108F468B4D466E1" KeyPath="yes" Source="SourceDir\modules\seb.jsm" />
                     </Component>
-                    <Component Id="cmp1D62D9CC0BCC4C1B7ADAB4FCEBCF1D24" Guid="{0C662140-7578-4D51-8F0D-B5148D754EF9}">
+                    <Component Id="cmp1D62D9CC0BCC4C1B7ADAB4FCEBCF1D24" Guid="{FBD07CA8-CDED-4A0B-B283-5E1793DDA9B4}">
                         <File Id="fil78C9C57C707839C7537885373EE02BC7" KeyPath="yes" Source="SourceDir\modules\winctrl.jsm" />
                     </Component>
-                    <Component Id="cmp8917B844EBD61379A9F6FC7D8E9E9D2F" Guid="{58532E29-5D3F-4AEA-93D4-33365206661D}">
+                    <Component Id="cmp8917B844EBD61379A9F6FC7D8E9E9D2F" Guid="{EE001B18-6447-4B9E-8725-4BEB3D547B4E}">
                         <File Id="fil43EE575AA31110DB30712C31C1193B59" KeyPath="yes" Source="SourceDir\modules\xullib.jsm" />
                     </Component>
                 </Directory>

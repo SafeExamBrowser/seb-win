@@ -144,9 +144,9 @@ namespace SebWindowsClient.ConfigurationUtils
             if (((int)compareTimeStamp.TotalMinutes >= Convert.ToInt32(SEBClientInfo.getSebSetting(SEBSettings.KeySebAPI_Refresh)[SEBSettings.KeySebAPI_Refresh])) && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == true)
             {
                 Logger.AddInformation("Using Server URL " + (int)compareTimeStamp.TotalMinutes);
-                string UniqueName = "&unique=" + System.Net.Dns.GetHostName() + "&MachineGUID=" + SEBClientInfo.MachineGUID();
-                var BuildURL = SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebServerURL].ToString() + SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebAUTH_KEY].ToString();
-                return BuildURL.ToString() + UniqueName;
+                string UrlVariables = "?code=" + SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebAUTH_KEY].ToString() + "&unique=" + System.Net.Dns.GetHostName() + "&MachineGUID=" + SEBClientInfo.MachineGUID(); 
+                var BuildURL = SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebServerURL].ToString();
+                return BuildURL.ToString() + UrlVariables;
             }
             else
             {

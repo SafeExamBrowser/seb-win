@@ -84,7 +84,6 @@ namespace SebWindowsClient.ConfigurationUtils
         public const String KeyStartURL             = "startURL";
         public const String KeySebServerURL         = "sebServerURL";
         public const String KeySebAUTH_KEY          = "AUTH_KEY";
-        public const String KeyTimeStamp            = "";
         public const String KeySebAPI_Refresh       = "1";
         public const String KeyHashedAdminPassword  = "hashedAdminPassword";
         public const String KeyAllowQuit            = "allowQuit";
@@ -534,7 +533,6 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyHashedAdminPassword, "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebAUTH_KEY        , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeySebAPI_Refresh     , "1");
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyTimeStamp          , File.GetLastWriteTime(SEBClientInfo.SebClientSettingsAppDataFile).ToString());
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowQuit          , true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeySEBServer          , false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeySEBManager         , false);

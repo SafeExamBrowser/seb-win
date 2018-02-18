@@ -32,7 +32,7 @@
        default configuration.  This will be renamed to SebClientSettings.seb -->
   <?define DefaultSebClientSettingsFile = "$(var.SebWindowsClient.ProjectDir)Resources/SebClientSettings.seb" ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.1.5.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.1.8.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MediaTemplate EmbedCab="yes" />

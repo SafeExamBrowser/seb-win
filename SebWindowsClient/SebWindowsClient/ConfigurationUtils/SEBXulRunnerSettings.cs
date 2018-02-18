@@ -138,14 +138,15 @@ namespace SebWindowsClient.ConfigurationUtils
         // Get startup URL check if we need to fetch new config from SEB Server Manager.
         private static string GetStartupPathOrUrl()
         {
-            var compareTimeStamp = (Convert.ToDateTime(Convert.ToString(DateTime.Now.ToString())) - (Convert.ToDateTime(SEBSettings.settingsCurrent[SEBSettings.KeyTimeStamp])));
-            Logger.AddInformation("Timestamp difference (min) " + (int)compareTimeStamp.TotalMinutes);
+            var compareTimeStamp = (Convert.ToDateTime(Convert.ToString(DateTime.Now.ToString())) - (Convert.ToDateTime(File.GetLastWriteTime(SEBClientInfo.SebClientSettingsAppDataFile).ToString())));
+            Logger.AddInformation("Timestamp difference (min) " + (int)compareTimeStamp.TotalMinutes + " Configured refresh time: " + Convert.ToInt32(SEBClientInfo.getSebSetting(SEBSettings.KeySebAPI_Refresh)[SEBSettings.KeySebAPI_Refresh]) + " min.");
 
             if (((int)compareTimeStamp.TotalMinutes >= Convert.ToInt32(SEBClientInfo.getSebSetting(SEBSettings.KeySebAPI_Refresh)[SEBSettings.KeySebAPI_Refresh])) && (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySEBServer] == true)
             {
                 Logger.AddInformation("Using Server URL " + (int)compareTimeStamp.TotalMinutes);
                 string UrlVariables = "?code=" + SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebAUTH_KEY].ToString() + "&unique=" + System.Net.Dns.GetHostName() + "&MachineGUID=" + SEBClientInfo.MachineGUID(); 
                 var BuildURL = SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebServerURL].ToString();
+                Logger.AddInformation("SEB Server used, GetStartupPathOrUrl returned: " + BuildURL.ToString() + UrlVariables);
                 return BuildURL.ToString() + UrlVariables;
             }
             else

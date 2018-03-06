@@ -4,12 +4,12 @@ using System.Windows.Forms;
 using SebWindowsClient.AdditionalResourcesUtils;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.Properties;
-using ListObj = System.Collections.Generic.List<object>;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using ListObj = System.Collections.Generic.List<object>;
 
 namespace SebWindowsClient.UI
 {
-    public class SEBAdditionalResourcesToolStripButton : SEBToolStripButton
+	public class SEBAdditionalResourcesToolStripButton : SEBToolStripButton
     {
         private readonly ContextMenuStrip _menu;
         private readonly IFileCompressor _fileCompressor;
@@ -52,7 +52,9 @@ namespace SebWindowsClient.UI
         {
             foreach (DictObj l1Resource in ((ListObj)L0Resource[SEBSettings.KeyAdditionalResources]))
             {
-                if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive])
+				var showButton = l1Resource.TryGetValue(SEBSettings.KeyAdditionalResourcesShowButton, out object show) && show as bool? == true;
+
+				if (!(bool)l1Resource[SEBSettings.KeyAdditionalResourcesActive] || !showButton)
                     continue;
 
                 var l1Item = new SEBAdditionalResourceMenuItem(l1Resource);
@@ -62,7 +64,9 @@ namespace SebWindowsClient.UI
 
                 foreach (DictObj l2Resource in ((ListObj)l1Resource[SEBSettings.KeyAdditionalResources]))
                 {
-                    if (!(bool)l2Resource[SEBSettings.KeyAdditionalResourcesActive])
+					var showButton2 = l1Resource.TryGetValue(SEBSettings.KeyAdditionalResourcesShowButton, out object show2) && show2 as bool? == true;
+
+					if (!(bool)l2Resource[SEBSettings.KeyAdditionalResourcesActive] || !showButton2)
                         continue;
 
                     var l2Item = new SEBAdditionalResourceMenuItem(l2Resource);

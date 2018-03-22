@@ -833,7 +833,7 @@ namespace SebWindowsClient
 
 						foreach (var process in runningApplicationsToClose[application])
 						{
-							if (SEBNotAllowedProcessController.CloseProcess(process))
+							if (process.HasExited || SEBNotAllowedProcessController.CloseProcess(process))
 							{
 								closedProcesses++;
 							}

@@ -976,7 +976,7 @@ namespace SebWindowsConfig
         private void checkBoxSEBManager_CheckedChanged(object sender, EventArgs e)
         {
             SEBSettings.settingsCurrent[SEBSettings.KeySEBManager] = checkBoxSEBManager.Checked;
-            textBoxSebServerURL.Text = "SecureExamination.org/Manage/pages/api.php";
+            textBoxSebServerURL.Text = "SecureExamination.org/?__page=api";
             textBoxSebServerURL.Enabled = !textBoxSebServerURL.Enabled;
             textBoxAUTH_KEY.Enabled = checkBoxSEBServer.Checked;
         }

@@ -228,6 +228,28 @@ namespace SebWindowsClient
                     return false;
                 }
 
+
+                //POST Client Data to Seb Server Manager
+                if ((Boolean)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeySEBServer) == true)
+                {
+                    UriBuilder SebServerUrl = new UriBuilder((string)SEBClientInfo.getSebSetting(SEBSettings.KeySebServerURL)[SEBSettings.KeySebServerURL]);
+                    Uri ApiUrl = new Uri(SebServerUrl.ToString());
+
+                    if (uri.Host != ApiUrl.Host)
+                    {
+                        using (var wb = new WebClient())
+                        {
+                            var data = new NameValueCollection();
+                            data["username"] = "myUser";
+                            data["password"] = "myPassword";
+
+                            var response = wb.UploadValues(url, "POST", data);
+                            string responseInString = Encoding.UTF8.GetString(response);
+                        }
+                    }
+                }
+
+
                 if (uri.Scheme == "seb" || uri.Scheme == "sebs")
                 // The URI is holding a seb:// or sebs:// (secure) web address for a .seb settings file: download it
                 {

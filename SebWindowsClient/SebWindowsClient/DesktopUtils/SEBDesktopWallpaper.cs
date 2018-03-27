@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using SebWindowsClient.ConfigurationUtils;
@@ -6,7 +6,7 @@ using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.DesktopUtils
 {
-    public class SEBDesktopWallpaper
+	public class SEBDesktopWallpaper
     {
         const int SPI_SETDESKWALLPAPER = 20;
         const int SPIF_UPDATEINIFILE = 0x01;
@@ -54,6 +54,8 @@ namespace SebWindowsClient.DesktopUtils
                 if (_currentWallpaper != null)
                 {
                     SetWallpaper(_currentWallpaper);
+					Refresh();
+
                     if (File.Exists(GetDirectory()))
                     {
                         File.Delete(GetDirectory());
@@ -62,6 +64,24 @@ namespace SebWindowsClient.DesktopUtils
             }
         }
 
+		public static void Refresh()
+		{
+			if (OSVersion.IsWindows7)
+			{
+				// See https://superuser.com/questions/398605/how-to-force-windows-desktop-background-to-update-or-refresh.
+				var startInfo = new ProcessStartInfo
+				{
+					WindowStyle = ProcessWindowStyle.Hidden,
+					FileName = "cmd.exe",
+					Arguments = "/C RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters 1, True"
+				};
+
+				using (var process = new Process { StartInfo = startInfo })
+				{
+					process.Start();
+				}
+			}
+		}
 
         private static string GetDirectory()
         {

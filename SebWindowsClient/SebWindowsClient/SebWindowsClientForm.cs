@@ -2077,6 +2077,7 @@ namespace SebWindowsClient
 			SebWindowsClientMain.ResetSEBDesktop();
 			Logger.AddInformation("Successfull ResetSEBDesktop");
 
+			SEBDesktopWallpaper.Refresh();
 
 			Logger.AddInformation("---------- EXITING SEB - ENDING SESSION -------------");
 			//this.Close();

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SebWindowsClient;
 using SebWindowsClient.ConfigurationUtils;
@@ -381,8 +383,89 @@ namespace SebWindowsConfig
             comboBoxTaskBarHeight.Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
 			checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
 
+			var defaultText = "(part of application)";
+			var defaultStyle = new DataGridViewCellStyle { BackColor = Color.LightGray };
+			var allowedDictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheckDictionary] as ListObj;
+			var compressor = new FileCompressor();
+			var danish = new DataGridViewRow();
+			var australian = new DataGridViewRow();
+			var british = new DataGridViewRow();
+			var american = new DataGridViewRow();
+			var spanish = new DataGridViewRow();
+			var french = new DataGridViewRow();
+			var portuguese = new DataGridViewRow();
+			var swedish = new DataGridViewRow();
+			var swedishFinland = new DataGridViewRow();
+
+			danish.Tag = true;
+			danish.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "da-DK"), Style = defaultStyle });
+			danish.Cells.Add(new DataGridViewTextBoxCell { Value = "da-DK", Style = defaultStyle });
+			danish.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			australian.Tag = true;
+			australian.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "en-AU"), Style = defaultStyle });
+			australian.Cells.Add(new DataGridViewTextBoxCell { Value = "en-AU", Style = defaultStyle });
+			australian.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			british.Tag = true;
+			british.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "en-GB"), Style = defaultStyle });
+			british.Cells.Add(new DataGridViewTextBoxCell { Value = "en-GB", Style = defaultStyle });
+			british.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			american.Tag = true;
+			american.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "en-US"), Style = defaultStyle });
+			american.Cells.Add(new DataGridViewTextBoxCell { Value = "en-US", Style = defaultStyle });
+			american.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			spanish.Tag = true;
+			spanish.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "es-ES"), Style = defaultStyle });
+			spanish.Cells.Add(new DataGridViewTextBoxCell { Value = "es-ES", Style = defaultStyle });
+			spanish.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			french.Tag = true;
+			french.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "fr-FR"), Style = defaultStyle });
+			french.Cells.Add(new DataGridViewTextBoxCell { Value = "fr-FR", Style = defaultStyle });
+			french.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			portuguese.Tag = true;
+			portuguese.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "pt-PT"), Style = defaultStyle });
+			portuguese.Cells.Add(new DataGridViewTextBoxCell { Value = "pt-PT", Style = defaultStyle });
+			portuguese.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			swedish.Tag = true;
+			swedish.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "sv-SE"), Style = defaultStyle });
+			swedish.Cells.Add(new DataGridViewTextBoxCell { Value = "sv-SE", Style = defaultStyle });
+			swedish.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			swedishFinland.Tag = true;
+			swedishFinland.Cells.Add(new DataGridViewCheckBoxCell(false) { Value = allowedDictionaries.Any(l => l as string == "sv-FI"), Style = defaultStyle });
+			swedishFinland.Cells.Add(new DataGridViewTextBoxCell { Value = "sv-FI", Style = defaultStyle });
+			swedishFinland.Cells.Add(new DataGridViewTextBoxCell { Value = defaultText, Style = defaultStyle });
+
+			spellCheckerDataGridView.Rows.Clear();
+			spellCheckerDataGridView.Rows.Add(danish);
+			spellCheckerDataGridView.Rows.Add(australian);
+			spellCheckerDataGridView.Rows.Add(british);
+			spellCheckerDataGridView.Rows.Add(american);
+			spellCheckerDataGridView.Rows.Add(spanish);
+			spellCheckerDataGridView.Rows.Add(french);
+			spellCheckerDataGridView.Rows.Add(portuguese);
+			spellCheckerDataGridView.Rows.Add(swedish);
+			spellCheckerDataGridView.Rows.Add(swedishFinland);
+
+			foreach (DictObj dictionary in SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalDictionaries] as ListObj)
+			{
+				var locale = dictionary[SEBSettings.KeyAdditionalDictionaryLocale] as string;
+				var data = dictionary[SEBSettings.KeyAdditionalDictionaryData] as string;
+				var enabled = allowedDictionaries.Any(l => l as string == locale);
+				var files = compressor.GetFileList(data);
+				var fileList = ToDictionaryFileList(files);
+
+				spellCheckerDataGridView.Rows.Add(enabled, locale, fileList);
+			}
+
 			// Group "Browser"
-			 listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
+			listBoxOpenLinksHTML .SelectedIndex =     (int)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkPolicy];
 			checkBoxBlockLinksHTML.Checked       = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkBlockForeign];
 
 			comboBoxNewBrowserWindowWidth      .Text          = (String)SEBSettings.settingsCurrent[SEBSettings.KeyNewBrowserWindowByLinkWidth ];
@@ -1655,6 +1738,257 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight] = Int32.Parse(comboBoxTaskBarHeight.Text);
 		}
 
+		private void addDictionaryButton_Click(object sender, EventArgs e)
+		{
+			var validLocale = TryGetLocale(out string locale);
+
+			if (!validLocale)
+			{
+				return;
+			}
+
+			var validFiles = TryGetFiles(out IEnumerable<string> files);
+
+			if (!validFiles)
+			{
+				return;
+			}
+
+			var saved = TrySaveDictionary(files, locale, out Exception exception);
+
+			if (!saved)
+			{
+				var message = $"Failed to save dictionary data for locale '{locale}' and files '{String.Join("', '", files)}'!";
+
+				Logger.AddError(message, this, exception);
+				MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private bool TryGetLocale(out string locale)
+		{
+			locale = string.Empty;
+
+			var dialog = new Form
+			{
+				FormBorderStyle = FormBorderStyle.FixedDialog,
+				Height = 150,
+				MaximizeBox = false,
+				MinimizeBox = false,
+				Owner = this,
+				StartPosition = FormStartPosition.CenterParent,
+				Text = "Dictionary Locale",
+				Width = 450
+			};
+			var description = new Label
+			{
+				Height = 40,
+				Left = 15,
+				Text = @"Please enter the locale for the dictionary you wish to add. The locale must comply with the format ""language-COUNTRY"", e.g. ""en-US"" or ""de-CH"".",
+				Top = 10,
+				Width = 400
+			};
+			var textBox = new TextBox { Left = 15, Top = 50, Width = 400 };
+			var button = new Button { DialogResult = DialogResult.OK, Enabled = false, Left = 175, Width = 75, Text = "OK", Top = 75, };
+			var isValid = false;
+
+			button.Click += (o, args) => dialog.Close();
+			textBox.TextChanged += (o, args) =>
+			{
+				isValid = Regex.IsMatch(textBox.Text, @"^[a-z]{2}-[A-Z]{2}$");
+				button.Enabled = isValid;
+				textBox.ForeColor = isValid ? Color.Green : Color.Red;
+			};
+			dialog.Controls.Add(description);
+			dialog.Controls.Add(textBox);
+			dialog.Controls.Add(button);
+			dialog.AcceptButton = button;
+
+			var result = dialog.ShowDialog();
+
+			if (isValid)
+			{
+				locale = textBox.Text;
+			}
+
+			foreach (DataGridViewRow row in spellCheckerDataGridView.Rows)
+			{
+				if (row.Cells[spellCheckerDictionaryLocaleColumn.Index].Value as string == locale)
+				{
+					isValid = false;
+					MessageBox.Show(this, $"You can only specify one dictionary per locale ({locale})!", "Duplicate Locale", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					break;
+				}
+			}
+
+			return result == DialogResult.OK && isValid;
+		}
+
+		private bool TryGetFiles(out IEnumerable<string> files)
+		{
+			files = Enumerable.Empty<string>();
+
+			var dialog = new OpenFileDialog();
+			var isValid = false;
+
+			dialog.Filter = "dictionary files (*.aff, *.dic)|*.aff;*.dic";
+			dialog.FilterIndex = 2;
+			dialog.Multiselect = true;
+			dialog.RestoreDirectory = true;
+
+			var result = dialog.ShowDialog();
+
+			isValid = dialog.FileNames.Count() == 2;
+			isValid &= dialog.FileNames.Count(f => f.EndsWith(".aff")) == 1;
+			isValid &= dialog.FileNames.Count(f => f.EndsWith(".dic")) == 1;
+
+			if (isValid)
+			{
+				files = dialog.FileNames;
+			}
+			else if (result == DialogResult.OK)
+			{
+				MessageBox.Show(this, "You need to select one .aff and one .dic file!", "Invalid File(s)", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+
+			return result == DialogResult.OK && isValid;
+		}
+
+		private bool TrySaveDictionary(IEnumerable<string> files, string locale, out Exception exception)
+		{
+			exception = null;
+
+			try
+			{
+				var allowedDictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheckDictionary] as ListObj;
+				var dictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalDictionaries] as ListObj;
+				var data = ZipAndEncodeDictionaryFiles(files, locale);
+				var format = (int) SEBSettings.DictionaryFormat.Mozilla;
+				var fileList = ToDictionaryFileList(files);
+				var dictionary = new DictObj
+				{
+					{ SEBSettings.KeyAdditionalDictionaryData, data },
+					{ SEBSettings.KeyAdditionalDictionaryFormat, format },
+					{ SEBSettings.KeyAdditionalDictionaryLocale, locale }
+				};
+
+				dictionaries.Add(dictionary);
+				allowedDictionaries.Add(locale);
+				spellCheckerDataGridView.Rows.Add(true, locale, fileList);
+			}
+			catch (Exception e)
+			{
+				exception = e;
+			}
+
+			return exception == null;
+		}
+
+		private string ZipAndEncodeDictionaryFiles(IEnumerable<string> files, string locale)
+		{
+			var compressor = new FileCompressor();
+			var tempDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), locale));
+
+			foreach (var file in files)
+			{
+				var tempFile = Path.Combine(tempDirectory.FullName, Path.GetFileName(file));
+
+				File.Copy(file, tempFile, true);
+			}
+
+			var data = compressor.CompressAndEncodeDirectory(tempDirectory.FullName, out _);
+
+			tempDirectory.Delete(true);
+
+			return data;
+		}
+
+		private string ToDictionaryFileList(IEnumerable<string> files)
+		{
+			var affFile = Path.GetFileName(files.First(f => f.EndsWith(".aff")));
+			var dicFile = Path.GetFileName(files.First(f => f.EndsWith(".dic")));
+
+			return $@"{affFile}{Environment.NewLine}{dicFile}";
+		}
+
+		private void spellCheckerDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && e.ColumnIndex == spellCheckerDictionaryEnabledColumn.Index)
+			{
+				var allowedDictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheckDictionary] as ListObj;
+				var enabled = spellCheckerDataGridView.Rows[e.RowIndex].Cells[spellCheckerDictionaryEnabledColumn.Index].Value is true;
+				var locale = spellCheckerDataGridView.Rows[e.RowIndex].Cells[spellCheckerDictionaryLocaleColumn.Index].Value as string;
+
+				if (enabled && allowedDictionaries.All(l => l as string != locale))
+				{
+					allowedDictionaries.Add(locale);
+				}
+				else if (!enabled)
+				{
+					allowedDictionaries.RemoveAll(l => l as string == locale);
+				}
+			}
+		}
+
+		private void spellCheckerDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+		{
+			if (spellCheckerDataGridView.IsCurrentCellDirty && spellCheckerDataGridView.CurrentCell.ColumnIndex == spellCheckerDictionaryEnabledColumn.Index)
+			{
+				spellCheckerDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+			}
+		}
+
+		private void removeDictionaryButton_Click(object sender, EventArgs e)
+		{
+			var warningSeen = false;
+
+			void ShowDefaultDictionaryInfo()
+			{
+				if (!warningSeen)
+				{
+					MessageBox.Show(this, "Default dictionaries cannot be removed, as they are part of the application installation.", "Default Dictionary", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					warningSeen = true;
+				}
+			}
+
+			if (spellCheckerDataGridView.SelectedRows.Count > 0)
+			{
+				foreach (DataGridViewRow row in spellCheckerDataGridView.SelectedRows)
+				{
+					if (row.Tag is true)
+					{
+						ShowDefaultDictionaryInfo();
+					}
+					else
+					{
+						RemoveDictionary(row);
+					}
+				}
+			}
+			else if (spellCheckerDataGridView.CurrentRow != null)
+			{
+				if (spellCheckerDataGridView.CurrentRow.Tag is true)
+				{
+					ShowDefaultDictionaryInfo();
+				}
+				else
+				{
+					RemoveDictionary(spellCheckerDataGridView.CurrentRow);
+				}
+			}
+		}
+
+		private void RemoveDictionary(DataGridViewRow row)
+		{
+			var allowedDictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAllowSpellCheckDictionary] as ListObj;
+			var dictionaries = SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalDictionaries] as ListObj;
+			var locale = row.Cells[spellCheckerDictionaryLocaleColumn.Index].Value as string;
+
+			allowedDictionaries.RemoveAll(l => l as string == locale);
+			dictionaries.RemoveAll(d => (d as DictObj).TryGetValue(SEBSettings.KeyAdditionalDictionaryLocale, out object l) && l as string == locale);
+			spellCheckerDataGridView.Rows.Remove(row);
+		}
 
 		// ***************
 		// Group "Browser"
@@ -4039,6 +4373,5 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
-
-    }
+	}
 }

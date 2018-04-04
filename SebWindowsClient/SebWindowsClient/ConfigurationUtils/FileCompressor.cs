@@ -139,6 +139,15 @@ namespace SebWindowsClient.ConfigurationUtils
 			return stream;
 		}
 
+		public IEnumerable<string> GetFileList(string base64)
+		{
+			var data = base64_decode(base64);
+			var zipStream = new MemoryStream(data);
+			var zip = ZipFile.Read(zipStream);
+
+			return zip.EntryFileNames;
+		}
+
 		private string base64_encode(byte[] data)
 		{
 			if (data == null)

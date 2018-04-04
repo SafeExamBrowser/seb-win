@@ -110,13 +110,19 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyEnableZoomText               = "enableZoomText";
 		public const String KeyEnableZoomPage               = "enableZoomPage";
 		public const String KeyZoomMode                     = "zoomMode";
-		public const String KeyAllowSpellCheck              = "allowSpellCheck";
         public const String KeyShowReloadButton             = "showReloadButton";
         public const String KeyShowTime                     = "showTime";
 		public const String KeyShowInputLanguage            = "showInputLanguage";
 		public const String KeyAllowDictionaryLookup        = "allowDictionaryLookup";
 		public const String KeyEnableTouchExit              = "enableTouchExit";
 		public const String KeyOskBehavior                  = "oskBehavior";
+
+		public const string KeyAllowSpellCheck              = "allowSpellCheck";
+		public const string KeyAllowSpellCheckDictionary    = "allowSpellCheckDictionary";
+		public const string KeyAdditionalDictionaries       = "additionalDictionaries";
+		public const string KeyAdditionalDictionaryData     = "dictionaryData";
+		public const string KeyAdditionalDictionaryFormat   = "dictionaryFormat";
+		public const string KeyAdditionalDictionaryLocale   = "localeName";
 
 		public const string KeyAudioMute = "audioMute";
 		public const string KeyAudioControlEnabled = "audioControlEnabled";
@@ -393,6 +399,10 @@ namespace SebWindowsClient.ConfigurationUtils
 			operatingSystemOSX, operatingSystemWin
 		}
 
+		public enum DictionaryFormat
+		{
+			Mozilla = 0
+		}
 
 		// *********************************
 		// Global Variables for SEB settings
@@ -580,7 +590,9 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyZoomMode                    , 0);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowSpellCheck             , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowDictionaryLookup       , false);
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadButton, true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowSpellCheckDictionary   , new ListObj());
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyAdditionalDictionaries      , new ListObj());
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowReloadButton, true);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTime                    , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowInputLanguage           , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableTouchExit             , false);

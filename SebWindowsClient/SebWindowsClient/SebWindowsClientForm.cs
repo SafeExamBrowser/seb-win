@@ -2025,10 +2025,6 @@ namespace SebWindowsClient
      //               }
 					if (proc != null && !proc.HasExited)
 					{
-						if (reconfiguring && proc.ProcessName.Contains("firefox"))
-						{
-							continue;
-						}
 						Logger.AddInformation("attempting to close " + proc.ProcessName);
 						SEBNotAllowedProcessController.CloseProcess(proc);   
 					}

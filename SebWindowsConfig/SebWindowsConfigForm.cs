@@ -1897,7 +1897,7 @@ namespace SebWindowsConfig
 				File.Copy(file, tempFile, true);
 			}
 
-			var data = compressor.CompressAndEncodeDirectory(tempDirectory.FullName, out _);
+			var data = compressor.CompressAndEncodeEntireDirectory(tempDirectory.FullName);
 
 			tempDirectory.Delete(true);
 

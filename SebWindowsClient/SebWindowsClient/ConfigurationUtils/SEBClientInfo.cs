@@ -178,6 +178,7 @@ namespace SebWindowsClient.ConfigurationUtils
         public static string SebClientLogFile               { get; set; }
         public static string SebClientSettingsProgramDataDirectory { get; set; }
         public static string SebClientSettingsAppDataDirectory   { get; set; }
+		public static string XulRunnerAdditionalDictionariesDirectory { get; set; }
         public static string XulRunnerDirectory { get; set; }
         public static string XulSebDirectory    { get; set; }
         public static string SebClientSettingsProgramDataFile;
@@ -382,10 +383,13 @@ namespace SebWindowsClient.ConfigurationUtils
             StringBuilder sebClientDirectoryBuilder = new StringBuilder(ProgramFilesX86Directory).Append("\\").Append(PRODUCT_NAME).Append("\\");
             SebClientDirectory = sebClientDirectoryBuilder.ToString();
 
-            // Set the location of the XulRunnerDirectory
-            //StringBuilder xulRunnerDirectoryBuilder = new StringBuilder(SebClientDirectory).Append(XUL_RUNNER_DIRECTORY).Append("\\");
-            //XulRunnerDirectory = xulRunnerDirectoryBuilder.ToString();
-            StringBuilder xulRunnerDirectoryBuilder = new StringBuilder(SEB_BROWSER_DIRECTORY).Append("\\").Append(XUL_RUNNER_DIRECTORY).Append("\\");
+			// The directory into which additional dictionaries are extracted.
+			XulRunnerAdditionalDictionariesDirectory = Path.Combine(SebClientSettingsAppDataDirectory, "Dictionaries");
+
+			// Set the location of the XulRunnerDirectory
+			//StringBuilder xulRunnerDirectoryBuilder = new StringBuilder(SebClientDirectory).Append(XUL_RUNNER_DIRECTORY).Append("\\");
+			//XulRunnerDirectory = xulRunnerDirectoryBuilder.ToString();
+			StringBuilder xulRunnerDirectoryBuilder = new StringBuilder(SEB_BROWSER_DIRECTORY).Append("\\").Append(XUL_RUNNER_DIRECTORY).Append("\\");
             XulRunnerDirectory = xulRunnerDirectoryBuilder.ToString();
 
             // Set the location of the XulSebDirectory

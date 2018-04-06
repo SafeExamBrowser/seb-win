@@ -106,6 +106,51 @@ namespace SebWindowsClient.ConfigurationUtils
 		}
 
 		/// <summary>
+		/// Compresses the entire specified directory (preserving its relative structure) and returns the data as Base64-encoded string.
+		/// </summary>
+		public string CompressAndEncodeEntireDirectory(string path)
+		{
+			using (var stream = new MemoryStream())
+			using (var zip = new ZipFile())
+			{
+				var data = default(string);
+				var directory = new DirectoryInfo(path);
+
+				zip.AddDirectory(path, directory.Name);
+				zip.Save(stream);
+				data = base64_encode(stream.ToArray());
+
+				return data;
+			}
+		}
+
+		/// <summary>
+		/// Decodes the given Base64-encoded archive into the specified target directory, overwrites existing files if the overwrite flag
+		/// is set and returns the absolute paths of all extracted elements.
+		/// </summary>
+		public IEnumerable<string> DecodeAndDecompressDirectory(string base64, string targetDirectory, bool overwrite = true)
+		{
+			var data = base64_decode(base64);
+			var paths = new List<string>();
+			var policy = overwrite ? ExtractExistingFileAction.OverwriteSilently : ExtractExistingFileAction.DoNotOverwrite;
+
+			using (var zipStream = new MemoryStream(data))
+			using (var zip = ZipFile.Read(zipStream))
+			{
+				foreach (var entry in zip.Entries)
+				{
+					var path = Path.Combine(targetDirectory, entry.FileName.Replace('/', '\\'));
+
+					entry.ExtractExistingFile = policy;
+					entry.Extract(targetDirectory);
+					paths.Add(path);
+				}
+			}
+
+			return paths;
+		}
+
+		/// <summary>
 		/// Saves the file to a temporary directory and returns the path to the file (without filename)
 		/// </summary>
 		/// <param name="base64">the encoded and compressed file content</param>

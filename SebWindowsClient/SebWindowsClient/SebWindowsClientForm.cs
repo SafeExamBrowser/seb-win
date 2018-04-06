@@ -460,6 +460,12 @@ namespace SebWindowsClient
 				{
 					xulRunnerArgumentsBuilder.Append(" -profile \"").Append(SEBClientInfo.SebClientSettingsAppDataDirectory).Append("Profiles\"");
 				}
+
+				if (!(userDefinedArguments.ToLower()).Contains("-dictionaries"))
+				{
+					xulRunnerArgumentsBuilder.Append($@" -dictionaries ""{SEBClientInfo.XulRunnerAdditionalDictionariesDirectory}""");
+				}
+
 				// If logging is enabled in settings and there is no custom xulrunner -logfile argument 
 				if (!userDefinedArguments.ToLower().Contains("-logpath") && (bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableLogging))
 				{
@@ -1805,7 +1811,16 @@ namespace SebWindowsClient
                 // Disable unwanted keys.
                 SebKeyCapture.FilterKeys = true;
 
-                try
+				try
+				{
+					ExtractAdditionalDictionaries();
+				}
+				catch (Exception e)
+				{
+					Logger.AddError("Failed to extract additional dictionaries!", null, e);
+				}
+
+				try
                 {
                     Logger.AddInformation("adding allowed processes to taskbar");
                     addPermittedProcessesToTS();
@@ -1848,7 +1863,50 @@ namespace SebWindowsClient
 			}
 		}
 
-        private static void MonitorProcesses()
+		private void ExtractAdditionalDictionaries()
+		{
+			var compressor = new FileCompressor();
+			var root = SEBClientInfo.XulRunnerAdditionalDictionariesDirectory;
+
+			if (!Directory.Exists(root))
+			{
+				Directory.CreateDirectory(root);
+			}
+
+			Logger.AddInformation($"Directory for additional dictionaries: '{root}'");
+
+			foreach (DictObj dictionary in SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalDictionaries] as ListObj)
+			{
+				var data = dictionary[SEBSettings.KeyAdditionalDictionaryData] as string;
+				var locale = dictionary[SEBSettings.KeyAdditionalDictionaryLocale] as string;
+
+				Logger.AddInformation($"Extracting data for '{locale}'...");
+
+				var paths = compressor.DecodeAndDecompressDirectory(data, root);
+
+				foreach (var path in paths)
+				{
+					if (File.Exists(path) && Path.GetFileNameWithoutExtension(path) != locale)
+					{
+						RenameFile(path, locale);
+					}
+				}
+			}
+		}
+
+		private void RenameFile(string path, string newName)
+		{
+			var destination = Path.Combine(Path.GetDirectoryName(path), $"{newName}{Path.GetExtension(path)}");
+
+			if (File.Exists(destination))
+			{
+				File.Delete(destination);
+			}
+
+			File.Move(path, destination);
+		}
+
+		private static void MonitorProcesses()
         {
 
             //This prevents the not allowed executables from poping up

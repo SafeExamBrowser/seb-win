@@ -35,7 +35,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -206,6 +205,9 @@ namespace SebWindowsClient.ConfigurationUtils
 
 			//Remove all AdditionalResourceData from settings
 			RecursivelyRemoveAdditionalResourceData((ListObj)xulRunnerSettings[SEBSettings.KeyAdditionalResources]);
+
+			// The additional dictionary data is being extracted by the .NET-part, the browser only expects a path to the respective folder
+			xulRunnerSettings.Remove(SEBSettings.KeyAdditionalDictionaries);
 
 			// The installed operating system culture for correct website localization
 			xulRunnerSettings.Add("browserLanguage", System.Globalization.CultureInfo.CurrentCulture.Name);

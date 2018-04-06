@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using SebWindowsClient;
-using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.ConfigurationUtils;
+using SebWindowsClient.CryptographyUtils;
 
 
 namespace SebWindowsConfig
 {
-    public partial class SebWindowsConfigForm : Form
+	public partial class SebWindowsConfigForm : Form
     {
 
         // *************************
@@ -215,33 +215,6 @@ namespace SebWindowsConfig
         static  String[]  KeyProxyProtocolType      = new  String[7];
         static  String[]  KeyProxyProtocolAttribute = new  String[7];
         static  String[]  KeyProxyProtocolEnable    = new  String[7];
-
-
-        // Global variable: index of current table row (selected row)
-        // Global variable:   is the current table row a title row?
-        // Lookup table: row  ->   ruleIndex (of current table row)
-        // Lookup table: row  -> actionIndex (of current table row)
-        // Lookup table: row  -> is this row a title row (or action row)?
-        // Lookup table: rule -> startRow of rule (in the table)
-        // Lookup table: rule ->   endRow of rule (in the table)
-        // Lookup table: rule -> show this rule or not (expand/collapse)?
-        static int           urlFilterTableRow;
-        static Boolean       urlFilterTableRowIsTitle;
-        static List<int>     urlFilterTableRuleIndex   = new List<int    >();
-        static List<int>     urlFilterTableActionIndex = new List<int    >();
-        static List<Boolean> urlFilterTableIsTitleRow  = new List<Boolean>();
-        static List<int>     urlFilterTableStartRow    = new List<int    >();
-        static List<int>     urlFilterTableEndRow      = new List<int    >();
-        static List<Boolean> urlFilterTableShowRule    = new List<Boolean>();
-
-        // Two-dimensional array: shall this cell be disabled (painted over)?
-        static List<List<Boolean>> urlFilterTableCellIsDisabled = new List<List<Boolean>>();
-
-        // Default disabled values for title row (rule) and action row (action)
-        static Boolean[] urlFilterTableDisabledColumnsOfRule   = { false, false,  true, false,  true };
-        static Boolean[] urlFilterTableDisabledColumnsOfAction = {  true, false, false, false, false };
-
-
 
         // ***********************
         // Methods for GUI widgets
@@ -551,17 +524,6 @@ namespace SebWindowsConfig
 
             listBoxPermittedProcessOS .Items.AddRange(StringOS);
             listBoxProhibitedProcessOS.Items.AddRange(StringOS);
-
-            // Help data structures for table access to URL Filter Rules
-            urlFilterTableRow           = -1;
-            urlFilterTableRowIsTitle    = false;
-            urlFilterTableRuleIndex     .Clear();
-            urlFilterTableActionIndex   .Clear();
-            urlFilterTableIsTitleRow    .Clear();
-            urlFilterTableStartRow      .Clear();
-            urlFilterTableEndRow        .Clear();
-            urlFilterTableShowRule      .Clear();
-            urlFilterTableCellIsDisabled.Clear();
 
             // Auto-resize the columns and cells
           //dataGridViewPermittedProcesses  .AutoResizeColumns();

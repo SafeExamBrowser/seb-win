@@ -187,30 +187,6 @@ namespace SebWindowsConfig
 			currentFileSebConfigFile = Path.GetFileName     (fileName);
 			currentPathSebConfigFile = Path.GetFullPath     (fileName);
 
-			// After loading a new config file, reset the URL Filter Table indices
-			// to avoid errors, in case there was a non-empty URL Filter Table displayed
-			// in the DataGridViewURLFilterRules prior to loading the new config file.
-						urlFilterTableRow        = -1;
-						urlFilterTableRowIsTitle =  false;
-			SEBSettings.urlFilterRuleIndex       = -1;
-			SEBSettings.urlFilterActionIndex     = -1;
-
-			// Get the URL Filter Rules
-			SEBSettings.urlFilterRuleList = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterRules];
-
-			// If there are any filter rules, select first filter rule.
-			// If there are no  filter rules, select no    filter rule.
-			if  (SEBSettings.urlFilterRuleList.Count > 0)
-				 SEBSettings.urlFilterRuleIndex =  0;
-			else SEBSettings.urlFilterRuleIndex = -1;
-
-			// Initially show all filter rules with their actions (expanded view)
-			urlFilterTableShowRule.Clear();
-			for (int ruleIndex = 0; ruleIndex < SEBSettings.urlFilterRuleList.Count; ruleIndex++)
-			{
-				urlFilterTableShowRule.Add(true);
-			}
-
 			UpdateAllWidgetsOfProgram();
 			buttonRevertToLastOpened.Enabled = true;
 			Cursor.Current = Cursors.Default;
@@ -638,6 +614,8 @@ namespace SebWindowsConfig
 
 			// Add Url Filters
 			var filterControl = new FilterRuleControl();
+
+			SEBSettings.urlFilterRuleList = SEBSettings.settingsCurrent[SEBSettings.KeyURLFilterRules] as ListObj;
 
 			foreach (DictObj config in SEBSettings.urlFilterRuleList)
 			{

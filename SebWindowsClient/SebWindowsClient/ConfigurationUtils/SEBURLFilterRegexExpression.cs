@@ -223,7 +223,17 @@ namespace SebWindowsClient.ConfigurationUtils
             /// Query
             if (this.query != null)
             {
-                expressionString.AppendFormat("\\?{0}", StringForRegexFilter(this.query));
+                // Check for special case Query = "?." which means no query string is allowed
+                if (StringForRegexFilter(this.query).Equals("."))
+                {
+                    expressionString.AppendFormat("[^\\?]");
+                } else
+                {
+                    expressionString.AppendFormat("\\?{0}", StringForRegexFilter(this.query));
+                }
+            } else
+            {
+                expressionString.AppendFormat("(()|(\\?.*?))");
             }
 
             /// Fragment

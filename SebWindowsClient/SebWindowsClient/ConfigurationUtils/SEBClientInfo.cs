@@ -125,9 +125,9 @@ namespace SebWindowsClient.ConfigurationUtils
         public const string FILENAME_DLL_METRO = "MetroFramework.dll";
         public const string FILENAME_DLL_SERVICECONTRACTS = "SEBWindowsServiceContracts.dll";
         public const string FILENAME_DLL_INTEROP = "Interop.WUApiLib.dll";
-        public const string BROWSER_USERAGENT_DESKTOP = "Mozilla/5.0 (Windows NT 6.3; rv:41.0) Gecko/20100101 Firefox/41";
-        public const string BROWSER_USERAGENT_TOUCH = "Mozilla/5.0 (Windows NT 6.3; rv:41.0; Touch) Gecko/20100101 Firefox/41";
-        public const string BROWSER_USERAGENT_TOUCH_IPAD = "Mozilla/5.0 (iPad; CPU OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1";
+        public const string BROWSER_USERAGENT_DESKTOP = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0";
+        public const string BROWSER_USERAGENT_TOUCH = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0";
+        public const string BROWSER_USERAGENT_TOUCH_IPAD = "Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.3 Mobile/15E216 Safari/605.1.15";
         public const string BROWSER_USERAGENT_SEB = "SEB";
 
         public  const string END_OF_STRING_KEYWORD   = "---SEB---";

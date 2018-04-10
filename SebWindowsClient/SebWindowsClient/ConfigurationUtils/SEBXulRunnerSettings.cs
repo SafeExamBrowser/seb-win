@@ -184,8 +184,6 @@ namespace SebWindowsClient.ConfigurationUtils
 			//downloadDirectoryWin = downloadDirectoryWin.Replace(@"\", @"\\");
 			xulRunnerSettings[SEBSettings.KeyDownloadDirectoryWin] = downloadDirectoryWin;
 
-			// Add proper browser user agent string to XULRunner seb settings
-			
 			if ((bool)xulRunnerSettings[SEBSettings.KeyTouchOptimized] == true)
 			{
                 // Switch off XULRunner seb reload warnings
@@ -197,7 +195,8 @@ namespace SebWindowsClient.ConfigurationUtils
                 xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
 			}
 
-			xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion + 
+            // Add proper browser user agent string to XULRunner seb settings
+            xulRunnerSettings[SEBSettings.KeyBrowserUserAgent] = SEBClientInfo.BROWSER_USERAGENT_SEB + "/" + Application.ProductVersion + 
                 (String.IsNullOrEmpty((String)xulRunnerSettings[SEBSettings.KeyBrowserUserAgent]) ? "" : " " + xulRunnerSettings[SEBSettings.KeyBrowserUserAgent]);
 
 			// Set onscreen keyboard settings flag when touch optimized is enabled

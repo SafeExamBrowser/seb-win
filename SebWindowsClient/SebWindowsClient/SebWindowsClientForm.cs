@@ -434,7 +434,7 @@ namespace SebWindowsClient
 		/// ----------------------------------------------------------------------------------------
 		private bool StartXulRunner(string userDefinedArguments)
 		{
-			deleteXulRunnerProfileOnNewVersionOfSEB();
+			HandleXulRunnerProfile();
 
 			//StartXulRunnerWithSilentParameter();
 
@@ -568,7 +568,7 @@ namespace SebWindowsClient
 			}
 		}
 
-        private void deleteXulRunnerProfileOnNewVersionOfSEB()
+        private void HandleXulRunnerProfile()
 		{
 			Logger.AddInformation("Attempting to handle Firefox profile folder...");
 
@@ -576,10 +576,17 @@ namespace SebWindowsClient
 			{
 				var xulRunnerProfileFolder = string.Format(@"{0}Profiles\", SEBClientInfo.SebClientSettingsAppDataDirectory);
 				var versionFile = SEBClientInfo.SebClientSettingsAppDataDirectory + "SEBVersion";
+				var preferencesFile = Path.Combine(xulRunnerProfileFolder, "prefs.js");
 				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 				var previousVersion = string.Empty;
 
 				Logger.AddInformation("Firefox profile folder: " + xulRunnerProfileFolder);
+
+				if (File.Exists(preferencesFile))
+				{
+					File.Delete(preferencesFile);
+					Logger.AddInformation($"Deleted Firefox preferences ({preferencesFile}).");
+				}
 
 				//If it's not a new version of SEB, skip this
 				if (File.Exists(versionFile) && (previousVersion = File.ReadAllText(versionFile)) == currentVersion)

@@ -1462,18 +1462,15 @@ namespace SebWindowsClient
 			//Modify Working Area
 			SEBWorkingAreaHandler.SetTaskBarSpaceHeight(taskbarHeight);
 
-			if (this.FormBorderStyle != FormBorderStyle.None)
-			{
-				this.FormBorderStyle = FormBorderStyle.None;
+			this.FormBorderStyle = FormBorderStyle.None;
 
-				// sezt das formular auf die Taskbar
-				SetParent(this.Handle, GetDesktopWindow());
-				//this.BackColor = Color.Red;
+			// sezt das formular auf die Taskbar
+			SetParent(this.Handle, GetDesktopWindow());
+			//this.BackColor = Color.Red;
 
-				this.TopMost = true;
+			this.TopMost = true;
 
-				PlaceFormOnDesktop(false, true);
-			}
+			PlaceFormOnDesktop(false, true);
 			
 			return true;
 		}

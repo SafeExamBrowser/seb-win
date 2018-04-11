@@ -182,7 +182,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 // Re-Initialize SEB desktop according to the new settings
                 if (!SebWindowsClientMain.InitSEBDesktop()) return false;
 
-                if (SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
+                if (SEBClientInfo.SebWindowsClientForm.OpenSEBForm(true))
                 {
 					// Activate SebWindowsClient so the message box gets focus
 					//SEBClientInfo.SebWindowsClientForm.Activate();

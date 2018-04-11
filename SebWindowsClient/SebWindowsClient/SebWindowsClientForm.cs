@@ -1844,7 +1844,7 @@ namespace SebWindowsClient
 				try
                 {
                     Logger.AddInformation("adding allowed processes to taskbar");
-                    addPermittedProcessesToTS(reconfiguring);
+                    addPermittedProcessesToTS(reconfiguring && !isStartup);
                 }
                 catch (Exception ex)
                 {

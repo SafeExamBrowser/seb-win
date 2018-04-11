@@ -141,7 +141,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
                 //return if initializing SEB with openend preferences was successful
                 Logger.AddInformation("Attempting to OpenSEBForm for reconfiguration");
-                var ret = SEBClientInfo.SebWindowsClientForm.OpenSEBForm();
+                var ret = SEBClientInfo.SebWindowsClientForm.OpenSEBForm(true);
                 Logger.AddInformation("Successfully OpenSEBForm for reconfiguration");
                 return ret;
             }

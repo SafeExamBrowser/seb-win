@@ -65,6 +65,8 @@ namespace SebWindowsClient
 
 	public partial class SebWindowsClientForm : Form
 	{
+		private static bool isStartup = true;
+
 		[DllImport("user32.dll")]
 		private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
@@ -324,7 +326,7 @@ namespace SebWindowsClient
 				}
 				Logger.AddInformation("Succesfully read the new configuration, length is " + sebSettings.Length);
 
-				if (!ReconfigureWithSettings(sebSettings))
+				if (!ReconfigureWithSettings(sebSettings, fromFile: true))
 				{
 					Logger.AddInformation("ReconfigureWithSettings returned false, this means the user canceled when entering the password, didn't enter a right one after 5 attempts or new settings were corrupted, exiting");
 					Logger.AddError("Settings could not be decrypted or stored.", this, null, null);
@@ -340,7 +342,7 @@ namespace SebWindowsClient
 		/// </summary>
 		/// <param name="sebSettings"></param>
 		/// <returns></returns>
-		public bool ReconfigureWithSettings(byte[] sebSettings, bool suppressFileFormatError = false)
+		public bool ReconfigureWithSettings(byte[] sebSettings, bool suppressFileFormatError = false, bool fromFile = false)
 		{
 			var reconfigure = new Func<bool>(() =>
 			{
@@ -365,6 +367,14 @@ namespace SebWindowsClient
 					return false;
 				}
 				//SEBSplashScreen.CloseSplash();
+
+				if (fromFile && !isStartup)
+				{
+					var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
+					var xulRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
+
+					SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reconfigure, new { configBase64 = xulRunnerParameters }));
+				}
 
 				Logger.AddInformation("Successfully StoreDecryptedSEBSettings");
 				SebWindowsClientMain.LoadingSebFile(false);
@@ -712,12 +722,12 @@ namespace SebWindowsClient
 		/// and start permitted processes which have the autostart option set 
 		/// </summary>
 		/// ----------------------------------------------------------------------------------------
-		private void addPermittedProcessesToTS()
+		private void addPermittedProcessesToTS(bool reconfiguring = false)
 		{
 			// First clear the permitted processes toolstrip/lists in case of a SEB restart
 
 			var start = 0;
-			if(!SEBXULRunnerWebSocketServer.HasBeenReconfiguredByMessage)
+			if(!SEBXULRunnerWebSocketServer.HasBeenReconfiguredByMessage && !reconfiguring)
 			{
 				taskbarToolStrip.Items.Clear();
 				permittedProcessesCalls.Clear();
@@ -788,6 +798,13 @@ namespace SebWindowsClient
 										{
 											//Get Process from WindowHandle by name if we have an identifier
 											proc = SEBWindowHandler.GetWindowHandleByTitle(identifier).GetProcess();
+										}
+
+										if (reconfiguring && !isStartup && name == SEBClientInfo.XUL_RUNNER)
+										{
+											runningApplications.RemoveAt(j);
+
+											continue;
 										}
 
 										// If the flag strongKill is set, then the process is killed without asking the user
@@ -1178,7 +1195,7 @@ namespace SebWindowsClient
 					}
 					else
 					{
-						if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser))
+						if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyEnableSebBrowser) && isStartup)
 						{
 							// Start XULRunner
 							StartXulRunner((string)permittedProcessesCalls[permittedProcessesIndex]);
@@ -1717,7 +1734,7 @@ namespace SebWindowsClient
 		/// Open SEB form.
 		/// </summary>
 		/// ----------------------------------------------------------------------------------------
-		public bool OpenSEBForm()
+		public bool OpenSEBForm(bool reconfiguring = false)
 		{
 			Logger.AddInformation("entering Opensebform");
 			if ((bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyShowTaskBar))
@@ -1827,7 +1844,7 @@ namespace SebWindowsClient
 				try
                 {
                     Logger.AddInformation("adding allowed processes to taskbar");
-                    addPermittedProcessesToTS();
+                    addPermittedProcessesToTS(reconfiguring);
                 }
                 catch (Exception ex)
                 {
@@ -1855,6 +1872,8 @@ namespace SebWindowsClient
                     sebApplicationChooserForm.Show();
                     sebApplicationChooserForm.Visible = false;
                 }
+
+				isStartup = false;
 
                 return true;
             }

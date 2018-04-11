@@ -465,4 +465,10 @@
   <data name="cannotOpenSEBConfigMessage" xml:space="preserve">
     <value>Opening an external SEB config is disabled in current settings. Start the SEB application directly.</value>
   </data>
+  <data name="AdditionalResourceConfirmMessage" xml:space="preserve">
+    <value>Would you like to open the resource "%%TITLE%%"?</value>
+  </data>
+  <data name="AdditionalResourceConfirmTitle" xml:space="preserve">
+    <value>Open Resource?</value>
+  </data>
 </root>

@@ -61,6 +61,24 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Would you like to open the resource &quot;%%TITLE%%&quot;?.
+        /// </summary>
+        public static string AdditionalResourceConfirmMessage {
+            get {
+                return ResourceManager.GetString("AdditionalResourceConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Resource?.
+        /// </summary>
+        public static string AdditionalResourceConfirmTitle {
+            get {
+                return ResourceManager.GetString("AdditionalResourceConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebSocket Port Blocked.
         /// </summary>
         public static string alertWebSocketPortBlocked {

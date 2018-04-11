@@ -438,4 +438,10 @@
   <data name="WlanYouCanOnlyConnectToNetworks" xml:space="preserve">
     <value>Sie können sich nur mit Netzwerken verbinden</value>
   </data>
+  <data name="AdditionalResourceConfirmMessage" xml:space="preserve">
+    <value>Möchten Sie die Ressource "%%TITLE%%" öffnen?</value>
+  </data>
+  <data name="AdditionalResourceConfirmTitle" xml:space="preserve">
+    <value>Ressource öffnen?</value>
+  </data>
 </root>

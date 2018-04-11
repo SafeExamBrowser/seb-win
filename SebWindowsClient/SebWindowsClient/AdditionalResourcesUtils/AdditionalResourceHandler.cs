@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.XULRunnerCommunication;
-using DictObj = System.Collections.Generic.Dictionary<string,object>;
+using DictObj = System.Collections.Generic.Dictionary<string, object>;
 using ListObj = System.Collections.Generic.List<object>;
 
 namespace SebWindowsClient.AdditionalResourcesUtils
 {
-    public class AdditionalResourceHandler : IAdditionalResourceHandler
+	public class AdditionalResourceHandler : IAdditionalResourceHandler
     {
         private readonly IFileCompressor _fileCompressor;
 
@@ -55,14 +55,30 @@ namespace SebWindowsClient.AdditionalResourcesUtils
 
         private void OpenResource(DictObj resource)
         {
-            if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
-            {
-                OpenEmbededResource(resource);
-            }
-            else if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]))
-            {
-                SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
-            }
+			var showMessage = resource[SEBSettings.KeyAdditionalResourcesConfirm] is true;
+
+			if (showMessage)
+			{
+				var title = resource[SEBSettings.KeyAdditionalResourcesTitle] as string;
+				var customMessage = resource[SEBSettings.KeyAdditionalResourcesConfirmText] as string;
+				var defaultMessage = SEBUIStrings.AdditionalResourceConfirmMessage;
+				var message = (String.IsNullOrWhiteSpace(customMessage) ? defaultMessage : customMessage).Replace("%%TITLE%%", title);
+				var result = SEBMessageBox.Show(SEBUIStrings.AdditionalResourceConfirmTitle, message, MessageBoxIcon.Question, MessageBoxButtons.YesNo);
+
+				if (result != DialogResult.Yes)
+				{
+					return;
+				}
+			}
+
+			if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesResourceData]))
+			{
+				OpenEmbededResource(resource);
+			}
+			else if (!string.IsNullOrEmpty((string)resource[SEBSettings.KeyAdditionalResourcesUrl]))
+			{
+				SEBXULRunnerWebSocketServer.SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.AdditionalResources, new { id = resource[SEBSettings.KeyAdditionalResourcesIdentifier] }));
+			}
         }
 
         private void OpenEmbededResource(DictObj resource)

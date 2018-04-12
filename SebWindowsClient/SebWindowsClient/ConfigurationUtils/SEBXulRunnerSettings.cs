@@ -139,11 +139,6 @@ namespace SebWindowsClient.ConfigurationUtils
 		/// </summary>
 		public static string XULRunnerConfigDictionarySerialize(Dictionary<string, object> xulRunnerSettings)
 		{
-			// Convert new URL Filter rules to XUL seb2 rules
-			// and add Start URL to allowed rules
-			SEBURLFilter urlFilter = new SEBURLFilter();
-			urlFilter.UpdateFilterRules();
-
 			// Add current Browser Exam Key
 			if ((bool)xulRunnerSettings[SEBSettings.KeySendBrowserExamKey])
 			{

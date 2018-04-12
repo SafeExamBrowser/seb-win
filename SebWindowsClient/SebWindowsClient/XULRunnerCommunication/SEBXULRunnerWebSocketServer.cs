@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.NetworkInformation;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using Fleck;
 using Newtonsoft.Json;
+using SebWindowsClient.AdditionalResourcesUtils;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using SebWindowsClient.AdditionalResourcesUtils;
 
 namespace SebWindowsClient.XULRunnerCommunication
 {
-    /// <summary>
-    /// WebSocket Server to communicate with the XULRunner
-    /// </summary>
-    public class SEBXULRunnerWebSocketServer
+	/// <summary>
+	/// WebSocket Server to communicate with the XULRunner
+	/// </summary>
+	public class SEBXULRunnerWebSocketServer
     {
         public static bool Started = false;
 
@@ -134,10 +134,6 @@ namespace SebWindowsClient.XULRunnerCommunication
             if(SEBClientInfo.SebWindowsClientForm.ReconfigureWithSettings(obj))
             {
                 Logger.AddInformation("SEB was successfully reconfigured using the downloaded Config File data");
-                // Convert new URL Filter rules to XUL seb2 rules
-                // and add Start URL to allowed rules
-                SEBURLFilter urlFilter = new SEBURLFilter();
-                urlFilter.UpdateFilterRules();
 
                 // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
                 var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);

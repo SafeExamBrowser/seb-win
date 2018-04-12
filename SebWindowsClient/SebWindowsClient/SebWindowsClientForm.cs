@@ -453,11 +453,6 @@ namespace SebWindowsClient
 			if (userDefinedArguments == null) userDefinedArguments="";
 			try
 			{
-                // Convert new URL Filter rules to XUL seb2 rules
-                // and add Start URL to allowed rules
-                SEBURLFilter urlFilter = new SEBURLFilter();
-                urlFilter.UpdateFilterRules();
-
                 // Create JSON object with XULRunner parameters to pass to firefox.exe as base64 string
                 var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
 				string XULRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);

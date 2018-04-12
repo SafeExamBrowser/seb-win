@@ -190,6 +190,9 @@ namespace SebWindowsClient.ConfigurationUtils
             if (this.host != null)
             {
                 hostPort = StringForRegexFilter(this.host);
+            } else
+            {
+                hostPort = ".*?";
             }
 
             /// Port

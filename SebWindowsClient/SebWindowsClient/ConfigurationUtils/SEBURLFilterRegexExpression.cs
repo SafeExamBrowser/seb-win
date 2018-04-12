@@ -156,17 +156,20 @@ namespace SebWindowsClient.ConfigurationUtils
                 {
                     // Add regex command characters for matching at start and end of a line (part)
                     // and regex for no string allowed
+                    string regexString = @"^$";
+                    try
+                    {
+                        Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
+                        return regex;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                 }
-                string regexString = @"^$";
-
-                try
+                else
                 {
-                    Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
-                    return regex;
-                }
-                catch (Exception)
-                {
-                    throw;
+                    return RegexForFilterString(filterString);
                 }
             }
         }

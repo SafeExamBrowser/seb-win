@@ -2,7 +2,7 @@
 //  SEBXulRunnerSettings.cs
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
+//  Copyright (c) 2010-2018 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss,
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -25,7 +25,7 @@
 //  The Initial Developers of the Original Code are Viktor Tomas, 
 //  Dirk Bauer, Daniel R. Schneider, Pascal Wyss.
 //  Portions created by Viktor Tomas, Dirk Bauer, Daniel R. Schneider, Pascal Wyss
-//  are Copyright (c) 2010-2016 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
+//  are Copyright (c) 2010-2018 Viktor Tomas, Dirk Bauer, Daniel R. Schneider, 
 //  Pascal Wyss, ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.
@@ -139,11 +139,6 @@ namespace SebWindowsClient.ConfigurationUtils
 		/// </summary>
 		public static string XULRunnerConfigDictionarySerialize(Dictionary<string, object> xulRunnerSettings)
 		{
-			// Convert new URL Filter rules to XUL seb2 rules
-			// and add Start URL to allowed rules
-			SEBURLFilter urlFilter = new SEBURLFilter();
-			urlFilter.UpdateFilterRules();
-
 			// Add current Browser Exam Key
 			if ((bool)xulRunnerSettings[SEBSettings.KeySendBrowserExamKey])
 			{

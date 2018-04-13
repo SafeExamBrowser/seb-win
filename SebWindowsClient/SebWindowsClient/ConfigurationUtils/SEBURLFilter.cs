@@ -313,10 +313,18 @@ namespace SebWindowsClient.ConfigurationUtils
 
             string urlQuery = URLToFilter.GetComponents(UriComponents.Query, UriFormat.Unescaped);
             filterComponent = filterExpression.query;
-            if (filterComponent != null &&
-                !Regex.IsMatch(urlQuery, filterComponent.ToString(), RegexOptions.IgnoreCase))
+            if (filterComponent != null)
             {
-                return false;
+                // If there's a query filter component, then we need to even filter empty URL query strings
+                // as the filter might either allow some specific queries or no query at all ("?." query filter)
+                if (urlQuery == null)
+                {
+                    urlQuery = "";
+                } 
+                if (!Regex.IsMatch(urlQuery, filterComponent.ToString(), RegexOptions.IgnoreCase))
+                {
+                    return false;
+                }
             }
 
             string urlFragment = URLToFilter.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);

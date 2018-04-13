@@ -35,21 +35,41 @@ namespace SebWindowsClient.ConfigurationUtils
                 this.user = regexMatch.Groups[2].Value;
                 this.password = regexMatch.Groups[3].Value;
                 this.host = regexMatch.Groups[4].Value;
-                string portNumber = regexMatch.Groups[5].Value;
 
-                // We only want a port if the filter expression string explicitely defines one!
-                if (portNumber.Length == 0 || portNumber=="*")
+                // Treat a special case when a query is interpreted as part of the host address
+                if (this.host.Contains("?"))
                 {
+                    string splitURLRegexPattern2 = @"([^\?#]*)?(?:\?([^#]*))?(?:#(.*))?";
+                    Regex splitURLRegex2 = new Regex(splitURLRegexPattern2);
+                    Match regexMatch2 = splitURLRegex2.Match(this.host);
+                    if (regexMatch.Success == false)
+                    {
+                        return;
+                    }
+                    this.host = regexMatch2.Groups[1].Value;
                     this.port = null;
+                    this.path = "";
+                    this.query = regexMatch2.Groups[2].Value;
+                    this.fragment = regexMatch2.Groups[3].Value;
                 }
                 else
                 {
-                    this.port = UInt16.Parse(portNumber);
-                }
+                    string portNumber = regexMatch.Groups[5].Value;
 
-                this.path = regexMatch.Groups[6].Value.Trim(new char[] { '/' });
-                this.query = regexMatch.Groups[7].Value;
-                this.fragment = regexMatch.Groups[8].Value;
+                    // We only want a port if the filter expression string explicitely defines one!
+                    if (portNumber.Length == 0 || portNumber == "*")
+                    {
+                        this.port = null;
+                    }
+                    else
+                    {
+                        this.port = UInt16.Parse(portNumber);
+                    }
+
+                    this.path = regexMatch.Groups[6].Value.Trim(new char[] { '/' });
+                    this.query = regexMatch.Groups[7].Value;
+                    this.fragment = regexMatch.Groups[8].Value;
+                }
             }
         }
 

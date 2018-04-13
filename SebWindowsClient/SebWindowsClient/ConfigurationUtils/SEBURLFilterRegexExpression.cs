@@ -16,7 +16,6 @@ namespace SebWindowsClient.ConfigurationUtils
         public Regex fragment;
 
 
-
         public SEBURLFilterRegexExpression(string filterExpressionString)
             {
             SEBURLFilterExpression URLFromString = new SEBURLFilterExpression(filterExpressionString);
@@ -28,7 +27,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 this.host = RegexForHostFilterString(URLFromString.host);
                 this.port = URLFromString.port;
                 this.path = RegexForPathFilterString(URLFromString.path);
-                this.query = RegexForFilterString(URLFromString.query);
+                this.query = RegexForQueryFilterString(URLFromString.query);
                 this.fragment = RegexForFilterString(URLFromString.fragment);
             }
             catch (Exception)
@@ -36,7 +35,6 @@ namespace SebWindowsClient.ConfigurationUtils
                 throw;
             }
         }
-
 
 
         public static Regex RegexForFilterString(string filterString)
@@ -63,7 +61,6 @@ namespace SebWindowsClient.ConfigurationUtils
                 }
             }
         }
-
 
 
         public static Regex RegexForHostFilterString(string filterString)
@@ -147,6 +144,38 @@ namespace SebWindowsClient.ConfigurationUtils
         }
 
 
+        public static Regex RegexForQueryFilterString(string filterString)
+        {
+            if (string.IsNullOrEmpty(filterString))
+            {
+                return null;
+            }
+            else
+            {
+                if (filterString.Equals("."))
+                {
+                    // Add regex command characters for matching at start and end of a line (part)
+                    // and regex for no string allowed
+                    string regexString = @"^$";
+                    try
+                    {
+                        Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
+                        return regex;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                else
+                {
+                    return RegexForFilterString(filterString);
+                }
+            }
+        }
+
+
+
         public override string ToString()
         {
             StringBuilder expressionString = new StringBuilder();
@@ -190,6 +219,9 @@ namespace SebWindowsClient.ConfigurationUtils
             if (this.host != null)
             {
                 hostPort = StringForRegexFilter(this.host);
+            } else
+            {
+                hostPort = ".*?";
             }
 
             /// Port

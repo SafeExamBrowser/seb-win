@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading;
-using Ionic.Zip;
 using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.ConfigurationUtils
@@ -62,11 +62,15 @@ namespace SebWindowsClient.ConfigurationUtils
 
 		public string CompressAndEncodeFile(string filename)
 		{
-			var zip = new ZipFile();
-			zip.AddFile(filename,"");
-			var stream = new MemoryStream();
-			zip.Save(stream);
+		    using (var stream = new MemoryStream())
+		    {
+		        using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create))
+		        {
+		            var entryName = Path.GetFileName(filename);
+		            archive.CreateEntryFromFile(filename, entryName);
+		        }
 			return base64_encode(stream.ToArray());
+		}
 		}
 
 		public string CompressAndEncodeIcon(Icon icon)
@@ -95,32 +99,43 @@ namespace SebWindowsClient.ConfigurationUtils
 			return CompressAndEncodeFile(TempIconFilename);
 		}
 
-		public string CompressAndEncodeDirectory(string path, out List<string> containingFilenames)
+		public string CompressAndEncodeDirectory(string path, out List<string> containingFileNames)
 		{
-			var zip = new ZipFile();
-			zip.AddDirectory(path, "");
-			var stream = new MemoryStream();
-			zip.Save(stream);
-			containingFilenames = zip.Entries.Select(x => x.FileName.Replace(path, "")).ToList();
+		    using (var stream = new MemoryStream())
+		{
+		        using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create))
+		        {
+		            var fileNames = Directory.GetFiles(path);
+		            containingFileNames = new List<string>();
+		            foreach (var fileName in fileNames)
+		            {
+		                var entryName = Path.GetFileName(fileName);
+		                archive.CreateEntryFromFile(fileName, entryName);
+		                containingFileNames.Add(entryName);
+		            }
+		        }
 			return base64_encode(stream.ToArray());
+		}
 		}
 
 		/// <summary>
 		/// Compresses the entire specified directory (preserving its relative structure) and returns the data as Base64-encoded string.
 		/// </summary>
+		// TODO Verify this works correctly
 		public string CompressAndEncodeEntireDirectory(string path)
 		{
 			using (var stream = new MemoryStream())
-			using (var zip = new ZipFile())
 			{
-				var data = default(string);
-				var directory = new DirectoryInfo(path);
-
-				zip.AddDirectory(path, directory.Name);
-				zip.Save(stream);
-				data = base64_encode(stream.ToArray());
-
-				return data;
+		        using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create))
+		        {
+		            var fileNames = Directory.GetFiles(path);
+		            foreach (var fileName in fileNames)
+		            {
+		                var entryName = Path.GetFileName(fileName);
+		                archive.CreateEntryFromFile(fileName, entryName);
+		            }
+		        }
+		        return base64_encode(stream.ToArray());
 			}
 		}
 
@@ -132,22 +147,21 @@ namespace SebWindowsClient.ConfigurationUtils
 		{
 			var data = base64_decode(base64);
 			var paths = new List<string>();
-			var policy = overwrite ? ExtractExistingFileAction.OverwriteSilently : ExtractExistingFileAction.DoNotOverwrite;
 
 			using (var zipStream = new MemoryStream(data))
-			using (var zip = ZipFile.Read(zipStream))
+		    {
+		        using (var zip = new ZipArchive(zipStream))
 			{
 				foreach (var entry in zip.Entries)
 				{
-					var path = Path.Combine(targetDirectory, entry.FileName.Replace('/', '\\'));
-
-					entry.ExtractExistingFile = policy;
-					entry.Extract(targetDirectory);
+		                var path = Path.Combine(targetDirectory, entry.FullName.Replace('/', '\\'));
+		                entry.ExtractToFile(path, overwrite);
 					paths.Add(path);
 				}
 			}
 
 			return paths;
+		}
 		}
 
 		/// <summary>
@@ -168,8 +182,8 @@ namespace SebWindowsClient.ConfigurationUtils
 
 			var data = base64_decode(base64);
 			var stream = new MemoryStream(data);
-			var zip = ZipFile.Read(stream);
-			zip.ExtractAll(tempPath);
+		    var zip = new ZipArchive(stream);
+			zip.ExtractToDirectory(tempPath);
 
 			return tempPath;
 		}
@@ -178,31 +192,32 @@ namespace SebWindowsClient.ConfigurationUtils
 		{
 			var data = base64_decode(base64);
 			var zipStream = new MemoryStream(data);
-			var zip = ZipFile.Read(zipStream);
-			var stream = new MemoryStream();
-			zip.Entries.First().Extract(stream);
-			return stream;
+			var zip = new ZipArchive(zipStream);
+            var returnStream = new MemoryStream();
+
+            var stream = zip.Entries.First().Open();
+		    stream.CopyTo(returnStream);
+		    return returnStream;
 		}
 
 		public IEnumerable<string> GetFileList(string base64)
 		{
 			var data = base64_decode(base64);
 			var zipStream = new MemoryStream(data);
-			var zip = ZipFile.Read(zipStream);
+		    var zip = new ZipArchive(zipStream);
 
-			return zip.EntryFileNames;
+			return zip.Entries.Select(f=>f.Name);
 		}
 
 		private string base64_encode(byte[] data)
 		{
 			if (data == null)
-				throw new ArgumentNullException("data");
+				throw new ArgumentNullException(nameof(data));
 			return Convert.ToBase64String(data);
 		}
 		private byte[] base64_decode(string encodedData)
 		{
-			byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
-			return encodedDataAsBytes;
+			return Convert.FromBase64String(encodedData);
 		}
 	}
 }

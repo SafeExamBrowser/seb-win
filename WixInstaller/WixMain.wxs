@@ -180,20 +180,23 @@
       <Component Id="FleckDLL" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4742}">
         <File Source="$(var.Fleck.TargetPath)" />
       </Component>
-      <Component Id="IconLibDLL" Guid="{F797C5AE-87C5-455E-9A32-C6B4BB181FDF}">
-        <File Source="$(var.IconLib.TargetPath)" />
+      <Component Id="IconExtractorDLL" Guid="{C4D4CE9E-E1F6-44ED-BEB8-3B8E60915134}">
+        <File Source="$(var.IconExtractor.TargetPath)" />
       </Component>
       <Component Id="MetroFramework" Guid="{1565CAB5-6C9B-4503-ABE9-7A922C92B5E2}">
-        <File Source="$(var.MetroFramework.TargetPath)" />
+        <File Source="$(var.SebWindowsClient.TargetDir)\MetroFramework.dll" Name="MetroFramework.dll" />
+      </Component>
+      <Component Id="MetroFrameworkDesign" Guid="{83097936-494F-47DA-A64A-01491A29206C}">
+        <File Source="$(var.SebWindowsClient.TargetDir)\MetroFramework.Design.dll" Name="MetroFramework.Design.dll" />
+      </Component>
+      <Component Id="MetroFrameworkFonts" Guid="{35CF5340-6E27-4D17-A415-D90965E4C405}">
+        <File Source="$(var.SebWindowsClient.TargetDir)\MetroFramework.Fonts.dll" Name="MetroFramework.Fonts.dll" />
       </Component>
       <Component Id="SEBWindowsServiceContractsDLL" Guid="{89b3249d-6ff3-4e9e-b305-5dc1c5df4b94}">
         <File Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
       </Component>
       <Component Id="NAudioDLL" Guid="{97686074-6AD1-4771-9268-E89984D73993}">
-        <File Source="$(var.NAudio.TargetPath)" />
-      </Component>
-      <Component Id="Ionic.Zip" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4743}">
-        <File Source="$(var.SebWindowsClient.TargetDir)\Ionic.Zip.dll" Name="Ionic.Zip.dll" />
+        <File Source="$(var.SebWindowsClient.TargetDir)\NAudio.dll" Name="NAudio.dll" />
       </Component>
         <Component Id="Newtonsoft.Json" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4744}">
         <File Source="$(var.SebWindowsClient.TargetDir)\Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" />

@@ -37,15 +37,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\SebWindowsClient\MetroFramework\MetroFramework\MetroFramework.csproj">
-      <Name>MetroFramework</Name>
-      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\SebWindowsClient\SebWindowsClient\Fleck\Fleck.csproj">
+    <ProjectReference Include="..\SebWindowsClient\Fleck\Fleck.csproj">
       <Name>Fleck</Name>
       <Project>{8b12d929-afa9-4307-beff-2ed0f1070fee}</Project>
       <Private>True</Private>
@@ -53,17 +45,9 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\SebWindowsClient\SebWindowsClient\IconLib\IconLib\IconLib.csproj">
-      <Name>IconLib</Name>
-      <Project>{ce53747f-d2e6-4e1e-9ef4-a0ae02671b1d}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\SebWindowsClient\SebWindowsClient\NAudio\NAudio.csproj">
-      <Name>NAudio</Name>
-      <Project>{da4f02e3-0b5e-42cd-b8d9-5583fa51d66e}</Project>
+    <ProjectReference Include="..\SebWindowsClient\IconExtractor\IconExtractor.csproj">
+      <Name>IconExtractor</Name>
+      <Project>{fdfd4eeb-c202-4d93-a6e9-d8984a12d014}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

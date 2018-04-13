@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
 
 namespace SebWindowsClient.UI
@@ -46,13 +47,13 @@ namespace SebWindowsClient.UI
                 _originalWorkingAreaSet = true;
             }
             
-
+            var taskbarPosition = (string)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTaskBarPosition);
             SetWorkspace(new RECT()
             {
-                Bottom = Screen.PrimaryScreen.Bounds.Height - taskbarHeight,
+                Bottom = taskbarPosition == "Top" ? Screen.PrimaryScreen.Bounds.Height : Screen.PrimaryScreen.Bounds.Height - taskbarHeight,
                 Left = 0,
                 Right = Screen.PrimaryScreen.Bounds.Width,
-                Top = 0
+                Top = taskbarPosition == "Top" ? taskbarHeight : 0,
             });
         }
 
@@ -73,7 +74,7 @@ namespace SebWindowsClient.UI
                 bool result = SystemParametersInfo(SPI_SETWORKAREA,
                                                (int)IntPtr.Zero,
                                                ref rect,
-                                               SPIF_change);
+                                               SPIF_UPDATEINIFILE);
                 return result;
             }
             catch (Exception ex)

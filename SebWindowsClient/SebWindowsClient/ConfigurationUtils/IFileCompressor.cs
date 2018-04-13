@@ -14,7 +14,7 @@ namespace SebWindowsClient.ConfigurationUtils
 
         string CompressAndEncodeDirectory(string path, out List<string> containingFileNames);
 
-        string DecompressDecodeAndSaveFile(string base64, string filename, string subdirectory);
+        string DecompressDecodeAndSaveFile(string base64, string filename, string directoryName);
 
         MemoryStream DeCompressAndDecode(string base64);
     }

@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38E2404C-7230-412C-96C6-0B8CF2F7B46A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{FDFD4EEB-C202-4D93-A6E9-D8984A12D014}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SebRegistryResetter</RootNamespace>
-    <AssemblyName>SebRegistryResetter</AssemblyName>
+    <RootNamespace>IconExtractor</RootNamespace>
+    <AssemblyName>IconExtractor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,42 +21,28 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="IconExtractor.cs" />
+    <Compile Include="IconUtil.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
-      <Project>{5B604609-4125-4704-BE64-D1DDACF252A0}</Project>
-      <Name>SEBWindowsServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SebWindowsServiceWCF\SebWindowsServiceWCF.csproj">
-      <Project>{10093827-ff41-4c09-b2ff-9c0d27b4b41a}</Project>
-      <Name>SebWindowsServiceWCF</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"
-"$(SolutionDir)signtool.exe" sign /f "$(SolutionDir)..\seb_cert.pfx"  /p %25certPW%25 /fd sha256 /tr http://timestamp.comodoca.com/?td=sha256 /td sha256 /as /v "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

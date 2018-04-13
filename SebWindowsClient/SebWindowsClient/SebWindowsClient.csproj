@@ -66,25 +66,32 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DotNetZip\Ionic.Zip.dll</HintPath>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>JSONNet\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -354,6 +361,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -408,7 +416,6 @@
     <None Include="Resources\audioControl100.png" />
     <None Include="Resources\audioControlmute.png" />
     <None Include="Resources\audioControlunmute.png" />
-    <Content Include="NAudio.dll" />
     <Content Include="Resources\reload.png" />
     <None Include="Resources\resource.png" />
     <Content Include="Resources\restartExam.png" />
@@ -422,26 +429,16 @@
       <Project>{5b604609-4125-4704-be64-d1ddacf252a0}</Project>
       <Name>SEBWindowsServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MetroFramework\MetroFramework\MetroFramework.csproj">
-      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
-      <Name>MetroFramework</Name>
+    <ProjectReference Include="..\IconExtractor\IconExtractor.csproj">
+      <Project>{fdfd4eeb-c202-4d93-a6e9-d8984a12d014}</Project>
+      <Name>IconExtractor</Name>
     </ProjectReference>
-    <ProjectReference Include="Fleck\Fleck.csproj">
+    <ProjectReference Include="..\Fleck\Fleck.csproj">
       <Project>{8b12d929-afa9-4307-beff-2ed0f1070fee}</Project>
       <Name>Fleck</Name>
     </ProjectReference>
-    <ProjectReference Include="IconLib\IconLib\IconLib.csproj">
-      <Project>{ce53747f-d2e6-4e1e-9ef4-a0ae02671b1d}</Project>
-      <Name>IconLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="NAudio\NAudio.csproj">
-      <Project>{da4f02e3-0b5e-42cd-b8d9-5583fa51d66e}</Project>
-      <Name>NAudio</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Fleck\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set /p CertPW=&lt;"$(SolutionDir)..\seb_cert_pw.txt"

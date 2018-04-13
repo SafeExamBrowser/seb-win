@@ -1511,7 +1511,8 @@ namespace SebWindowsClient
 				{
 					int width = Screen.PrimaryScreen.Bounds.Width;
 					var x = 0;
-					var y = Screen.PrimaryScreen.Bounds.Height - taskbarHeight;
+				    var taskbarPosition = (string) SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyTaskBarPosition);
+                    var y = taskbarPosition == "Top" ? 0 : Screen.PrimaryScreen.Bounds.Height - taskbarHeight;
 					this.Height = taskbarHeight;
 					this.Width = width;
 					this.Location = new Point(x, y);

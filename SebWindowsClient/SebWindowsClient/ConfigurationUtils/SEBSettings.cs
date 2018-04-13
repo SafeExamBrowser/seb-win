@@ -105,6 +105,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyHideBrowserWindowToolbar     = "hideBrowserWindowToolbar";
 		public const String KeyShowMenuBar                  = "showMenuBar";
 		public const String KeyShowTaskBar                  = "showTaskBar";
+	    public const String KeyTaskBarPosition              = "taskBarPosition";
 		public const String KeyTaskBarHeight                = "taskBarHeight";
 		public const String KeyTouchOptimized               = "touchOptimized";
 		public const String KeyEnableZoomText               = "enableZoomText";
@@ -583,6 +584,7 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyHideBrowserWindowToolbar    , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowMenuBar                 , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyShowTaskBar                 , true);
+		    SEBSettings.settingsDefault.Add(SEBSettings.KeyTaskBarPosition             , "Bottom");
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyTaskBarHeight               , 40);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyTouchOptimized              , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableZoomText              , true);

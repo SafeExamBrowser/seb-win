@@ -357,6 +357,7 @@ namespace SebWindowsConfig
 			checkBoxShowTaskBar               .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar];
             checkBoxShowReloadButton.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyShowReloadButton];
             comboBoxTaskBarHeight.Text        =  (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarHeight].ToString();
+		    comboBoxTaskBarPosition.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarPosition].ToString();
 			checkBoxEnableTouchExit           .Checked     = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableTouchExit];
 
 			var defaultText = "(part of application)";
@@ -1698,6 +1699,7 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyShowTaskBar] = checkBoxShowTaskBar.Checked;
 			comboBoxTaskBarHeight.Enabled                           = checkBoxShowTaskBar.Checked;
+		    comboBoxTaskBarPosition.Enabled                         = checkBoxShowTaskBar.Checked;
 		}
 
 		private void comboBoxTaskBarHeight_SelectedIndexChanged(object sender, EventArgs e)
@@ -1967,6 +1969,16 @@ namespace SebWindowsConfig
 			dictionaries.RemoveAll(d => (d as DictObj).TryGetValue(SEBSettings.KeyAdditionalDictionaryLocale, out object l) && l as string == locale);
 			spellCheckerDataGridView.Rows.Remove(row);
 		}
+
+		private void comboBoxTaskBarPosition_SelectedIndexChanged(object sender, EventArgs e)
+	    {
+	        SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarPosition] = comboBoxTaskBarPosition.Text;
+	    }
+
+	    private void comboBoxTaskBarPosition_TextUpdate(object sender, EventArgs e)
+	    {
+	        SEBSettings.settingsCurrent[SEBSettings.KeyTaskBarPosition] = comboBoxTaskBarPosition.Text;
+        }
 
 		// ***************
 		// Group "Browser"

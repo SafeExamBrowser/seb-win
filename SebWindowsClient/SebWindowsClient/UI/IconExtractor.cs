@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.IconLib;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SebWindowsClient.UI
 {
@@ -13,34 +8,25 @@ namespace SebWindowsClient.UI
     {
         public static Bitmap ExtractHighResIconImage(string path, int? size = null)
         {
-            var mi = new MultiIcon();
-            mi.Load(path);
-            var si = mi.FirstOrDefault();
-            if (si != null)
-            {
-                IconImage icon;
-                if (size != null)
+            try
                 {
-                    if (size.Value <= 32)
-                    {
-                        try
+                if (size <= 32)
                         {
-                            return Icon.ExtractAssociatedIcon(path).ToBitmap();
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    icon = si.Where(x => x.Size.Height >= size.Value).OrderBy(x => x.Size.Height).FirstOrDefault();
-                    if (icon != null)
-                        return icon.Icon.ToBitmap();
+                    var tempIcon = Icon.ExtractAssociatedIcon(path);
+                    if (tempIcon != null)
+                        return tempIcon.ToBitmap();
                 }
-                var max = si.Max(_i => _i.Size.Height);
-                icon = si.FirstOrDefault(i => i.Size.Height == max);
-                if(icon != null)
-                    return icon.Transparent;
-            }
+                var iconExtractor = new IconExtractor.IconExtractor(path);
+                var extractedIcon = iconExtractor.GetIcon(0);
+                var splitIcons = IconExtractor.IconUtil.Split(extractedIcon);
+                var searchSize = size ?? splitIcons.Max(i => i.Height);
+                var icon = splitIcons.Where(x => x.Height >= searchSize).OrderBy(x => x.Size.Height).FirstOrDefault();
+                return icon?.ToBitmap();
+                        }
+            catch (Exception)
+                        {
             return null;
         }
     }
+}
 }

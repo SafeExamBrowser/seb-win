@@ -42,185 +42,273 @@ using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebRegistryResetter
 {
-	class Program
-    {
-        static void Main(string[] args)
-        {
-            try
-            {
-                var identity = WindowsIdentity.GetCurrent();
-                var principal = new WindowsPrincipal(identity);
-                bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-                if (!isAdmin)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("This application must be run with administrator privileges!");
-                    Console.ReadKey();
-                    Environment.Exit(0);
-                }
-                    
-            }
-            catch (Exception)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Unable to determine if this application is running with administrator privileges.");
-                Console.WriteLine("Did you run it with administrator privileges? (Y=Yes,N=No)");
-                var ranAsAdmin = Console.ReadLine();
-                if(ranAsAdmin == null || ranAsAdmin.ToLower() != "y")
-                    Environment.Exit(0);
-            }
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			Initialize();
 
+			CheckUserPrivileges();
+			TryResetUsingBackupFile();
+			CheckIfProblemSolved();
+			TryResetUsingUsername();
 
-            Console.WriteLine("Trying to find registry file to reset...");
-            try
-            {
-                var filePath = String.Format(@"{0}\sebregistry.srg", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                if (File.Exists(filePath))
-                {
-                    Console.WriteLine(String.Format("Found {0}",filePath));
-                    Console.WriteLine("Resetting Registry keys...");
-                    var service = new RegistryService();
-                    if (service.Reset())
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Registry keys resetted successfully!");
-                        Console.WriteLine("Press any key to exit application");
-                        Console.ReadKey();
-                        Environment.Exit(0);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unable to reset registry keys!");
-                    }
-                }
-                Console.WriteLine("File not found!");
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(String.Format("Error: Unable to find file or reset registry keys\n{0}:{1}",ex.ToString(),ex.Message));
-            }
-            
-            //Direct Instantiation
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("If the file was not found, it is possible that there are no registry entries to reset.\nIs there anything NOT working as expected when you press CTRL+ALT+DEL? (Y=Yes/N=No)");
-            
-            var res = Console.ReadLine();
-            if(res == null || res.ToLower() != "y")
-                Environment.Exit(0);
+			Terminate();
+		}
 
+		private static void Initialize()
+		{
+			Logger.Log("/////////////////////////////////////////////////");
+			Logger.Log("// Registry Resetter");
+			Logger.Log("// -----------------");
 
-            Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
-            var username = Console.ReadLine();
-            var sid = SIDHandler.GetSIDFromUsername(username);
+			Console.CancelKeyPress += (o, args) => Terminate();
+		}
+
+		private static void CheckUserPrivileges()
+		{
+			try
+			{
+				Log("Trying to check user privileges...");
+
+				var identity = WindowsIdentity.GetCurrent();
+				var principal = new WindowsPrincipal(identity);
+				var isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+
+				Log($"User is {(isAdmin ? string.Empty : "not an ")}administrator.");
+
+				if (!isAdmin)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("This application must be run with administrator privileges!");
+					Console.ReadKey();
+
+					Terminate();
+				}
+			}
+			catch (Exception e)
+			{
+				Log(e, "Failed to check user privileges!");
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.WriteLine("Unable to determine if this application is running with administrator privileges.");
+				Console.WriteLine("Did you run it with administrator privileges? (Y=Yes,N=No)");
+
+				var ranAsAdmin = Console.ReadLine();
+
+				if (ranAsAdmin == null || ranAsAdmin.ToLower() != "y")
+				{
+					Terminate();
+				}
+
+				Log("User claims the application is running as administrator, continuing...");
+			}
+		}
+
+		private static void TryResetUsingBackupFile()
+		{
+			OutputAndLog("Trying to find registry file to reset...");
+
+			try
+			{
+				var filePath = String.Format(@"{0}\sebregistry.srg", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+				if (File.Exists(filePath))
+				{
+					OutputAndLog(String.Format("Found {0}", filePath));
+					OutputAndLog("Resetting Registry keys...");
+
+					var service = new RegistryService();
+
+					if (service.Reset())
+					{
+						Console.ForegroundColor = ConsoleColor.Green;
+						OutputAndLog("Registry keys resetted successfully!");
+					}
+					else
+					{
+						OutputAndLog("Unable to reset registry keys!");
+					}
+				}
+				else
+				{
+					OutputAndLog("File not found!");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				OutputAndLog(String.Format("Error: Unable to find file or reset registry keys\n{0}:{1}", ex.ToString(), ex.Message));
+			}
+		}
+
+		private static void CheckIfProblemSolved()
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Is there anything NOT working as expected when you press CTRL+ALT+DEL? (Y=Yes/N=No)");
+
+			var response = Console.ReadLine();
+
+			if (response?.ToLower() != "y")
+			{
+				Log("User declared that everything is working as expected.");
+
+				Terminate();
+			}
+		}
+
+		private static void TryResetUsingUsername()
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Under what user did you run the SEB Windows Client? (Please type in the username followed by ENTER)");
+
+			var username = Console.ReadLine();
+			var sid = SIDHandler.GetSIDFromUsername(username);
 
 			while (string.IsNullOrWhiteSpace(sid))
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("SID for username '{0}' could not be found in the registry! Try again or hit CTRL+C to exit...", username);
+			{
+				Console.WriteLine("SID for username '{0}' could not be found in the registry! Try again or hit CTRL+C / CTRL+Z to exit...", username);
+				Log($"Failed to retrieve SID for input '{username}'!");
+
 				username = Console.ReadLine();
 				sid = SIDHandler.GetSIDFromUsername(username);
 			}
 
-            Console.ResetColor();
-			Console.WriteLine("Username: {0} / SID: {1}",username, sid);
-            Console.WriteLine("Resetting all registry entries possibly touched by the SEB Windows Service to an unrestricted value");
+			Console.ResetColor();
+			OutputAndLog(String.Format("Username: {0} / SID: {1}", username, sid));
 
-            var entriesToZero = new List<RegistryEntry>
-            {
-                new RegDisableChangePassword(sid),
-                new RegDisableLockWorkstation(sid),
-                new RegDisableTaskMgr(sid),
-                new RegHideFastUserSwitching(sid),
-                new RegNoClose(sid),
-                new RegNoLogoff(sid),
-                new RegDontDisplayNetworkSelectionUI(sid),
-                new RegNoAutoRebootWithLoggedOnUsers(sid)
-            };
+			SetDefaultValues(sid);
 
-            var entriesToOne = new List<RegistryEntry>
-            {
-                new RegEnableShade(sid)
-            };
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine("Please note that RDP has been disabled!");
+			Console.WriteLine("Finished, press any key to exit the application");
+			Console.ReadKey();
+		}
 
-            foreach (var entry in entriesToZero)
-            {
-                try
-                {
-                    Console.WriteLine(@"Trying to set {0}\{1} to 0",entry.RegistryPath,entry.DataItemName);
-                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
-                    if (entry.DataValue != null)
-                    {
-                        entry.DataValue = 0;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", entry.RegistryPath, entry.DataItemName, entry.DataValue));
-                    }
-                    
-                }
-                catch (Exception)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(String.Format(@"Unable to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName));
-                }
-                
-            }
+		private static void SetDefaultValues(string sid)
+		{
+			var entriesToBeSetToZero = new List<RegistryEntry>
+			{
+				new RegDisableChangePassword(sid),
+				new RegDisableLockWorkstation(sid),
+				new RegDisableTaskMgr(sid),
+				new RegHideFastUserSwitching(sid),
+				new RegNoClose(sid),
+				new RegNoLogoff(sid),
+				new RegDontDisplayNetworkSelectionUI(sid),
+				new RegNoAutoRebootWithLoggedOnUsers(sid)
+			};
+			var entriesToBeSetToOne = new List<RegistryEntry>
+			{
+				new RegEnableShade(sid)
+			};
 
-            foreach (var entry in entriesToOne)
-            {
-                try
-                {
-                    Console.WriteLine(@"Trying to set {0}\{1} to 0", entry.RegistryPath, entry.DataItemName);
-                    Console.WriteLine("Current Value of Registry: {0}", entry.DataValue);
-                    if (entry.DataValue != null)
-                    {
-                        entry.DataValue = 1;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", entry.RegistryPath, entry.DataItemName,
-                            entry.DataValue));
-                    }
-                }
-                catch (Exception)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(String.Format(@"Unable to set {0}\{1} to 1", entry.RegistryPath, entry.DataItemName));
-                }
-            }
+			OutputAndLog("Resetting all registry entries possibly touched by the SEB Windows Service to an unrestricted value...");
 
-            var easeOfAccess = new RegEaseOfAccess(sid);
-            try
-            {
-                if (easeOfAccess.DataValue != null && easeOfAccess.DataValue.ToString() == "SebDummy.exe")
-                {
-                    easeOfAccess.DataValue = "";
-                    Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", easeOfAccess.RegistryPath, easeOfAccess.DataItemName, easeOfAccess.DataValue));
-                }
-                
-            }
-            catch (Exception)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(String.Format(@"Unable to set {0}\{1} to ''", easeOfAccess.RegistryPath, easeOfAccess.DataItemName));
-            }
+			foreach (var entry in entriesToBeSetToZero)
+			{
+				Reset(entry, 0);
+			}
 
-            var enableShadeHorizon = new RegEnableShadeHorizon(sid);
-            try
-            {
-                if (enableShadeHorizon.DataValue != null && enableShadeHorizon.DataValue.ToString() == "False")
-                {
-                    enableShadeHorizon.DataValue = "True";
-                    Console.WriteLine(String.Format(@"Set {0}\{1} to {2}", enableShadeHorizon.RegistryPath, enableShadeHorizon.DataItemName, enableShadeHorizon.DataValue));
-                }
-            }
-            catch (Exception)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(String.Format(@"Unable to set {0}\{1} to ''", enableShadeHorizon.RegistryPath, enableShadeHorizon.DataItemName));
-            }
+			foreach (var entry in entriesToBeSetToOne)
+			{
+				Reset(entry, 1);
+			}
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Please note that RDP has been disabled!");
-            Console.WriteLine("Finished, press any key to exit the application");
-            Console.ReadKey();
-        }
-    }
+			ResetEaseOfAccess(sid);
+			ResetShadeHorizon(sid);
+		}
+
+		private static void Reset(RegistryEntry entry, object value)
+		{
+			try
+			{
+				if (entry.DataValue != null)
+				{
+					OutputAndLog($@"Trying to change '{GetFullPath(entry)}' from {entry.DataValue} to {value}");
+					entry.DataValue = value;
+					OutputAndLog($@"Successfully set '{GetFullPath(entry)}' to {entry.DataValue}");
+				}
+				else
+				{
+					OutputAndLog($@"Key '{GetFullPath(entry)}' does not exist in the registry, skipping it...");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				OutputAndLog($@"Failed to set '{GetFullPath(entry)}' to {value}");
+				Log(e);
+			}
+		}
+
+		private static void ResetEaseOfAccess(string sid)
+		{
+			var easeOfAccess = new RegEaseOfAccess(sid);
+
+			try
+			{
+				if (easeOfAccess.DataValue != null && easeOfAccess.DataValue.ToString() == "SebDummy.exe")
+				{
+					OutputAndLog($@"Trying to change '{GetFullPath(easeOfAccess)}' from {easeOfAccess.DataValue} to empty string");
+					easeOfAccess.DataValue = string.Empty;
+					OutputAndLog($@"Successfully set '{GetFullPath(easeOfAccess)}' to {easeOfAccess.DataValue}");
+				}
+
+			}
+			catch (Exception e)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				OutputAndLog($@"Failed to set '{GetFullPath(easeOfAccess)}' to empty string");
+				Log(e);
+			}
+		}
+
+		private static void ResetShadeHorizon(string sid)
+		{
+			var shadeHorizon = new RegEnableShadeHorizon(sid);
+
+			try
+			{
+				if (shadeHorizon.DataValue != null && shadeHorizon.DataValue.ToString() == "False")
+				{
+					OutputAndLog($@"Trying to change '{GetFullPath(shadeHorizon)}' from {shadeHorizon.DataValue} to True");
+					shadeHorizon.DataValue = "True";
+					OutputAndLog($@"Successfully set '{GetFullPath(shadeHorizon)}' to {shadeHorizon.DataValue}");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				OutputAndLog($@"Failed to set '{GetFullPath(shadeHorizon)}' to True");
+				Log(e);
+			}
+		}
+
+		private static string GetFullPath(RegistryEntry entry)
+		{
+			return $@"{entry.RegistryPath}\{entry.DataItemName}";
+		}
+
+		private static void OutputAndLog(string message)
+		{
+			Console.WriteLine(message);
+			Log(message);
+		}
+
+		private static void Log(Exception e, string message = null)
+		{
+			Logger.Log(e, $"// {message}");
+		}
+
+		private static void Log(string message)
+		{
+			Logger.Log($"// {message}");
+		}
+
+		private static void Terminate()
+		{
+			Logger.Log("/////////////////////////////////////////////////");
+			Environment.Exit(0);
+		}
+	}
 }

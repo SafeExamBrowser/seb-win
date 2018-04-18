@@ -1008,7 +1008,9 @@ namespace SebWindowsClient
 										Dictionary<string, object> argument = (Dictionary<string, object>)argumentList[j];
 										if ((Boolean)argument[SEBSettings.KeyActive])
 										{
-											startProcessNameBuilder.Append(" ").Append((string)argument[SEBSettings.KeyArgument]);
+											var value = Environment.ExpandEnvironmentVariables((string)argument[SEBSettings.KeyArgument]);
+
+											startProcessNameBuilder.Append(" ").Append(value);
 										}
 									}
 									string fullPathArgumentsCall = startProcessNameBuilder.ToString();

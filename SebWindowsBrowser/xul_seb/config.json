@@ -104,7 +104,7 @@
 "sendBrowserExamKey":true,
 "showReloadWarning" : true,
 "showTaskBar":false,
-"startURL":"https://github.com/eqsoft/seb2",
+"startURL":"https://www.simple.org:8443/demo/test.html",
 "taskBarHeight":0,
 "touchOptimized":false,
 "urlFilterTrustedContent":true,

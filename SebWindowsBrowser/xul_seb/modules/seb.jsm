@@ -66,6 +66,7 @@ this.seb =  {
 	INFO : false,
 	cmdline : null,
 	defaultConfig : null,
+	locale : "en-US",
 	config : null,
 	url : "",
 	mainWin : null,
@@ -220,7 +221,6 @@ this.seb =  {
 	},
 
 	initLocale : function() {
-		let loc = "en-US";
 		/*
 		try {
 			let osLoc = locale.getAppLocale();
@@ -236,23 +236,23 @@ this.seb =  {
 		let paramLoc = base.config["browserLanguage"];
 		sl.debug("browserLanguage:" + paramLoc);
 		if (paramLoc != null && paramLoc != "") {
-			loc = paramLoc;
+			base.locale = paramLoc;
 		}
 		let cmdLoc = su.getCmd("language");
 		sl.debug("cmd language:" + cmdLoc);
 		if (cmdLoc != null && cmdLoc != "") {
-			loc = cmdLoc;
+			base.locale = cmdLoc;
 		}
-		sl.debug("locale: " + loc);
-		sg.setPref("general.useragent.locale",loc);
-		sg.setPref("intl.accept_languages",loc);
+		sl.debug("locale: " + base.locale);
+		sg.setPref("general.useragent.locale",base.locale);
+		sg.setPref("intl.accept_languages",base.locale);
 	},
 
 	initMain : function(win) {
 		sl.debug("initMain");
 		base.url = su.getUrl();
 		base.allowQuit = su.getConfig("allowQuit","boolean",false);
-		base.quitURL =su.getConfig("quitURL","string","");
+		base.quitURL =su.getConfig("quitURL","string","").replace(/\/$/,"");
 		base.initArsKeys(win);
 		sb.setEmbeddedCerts();
 		base.setQuitHandler(win);
@@ -260,6 +260,7 @@ this.seb =  {
 		sh.createScreenKeyboardController(win);
 		sh.createFullscreenController(win);
 		ss.setSebserverSocketHandler(win);
+		sb.createSpellCheckController(win);
 		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
 		sw.setMainNavigation(win);
@@ -282,6 +283,7 @@ this.seb =  {
 		sw.setSize(win);
 		sh.createScreenKeyboardController(win);
 		sh.createFullscreenController(win);
+		sb.createSpellCheckController(win);
 	},
 
 	initAdditionalResources : function (obj) {
@@ -489,6 +491,12 @@ this.seb =  {
 		base.quitIgnorePassword = false;
 		base.quitIgnoreWarning = false;
 		base.hostForceQuit = false;
+		try {
+			sg.setPref("general.useragent.override",su.userAgent);
+		}
+		catch(e) {
+			sl.err(e);
+		}
 		//hostQuitHandler : null,
 		//reconfState : RECONF_NO,
 		//base.reconfWin = null;
@@ -597,6 +605,18 @@ this.seb =  {
 				return true;
 			}
 			else {
+				try {
+					sb.clearSession();
+				}
+				catch(e) {
+					sl.err(e);
+				}
+				try {
+					sg.setPref("general.useragent.override",su.userAgent);
+				}
+				catch(e) {
+					sl.err(e);
+				}
 				sw.closeAllWin();
 				sl.debug("quit");
 				return;

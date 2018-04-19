@@ -110,3 +110,7 @@
 button[dlgtype="extra1"] {
 	display: none;
 }
+
+menuitem.spell-suggestion {
+  font-weight: bold;
+}

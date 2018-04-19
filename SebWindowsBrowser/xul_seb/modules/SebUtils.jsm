@@ -34,13 +34,14 @@ this.EXPORTED_SYMBOLS = ["SebUtils"];
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
 	{ appinfo, io, prefs, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services,
-	{ FileUtils } = Cu.import("resource://gre/modules/FileUtils.jsm",{});
+	{ FileUtils } = Cu.import("resource://gre/modules/FileUtils.jsm",{}),
+	{ OS } = Cu.import("resource://gre/modules/osfile.jsm");
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /* Services */
 const 	hph = io.getProtocolHandler("http").QueryInterface(Ci.nsIHttpProtocolHandler),
 	fph = io.getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler),
-	reg = Cc['@mozilla.org/chrome/chrome-registry;1'].getService();
+	reg = Cc['@mozilla.org/chrome/chrome-registry;1'].getService(Ci.nsIChromeRegistry);
 
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","SebLog");
@@ -237,12 +238,25 @@ this.SebUtils =  {
 	
 	getUriFromChrome : function(url) {
 		try {
-			sl.debug(reg);
+			//sl.debug(reg);
 			return reg.convertChromeURL(base.getUri(url))
 		}
 		catch(e) {
 			sl.err("Error in getUriFromChrome: " + e);
 		}
+	},
+	
+	getAppPath : function() {
+		//return 	fph.getFileFromURLSpec(base.getUriFromChrome(SEB_URL).replace('/chrome/content/seb/seb.xul','')).path;
+		return fph.getFileFromURLSpec(base.getUriFromChrome(SEB_URL).spec.replace('/chrome/content/seb/seb.xul','')).path;
+	},
+	
+	getDicsPath : function() {
+		return fph.getFileFromURLSpec(base.getUriFromChrome(SEB_URL).spec.replace('/chrome/content/seb/seb.xul','/dictionaries')).path;
+	},
+	
+	getExternalDicsPath : function() { // only for windows hosting
+		return OS.Path.join(OS.Path.dirname(OS.Constants.Path.profileDir),"Dictionaries");
 	},
 	
 	getConfig : function(v,t,d) { // val, type, default

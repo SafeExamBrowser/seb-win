@@ -34,10 +34,14 @@ this.EXPORTED_SYMBOLS = ["SebBrowser"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu, Constructor: CC } = Components,
-	{ prompt, scriptloader, obs } = Cu.import("resource://gre/modules/Services.jsm").Services;
+	{ prompt, scriptloader, obs, appinfo } = Cu.import("resource://gre/modules/Services.jsm").Services,
+	{ OS } = Cu.import("resource://gre/modules/osfile.jsm"),
+	{ SpellCheckHelper } = Cu.import("resource://gre/modules/InlineSpellChecker.jsm");
+	
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/NetUtil.jsm");
 Cu.import("resource://gre/modules/FileUtils.jsm");
+Cu.import("resource://gre/modules/InlineSpellCheckerContent.jsm");
 Cu.importGlobalProperties(['Blob']);
 /* Services */
 let	wpl = Ci.nsIWebProgressListener,
@@ -90,7 +94,9 @@ let 	base = null,
 	},
 	sebReg = new RegExp(/.*?\.seb/i),
 	httpReg = new RegExp(/^http\:/i),
-	windowTitleSuffix = "",
+	windowTitleSuffix = "";
+	
+	/*
 	installedDics = {
 		"de-DE":"de-DE@dictionaries.addons.mozilla.org",
 		"de-CH":"de_CH@dicts.j3e.de",
@@ -98,6 +104,7 @@ let 	base = null,
 		"en-GB":"marcoagpinto@mail.telepac.pt",
 		"fr-classic":"fr-dicollecte@dictionaries.addons.mozilla.org"
 	};
+	*/  
 	
 const	nsIX509CertDB = Ci.nsIX509CertDB,
 	nsIX509CertDB2 = Ci.nsIX509CertDB2,
@@ -579,13 +586,22 @@ this.SebBrowser = {
 					request.cancel(status);
 					this.mainPageURI = null;
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
-					var tmpQuit = seb.allowQuit; // store default shutdownEnabled
-					var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
-					seb.allowQuit = true; // set to true
-					seb.quitIgnorePassword = true;
-					seb.quit();				
-					seb.allowQuit = tmpQuit; // set default shutdownEnabled
-					seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
+					if (seb.quitURL == seb.url.replace(/\/$/,"")) {
+						seb.hostForceQuit = true;
+						seb.quitIgnoreWarning = true;
+						seb.quitIgnorePassord = true;
+						seb.allowQuit = true;
+						seb.quit();
+					}
+					else {
+						var tmpQuit = seb.allowQuit; // store default shutdownEnabled
+						var tmpIgnorePassword = seb.quitIgnorePassword; // store default quitIgnorePassword
+						seb.allowQuit = true; // set to true
+						seb.quitIgnorePassword = true;
+						seb.quit();
+						seb.allowQuit = tmpQuit; // set default shutdownEnabled
+						seb.quitIgnorePassword = tmpIgnorePassword; // set default shutdownIgnorePassword
+					}
 					break;
 				case STATUS_QUIT_URL_WRONG_REFERRER.status : 
 					request.cancel(status);
@@ -601,7 +617,12 @@ this.SebBrowser = {
 				case  STATUS_INVALID_URL.status :
 					request.cancel(status);
 					this.mainPageURI = null;
-					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
+					let w = sw.getChromeWin(progress.DOMWindow);
+					base.stopLoading(w);
+					if (sw.getWinType(w) !== "main") {
+						w.close();
+						seb.mainWin.focus();
+					}
 					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 					break;
 				case STATUS_BLOCK_HTTP.status :
@@ -654,7 +675,18 @@ this.SebBrowser = {
 		if (!br) {
 			sl.debug("no seb.browser in ChromeWindow!");
 			return false;
-		}	
+		}
+		// 	see: http://bugs.conkeror.org/issue513
+		//	https://hg.mozilla.org/mozilla-central/diff/6a563348b8be/toolkit/components/passwordmgr/nsLoginManagerPrompter.js
+		// 	gBrowser is the gloabel tabbrowser element in firefox: https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/tabbrowser
+		//	for inspection:
+		//	chrome://browser/content/browser.xul
+		//	chrome://browser/content/browser.js
+		win.gBrowser = {
+			getBrowserForContentWindow : function (aWin) {
+				return br;
+			}
+		}
 		win.XulLibBrowser = br; // extend window property to avoid multiple getBrowser() calls
 		win.XULBrowserWindow = new nsBrowserStatusHandler();
 		win.XULBrowserWindow.browser = br;
@@ -724,23 +756,99 @@ this.SebBrowser = {
 	
 	initSpellChecker : function() {
 		sl.debug("initSpellChecker");
+		// if allowSpellCheck false, abort
+		if (!su.getConfig("allowSpellCheck","boolean",false)) {
+			sl.debug("spell checking is not allowed");
+			return;
+		}
+		// get array of allowSpellCheckDictionary in config (must be an array NOT comma seperated list) 
+		let allowedDics = su.getConfig("allowSpellCheckDictionary","object",[]);
+		// abort if no allowed dictionaries are defined
+		if (allowedDics.length == 0) {
+			sl.debug("no allowed dictionaries defined");
+			return;
+		}
 		var spellclass = "@mozilla.org/spellchecker/myspell;1";
-		
-		if ("@mozilla.org/spellchecker/hunspell;1" in Cc) {
-			spellclass = "@mozilla.org/spellchecker/hunspell;1";
-		}
-		if ("@mozilla.org/spellchecker/engine;1" in Cc) {
-			spellclass = "@mozilla.org/spellchecker/engine;1";
-		}
+		spellclass = "@mozilla.org/spellchecker/engine;1";
 		let spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
 		let dics = [];
-		for (var dic in installedDics) {
-			let dicsDir = FileUtils.getDir("ProfD", ["extensions",installedDics[dic],"dictionaries"],false,false);
-			if (dicsDir.exists()) {
-				//sl.debug("add dicDir: " + dicsDir.path);
-				spe.addDirectory(dicsDir);
-			} 
+		let dicsPath = su.getDicsPath();
+		let dicsDir = new FileUtils.File(dicsPath);
+		// try to load all allowSpellCheckDictionary from app/dictionaries/DIC_NAME/* 
+		// requires exact matching of allowSpellCheckDictionary in config array and DIC_NAME!
+		for (var i=0; i<allowedDics.length; i++) {
+			let dic = allowedDics[i];
+			let dicDir = new FileUtils.File(OS.Path.join(dicsDir.path,dic));
+			if (dicDir.exists()) {
+				spe.addDirectory(dicDir);
+				 // set first as default spellcheck language, but is overridden by seb.locale if exists
+				if (i == 0) {
+					spe.dictionary = dic;
+				}
+			}
+			else {
+				sl.debug("dictionary " + dic + " does not exist, maybe provided in external dics path...")
+			}
 		}
+
+		let xDicsPath = su.getExternalDicsPath();
+		let xDicsDir = new FileUtils.File(xDicsPath);
+		if (xDicsDir.exists()) {
+			for (var i=0; i<allowedDics.length; i++) {
+				let dic = allowedDics[i];
+				let dicDir = new FileUtils.File(OS.Path.join(xDicsDir.path,dic));
+				if (dicDir.exists()) {
+					spe.addDirectory(dicDir);
+				}
+				else {
+					//sl.debug("dictionary " + dic + " does not exist")
+				}
+			}
+		}
+		spe.getDictionaryList(dics,{});
+		if (dics.value.includes(seb.locale) && allowedDics.includes(seb.locale)) {
+			sl.debug("override default spellcheck language with seb.locale: " + seb.locale);
+			spe.dictionary = seb.locale;
+		}
+		sl.debug("available dictionaries: " + dics.value);
+		sl.debug("current spellcheck language: " + spe.language);
+	},
+	
+	addAdditionalDictionaries : function(opt) {
+		sl.debug("addDictionaries: " + opt.path);
+		// if allowSpellCheck false, abort
+		// DANIEL: abort even on websocket event?
+		if (!su.getConfig("allowSpellCheck","boolean",false)) {
+			sl.debug("spell checking is not allowed");
+			return;
+		}
+		// get array of allowSpellCheckDictionary in config (must be an array NOT comma seperated list) 
+		// DANIEL: abort even on websocket event?
+		let allowedDics = su.getConfig("allowSpellCheckDictionary","object",[]);
+		// abort if no allowed dictionaries are defined
+		if (allowedDics.length == 0) {
+			sl.debug("no allowed dictionaries defined");
+			return;
+		}
+		var spellclass = "@mozilla.org/spellchecker/myspell;1";
+		spellclass = "@mozilla.org/spellchecker/engine;1";
+		let spe = Cc[spellclass].getService(Ci.mozISpellCheckingEngine);
+		let dics = [];
+		let dicsPath = opt.path;
+		let dicsDir = new FileUtils.File(dicsPath);
+		if (!dicsDir.exists() || !dicsDir.isDirectory()) {
+			sl.err('invalid dictionary path: ' + dicsPath)
+		}
+		let entries = dicsDir.directoryEntries;						
+		while(entries.hasMoreElements()) {
+			let entry = entries.getNext();
+			entry.QueryInterface(Components.interfaces.nsIFile);
+			// DANIEL: process config entry allowSpellCheckDictionary?
+			if (entry.isDirectory() && allowedDics.includes(entry.leafName)) {
+				sl.debug('add addtional dictionary ' + entry.leafName)
+				spe.addDirectory(entry);
+			}
+		} 
 		spe.getDictionaryList(dics,{});
 		sl.debug("available dictionaries: " + dics.value);
 	},
@@ -989,5 +1097,84 @@ this.SebBrowser = {
 				//forward.removeEventListener("click",base.forward,false);
 			}
 		}
+	},
+	
+	createSpellCheckController : function (win) {
+		if (!su.getConfig("allowSpellCheck","boolean",false)) {
+			return;
+		}
+		sl.debug("createSpellCheckController");
+		let ctxMenu = win.document.getElementById("spellCheckMenu");
+		let ctxSpellEnabled = win.document.getElementById("spell-check-enabled");
+		let ctxNoSuggestions = win.document.getElementById("spell-no-suggestions");
+		let ctxSepEnabled = win.document.getElementById("sep-enabled");
+		let ctxDics = win.document.getElementById("spell-dictionaries");
+		
+		win.document.addEventListener("click",onClick,false);
+		function onClick(evt) {
+			if (evt.button !== 2) return; // only right click
+			//sl.debug("SpellCheckController Right Click");
+			let editFlags = SpellCheckHelper.isEditable(evt.target, win);
+			let spellInfo;
+			if (editFlags & (SpellCheckHelper.EDITABLE | SpellCheckHelper.CONTENTEDITABLE)) { // only editable text and input fields
+				//sl.debug("isEditable")
+				spellInfo = InlineSpellCheckerContent.initContextMenu(evt, editFlags, win.XulLibBrowser.messageManager);
+				if (!spellInfo.canSpellCheck) {
+					//sl.debug("canSpellCheck = false");
+					return;
+				}
+				if (spellInfo.overMisspelling) {
+					ctxSepEnabled.setAttribute("hidden","false");
+					if (spellInfo.spellSuggestions.length > 0) {
+						InlineSpellCheckerContent._spellChecker.addSuggestionsToMenu(ctxMenu,ctxNoSuggestions,5);
+						ctxNoSuggestions.setAttribute("hidden","true");
+					}
+					else {
+						ctxNoSuggestions.setAttribute("hidden","false");
+					}
+				}
+				else {
+					ctxSepEnabled.setAttribute("hidden","true");
+					ctxNoSuggestions.setAttribute("hidden","true");
+				}
+				ctxSpellEnabled.setAttribute("checked", spellInfo.enableRealTimeSpell);
+				if (spellInfo.enableRealTimeSpell) {
+					ctxDics.setAttribute("hidden","false");
+				}
+				else {
+					ctxDics.setAttribute("hidden","true");
+				}
+				//sl.debug(JSON.stringify(spellInfo));
+				ctxMenu.openPopupAtScreen(evt.screenX+5,evt.screenY+10,true);
+			}
+		}
+	},
+	
+	spellCheckClosed : function () {
+		InlineSpellCheckerContent._spellChecker.clearSuggestionsFromMenu(); // using private variable directly instead of messages
+	},
+	
+	toggleSpellCheckEnabled : function (win) {
+		sl.debug("toggleSpellCheckEnabled");
+		InlineSpellCheckerContent._spellChecker.toggleEnabled(win); // using private variable directly instead of messages
+	},
+	
+	createDictionaryList : function (menu) {
+		sl.debug("createDictionaryList");
+		InlineSpellCheckerContent._spellChecker.addDictionaryListToMenu(menu,null);
+		// check allowed dics, p.e. after reconfiguration changes
+		let allowedDics = su.getConfig("allowSpellCheckDictionary","object",[]);
+		let items = InlineSpellCheckerContent._spellChecker.mDictionaryItems;
+		for (var i=0;i<items.length;i++) {
+			let dicId = items[i].id.replace('spell-check-dictionary-','');
+			if (!allowedDics.includes(dicId)) {
+				items[i].setAttribute("hidden","true");
+			}
+		}
+	},
+	
+	clearDictionaryList : function (menu) {
+		sl.debug("clearDictionaryList");
+		InlineSpellCheckerContent._spellChecker.clearDictionaryListFromMenu();
 	}
 }

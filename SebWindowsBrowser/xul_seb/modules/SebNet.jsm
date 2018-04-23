@@ -108,10 +108,11 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 	if (base.blockObs) {
 		return;
 	}			
-	var url, origUrl, aVisitor;
+	var rawUrl, url, origUrl, aVisitor;
 	if ( subject instanceof this.nsIHttpChannel ) {
 		sl.info("");
 		sl.info("-> http request modify: " + subject.name);
+		rawUrl = subject.URI.spec.split("#")[0]; // url fragment is not transmitted to the server!
 		origUrl = subject.URI.spec.replace(/\/$/,"");
 		url = origUrl.split("#"); // url fragment is not transmitted to the server!
 		url = url[0];
@@ -134,7 +135,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 				return;
 			}
 			sl.debug("catch seb request");
-			let url = subject.name;
+			let url2 = subject.name;
 			//let w = sw.getRecentWin();
 			/*
 			if (seb.reconfState == RECONF_SUCCESS && !seb.allowLoadSettings) {
@@ -151,13 +152,13 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			}
 			*/ 
 			
-			
-			sb.openSebFileDialog(url);
+			subject.cancel( this.aborted );
+			sb.openSebFileDialog(url2);
 			//seb.reconfState = RECONF_NO;
 			//w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
 			return;
 		}
-		if (httpReg.test(url)) {
+		if (httpReg.test(rawUrl)) {
 			if (base.blockHTTP) {
 				sl.debug("block http request");
 				let w = sw.getRecentWin();
@@ -178,12 +179,12 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 		if (sendBrowserExamKey) {
 			var k;
 			if (reqSalt) {								
-				k = base.getRequestValue(url, reqKey);
-				sl.info("send request key with salt: " + url + " : " + reqKey + " = " + k);
+				k = base.getRequestValue(rawUrl, reqKey);
+				sl.info("send request key with salt: " + rawUrl + " : " + reqKey + " = " + k);
 			}
 			else {
 				k = reqKey;
-				sl.info("send request key: " + url + " : " + reqKey + " = " + k);
+				sl.info("send request key: " + rawUrl + " : " + reqKey + " = " + k);
 			}
 			subject.setRequestHeader(reqHeader, k, false);
 			sl.info("request header:");

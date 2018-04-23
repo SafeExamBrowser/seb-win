@@ -34,7 +34,7 @@ this.EXPORTED_SYMBOLS = ["SebHost"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ appinfo, scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services;
+	{ appinfo, scriptloader, prompt } = Cu.import("resource://gre/modules/Services.jsm").Services;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /* Services */
@@ -84,7 +84,8 @@ this.SebHost = {
 			"SebFileTransfer" : base.handleSebFileTransfer,
 			"ReconfigureAborted" : base.handleReconfigureAborted,
 			"Reconfigure" : base.handleReconfigure,
-			"ClearSession" : base.handleClearSession
+			"ClearSession" : base.handleClearSession,
+			"AdditionalDictionaries" : base.handleAdditionalDictionaries
 		};
 		base.sendHandler = {
 			"SebFile" : base.sendSebFile,
@@ -231,21 +232,41 @@ this.SebHost = {
 	
 	handleArs : function(opts) {
 		try {
-			var url = "";
-			if (seb.ars[opts.id].url) {
-				url = seb.ars[opts.id].url;
+			let ar = seb.ars[opts.id];
+			let url = ar["url"];
+			let filter = ar["refererFilter"];
+			let reset = ar["resetSession"];
+			let confirm = ar["confirm"];
+			let confirmText = (ar["confirmText"] && ar["confirmText"] != "") ? ar["confirmText"] : su.getLocStr("seb.load.warning");
+			if (!url || url == "") {
+				url = "file://" + opts.path + ar.resourceDataFilename.replace("\\\\","/");
 			}
-			else {
-				url = "file://" + opts.path + seb.ars[opts.id].resourceDataFilename.replace("\\\\","/");
+			sl.debug("try to open additional resource: " + url);
+			// first check referrer
+			if (filter && filter != "") {
+				let w = sw.getRecentWin();
+				let loadReferrer = w.content.document.location.href;
+				if (loadReferrer.indexOf(filter) < 0) {
+					sl.debug("loading \"" + url + "\" is only allowed if string in referrer: \"" + filter + "\"");
+					return false;
+				}
 			}
-			if (url != "") {
-				sl.debug("try to open additional resource: " + url);
-				if (/\.pdf$/i.test(url)) {
-					sw.openPdfViewer(url);
+			// check confirmation
+			if (confirm) {
+				var result = prompt.confirm(null, su.getLocStr("seb.load.warning.title"), confirmText);
+				if (!result) {
+					sl.debug("loadURL aborted by user");
+					return;
 				}
-				else { // ToDo: mimetype handling
-					sw.openDistinctWin(url);
-				}
+			}
+			if (reset) {
+				sb.clearSession();
+			}
+			if (/\.pdf$/i.test(url)) {
+				sw.openPdfViewer(url);
+			}
+			else { // ToDo: mimetype handling
+				sw.openDistinctWin(url);
 			}
 		}
 		catch(e) {
@@ -316,6 +337,11 @@ this.SebHost = {
 	handleClearSession : function (opts) {
 		sl.debug("handleClearSession handled");
 		sb.clearSession();
+	},
+	
+	handleAdditionalDictionaries : function (opts) {
+		sl.debug("handleAdditionalDictionaries handled");
+		sb.addAdditionalDictionaries(opts);
 	},
 	
 	sendSebFile : function (base64) {

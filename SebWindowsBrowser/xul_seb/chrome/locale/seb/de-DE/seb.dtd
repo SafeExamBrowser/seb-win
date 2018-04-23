@@ -3,3 +3,12 @@
 <!ENTITY seb.toolbar.reload "Seite neu laden">
 <!ENTITY seb.toolbar.back "Zurück">
 <!ENTITY seb.toolbar.forward "Vor">
+<!ENTITY spellAddToDictionary.label "Add to Dictionary">
+<!ENTITY spellAddToDictionary.accesskey "o">
+<!ENTITY spellUndoAddToDictionary.label "Undo Add To Dictionary">
+<!ENTITY spellUndoAddToDictionary.accesskey "n">
+<!ENTITY spellCheckToggle.label "Rechtschreibprüfung">
+<!ENTITY spellCheckToggle.accesskey "g">
+<!ENTITY spellNoSuggestions.label "(No Spelling Suggestions)">
+<!ENTITY spellDictionaries.label "Languages">
+<!ENTITY spellDictionaries.accesskey "l">

@@ -331,9 +331,8 @@ ASALocalRun/
 
 # Project Specific
 .DS_Store
-InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/Interm/certificate.msi
 SafeExamBrowserInstaller.exe
-InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/SafeExamBrowserInstaller/LogFiles
-InstallShield 2012 Spring Projects/SafeExamBrowser/Professional/SafeExamBrowserInstaller/Reports
+InstallShield 2012 Spring Projects/SafeExamBrowser_2016/
+InstallShield 2012 Spring Projects/SafeExamBrowser_2018/
 /WixInstaller/SebWindowsBrowser.wxs
 

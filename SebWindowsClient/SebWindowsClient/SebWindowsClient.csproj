@@ -98,6 +98,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\RegistryServiceContract.cs">
+      <Link>ServiceUtils\RegistryServiceContract.cs</Link>
+    </Compile>
     <Compile Include="AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -425,10 +428,6 @@
     <Content Include="SEBicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
-      <Project>{5b604609-4125-4704-be64-d1ddacf252a0}</Project>
-      <Name>SEBWindowsServiceContracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IconExtractor\IconExtractor.csproj">
       <Project>{fdfd4eeb-c202-4d93-a6e9-d8984a12d014}</Project>
       <Name>IconExtractor</Name>

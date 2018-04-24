@@ -43,10 +43,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
-      <Project>{5B604609-4125-4704-BE64-D1DDACF252A0}</Project>
-      <Name>SEBWindowsServiceContracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SebWindowsServiceWCF\SebWindowsServiceWCF.csproj">
       <Project>{10093827-ff41-4c09-b2ff-9c0d27b4b41a}</Project>
       <Name>SebWindowsServiceWCF</Name>

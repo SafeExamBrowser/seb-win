@@ -45,7 +45,7 @@ namespace IconExtractor
             // Create a dynamic method to access Icon.iconData private field.
 
             var dm = new DynamicMethod(
-                "GetIconData", typeof(byte[]), new Type[] { typeof(Icon) }, typeof(Icon));
+                "GetIconData", typeof(byte[]), new[] { typeof(Icon) }, typeof(Icon));
             var fi = typeof(Icon).GetField(
                 "iconData", BindingFlags.Instance | BindingFlags.NonPublic);
             var gen = dm.GetILGenerator();

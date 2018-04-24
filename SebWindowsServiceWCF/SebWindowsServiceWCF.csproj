@@ -49,6 +49,9 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\RegistryServiceContract.cs">
+      <Link>RegistryServiceContract.cs</Link>
+    </Compile>
     <Compile Include="CommandExecutor\CommandExecutor.cs" />
     <Compile Include="OSVersion.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -94,12 +97,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <Private>True</Private>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj">
-      <Project>{5b604609-4125-4704-be64-d1ddacf252a0}</Project>
-      <Name>SEBWindowsServiceContracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

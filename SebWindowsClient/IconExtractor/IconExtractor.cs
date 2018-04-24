@@ -46,15 +46,15 @@ namespace IconExtractor
 
         // Resource types for EnumResourceNames().
 
-        private readonly static IntPtr RT_ICON = (IntPtr)3;
-        private readonly static IntPtr RT_GROUP_ICON = (IntPtr)14;
+        private static readonly IntPtr RT_ICON = (IntPtr)3;
+        private static readonly IntPtr RT_GROUP_ICON = (IntPtr)14;
 
         private const int MAX_PATH = 260;
 
         ////////////////////////////////////////////////////////////////////////
         // Fields
 
-        private byte[][] iconData = null;   // Binary data of each icon.
+        private byte[][] _iconData = null;   // Binary data of each icon.
 
         ////////////////////////////////////////////////////////////////////////
         // Public properties
@@ -71,7 +71,7 @@ namespace IconExtractor
         /// <summary>
         /// Gets the count of the icons in the associated file.
         /// </summary>
-        public int Count => iconData.Length;
+        public int Count => _iconData.Length;
 
         /// <summary>
         /// Initializes a new instance of the IconExtractor class from the specified file name.
@@ -95,7 +95,7 @@ namespace IconExtractor
 
             // Create an Icon from the .ico file in memory.
 
-            using (var ms = new MemoryStream(iconData[index]))
+            using (var ms = new MemoryStream(_iconData[index]))
             {
                 return new Icon(ms);
             }
@@ -128,7 +128,7 @@ namespace IconExtractor
             if (outputStream == null)
                 throw new ArgumentNullException(nameof(outputStream));
 
-            var data = iconData[index];
+            var data = _iconData[index];
             outputStream.Write(data, 0, data.Length);
         }
 
@@ -204,7 +204,7 @@ namespace IconExtractor
                 };
                 NativeMethods.EnumResourceNames(hModule, RT_GROUP_ICON, callback, IntPtr.Zero);
 
-                iconData = tmpData.ToArray();
+                _iconData = tmpData.ToArray();
             }
             finally
             {

@@ -802,7 +802,12 @@ namespace SebWindowsClient
 										if (!String.IsNullOrEmpty(identifier) && proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
 										{
 											//Get Process from WindowHandle by name if we have an identifier
-											proc = SEBWindowHandler.GetWindowHandleByTitle(identifier).GetProcess();
+											var handle = SEBWindowHandler.GetWindowHandleByTitle(identifier);
+
+											if (handle != IntPtr.Zero)
+											{
+												proc = handle.GetProcess();
+											}
 										}
 
 										if (reconfiguring && !isStartup && name == SEBClientInfo.XUL_RUNNER)

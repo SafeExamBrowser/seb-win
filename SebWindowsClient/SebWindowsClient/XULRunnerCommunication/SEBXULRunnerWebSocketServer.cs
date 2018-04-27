@@ -178,7 +178,7 @@ namespace SebWindowsClient.XULRunnerCommunication
             Logger.AddInformation("WebSocket: Client connected on port:" + socket.ConnectionInfo.ClientPort);
             XULRunner = socket;
 
-            while (!messageQueue.IsEmpty)
+            while (XULRunner != null && !messageQueue.IsEmpty)
             {
 				messageQueue.TryDequeue(out var message);
                 SendMessage(message);

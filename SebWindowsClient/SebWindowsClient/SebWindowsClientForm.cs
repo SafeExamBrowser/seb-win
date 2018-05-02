@@ -346,7 +346,8 @@ namespace SebWindowsClient
 		{
 			var reconfigure = new Func<bool>(() =>
 			{
-				var x = SEBXULRunnerWebSocketServer.IsRunning;
+				var wasStartup = isStartup;
+
 				Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 				if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings, suppressFileFormatError))
 				{
@@ -373,7 +374,7 @@ namespace SebWindowsClient
                 SEBURLFilter urlFilter = new SEBURLFilter();
                 urlFilter.UpdateFilterRules();
 
-                if (fromFile && !isStartup)
+                if (fromFile && !wasStartup)
 				{
 					var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
 					var xulRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);

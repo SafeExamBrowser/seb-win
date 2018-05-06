@@ -179,7 +179,7 @@ namespace SebRegistryResetter
 			SetDefaultValues(sid);
 
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine("Please note that RDP has been disabled!");
+			Console.WriteLine("Please note that Remote Desktop Connections have been disabled. They can be re-activated in the system settings, if needed.");
 			Console.WriteLine("Finished, press any key to exit the application");
 			Console.ReadKey();
 		}

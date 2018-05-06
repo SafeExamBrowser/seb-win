@@ -346,7 +346,8 @@ namespace SebWindowsClient
 		{
 			var reconfigure = new Func<bool>(() =>
 			{
-				var x = SEBXULRunnerWebSocketServer.IsRunning;
+				var wasStartup = isStartup;
+
 				Logger.AddInformation("Attempting to StoreDecryptedSEBSettings");
 				if (!SEBConfigFileManager.StoreDecryptedSEBSettings(sebSettings, suppressFileFormatError))
 				{
@@ -373,7 +374,7 @@ namespace SebWindowsClient
                 SEBURLFilter urlFilter = new SEBURLFilter();
                 urlFilter.UpdateFilterRules();
 
-                if (fromFile && !isStartup)
+                if (fromFile && !wasStartup)
 				{
 					var xulRunnerSettings = DeepClone(SEBSettings.settingsCurrent);
 					var xulRunnerParameters = SEBXulRunnerSettings.XULRunnerConfigDictionarySerialize(xulRunnerSettings);
@@ -531,14 +532,21 @@ namespace SebWindowsClient
 			timer.AutoReset = true;
 			timer.Elapsed += (o, args) =>
 			{
-				var windows = SEBWindowHandler.GetWindowsByThread(xulRunner.Threads[0].Id);
-
-				if (windows.Any())
+				if (!xulRunner.HasExited)
 				{
-					xulRunnerWindowHandle = windows.First();
-					timer.Stop();
+					var windows = SEBWindowHandler.GetWindowsByThread(xulRunner.Threads[0].Id);
 
-					Logger.AddInformation("Found handle to main browser window: " + xulRunnerWindowHandle);
+					if (windows.Any())
+					{
+						xulRunnerWindowHandle = windows.First();
+						timer.Stop();
+
+						Logger.AddInformation("Found handle to main browser window: " + xulRunnerWindowHandle);
+					}
+				}
+				else
+				{
+					timer.Stop();
 				}
 			};
 
@@ -681,7 +689,7 @@ namespace SebWindowsClient
 		/// ----------------------------------------------------------------------------------------
 		private void XulRunner_Exited(object sender, System.EventArgs e)
 		{
-			Logger.AddInformation("XULRunner exit event fired.", this, null);
+			Logger.AddInformation("XULRunner exit event fired.");
 
 			//xulRunnerExitEventHandled = true;
 			// Is the handle for the XULRunner process valid?
@@ -696,7 +704,7 @@ namespace SebWindowsClient
 				{
 					xulRunnerExitCode = -1;
 					// An error occured when reading exit code, probably XULRunner didn't actually exit yet
-					Logger.AddError("Error reading XULRunner exit code!", this, ex);
+					Logger.AddError("Error reading XULRunner exit code!", null, ex);
 				}
 			}
 			else
@@ -707,15 +715,15 @@ namespace SebWindowsClient
 			if (xulRunnerExitCode != 0)
 			{
 				// An error occured when exiting XULRunner, maybe it crashed?
-				Logger.AddInformation("An error occurred when exiting XULRunner. Exit code: " + xulRunnerExitCode.ToString(), this, null);
+				Logger.AddInformation("An error occurred when exiting XULRunner. Exit code: " + xulRunnerExitCode.ToString());
 			}
 			else
 			{
 				// If the flag for closing SEB is set, we exit
 				if (SEBClientInfo.SebWindowsClientForm.closeSebClient)
 				{
-					Logger.AddInformation("XULRunner was closed, SEB will exit now.", this, null);
-					ExitApplication();
+					Logger.AddInformation("XULRunner was closed, SEB will exit now.");
+					Invoke(new Action(() => ExitApplication()));
 				}
 			}
 
@@ -802,7 +810,12 @@ namespace SebWindowsClient
 										if (!String.IsNullOrEmpty(identifier) && proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
 										{
 											//Get Process from WindowHandle by name if we have an identifier
-											proc = SEBWindowHandler.GetWindowHandleByTitle(identifier).GetProcess();
+											var handle = SEBWindowHandler.GetWindowHandleByTitle(identifier);
+
+											if (handle != IntPtr.Zero)
+											{
+												proc = handle.GetProcess();
+											}
 										}
 
 										if (reconfiguring && !isStartup && name == SEBClientInfo.XUL_RUNNER)

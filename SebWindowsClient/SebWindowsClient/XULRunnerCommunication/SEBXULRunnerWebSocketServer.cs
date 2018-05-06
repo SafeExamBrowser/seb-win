@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
@@ -69,7 +70,7 @@ namespace SebWindowsClient.XULRunnerCommunication
         private static int port = 8706;
         private static WebSocketServer server;
 
-        private static List<SEBXULMessage> messageQueue = new List<SEBXULMessage>();
+        private static ConcurrentQueue<SEBXULMessage> messageQueue = new ConcurrentQueue<SEBXULMessage>();
 
         private static IAdditionalResourceHandler additionalResourceHandler = new AdditionalResourceHandler();
 
@@ -176,9 +177,11 @@ namespace SebWindowsClient.XULRunnerCommunication
         {
             Logger.AddInformation("WebSocket: Client connected on port:" + socket.ConnectionInfo.ClientPort);
             XULRunner = socket;
-            foreach (var sebxulMessage in messageQueue)
+
+            while (XULRunner != null && !messageQueue.IsEmpty)
             {
-                SendMessage(sebxulMessage);
+				messageQueue.TryDequeue(out var message);
+                SendMessage(message);
             }
         }
 
@@ -192,10 +195,10 @@ namespace SebWindowsClient.XULRunnerCommunication
                     Logger.AddInformation("WebSocket: Send message: " + JsonConvert.SerializeObject(message));
                     XULRunner.Send(JsonConvert.SerializeObject(message));
                 }
-                else
+                else if (messageQueue.All(m => m != message))
                 {
                     Logger.AddInformation("WebSocket: Added message to queue: " + JsonConvert.SerializeObject(message));
-                    messageQueue.Add(message);
+                    messageQueue.Enqueue(message);
                 }
             }
             catch (Exception)

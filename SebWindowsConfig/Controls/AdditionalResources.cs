@@ -433,6 +433,8 @@ namespace SebWindowsConfig.Controls
 
 				UpdateAdditionalResourceIdentifiers();
 			}
+
+			groupBoxAdditionalResourceDetails.Visible = treeViewAdditionalResources.SelectedNode != null;
 		}
 
 		private void checkBoxAdditionalResourceActive_CheckedChanged(object sender, EventArgs e)

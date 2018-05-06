@@ -332,7 +332,8 @@ ASALocalRun/
 # Project Specific
 .DS_Store
 SafeExamBrowserInstaller.exe
-InstallShield 2012 Spring Projects/SafeExamBrowser_2016/
-InstallShield 2012 Spring Projects/SafeExamBrowser_2018/
 /WixInstaller/SebWindowsBrowser.wxs
 
+# InstallShield Output
+InstallShield 2012 Spring Projects/SafeExamBrowser_2016/
+InstallShield 2012 Spring Projects/SafeExamBrowser_2018/

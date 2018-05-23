@@ -25,19 +25,31 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 		public bool SetRegistryEntries(Dictionary<RegistryIdentifiers, object> registryValues, string sid, string username)
 		{
 			bool res = true;
+
 			try
 			{
-				Logger.Log("Attempting to set new registry values...");
+				Logger.Log("SID: " + (sid ?? "<NULL>"));
+				Logger.Log("Username: " + (username ?? "<NULL>"));
+
+				if (string.IsNullOrEmpty(sid))
+				{
+					sid = SIDHandler.GetSIDFromUsername(username);
+
+					if (String.IsNullOrWhiteSpace(sid))
+					{
+						Logger.Log($"Failed to set registry entries because SID could not be determined for user '{username}''!");
+
+						return false;
+					}
+					else
+					{
+						Logger.Log("SID from Username: " + (sid ?? "<NULL>"));
+					}
+				}
 
 				using (var persistentRegistryFile = new PersistentRegistryFile(username, sid))
 				{
-					Logger.Log("SID: " + (sid ?? "<NULL>"));
-					Logger.Log("Username: " + (username ?? "<NULL>"));
-					if (string.IsNullOrEmpty(sid))
-					{
-						sid = SIDHandler.GetSIDFromUsername(username);
-						Logger.Log("SID from Username: " + (sid ?? "<NULL>"));
-					}
+					Logger.Log("Attempting to set new registry values...");
 
 					foreach (var registryValue in registryValues)
 					{

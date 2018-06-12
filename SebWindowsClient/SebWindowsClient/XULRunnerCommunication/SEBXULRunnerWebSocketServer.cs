@@ -19,6 +19,7 @@ namespace SebWindowsClient.XULRunnerCommunication
 	/// </summary>
 	public class SEBXULRunnerWebSocketServer
     {
+		private static readonly object AdditionalResourceHandlerLock = new object();
         public static bool Started = false;
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         private static ConcurrentQueue<SEBXULMessage> messageQueue = new ConcurrentQueue<SEBXULMessage>();
 
-        private static IAdditionalResourceHandler additionalResourceHandler = new AdditionalResourceHandler();
+        private static IAdditionalResourceHandler additionalResourceHandler;
 
         /// <summary>
         /// Start the server if not already running
@@ -218,6 +219,13 @@ namespace SebWindowsClient.XULRunnerCommunication
                 switch (sebxulMessage.Handler)
                 {
                     case SEBXULMessage.SEBXULHandler.AdditionalRessourceTriggered:
+						lock (AdditionalResourceHandlerLock)
+						{
+							if (additionalResourceHandler == null)
+							{
+								additionalResourceHandler = new AdditionalResourceHandler();
+							}
+						}
                         additionalResourceHandler.OpenAdditionalResourceById(sebxulMessage.Opts["Id"].ToString());
                         break;
                     case SEBXULMessage.SEBXULHandler.FullScreenChanged:

@@ -197,7 +197,7 @@ namespace SebWindowsClient.ConfigurationUtils
 						SEBClientInfo.SebWindowsClientForm.ExitApplication();
 					}
 
-					if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.No)
+					if (SEBMessageBox.Show(SEBUIStrings.sebReconfigured, SEBUIStrings.sebReconfiguredQuestion, MessageBoxIcon.Question, MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         //SEBClientInfo.SebWindowsClientForm.closeSebClient = true;
                         SEBClientInfo.SebWindowsClientForm.ExitApplication();

@@ -286,7 +286,7 @@
     <value>SEB Re-Configured</value>
   </data>
   <data name="sebReconfiguredQuestion" xml:space="preserve">
-    <value>New settings have been saved, they will be used when you start SEB next time again. Do you want to start working with SEB or quit for now?</value>
+    <value>New settings have been saved, they will be used when you start SEB next time again. Do you want to quit SEB for now?</value>
   </data>
   <data name="sebReconfiguredRestartNeeded" xml:space="preserve">
     <value>SEB Needs to be Restarted</value>

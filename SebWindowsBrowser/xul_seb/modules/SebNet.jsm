@@ -304,10 +304,15 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 			subject.visitResponseHeaders(aVisitor);
 			sl.info("");
 			if (aVisitor.isPdfResponse() && !/\.pdf$/i.test(subject.name)) {
-			//if (aVisitor.isPdfResponse() || /\.pdf$/i.test(subject.name)) {
-				// don't do anything if request comes from pdfviewer: loop!
-				// try silent
+				//check loadContext, ignore frame context
 				let w = sw.getRecentWin();
+				//check loadContext, ignore frame context
+				let loadContext = w.XULBrowserWindow.getLoadContext(subject);
+				let isMainContext = w.XULBrowserWindow.isFromMainWindow(loadContext);
+				if (!isMainContext) { // ignore
+					return;
+				}
+				
 				let winTitle = w.document.title;
 				sl.debug("isPdfResponse from window: " + winTitle);
 				if (winTitle.indexOf(PDF_VIEWER_TITLE) > -1) {
@@ -317,7 +322,7 @@ responseObserver.prototype.observe = function ( subject, topic, data ) {
 					sl.debug("redirect pdf response mimetype " + subject.name);
 					subject.cancel( this.aborted );
 					w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_PDF_REDIRECT.status, STATUS_PDF_REDIRECT.message);
-					return;
+					return; 
 				}
 			}
 		}

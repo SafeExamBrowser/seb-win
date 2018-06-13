@@ -236,8 +236,10 @@ this.SebHost = {
 			let url = ar["url"];
 			let filter = ar["refererFilter"];
 			let reset = ar["resetSession"];
+			/*
 			let confirm = ar["confirm"];
 			let confirmText = (ar["confirmText"] && ar["confirmText"] != "") ? ar["confirmText"] : su.getLocStr("seb.load.warning");
+			*/ 
 			if (!url || url == "") {
 				url = "file://" + opts.path + ar.resourceDataFilename.replace("\\\\","/");
 			}
@@ -252,6 +254,7 @@ this.SebHost = {
 				}
 			}
 			// check confirmation
+			/*
 			if (confirm) {
 				var result = prompt.confirm(null, su.getLocStr("seb.load.warning.title"), confirmText);
 				if (!result) {
@@ -259,6 +262,7 @@ this.SebHost = {
 					return;
 				}
 			}
+			*/ 
 			if (reset) {
 				sb.clearSession();
 			}

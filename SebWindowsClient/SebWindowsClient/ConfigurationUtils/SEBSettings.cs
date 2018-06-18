@@ -202,7 +202,6 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyAdditionalResourcesResourceIconsFormat = "format";
 		public const String KeyAdditionalResourcesResourceIconsResolution = "resolution";
 		public const String KeyAdditionalResourcesResourceIconsIconData = "iconData";
-		public const String KeyAdditionalResourcesIdentiﬁerCounter = "additionalResourcesIdentiﬁerCounter";
 		public const String KeyAdditionalResourcesLinkUrl = "linkURL";
 		public const String KeyAdditionalResourcesRefererFilter = "refererFilter";
 		public const String KeyAdditionalResourcesResetSession = "resetSession";
@@ -673,7 +672,6 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyRestartExamPasswordProtected, true);
 
 			// Default settings for group "Additional Resources"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyAdditionalResourcesIdentiﬁerCounter, 0);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAdditionalResources, new ListObj());
 
 			// Default settings for group "Applications"

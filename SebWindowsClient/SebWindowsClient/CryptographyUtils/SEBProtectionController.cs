@@ -596,12 +596,14 @@ namespace SebWindowsClient.CryptographyUtils
 				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_SEB),
 				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_SEBCONFIGTOOL),
 				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_FLECK),
-				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_ICONLIB),
-				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_METRO),
-				Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_ICONLIB),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_IONICZIP),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_METRO),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_NAUDIO),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_NEWTONSOFTJSON),
+                Path.Combine(SEBDirectory, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
 				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_SEBSERVICE),
 				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_SERVICECONTRACTS),
-				Path.Combine(SEBDirectory, SEBClientInfo.SEB_SERVICE_DIRECTORY, SEBClientInfo.FILENAME_DLL_INTEROP),
 			};
 
             var SEBBrowserDirectory = Path.Combine(SEBDirectory, SEBClientInfo.SEB_BROWSER_DIRECTORY);

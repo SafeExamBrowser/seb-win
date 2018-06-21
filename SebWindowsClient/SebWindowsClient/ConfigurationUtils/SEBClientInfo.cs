@@ -122,9 +122,11 @@ namespace SebWindowsClient.ConfigurationUtils
         public const string FILENAME_SEBSERVICE = "SebWindowsServiceWCF.exe";
         public const string FILENAME_DLL_FLECK = "Fleck.dll";
         public const string FILENAME_DLL_ICONLIB = "IconLib.dll";
+        public const string FILENAME_DLL_IONICZIP = "Ionic.Zip.dll";
         public const string FILENAME_DLL_METRO = "MetroFramework.dll";
+        public const string FILENAME_DLL_NAUDIO = "NAudio.dll";
+        public const string FILENAME_DLL_NEWTONSOFTJSON = "Newtonsoft.Json.dll";
         public const string FILENAME_DLL_SERVICECONTRACTS = "SEBWindowsServiceContracts.dll";
-        public const string FILENAME_DLL_INTEROP = "Interop.WUApiLib.dll";
         public const string BROWSER_USERAGENT_DESKTOP = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0";
         public const string BROWSER_USERAGENT_TOUCH = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0";
         public const string BROWSER_USERAGENT_TOUCH_IPAD = "Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.3 Mobile/15E216 Safari/605.1.15";

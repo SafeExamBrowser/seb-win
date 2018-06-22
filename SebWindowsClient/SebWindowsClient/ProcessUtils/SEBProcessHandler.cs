@@ -395,20 +395,20 @@ namespace SebWindowsClient.ProcessUtils
 					process.WaitForExit(100);
 					process.Refresh();
 				}
+
+				if (process.HasExited)
+				{
+					Logger.AddInformation($"Successfully terminated new Firefox process (PID = {process.Id}).");
+				}
+				else
+				{
+					Logger.AddWarning($"Failed to terminate Firefox process (PID = {process.Id}). Showing password dialog...");
+					ShowMessageOrPasswordDialog(process.ProcessName);
+				}
 			}
 			catch (Exception e)
 			{
 				Logger.AddError("Unexpected error while trying to terminate new Firefox process!", null, e);
-			}
-
-			if (process.HasExited)
-			{
-				Logger.AddInformation($"Successfully terminated new Firefox process (PID = {process.Id}).");
-			}
-			else
-			{
-				Logger.AddWarning($"Failed to terminate Firefox process (PID = {process.Id}). Showing password dialog...");
-				ShowMessageOrPasswordDialog(process.ProcessName);
 			}
 		}
 

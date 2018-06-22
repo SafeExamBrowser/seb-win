@@ -175,13 +175,10 @@ namespace SebWindowsClient.ProcessUtils
             try
             {
                 var regularProcessName = process.ProcessName ?? "<NULL>";
-                Logger.AddInformation(String.Format("Trying to retrieve original name of process " + regularProcessName));
 
                 using (var searcher = new ManagementObjectSearcher(query))
                 using (var results = searcher.Get())
                 {
-                    Logger.AddInformation(String.Format("Got a result for the query for process " + regularProcessName));
-
                     var processData = results.Cast<ManagementObject>().FirstOrDefault(p => Convert.ToInt32(p["ProcessId"]) == process.Id);
 
                     if (processData != null)
@@ -301,52 +298,125 @@ namespace SebWindowsClient.ProcessUtils
 
     class ProcessWatchDog
     {
+		private bool stopped;
         private System.Timers.Timer checkRunningProcessesTimer;
-        private List<String> runningProcesses;
+        private List<RunningProcess> processes;
 
         public ProcessWatchDog()
         {
-            runningProcesses = Process.GetProcesses().Select(p => p.ProcessName).ToList();
-            
+			processes = Process.GetProcesses().Select(p => new RunningProcess { Id = p.Id, Name = p.ProcessName }).ToList();
             checkRunningProcessesTimer = new System.Timers.Timer()
             {
-                Interval = 2000,
-                AutoReset = true,
+                Interval = 5000,
+                AutoReset = false,
                 Enabled = false
             };
-            checkRunningProcessesTimer.Elapsed += CheckRunningProcessesTimer_Elapsed;
         }
 
-        private void CheckRunningProcessesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            checkRunningProcessesTimer.Enabled = false;
-            string originalName;
-            foreach (var process in Process.GetProcesses())
-            {
-                if(!runningProcesses.Contains(process.ProcessName) && SEBWindowHandler.AllowedExecutables.Count(x => x.Name == process.ProcessName) == 0)
-                {
-                    Logger.AddWarning(string.Format("Detected Process {0} started", process.ProcessName));
-                    process.HasOriginalName(out originalName);
-                    if(process.ProcessName == "explorer.exe")
-                    {
-                        ExplorerStarted();
-                    }
-                    else if(SEBProcessHandler.ProhibitedExecutables.Where(x => x.Name.ToLower() == process.ProcessName.ToLower() || x.OriginalName.ToLower() == originalName.ToLower()).Count() > 0)
-                    {
-                        KillAStartedProcess(process, originalName);
-                    }
-                    else
-                    {
-                        runningProcesses.Add(process.ProcessName);
-                    }
-                }
-            }
-            checkRunningProcessesTimer.Enabled = true;
-        }
+		private void CheckRunningProcessesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			if (stopped)
+			{
+				return;
+			}
 
-        private void KillAStartedProcess(Process process, string originalName)
+			var running = Process.GetProcesses();
+			var terminated = processes.Where(p => running.All(r => r.Id != p.Id)).ToList();
+			var started = running.Where(p => processes.All(r => r.Id != p.Id)).ToList();
+
+			foreach (var process in terminated)
+			{
+				processes.Remove(process);
+				Logger.AddInformation($"Process '{process.Name}' (PID = {process.Id}) has been terminated.");
+			}
+
+			foreach (var process in started)
+			{
+				process.HasOriginalName(out string originalName);
+
+				if (IsExplorerProcess(process, originalName))
+				{
+					ExplorerStarted();
+				}
+				else if (IsProhibtedProcess(process, originalName))
+				{
+					KillProhibitedProcess(process, originalName);
+				}
+				else if (IsNewFirefoxProcess(process, originalName))
+				{
+					KillNewFirefoxProcess(process);
+				}
+				else
+				{
+					processes.Add(new RunningProcess { Id = process.Id, Name = process.ProcessName });
+					Logger.AddInformation($"Process '{process.ProcessName}' (PID = {process.Id}) has been started.");
+				}
+			}
+
+			checkRunningProcessesTimer.Enabled = true;
+		}
+
+		private bool IsExplorerProcess(Process process, string originalName)
+		{
+			return "explorer.exe".Equals(process.ProcessName, StringComparison.InvariantCultureIgnoreCase)
+				|| "explorer.exe".Equals(originalName, StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		private bool IsProhibtedProcess(Process process, string originalName)
+		{
+			return SEBProcessHandler.ProhibitedExecutables.Any(p => p.Name.ToLower() == process.ProcessName.ToLower() || p.OriginalName.ToLower() == originalName.ToLower());
+		}
+
+		private bool IsNewFirefoxProcess(Process process, string originalName)
+		{
+			var isNewInstance = false;
+
+			isNewInstance |= "firefox".Equals(process.ProcessName, StringComparison.InvariantCultureIgnoreCase);
+			isNewInstance |= "firefox".Equals(originalName, StringComparison.InvariantCultureIgnoreCase);
+			isNewInstance &= process.Id != SEBClientInfo.SebWindowsClientForm?.xulRunner?.Id;
+
+			return isNewInstance;
+		}
+
+		private void KillNewFirefoxProcess(Process process)
+		{
+			try
+			{
+				Logger.AddWarning($"Detected new Firefox process (PID = {process.Id})! Trying to close process...");
+
+				process.CloseMainWindow();
+				process.WaitForExit(100);
+				process.Refresh();
+
+				for (var attempt = 0; attempt < 50 && !process.HasExited; attempt++)
+				{
+					Logger.AddWarning($"Failed to terminate Firefox process (PID = {process.Id}) within 100ms! Trying again...");
+					process.Kill();
+					process.WaitForExit(100);
+					process.Refresh();
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.AddError("Unexpected error while trying to terminate new Firefox process!", null, e);
+			}
+
+			if (process.HasExited)
+			{
+				Logger.AddInformation($"Successfully terminated new Firefox process (PID = {process.Id}).");
+			}
+			else
+			{
+				Logger.AddWarning($"Failed to terminate Firefox process (PID = {process.Id}). Showing password dialog...");
+				ShowMessageOrPasswordDialog(process.ProcessName);
+			}
+		}
+
+		private void KillProhibitedProcess(Process process, string originalName)
         {
-            if (!SEBNotAllowedProcessController.CloseProcess(process))
+			Logger.AddWarning($"Prohibited process '{process.ProcessName}' (PID = {process.Id}) has been started!");
+
+			if (!SEBNotAllowedProcessController.CloseProcess(process))
             {
                 ShowMessageOrPasswordDialog(String.Format("{0} [OriginalName: {1}]", process.ProcessName, originalName));
             }
@@ -355,7 +425,8 @@ namespace SebWindowsClient.ProcessUtils
 
         public void StartWatchDog()
         {
-            checkRunningProcessesTimer.Enabled = true;
+			checkRunningProcessesTimer.Elapsed += CheckRunningProcessesTimer_Elapsed;
+			checkRunningProcessesTimer.Enabled = true;
         }
 
         private void ExplorerStarted()
@@ -376,7 +447,9 @@ namespace SebWindowsClient.ProcessUtils
 
         public void StopWatchDog()
         {
-            checkRunningProcessesTimer.Enabled = false;
+			stopped = true;
+			checkRunningProcessesTimer.Enabled = false;
+			checkRunningProcessesTimer.Elapsed -= CheckRunningProcessesTimer_Elapsed;
         }
 
         private void ShowMessageOrPasswordDialog(string processName)
@@ -415,5 +488,11 @@ namespace SebWindowsClient.ProcessUtils
                 ShowPasswordDialog(processName, quitPassword);
             }
         }
+
+		private class RunningProcess
+		{
+			public int Id { get; set; }
+			public string Name { get; set; }
+		}
     }
 }

@@ -1951,17 +1951,6 @@ namespace SebWindowsClient
 
 		private static void MonitorProcesses()
         {
-
-            //This prevents the not allowed executables from poping up
-            try
-            {
-                SEBWindowHandler.EnableForegroundWatchDog();
-            }
-            catch (Exception ex)
-            {
-                Logger.AddError("Unable to EnableForegroundWatchDog", null, ex);
-            }
-
             //Handle prohibited executables watching
             SEBProcessHandler.ProhibitedExecutables.Clear();
             //Add prohibited executables
@@ -1975,6 +1964,7 @@ namespace SebWindowsClient
                     SEBProcessHandler.ProhibitedExecutables.Add(new ExecutableInfo(name, originalName));
                 }
             }
+
             //This prevents the prohibited executables from starting up
             try
             {
@@ -1984,7 +1974,17 @@ namespace SebWindowsClient
             {
                 Logger.AddError("Unable to EnableProcessWatchDog", null, ex);
             }
-        }
+
+			//This prevents the not allowed executables from poping up
+			try
+			{
+				SEBWindowHandler.EnableForegroundWatchDog();
+			}
+			catch (Exception ex)
+			{
+				Logger.AddError("Unable to EnableForegroundWatchDog", null, ex);
+			}
+		}
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>

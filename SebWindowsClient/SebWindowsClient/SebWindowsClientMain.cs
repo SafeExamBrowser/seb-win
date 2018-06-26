@@ -54,72 +54,48 @@ namespace SebWindowsClient
 		public SingleInstanceController()
 		{
 			IsSingleInstance = true;
+
+			StartupNextInstance += this_StartupNextInstance;
+		}
+
+		void this_StartupNextInstance(object sender, StartupNextInstanceEventArgs e)
+		{
+			SebWindowsClientForm form = MainForm as SebWindowsClientForm; //My derived form type
+			if (e.CommandLine.Count() > 1)
+			{
+				string es = string.Join(", ", e.CommandLine);
+				Logger.AddInformation("StartupNextInstanceEventArgs: " + es);
+				if (!form.LoadFile(e.CommandLine[1]))
+				{
+					Logger.AddError("LoadFile() from StartupNextInstanceEvent failed!", null, null);
+				}
+			}
 		}
 
 		protected override void OnCreateMainForm()
 		{
+			MainForm = SEBClientInfo.SebWindowsClientForm;
 			string[] arguments = Environment.GetCommandLineArgs();
-
-			Logger.InitLogger();
-			Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
-			Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
-
-			try
+			if (arguments.Count() == 1)
 			{
-				if (!SebWindowsClientMain.InitSebSettings())
+				var splashThread = new Thread(SebWindowsClientMain.StartSplash);
+				splashThread.Start();
+
+				try
 				{
-					return;
+					SebWindowsClientMain.InitSEBDesktop();
 				}
-			}
-			catch (Exception ex)
-			{
-				Logger.AddError("Unable to InitSebSettings", null, ex);
-
-				return;
-			}
-
-			SEBProcessHandler.LogAllRunningProcesses();
-			MainForm = SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
-
-			new Thread(SebWindowsClientMain.StartSplash).Start();
-
-			try
-			{
-				SebWindowsClientMain.InitSEBDesktop();
-			}
-			catch (Exception ex)
-			{
-				Logger.AddError("Unable to InitSEBDesktop", null, ex);
-			}
-
-			if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
-			{
-				Logger.AddError("Unable to OpenSEBForm", null, null);
-			}
-
-			SebWindowsClientMain.CloseSplash();
-		}
-
-		protected override void OnStartupNextInstance(StartupNextInstanceEventArgs args)
-		{
-			base.OnStartupNextInstance(args);
-
-			if (args.CommandLine.Count() > 1)
-			{
-				var form = MainForm as SebWindowsClientForm;
-				var commandLine = string.Join(", ", args.CommandLine);
-
-				Logger.AddInformation("---------- RECONFIGURING SEB -------------");
-				Logger.AddInformation("Arguments: " + commandLine);
-
-				if (!form.LoadFile(args.CommandLine[1]))
+				catch (Exception ex)
 				{
-					Logger.AddError("Reconfiguration failed!", null, null);
+					Logger.AddError("Unable to InitSEBDesktop", null, ex);
 				}
-				else
+
+				if (!SEBClientInfo.SebWindowsClientForm.OpenSEBForm())
 				{
-					Logger.AddInformation("Reconfiguration successful!");
+					Logger.AddError("Unable to OpenSEBForm", null, null);
 				}
+
+				SebWindowsClientMain.CloseSplash();
 			}
 		}
 	}
@@ -143,17 +119,34 @@ namespace SebWindowsClient
 		//[STAThread]
 		static void Main()
 		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+
+			string[] arguments = Environment.GetCommandLineArgs();
+			Logger.InitLogger();
+			Logger.AddInformation("---------- INITIALIZING SEB - STARTING SESSION -------------");
+			Logger.AddInformation(" Arguments: " + String.Join(", ", arguments));
+
 			try
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-
-				singleInstanceController = new SingleInstanceController();
-				singleInstanceController.Run(Environment.GetCommandLineArgs());
+				if (!InitSebSettings())
+					return;
 			}
 			catch (Exception ex)
 			{
-				Logger.InitLogger();
+				Logger.AddError("Unable to InitSebSettings", null, ex);
+				return;
+			}
+			SEBProcessHandler.LogAllRunningProcesses();
+			singleInstanceController = new SingleInstanceController();
+
+			try
+			{
+				SEBClientInfo.SebWindowsClientForm = new SebWindowsClientForm();
+				singleInstanceController.Run(arguments);
+			}
+			catch (Exception ex)
+			{
 				Logger.AddError(ex.Message, null, ex);
 			}
 		}

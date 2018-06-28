@@ -588,7 +588,89 @@ this.seb =  {
 		}
 		sb.loadPage(base.mainWin,url);
 	},
-
+	
+	initLockScreen : function(win) {
+		sl.debug("initLockScreen");
+		sl.out("Lock Screen!");
+	},
+	
+	lockScreenReload : function(win) {
+		sl.debug("lockScreenReload");
+		if (base.mainWin) {
+			base.mainWin.document.getElementById("seb.lockscreen").reload();
+		}
+	},
+	
+	lock : function() {
+		sl.debug("seb lock!")
+		for (var i=0;i<sw.wins.length;i++) {
+			try {
+				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+				let imageBox = sw.wins[i].document.getElementById("imageBox");
+				lockBrowser.setAttribute("src",LOCK_URL);
+				sw.showLock(sw.wins[i]);
+				if (imageBox) {
+					imageBox.classList.add("hidden2");
+				}
+			}
+			catch(e) {
+				sl.err(e);
+			}
+		}
+	},
+	
+	unlock : function(win,force=false) {
+		sl.debug("try unlock...");
+		
+		let password = win.document.getElementById("sebLockPasswordInput");
+		let unlockMessage = win.document.getElementById("sebLockUnlockMessage");
+		unlockMessage.value = "";
+		let passwd = su.getConfig("hashedQuitPassword","string","");
+		if (passwd === "") {
+			password.value = "";
+			unlockMessage.value = su.getLocStr("seb.unlock.failed.no.password");
+			return;
+		}
+		
+		pwd = password.value;
+		if (pwd === "") {
+			unlockMessage.value = su.getLocStr("seb.unlock.failed.empty.password");
+			return;
+		}
+		let check = su.getHash(pwd);
+		sl.debug(check.toLowerCase() + ":" + passwd.toLowerCase());
+		if (check.toLowerCase() != passwd.toLowerCase()) {
+			unlockMessage.value = su.getLocStr("seb.unlock.failed.wrong.password");
+			return;
+		}
+		else {
+			for (var i=0;i<sw.wins.length;i++) {
+				sw.showContent(sw.wins[i]);
+				let imageBox = sw.wins[i].document.getElementById("imageBox");
+				if (imageBox) {
+					imageBox.classList.remove("hidden2");
+				}
+				/*
+				var rl = sw.wins[i].document.getElementById("btnReload");
+				var bk = sw.wins[i].document.getElementById("btnBack");
+				var fw = sw.wins[i].document.getElementById("btnForward");
+				if (rl && rl.getAttribute("disabled")) {
+					rl.setAttribute("disabled",false);
+					rl.classList.remove("disabled");
+				}
+				if (bk) {
+					bk.setAttribute("disabled",false);
+					bk.classList.remove("disabled");
+				}
+				if (fw) {
+					fw.setAttribute("disabled",false);
+					fw.classList.remove("disabled");
+				}
+				*/ 
+			}
+		}
+	},
+	
 	quit: function(e) {
 		sl.debug("try to quit...");
 		if (e) {

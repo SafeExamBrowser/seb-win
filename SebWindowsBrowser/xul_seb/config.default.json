@@ -13,6 +13,7 @@
 "allowQuit":true,
 "quitURL":"http://seb/quit.html",
 "hashedQuitPassword":"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d85e",
+"lockOnMessageSocketClose":true,
 "embeddedCertificates":[],
 "browserMessagingSocketEnabled":false,
 "browserMessagingSocket":"ws://localhost:8706",

@@ -70,6 +70,7 @@ const	xulFrame = "seb.iframe",
 	contentDeck = 0,
 	serverDeck = 1,
 	messageDeck = 2,
+	lockDeck = 3,
 	STATE_MAXIMIZED = 1, 	//The window is maximized.
 	STATE_MINIMIZED = 2, 	//The window is minimized.
 	STATE_NORMAL = 3, 	//The window is normal.
@@ -380,48 +381,14 @@ this.SebWin = {
 		}
 	},
 	
-	/* deprecated */
-	showContent : function (win,fromkey) { 
-		sl.debug("showContent...");
-		base.showDeck(win,fromkey,contentDeck);
-	},
-	
-	showServer : function (win,fromkey) { 
-		sl.debug("showServer...");
-		base.showDeck(win,fromkey,serverDeck);
-	},
-	
-	showMessage : function (win,fromkey) { 
-		sl.debug("showMessage...");
-		base.showDeck(win,fromkey,messageDeck);
-	},
-	
-	showDeck : function(win,fromkey,index)  {
-		if (fromkey && ! seb.DEBUG) { return; }
+	showLock : function (win) {
 		let w = (win) ? win : base.getRecentWin();
-		//sl.debug("showContent..." + base.getWinType(w));
-		base.setDeckIndex(w,index);
-		try {
-			w.document.title = w.XulLibBrowser.contentDocument.document.title;
-		}
-		catch(e) {}
-		w.focus();
-		w.XulLibBrowser.focus();
+		w.document.getElementById("deckContents").selectedIndex = lockDeck;
 	},
 	
-	getDeck : function (win) {
+	showContent : function (win) {
 		let w = (win) ? win : base.getRecentWin();
-		return w.document.getElementById("deckContents");
-	},
-	
-	getDeckIndex : function (win) {
-		let w = (win) ? win : base.getRecentWin();
-		return base.getDeck(win).selectedIndex;
-	},
-	
-	setDeckIndex : function (win,index) {
-		let w = (win) ? win : base.getRecentWin();
-		base.getDeck(win).selectedIndex = index;
+		w.document.getElementById("deckContents").selectedIndex = contentDeck;
 	},
 	
 	getFrameElement : function (win) {

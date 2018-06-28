@@ -12,3 +12,8 @@
 <!ENTITY spellNoSuggestions.label "(No Spelling Suggestions)">
 <!ENTITY spellDictionaries.label "Languages">
 <!ENTITY spellDictionaries.accesskey "l">
+<!ENTITY seb.lock.header "Verbindung zur SEB Anwendung unterbrochen!">
+<!ENTITY seb.lock.text "Der Browser kann nur mit einem entsprechenden Master-Passwort entsperrt werden. Bitte wenden Sie sich an das Aufsichtspersonal.">
+<!ENTITY seb.lock.unlock "Nach dem Entsperren stellen Sie sicher, dass alle Daten gespeichert sind. Beenden und starten Sie SEB erneut.">
+<!ENTITY seb.lock.unlock.button "Entsperren">
+

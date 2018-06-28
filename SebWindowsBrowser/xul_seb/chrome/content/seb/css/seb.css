@@ -17,6 +17,25 @@
 	background-position: 50% 50%;
 }
 
+#sebLockScreen {
+	background-color : #FC0D1B;
+	color: white;
+}
+
+#sebLockScreenHeader {
+	font-size: 1.8em;
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+
+#sebLockScreenText, #sebLockScreenUnlock, sebLockPassword {
+	font-size: 1.6em;
+}
+
+#sebLockPassword {
+	margin-top: 30px;
+}
+
 #loadingBox {
 	width: 20px;
 	height: 20px;
@@ -31,6 +50,10 @@
 }
 
 .hidden {
+	display: none;
+}
+
+.hidden2 {
 	display: none;
 }
 

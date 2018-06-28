@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://seb/content/css/seb.css" type="text/css"?>
+<!DOCTYPE window [
+	<!ENTITY % sebDtdLocal SYSTEM "chrome://seb/locale/seb.dtd">
+	%sebDtdLocal;
+	<!ENTITY % sebDtdConst SYSTEM "chrome://seb/content/seb.dtd">
+	%sebDtdConst;
+]>
+<window id="sebLockScreen" 
+	title="Lock-Screen" 
+	windowtype="lock" 
+	baseurl=""
+	sizemode="maximized"
+	accelerated="true" 
+	onload="seb.initLockScreen(this)"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+>	
+	<script type="application/x-javascript"> 
+		const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components;
+		Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+		XPCOMUtils.defineLazyModuleGetter(this,"seb","resource://modules/seb.jsm","seb");
+	</script>
+	<commandset>
+		<command id="sebCmdUnlock" oncommand="seb.unlock(window);"></command>
+	</commandset>
+	<keyset>
+		<key id="keyUnlock1" keycode="VK_RETURN" modifiers="" command="sebCmdUnlock" />
+		<key id="keyUnlock2" keycode="VK_ENTER" modifiers="" command="sebCmdUnlock" />
+	</keyset>	
+	<hbox pack="center" align="center" flex="1">
+		<vbox>
+			<label id="sebLockScreenHeader">&seb.lock.header;</label>
+			<label id="sebLockScreenText">&seb.lock.text;</label>
+			<label id="sebLockScreenUnlock">&seb.lock.unlock;</label>
+			<hbox id="sebLockPassword">
+				<textbox id="sebLockPasswordInput" type="password" flex="1"></textbox>
+				<button flex="1" id="sebLockPasswordButton" label="&seb.lock.unlock.button;" command="sebCmdUnlock"></button>
+				<spacer flex="6"></spacer>
+			</hbox>
+			<label id="sebLockUnlockMessage" value=" "></label>
+		</vbox>
+	</hbox>
+</window>

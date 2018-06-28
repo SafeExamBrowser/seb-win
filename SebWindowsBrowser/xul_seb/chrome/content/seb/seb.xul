@@ -50,6 +50,7 @@
 		<command id="sebCmdReboot" oncommand="sh.rebootKey();"/>
 		<command id="sebCmdRestart" oncommand="sb.restart();"/>
 		<command id="sebCmdToggleSpellCheckEnabled" oncommand="sb.toggleSpellCheckEnabled(window);"/>
+		<command id="sebLockScreenReload" oncommand="seb.lockScreenReload(window);"/>
 	</commandset>
 	<audio xmlns="http://www.w3.org/1999/xhtml" id="seb.snapshot" src="chrome://seb/content/sounds/snapshot.ogg" preload="auto"></audio>
 	<!-- keysets -->
@@ -59,6 +60,7 @@
 		<key id="seb.restart" keycode="VK_F9" modifiers="control shift" command="sebCmdRestart"/>
 		<key id="seb.back" keycode="VK_LEFT" modifiers="control shift" command="sebCmdBack"/>
 		<key id="seb.forward" keycode="VK_RIGHT" modifiers="control shift" command="sebCmdForward"/>
+		<key id="sebLockScreen.reload" key="1" modifiers="control" command="sebLockScreenReload"/>
 		<!--
 		<key id="seb.showall" keycode="VK_F1" command="sebCmdShowAll"/>
 		<key id="seb.showcontent" key="1" modifiers="control" command="sebCmdShowContent"/>
@@ -105,6 +107,7 @@
 				<browser flex="1" id="seb.browser" type="content-primary" />
 				<browser flex="1" id="sebserver.socket" src="about:blank" type="content-targetable"></browser>
 				<browser flex="1" id="message.socket" src="about:blank" type="content-targetable"></browser>
+				<browser flex="1" id="seb.lockscreen" src="about:blank" type="chrome"></browser>
 			</deck>
 		</vbox>
 		<vbox id="loadingBox" class="hidden loadingBox">

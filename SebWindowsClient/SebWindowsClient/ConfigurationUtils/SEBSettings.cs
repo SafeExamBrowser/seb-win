@@ -905,18 +905,18 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAltMouseWheel, false);
 
 			// Default settings for group "Function Keys"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF1 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF2 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF3 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF4 , false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF1 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF2 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF3 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF4 , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF5 , true);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF6 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF7 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF8 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF9 , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF10, false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF11, false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF12, false);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF6 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF7 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF8 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF9 , true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF10, true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF11, true);
+			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableF12, true);
 
 
 			// Clear all "current" lists and dictionaries

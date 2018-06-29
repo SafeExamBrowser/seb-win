@@ -345,12 +345,14 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyEnableLogging       = "enableLogging";
 		public const String KeyLogDirectoryOSX     = "logDirectoryOSX";
 		public const String KeyLogDirectoryWin     = "logDirectoryWin";
-		public const String KeyAllowWLAN     = "allowWlan";
+        public const String KeyAllowWLAN = "allowWlan";
+        public const String KeyLockOnMessageSocketClose = "lockOnMessageSocketClose";
 
-		// Group "Registry"
 
-		// Group "Inside SEB"
-		public const String KeyInsideSebEnableSwitchUser        = "insideSebEnableSwitchUser";
+        // Group "Registry"
+
+        // Group "Inside SEB"
+        public const String KeyInsideSebEnableSwitchUser        = "insideSebEnableSwitchUser";
 		public const String KeyInsideSebEnableLockThisComputer  = "insideSebEnableLockThisComputer";
 		public const String KeyInsideSebEnableChangeAPassword   = "insideSebEnableChangeAPassword";
 		public const String KeyInsideSebEnableStartTaskManager  = "insideSebEnableStartTaskManager";
@@ -877,10 +879,12 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableLogging, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryOSX    , "~/Documents");
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryWin    , "");
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowWLAN    , false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowWLAN, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyLockOnMessageSocketClose, true);
 
-			// Default settings for group "Inside SEB"
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
+
+            // Default settings for group "Inside SEB"
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableLockThisComputer , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableChangeAPassword  , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableStartTaskManager , false);

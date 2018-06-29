@@ -1079,7 +1079,10 @@ namespace SebWindowsClient
 			FileCompressor.CleanupTempDirectory();
 			foreach (DictObj l0resource in ((ListObj) SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources]))
 			{
-				if (l0resource.TryGetValue(SEBSettings.KeyAdditionalResourcesShowButton, out object show) && show as bool? == true)
+				var active = l0resource.TryGetValue(SEBSettings.KeyAdditionalResourcesActive, out object a) && a is true;
+				var show = l0resource.TryGetValue(SEBSettings.KeyAdditionalResourcesShowButton, out object s) && s is true;
+
+				if (active && show)
 				{
 					taskbarToolStrip.Items.Add(new SEBAdditionalResourcesToolStripButton(l0resource));
 				}

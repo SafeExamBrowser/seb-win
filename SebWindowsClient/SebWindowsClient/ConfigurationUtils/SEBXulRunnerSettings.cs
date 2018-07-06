@@ -208,6 +208,10 @@ namespace SebWindowsClient.ConfigurationUtils
 			// The additional dictionary data is being extracted by the .NET-part, the browser only expects a path to the respective folder
 			xulRunnerSettings.Remove(SEBSettings.KeyAdditionalDictionaries);
 
+			xulRunnerSettings.Remove(SEBSettings.KeyPermittedProcesses);
+			xulRunnerSettings.Remove(SEBSettings.KeyProhibitedProcesses);
+			xulRunnerSettings.Remove(SEBSettings.KeyURLFilterRules);
+
 			// The installed operating system culture for correct website localization
 			xulRunnerSettings.Add("browserLanguage", System.Globalization.CultureInfo.CurrentCulture.Name);
 

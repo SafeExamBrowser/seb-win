@@ -31,6 +31,13 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 				Logger.Log("SID: " + (sid ?? "<NULL>"));
 				Logger.Log("Username: " + (username ?? "<NULL>"));
 
+				if (String.IsNullOrEmpty(sid) && String.IsNullOrEmpty(username))
+				{
+					Logger.Log("Cannot set registry entries without SID or username information!");
+
+					return false;
+				}
+
 				if (string.IsNullOrEmpty(sid))
 				{
 					sid = SIDHandler.GetSIDFromUsername(username);
@@ -77,7 +84,12 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 						try
 						{
 							//If there is nothing to change, then do not change anything
-							if (object.Equals(registryValue.Value,regEntry.DataValue)) continue;
+							if (object.Equals(registryValue.Value, regEntry.DataValue))
+							{
+								Logger.Log(String.Format("Registry key '{0}' already has value '{1}', skipping it.", registryValue.Key, registryValue.Value ?? "<NULL>"));
+
+								continue;
+							}
 
 							//Only store the entry in the persistent file if not already existing
 							if (!persistentRegistryFile.FileContent.RegistryValues.ContainsKey(registryValue.Key))
@@ -181,13 +193,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 					else
 					{
 						service.Stop();
-                        if (SetRegistryEntries(new Dictionary<RegistryIdentifiers, object>
-                        {
-                            {RegistryIdentifiers.NoAutoRebootWithLoggedOnUsers, 1 }
-                        }, null, null))
-                        {
-                            new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
-                        }
+                        new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
                         //service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
                     }
 

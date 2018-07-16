@@ -116,5 +116,11 @@
 				<image id="loadingImage" src="chrome://seb/content/images/loading.gif" />
 			</hbox>
 		</vbox>
+		<vbox id="unconnectedBox" class="hidden">
+			<hbox>
+				<spacer></spacer>
+				<label value="&seb.lock.unconnected;"></label>
+			</hbox>
+		</vbox>
 	</stack>
 </window>

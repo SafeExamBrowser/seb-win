@@ -429,6 +429,15 @@ this.SebUtils =  {
 		}
 	},
 	
+	globToRegex : function (str) {
+		//return new RegExp('^'+base.pregQuote(str).replace(/\\\*/g, '.*?').replace(/\\\?/g, '.') + '$');
+		return new RegExp('^'+base.pregQuote(str).replace(/\\\*/g, '.*?') + '$');
+	},
+	
+	pregQuote : function  (str, delimiter) {
+	    return (str + '').replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + (delimiter || '') + '-]', 'g'), '\\$&');
+	},
+
 	escapeRegExp : function (str) {
 		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 	},

@@ -61,12 +61,18 @@ let 	base = null,
 	elToScrollIntoView = null,
 	textTypes = ['color','date','datetime','datetime-local','email','month','number','password','search','tel','text','time','url','week'];
 	
+	
 this.SebHost = {
 	
 	messageServer : false,
 	os : "",
 	msgHandler : {},
 	sendHandler : {},
+	reconnectTry : 0,
+	//reconnectTriesReached : false,
+	reconnectInterval : 0,
+	reconnectMaxTries : 0,
+	reconnectIntervalObj : null,
 
 	init : function(obj) {
 		base = this;
@@ -94,6 +100,9 @@ this.SebHost = {
 			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered,
 			"FullScreenChanged" : base.sendFullScreenChanged
 		};
+		base.reconnectInterval = su.getConfig("lockOnMessageSocketCloseTriesIntervallMSec","number",5);
+		base.reconnectMaxTries = su.getConfig("lockOnMessageSocketCloseTries","number",1000);
+		
 		sl.out("SebHost initialized: " + seb);
 	},
 	
@@ -105,7 +114,7 @@ this.SebHost = {
 		try {
 			messageSocket = new WebSocket(socket);
 			messageSocket.binaryType = "blob";
-			sl.debug("messageSocket: " + typeof messageSocket)
+			//sl.debug("messageSocket: " + typeof messageSocket)
 		}
 		catch (e) {
 			sl.debug("messageSocket connection failed: " + socket + "\n"+e);
@@ -126,10 +135,9 @@ this.SebHost = {
 		messageSocket.onclose = function(e) { 
 			sl.debug("messageSocket close: " + e);
 			messageSocket = null;
-			messageServer = false;
-			if (su.getConfig("lockOnMessageSocketClose","boolean",false)) {
+			base.messageServer = false;
+			if (!seb.isLocked && su.getConfig("lockOnMessageSocketClose","boolean",false)) {
 				seb.lock();
-				//base.quitFromHost();
 			} 
 		} 
 		
@@ -185,7 +193,7 @@ this.SebHost = {
 								base.msgHandler[msgObj["Handler"]].call(base,msgObj["Opts"]);
 							}
 							else {
-								sl.debug("not handled msg: " + msgObj["Handler"]);
+								sl.info("not handled msg: " + msgObj["Handler"]);
 							}
 						}
 						catch(e) {
@@ -193,11 +201,11 @@ this.SebHost = {
 						}
 					}
 					else {
-						sl.debug("messageSocket(1): not handled msg: " + evt.data); 
+						sl.info("messageSocket(1): not handled msg: " + evt.data); 
 					}
 				}
 				catch(e) {
-					sl.debug("messageSocket(2): not handled msg: " + evt.data); 
+					sl.info("messageSocket(2): not handled msg: " + evt.data); 
 				}
 			}
 		};
@@ -225,13 +233,47 @@ this.SebHost = {
 		pingtime = parseInt(su.getConfig("browserMessagingPingTime","number",120000));
 		messageSocketBrowser = win.document.getElementById("message.socket");	
 		messageSocketBrowser.addEventListener("DOMContentLoaded", base.messageSocketListener, true);
-		messageSocketBrowser.setAttribute("src","chrome://seb/content/message_socket.html"); // to fire window DOMContentLoaded
+		messageSocketBrowser.setAttribute("src",MESSAGE_SOCKET_URL); // to fire window DOMContentLoaded
 	},
 	
 	closeMessageSocket : function() {
 		if (base.messageServer) {
 			messageSocket.close();
 		}
+	},
+	
+	reconnect : function() {
+		let w = (seb.mainWin) ? seb.mainWin : sw.getRecentWin();
+		base.reconnectIntervalObj = w.setInterval(function() { base.reconnectSocket(); }, base.reconnectInterval);
+	},
+	
+	reconnectSocket : function() {
+		sl.debug("reconnectSocket...");
+		if (base.messageServer) {
+			sl.debug("message socket reconnected!");
+			base.resetReconnecting();
+			seb.unlockAll();
+			return;
+		}
+		base.reconnectTry += 1;
+		if (base.reconnectTry > base.reconnectMaxTries) {
+			sl.debug("reconnectMaxTries reached");
+			base.resetReconnecting();
+			seb.setUnlockScreen();
+			return;
+		}
+		if (!messageSocketBrowser) {
+			sl.debug("no messageSocketBrowser");
+			base.resetReconnecting();
+			return;
+		}
+		messageSocketBrowser.reload();
+	},
+	
+	resetReconnecting : function() {
+		let w = (seb.mainWin) ? seb.mainWin : sw.getRecentWin();
+		w.clearInterval(base.reconnectIntervalObj);
+		base.reconnectTry = 0;
 	},
 	
 	handleArs : function(opts) {

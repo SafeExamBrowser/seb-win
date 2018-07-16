@@ -16,4 +16,5 @@
 <!ENTITY seb.lock.text "Der Browser kann nur mit einem entsprechenden Master-Passwort entsperrt werden. Bitte wenden Sie sich an das Aufsichtspersonal.">
 <!ENTITY seb.lock.unlock "Nach dem Entsperren stellen Sie sicher, dass alle Daten gespeichert sind. Beenden und starten Sie SEB erneut.">
 <!ENTITY seb.lock.unlock.button "Entsperren">
-
+<!ENTITY seb.lock.reconnection "Verbindungsaufbau">
+<!ENTITY seb.lock.unconnected "nicht verbunden!">

@@ -17,7 +17,7 @@
 	background-position: 50% 50%;
 }
 
-#sebLockScreen {
+#sebLockScreen,  sebLockScreenHbox {
 	background-color : #FC0D1B;
 	color: white;
 }
@@ -36,12 +36,27 @@
 	margin-top: 30px;
 }
 
+#sebReconnectionText {
+	font-size: 1.3em;
+}
+
 #loadingBox {
 	width: 20px;
 	height: 20px;
 	position: fixed;
 	top: 2px;
 	right: 10px;
+}
+
+#unconnectedBox {
+	color: red;
+	font-weight: bold;
+	font-size: 1.2em;
+	width: 20px;
+	height: 20px;
+	position: fixed;
+	top: 2px;
+	left: 10px;
 }
 
 #loadingImage {

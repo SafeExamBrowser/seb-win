@@ -239,7 +239,6 @@ nsBrowserStatusHandler.prototype = {
 this.SebBrowser = {
 	//lastDocumentUrl : null,
 	dialogHandler : null,
-	linkURLS : {},
 	quitURLRefererFilter : "",
 	init : function(obj) {
 		base = this;
@@ -310,11 +309,19 @@ this.SebBrowser = {
 						return;
 					}
 					
-					if (base.linkURLS[uri]) {
-						this.onStatusChange(progress, request, STATUS_LOAD_AR.status, STATUS_LOAD_AR.message);
-						return;
+					for (var key in seb.ars) {
+						if (seb.ars[key].checkTrigger(uri,progress.DOMWindow.document.URL)) {
+							if (seb.ars[key].isLink) {
+								
+								this.onStatusChange(progress, request, STATUS_LOAD_AR.status, key);
+								return;
+							}
+							else {
+								seb.loadAR(sw.getChromeWin(progress.DOMWindow), key);
+							}	
+						}
 					}
-					
+					 
 					// special chrome pdfViewer
 					if (sw.winTypesReg.pdfViewer.test(uri)) {
 						sl.debug(PDF_VIEWER_TITLE);
@@ -608,11 +615,11 @@ this.SebBrowser = {
 					this.mainPageURI = null;
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					break;
-				case STATUS_LOAD_AR.status :
+				case STATUS_LOAD_AR.status : // maybe deprecated
 					request.cancel(status);
 					this.mainPageURI = null;
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
-					seb.loadAR(sw.getChromeWin(progress.DOMWindow), base.linkURLS[request.name]);
+					seb.loadAR(sw.getChromeWin(progress.DOMWindow), message);
 					break;
 				case  STATUS_INVALID_URL.status :
 					request.cancel(status);

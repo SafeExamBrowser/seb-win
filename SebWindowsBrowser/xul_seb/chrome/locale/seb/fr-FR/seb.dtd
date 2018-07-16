@@ -16,4 +16,5 @@
 <!ENTITY seb.lock.text "The SEB browser can only be unlocked by entering the quit/unlock password, which usually exam supervision/support knows.">
 <!ENTITY seb.lock.unlock "Make sure exam answers are saved, quit the browser and restart SEB. Enter quit/unlock password to unlock the SEB browser:">
 <!ENTITY seb.lock.unlock.button "Unlock">
-
+<!ENTITY seb.lock.reconnection "Reconnection">
+<!ENTITY seb.lock.unconnected "unconnected!">

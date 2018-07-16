@@ -85,6 +85,7 @@ this.seb =  {
 	lastWin : null,
 	reconfWinStart : false,
 	arsKeys : {},
+	isLocked : false,
 
 	toString : function() {
 		return appinfo.name;
@@ -321,20 +322,44 @@ this.seb =  {
 	getArsLinksAndKeys : function () {
 		sl.debug("getArsLinksAndKeys");
 		for (let k in base.ars) {
-			//sl.debug(JSON.stringify(base.ars[k]));
-			if (base.ars[k]["linkURL"] && base.ars[k]["linkURL"] != "") {
-				sb.linkURLS[base.ars[k]["linkURL"]] = k;
+			let ar = base.ars[k];
+			// prepare all regex and queries in ar objects for better performance
+			ar["linkURLExist"] = (ar["linkURL"] && ar["linkURL"] != "");
+			ar["refererFilterExist"] = (ar["refererFilter"] && ar["refererFilter"] != "");
+			ar["linkOrReferer"] = (ar["linkURLExist"] || ar["refererFilterExist"]);
+			ar["linkAndReferer"] = (ar["linkURLExist"] && ar["refererFilterExist"]);
+			ar["linkOnly"] = (ar["linkURLExist"] && !ar["refererFilterExist"]);
+			ar["refererOnly"] = (ar["refererFilterExist"] && !ar["linkURLExist"]);
+			ar["isLink"] = (ar["url"] && ar["url"] != "");
+			ar["checkTrigger"] = function () { return false; };
+			
+			if (ar["linkURLExist"]) {
+				ar["linkURLRegex"] = su.globToRegex(ar["linkURL"]);
 			}
-			if (base.ars[k]["keycode"] && base.ars[k]["keycode"] != "") {
-				let m = (base.ars[k]["modifiers"] && base.ars[k]["modifiers"] != "") ? base.ars[k]["modifiers"] : "";
-				base.arsKeys[k] = {keycode : base.ars[k]["keycode"], modifiers : m}
+			if (ar["refererFilter"] && ar["refererFilter"] != "") {
+				ar["refererFilterRegex"] = su.globToRegex(ar["refererFilter"]);
 			}
-			if (base.ars[k]["key"] && base.ars[k]["key"] != "") {
-				let m = (base.ars[k]["modifiers"] && base.ars[k]["modifiers"] != "") ? base.ars[k]["modifiers"] : "";
-				base.arsKeys[k] = {key : base.ars[k]["key"], modifiers : m}
+			if (ar["linkOrReferer"]) {
+				ar["checkTrigger"] = function(url,referer) {
+					if (this.linkOnly) {
+						return this.linkURLRegex.test(url);
+					}
+					if (this.refererOnly) {
+						
+						return this.refererFilterRegex.test(referer);
+					}
+					return (this.linkURLRegex.test(url) && this.refererFilterRegex.test(referer));
+				}
+			} 
+			if (ar["keycode"] && ar["keycode"] != "") {
+				let m = (ar["modifiers"] && ar["modifiers"] != "") ? ar["modifiers"] : "";
+				base.arsKeys[k] = {keycode : ar["keycode"], modifiers : m}
+			}
+			if (ar["key"] && ar["key"] != "") {
+				let m = (ar["modifiers"] && ar["modifiers"] != "") ? ar["modifiers"] : "";
+				base.arsKeys[k] = {key : ar["key"], modifiers : m}
 			}
 		}
-		//sl.debug(JSON.stringify(sb.linkURLS));
 	},
 
 	initArsKeys : function (win) {
@@ -556,7 +581,7 @@ this.seb =  {
 			return true;
 		}
 		
-		let filter = ar["refererFilter"];
+		//let filter = ar["refererFilter"];
 		let reset = ar["resetSession"];
 		let confirm = ar["confirm"];
 		let confirmText = (ar["confirmText"] && ar["confirmText"] != "") ? ar["confirmText"] : su.getLocStr("seb.load.warning");
@@ -565,7 +590,8 @@ this.seb =  {
 			return;
 		}
 
-		// first check referrer
+		// first check referrer: deprecated
+		/*
 		if (filter && filter != "") {
 			let w = (win) ? win : sw.getRecentWin();
 			let loadReferrer = w.content.document.location.href;
@@ -574,7 +600,7 @@ this.seb =  {
 				return false;
 			}
 		}
-
+		*/
 		// check confirmation
 		if (confirm) {
 			var result = prompt.confirm(null, su.getLocStr("seb.load.warning.title"), confirmText);
@@ -602,7 +628,7 @@ this.seb =  {
 	},
 	
 	lock : function() {
-		sl.debug("seb lock!")
+		sl.debug("seb lock");
 		for (var i=0;i<sw.wins.length;i++) {
 			try {
 				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
@@ -615,13 +641,74 @@ this.seb =  {
 			}
 			catch(e) {
 				sl.err(e);
+				return;
+			}
+		}
+		base.isLocked = true;
+		base.setUnconnectedMessage();
+		sh.reconnect();
+	},
+	
+	setUnconnectedMessage : function() {
+		sl.debug("setUnconnectedMessage");
+		for (var i=0;i<sw.wins.length;i++) {
+			try {
+				let unconnectedBpx = sw.wins[i].document.getElementById("unconnectedBox");
+				unconnectedBpx.classList.remove("hidden");
+			}
+			catch(e) {
+				sl.err(e);
 			}
 		}
 	},
 	
-	unlock : function(win,force=false) {
+	deleteUnconnectedMessage : function() {
+		sl.debug("deleteUnconnectedMessage");
+		for (var i=0;i<sw.wins.length;i++) {
+			try {
+				let unconnectedBpx = sw.wins[i].document.getElementById("unconnectedBox");
+				unconnectedBpx.classList.add("hidden");
+			}
+			catch(e) {
+				sl.err(e);
+			}
+		}
+	},
+	
+	setReconnectScreen : function() {
+		sl.debug("setReconnectScreen");
+		for (var i=0;i<sw.wins.length;i++) {
+			try {
+				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+				let reconnectVbox = lockBrowser.contentDocument.getElementById("sebReconnectVbox");
+				let unlockVbox = lockBrowser.contentDocument.getElementById("sebUnlockVbox");
+				reconnectVbox.classList.remove("hidden");
+				unlockVbox.classList.add("hidden");
+			}
+			catch(e) {
+				sl.err(e);
+			}
+		}
+	},
+	
+	setUnlockScreen : function() {
+		sl.debug("setUnlockScreen");
+		for (var i=0;i<sw.wins.length;i++) {
+			try {
+				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+				let reconnectVbox = lockBrowser.contentDocument.getElementById("sebReconnectVbox");
+				let unlockVbox = lockBrowser.contentDocument.getElementById("sebUnlockVbox");
+				reconnectVbox.classList.add("hidden");
+				unlockVbox.classList.remove("hidden");
+			}
+			catch(e) {
+				sl.err(e);
+			}
+		}
+	},
+	
+	unlock : function(win) {
 		sl.debug("try unlock...");
-		
 		let password = win.document.getElementById("sebLockPasswordInput");
 		let unlockMessage = win.document.getElementById("sebLockUnlockMessage");
 		unlockMessage.value = "";
@@ -638,36 +725,28 @@ this.seb =  {
 			return;
 		}
 		let check = su.getHash(pwd);
-		sl.debug(check.toLowerCase() + ":" + passwd.toLowerCase());
+		//sl.debug(check.toLowerCase() + ":" + passwd.toLowerCase());
 		if (check.toLowerCase() != passwd.toLowerCase()) {
 			unlockMessage.value = su.getLocStr("seb.unlock.failed.wrong.password");
 			return;
 		}
 		else {
-			for (var i=0;i<sw.wins.length;i++) {
-				sw.showContent(sw.wins[i]);
-				let imageBox = sw.wins[i].document.getElementById("imageBox");
-				if (imageBox) {
-					imageBox.classList.remove("hidden2");
-				}
-				/*
-				var rl = sw.wins[i].document.getElementById("btnReload");
-				var bk = sw.wins[i].document.getElementById("btnBack");
-				var fw = sw.wins[i].document.getElementById("btnForward");
-				if (rl && rl.getAttribute("disabled")) {
-					rl.setAttribute("disabled",false);
-					rl.classList.remove("disabled");
-				}
-				if (bk) {
-					bk.setAttribute("disabled",false);
-					bk.classList.remove("disabled");
-				}
-				if (fw) {
-					fw.setAttribute("disabled",false);
-					fw.classList.remove("disabled");
-				}
-				*/ 
+			base.unlockAll();
+		}
+		//base.setReconnectScreen();
+	},
+	
+	unlockAll : function() {
+		for (var i=0;i<sw.wins.length;i++) {
+			sw.showContent(sw.wins[i]);
+			let imageBox = sw.wins[i].document.getElementById("imageBox");
+			if (imageBox) {
+				imageBox.classList.remove("hidden2");
 			}
+		}
+		base.isLocked = false;
+		if (sh.messageServer) {
+			base.deleteUnconnectedMessage();
 		}
 	},
 	

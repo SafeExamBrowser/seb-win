@@ -114,6 +114,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 						}
 					}
 				}
+
+				new CommandExecutor.CommandExecutor().ExecuteCommandSync("gpupdate /force");
 			}
 			catch (Exception ex)
 			{
@@ -187,15 +189,30 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 					TimeSpan timeout = TimeSpan.FromMilliseconds(500);
 					if (enable)
 					{
-						service.Start();
-                        //service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+						if (service.Status != ServiceControllerStatus.StartPending && service.Status != ServiceControllerStatus.Running)
+						{
+							service.Start();
+							Logger.Log($"Started service '{service.DisplayName}'.");
+							//service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+						}
+						else
+						{
+							Logger.Log($"Service '{service.DisplayName}' is already starting / running...");
+						}
 					}
 					else
 					{
-						service.Stop();
-                        new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
-                        //service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-                    }
+						if (service.Status != ServiceControllerStatus.StopPending && service.Status != ServiceControllerStatus.Stopped)
+						{
+							service.Stop();
+							Logger.Log($"Stopped service '{service.DisplayName}'.");
+							//service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+						}
+						else
+						{
+							Logger.Log($"Service '{service.DisplayName}' is already stopping / stopped...");
+						}
+					}
 
 					Logger.Log(String.Format("Set windows update to {0}", enable));
 

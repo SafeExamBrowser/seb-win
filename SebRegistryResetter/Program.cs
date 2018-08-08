@@ -193,6 +193,7 @@ namespace SebRegistryResetter
 				new RegDisableTaskMgr(sid),
 				new RegHideFastUserSwitching(sid),
 				new RegNoClose(sid),
+				new RegNoCloseWin7(sid),
 				new RegNoLogoff(sid),
 				new RegDontDisplayNetworkSelectionUI(sid),
 				new RegNoAutoRebootWithLoggedOnUsers(sid)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security.Principal;
+using SebWindowsServiceWCF.CommandExecutor;
 using SebWindowsServiceWCF.RegistryHandler;
 using SebWindowsServiceWCF.ServiceImplementations;
 
@@ -121,6 +122,7 @@ namespace SebRegistryResetter
 
 					if (service.Reset())
 					{
+						UpdateGroupPolicies();
 						Console.ForegroundColor = ConsoleColor.Green;
 						OutputAndLog("Registry keys resetted successfully!");
 					}
@@ -177,6 +179,7 @@ namespace SebRegistryResetter
 			OutputAndLog(String.Format("Username: {0} / SID: {1}", username, sid));
 
 			SetDefaultValues(sid);
+			UpdateGroupPolicies();
 
 			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine("Please note that Remote Desktop Connections have been disabled. They can be re-activated in the system settings, if needed.");
@@ -217,6 +220,13 @@ namespace SebRegistryResetter
 
 			ResetEaseOfAccess(sid);
 			ResetShadeHorizon(sid);
+		}
+
+		private static void UpdateGroupPolicies()
+		{
+			OutputAndLog("Starting group policy update...");
+			new CommandExecutor().ExecuteCommandSync("gpupdate /force");
+			OutputAndLog("Finished group policy update.");
 		}
 
 		private static void Reset(RegistryEntry entry, object value)

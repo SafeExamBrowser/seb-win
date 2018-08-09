@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace SebWindowsServiceWCF.CommandExecutor
 {
-    public class CommandExecutor
+	public class CommandExecutor
     {
         /// <span class="code-SummaryComment"><summary></span>
         /// Executes a shell command synchronously.
@@ -29,10 +29,14 @@ namespace SebWindowsServiceWCF.CommandExecutor
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             proc.StartInfo = procStartInfo;
             proc.Start();
-            // Get the output into a string
-            string result = proc.StandardOutput.ReadToEnd();
-            // Display the command output.
-            ServiceImplementations.Logger.Log(result);
+			// Get the output into a string
+			string result = proc.StandardOutput.ReadToEnd();
+			result = result?.Replace(Environment.NewLine, string.Empty);
+			result = result?.Replace('\r', ' ');
+			result = result?.Replace('\n', ' ');
+			result = result?.Trim();
+			// Display the command output.
+			ServiceImplementations.Logger.Log(result);
         }
 
         /// <span class="code-SummaryComment"><summary></span>

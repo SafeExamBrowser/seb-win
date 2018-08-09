@@ -114,8 +114,6 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 						}
 					}
 				}
-
-				new CommandExecutor.CommandExecutor().ExecuteCommandSync("gpupdate /force");
 			}
 			catch (Exception ex)
 			{

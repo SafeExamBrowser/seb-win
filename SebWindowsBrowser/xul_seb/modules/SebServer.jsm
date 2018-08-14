@@ -65,6 +65,8 @@ this.SebServer = {
 		sl.out("SebServer initialized: " + seb);
 		base.handler["shutdown"] = base.shutdown;
 		base.handler["reboot"] = base.reboot;
+        base.handler["lock"] = base.lock;
+		base.handler["unlock"] = base.unlock;
 		base.handler["sendScreenshotData"] = base.sendScreenshotData;
 	},
 	
@@ -136,16 +138,36 @@ this.SebServer = {
 		} 	
 	},
 	
-	shutdown : function(seb) {
-		sl.debug("socket client: shutdown: " + seb.id); 
+	shutdown : function(_seb) {
+		sl.debug("socket client: shutdown: " + _seb.id); 
 		sh.shutdown();
 	},
 	
-	reboot : function(seb) {
-                sl.debug("socket client: reboot: " + seb.id);
-                sh.reboot();
-        },
+	reboot : function(_seb) {
+            sl.debug("socket client: reboot: " + _seb.id);
+            sh.reboot();
+    },
 
+    lock : function(_seb) {
+            sl.debug("socket client: lock: " + _seb.id);
+            seb.lock(true);
+    },
+    
+    unlock : function(_seb) {
+            sl.debug("socket client: unlock: " + _seb.id);
+            seb.unlockAll(true);
+    },
+    
+    sendLock : function() {
+            let obj = {"handler":"locked","opts":{}};
+			base.send(JSON.stringify(obj));
+    },
+    
+    sendUnlock : function() {
+            let obj = {"handler":"unlocked","opts":{}};
+			base.send(JSON.stringify(obj));
+    },
+    
 	sendScreenshotData : function(file) {
 		sc.sendScreenshotData(file);
 	},

@@ -24,17 +24,20 @@
 	<commandset>
 		<command id="sebCmdUnlock" oncommand="seb.unlock(window);"></command>
 	</commandset>
-	<keyset>
+	<keyset id="unlockKeySet" disabled="true">
 		<key id="keyUnlock1" keycode="VK_RETURN" modifiers="" command="sebCmdUnlock" />
 		<key id="keyUnlock2" keycode="VK_ENTER" modifiers="" command="sebCmdUnlock" />
 	</keyset>	
 	<hbox pack="center" align="center" flex="1" style="background-color: #FC0D1B" id="sebLockScreenHbox">
-		<vbox>
+        <vbox id="sebLocked" class="hidden">
+            <label id="sebLocked">&seb.locked.text;</label>
+        </vbox>
+		<vbox id="sebReconnect">
 			<label id="sebLockScreenHeader">&seb.lock.header;</label>
 			<vbox id="sebReconnectVbox" flex="1">
-				<hbox flex="1"><image id="loadingImage" src="chrome://seb/content/images/loading.gif" />
-				<spacer></spacer>
-				<label id="sebReconnectionText" value="&seb.lock.reconnection;...">...</label>
+				<hbox flex="1">
+                    <image id="loadingImage" src="chrome://seb/content/images/loading.gif" />
+                    <label id="sebReconnectionText" value="&seb.lock.reconnection;...">...</label>
 				</hbox>
 			</vbox>
 			<vbox id="sebUnlockVbox" class="hidden">

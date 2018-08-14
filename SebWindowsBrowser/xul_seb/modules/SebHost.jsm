@@ -91,7 +91,9 @@ this.SebHost = {
 			"ReconfigureAborted" : base.handleReconfigureAborted,
 			"Reconfigure" : base.handleReconfigure,
 			"ClearSession" : base.handleClearSession,
-			"AdditionalDictionaries" : base.handleAdditionalDictionaries
+			"AdditionalDictionaries" : base.handleAdditionalDictionaries,
+            "LockSeb" : base.handleLockSeb,
+            "UnlockSeb" : base.handleUnlockSeb
 		};
 		base.sendHandler = {
 			"SebFile" : base.sendSebFile,
@@ -394,6 +396,16 @@ this.SebHost = {
 		sb.addAdditionalDictionaries(opts);
 	},
 	
+    handleLockSeb : function() {
+        sl.debug("handleLockSeb");
+        seb.lock();
+    },
+    
+    handleUnlockSeb : function() {
+        sl.debug("handleUnlockSeb");
+        seb.unlockAll();
+    },
+    
 	sendSebFile : function (base64) {
 		sl.debug("sendSebFile");
 		let msg = {Handler:"SebFile",Opts:{"fileBase64":base64}};

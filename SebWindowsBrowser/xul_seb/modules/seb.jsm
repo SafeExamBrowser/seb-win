@@ -86,6 +86,7 @@ this.seb =  {
 	reconfWinStart : false,
 	arsKeys : {},
 	isLocked : false,
+    lockMode : MODE_RECONNECT,
 
 	toString : function() {
 		return appinfo.name;
@@ -375,7 +376,7 @@ this.seb =  {
 				elKey.setAttribute("key", base.arsKeys[k].key);
 				elKey.setAttribute("modifiers", base.arsKeys[k].modifiers);
 			}
-			elKey.setAttribute("oncommand",'seb.loadAR(window, this.id)');
+			elKey.setAttribute("oncommand",'seb.loadAR(window, this.id, true)');
 			keySet.appendChild(elKey);
 		}
 		keySet.parentNode.appendChild(keySet);
@@ -571,7 +572,7 @@ this.seb =  {
 		}
 	},
 	
-	loadAR: function(win, id) {
+	loadAR: function(win, id, byKey=false) {
 		sl.debug("try to load additional ressource:" + id);
 		let ar = base.ars[id];
 		let url = ar["url"];
@@ -590,17 +591,18 @@ this.seb =  {
 			return;
 		}
 
-		// first check referrer: deprecated
-		/*
-		if (filter && filter != "") {
-			let w = (win) ? win : sw.getRecentWin();
-			let loadReferrer = w.content.document.location.href;
-			if (loadReferrer.indexOf(filter) < 0) {
-				sl.debug("loading \"" + url + "\" is only allowed if string in referrer: \"" + filter + "\"");
+		// check referrer only if loaded byKey
+		
+        if (byKey) {
+            let w = (win) ? win : sw.getRecentWin();
+            let loadReferrer = w.content.document.location.href;
+            if (ar["refererFilterRegex"] && ar["refererFilterRegex"] != "" && !ar["refererFilterRegex"].test(loadReferrer)) {
+				sl.debug("loading \"" + url + "\" is only allowed if string in referrer: \"" + ar['refererFilterRegex'] + "\"");
 				return false;
-			}
-		}
-		*/
+            }
+        }
+		
+		
 		// check confirmation
 		if (confirm) {
 			var result = prompt.confirm(null, su.getLocStr("seb.load.warning.title"), confirmText);
@@ -612,12 +614,27 @@ this.seb =  {
 		if (reset) {
 			sb.clearSession();
 		}
-		sb.loadPage(base.mainWin,url);
+		if (ar["newWindow"] === false) { // explicit exists and false, null ignored
+			sb.loadPage(base.mainWin,url);
+		}
+		else { // default even if no newWindow parameter exists
+			sw.openDistinctWin(url);
+		}
 	},
 	
 	initLockScreen : function(win) {
 		sl.debug("initLockScreen");
 		sl.out("Lock Screen!");
+        let sebLocked = win.document.getElementById("sebLocked");
+        let sebReconnect = win.document.getElementById("sebReconnect");
+        if (base.lockMode === MODE_LOCKED) {
+            sebLocked.classList.remove("hidden");
+            sebReconnect.classList.add("hidden");
+        }
+        else {
+            sebLocked.classList.add("hidden");
+            sebReconnect.classList.remove("hidden");
+        }
 	},
 	
 	lockScreenReload : function(win) {
@@ -627,34 +644,42 @@ this.seb =  {
 		}
 	},
 	
-	lock : function() {
-		sl.debug("seb lock");
+	lock : function(fromSocket=false) { // fromSocket = lock and unlock system per websocket command not if messageServer is unconnected
+		sl.debug("seb lock (fromSocket: " + fromSocket + ")");
+        base.lockMode = (fromSocket) ? MODE_LOCKED : MODE_RECONNECT;
+        if (base.isLocked) {
+            sl.debug("seb already locked...");
+            return;
+        }
 		for (var i=0;i<sw.wins.length;i++) {
 			try {
-				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
-				let imageBox = sw.wins[i].document.getElementById("imageBox");
-				lockBrowser.setAttribute("src",LOCK_URL);
-				sw.showLock(sw.wins[i]);
-				if (imageBox) {
-					imageBox.classList.add("hidden2");
-				}
+                let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+                let imageBox = sw.wins[i].document.getElementById("imageBox");
+                lockBrowser.setAttribute("src",LOCK_URL);
+                sw.showLock(sw.wins[i]);
+                if (imageBox) {
+                    imageBox.classList.add("hidden2");
+                }
 			}
 			catch(e) {
 				sl.err(e);
 				return;
 			}
 		}
+        ss.sendLock();
 		base.isLocked = true;
-		base.setUnconnectedMessage();
-		sh.reconnect();
+        if (!fromSocket) {
+            base.setUnconnectedMessage();
+            sh.reconnect();
+        }
 	},
 	
 	setUnconnectedMessage : function() {
 		sl.debug("setUnconnectedMessage");
 		for (var i=0;i<sw.wins.length;i++) {
 			try {
-				let unconnectedBpx = sw.wins[i].document.getElementById("unconnectedBox");
-				unconnectedBpx.classList.remove("hidden");
+				let unconnectedBox = sw.wins[i].document.getElementById("unconnectedBox");
+				unconnectedBox.classList.remove("hidden");
 			}
 			catch(e) {
 				sl.err(e);
@@ -666,8 +691,8 @@ this.seb =  {
 		sl.debug("deleteUnconnectedMessage");
 		for (var i=0;i<sw.wins.length;i++) {
 			try {
-				let unconnectedBpx = sw.wins[i].document.getElementById("unconnectedBox");
-				unconnectedBpx.classList.add("hidden");
+				let unconnectedBox = sw.wins[i].document.getElementById("unconnectedBox");
+				unconnectedBox.classList.add("hidden");
 			}
 			catch(e) {
 				sl.err(e);
@@ -678,8 +703,10 @@ this.seb =  {
 	setReconnectScreen : function() {
 		sl.debug("setReconnectScreen");
 		for (var i=0;i<sw.wins.length;i++) {
-			try {
-				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+            try {
+                let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+                let unlockKeySet = lockBrowser.contentDocument.getElementById("unlockKeySet");
+                unlockKeySet.setAttribute("disabled",true);
 				let reconnectVbox = lockBrowser.contentDocument.getElementById("sebReconnectVbox");
 				let unlockVbox = lockBrowser.contentDocument.getElementById("sebUnlockVbox");
 				reconnectVbox.classList.remove("hidden");
@@ -694,8 +721,10 @@ this.seb =  {
 	setUnlockScreen : function() {
 		sl.debug("setUnlockScreen");
 		for (var i=0;i<sw.wins.length;i++) {
-			try {
-				let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+		try {
+                let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
+                let unlockKeySet = lockBrowser.contentDocument.getElementById("unlockKeySet");
+                unlockKeySet.setAttribute("disabled",false);
 				let reconnectVbox = lockBrowser.contentDocument.getElementById("sebReconnectVbox");
 				let unlockVbox = lockBrowser.contentDocument.getElementById("sebUnlockVbox");
 				reconnectVbox.classList.add("hidden");
@@ -736,7 +765,11 @@ this.seb =  {
 		//base.setReconnectScreen();
 	},
 	
-	unlockAll : function() {
+	unlockAll : function(fromSocket=false) {
+        base.lockMode = (fromSocket) ? MODE_LOCKED : MODE_RECONNECT;
+        if (!base.isLocked) {
+            return;
+        }
 		for (var i=0;i<sw.wins.length;i++) {
 			sw.showContent(sw.wins[i]);
 			let imageBox = sw.wins[i].document.getElementById("imageBox");
@@ -744,10 +777,13 @@ this.seb =  {
 				imageBox.classList.remove("hidden2");
 			}
 		}
+        ss.sendUnlock();
 		base.isLocked = false;
-		if (sh.messageServer) {
-			base.deleteUnconnectedMessage();
-		}
+        if (!fromSocket) {
+            if (sh.messageServer) {
+                base.deleteUnconnectedMessage();
+            }
+        }
 	},
 	
 	quit: function(e) {

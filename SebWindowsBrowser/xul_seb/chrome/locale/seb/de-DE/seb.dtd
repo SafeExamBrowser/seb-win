@@ -18,3 +18,4 @@
 <!ENTITY seb.lock.unlock.button "Entsperren">
 <!ENTITY seb.lock.reconnection "Verbindungsaufbau">
 <!ENTITY seb.lock.unconnected "nicht verbunden!">
+<!ENTITY seb.locked.text "Das System ist gesperrt...">

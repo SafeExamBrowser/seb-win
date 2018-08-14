@@ -22,7 +22,7 @@
 	color: white;
 }
 
-#sebLockScreenHeader {
+#sebLockScreenHeader, #sebLocked {
 	font-size: 1.8em;
 	font-weight: bold;
 	margin-bottom: 30px;
@@ -55,13 +55,12 @@
 	width: 20px;
 	height: 20px;
 	position: fixed;
-	top: 2px;
+	top: 7px;
 	left: 10px;
 }
 
 #loadingImage {
-	width: 18px;
-	height: 18px;
+	width: 24px;
 }
 
 .hidden {

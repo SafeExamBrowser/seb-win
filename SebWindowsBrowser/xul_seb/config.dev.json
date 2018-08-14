@@ -54,6 +54,7 @@
 		"autoOpen": false,
 		"title": "LinkURL",
 		"url": "https://localhost:8443/demo/index.html",
+		"newWindow":true,
 		"resourceDataFilename": "",
 		"resourceDataLauncher": 0,
 		"resourceData":"",

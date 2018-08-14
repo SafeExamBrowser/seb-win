@@ -18,3 +18,4 @@
 <!ENTITY seb.lock.unlock.button "Unlock">
 <!ENTITY seb.lock.reconnection "Reconnection">
 <!ENTITY seb.lock.unconnected "unconnected!">
+<!ENTITY seb.locked.text "System is locked by Administrator...">

@@ -187,7 +187,7 @@ this.seb =  {
 						sl.debug("push local profile: " + localProfilePath);
 						base.profile["dirs"].push(localProfileDir);
 					}
-				}e
+				}
 			}
 			if (defaultProfile.exists()) {
 				let entries = defaultProfile.directoryEntries;

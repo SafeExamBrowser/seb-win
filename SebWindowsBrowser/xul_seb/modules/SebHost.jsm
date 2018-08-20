@@ -460,25 +460,56 @@ this.SebHost = {
 	},
 	
 	rebootLinuxHost : function() {
-                // create an nsIFile for the executable
-                sl.out("try reboot linux host...");
-                try {
-                        var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
-                        file.initWithPath("/usr/bin/sudo");
-                        var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
-                        process.init(file);
-                        var args = ["/usr/local/bin/reboot_system"];
-                        process.run(false, args, args.length);
-                }
-                catch(e) {
-                        //prompt.alert(mainWin, "Message from Admin", e);
-                        sl.err("Error " + e);
-                }
-        },
+        // create an nsIFile for the executable
+        sl.out("try reboot linux host...");
+        try {
+                var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+                file.initWithPath("/usr/bin/sudo");
+                var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+                process.init(file);
+                var args = ["/usr/local/bin/reboot_system"];
+                process.run(false, args, args.length);
+        }
+        catch(e) {
+                //prompt.alert(mainWin, "Message from Admin", e);
+                sl.err("Error " + e);
+        }
+    },
 	
+    rebootWindowsHost : function() {
+        // create an nsIFile for the executable
+        sl.out("try reboot windows host...");
+        try {
+            var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+            file.initWithPath('C:\\windows\\system32\\shutdown.exe');
+            var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+            process.init(file);
+            var args = ['-r','-t','0','-f'];
+            process.run(false, args, args.length);		
+        }
+        catch(e) {
+            //prompt.alert(mainWin, "Message from Admin", e);
+            sl.err("Error " + e);
+        }
+    },
+    
 	shutdownWindowsHost : function() {
-		sl.debug("shutdown windows host is not defined, but i can shutdown seb client :-)");
-		base.quitFromHost();	
+        // create an nsIFile for the executable
+        sl.out("try shutdown windows host...");
+        try {
+            var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+            file.initWithPath('C:\\windows\\system32\\shutdown.exe');
+            var process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+            process.init(file);
+            var args = ['-s','-t','0','-f'];
+            process.run(false, args, args.length);		
+        }
+        catch(e) {
+            //prompt.alert(mainWin, "Message from Admin", e);
+            sl.err("Error " + e);
+        }
+        //sl.debug("shutdown windows host is not defined, but i can shutdown seb client :-)");
+        //base.quitFromHost();	
 	},
 	
 	shutdownMacHost : function() {
@@ -490,7 +521,8 @@ this.SebHost = {
 		let os = appinfo.OS.toUpperCase();
 		switch (os) { // line feed for dump messages
 			case "WINNT" :
-				base.shutdownWindowsHost();
+				seb.hostQuitHandler = base.shutdownWindowsHost;
+				base.quitFromHost();
 				break;
 			case "UNIX" :
 			case "LINUX" :
@@ -516,7 +548,8 @@ this.SebHost = {
                 let os = appinfo.OS.toUpperCase();
                 switch (os) { // line feed for dump messages
                         case "WINNT" :
-                                //base.rebootWindowsHost();
+                                seb.hostQuitHandler = base.rebootWindowsHost;
+                                base.quitFromHost();
                                 break;
                         case "UNIX" :
                         case "LINUX" :

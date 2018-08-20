@@ -818,7 +818,12 @@ this.SebBrowser = {
 			spe.dictionary = seb.locale;
 		}
 		sl.debug("available dictionaries: " + dics.value);
-		sl.debug("current spellcheck language: " + spe.language);
+		try {
+            sl.debug("current spellcheck language: " + spe.language);
+        }
+        catch(e) {
+            sl.debug("no current spellcheck language?");
+        }
 	},
 	
 	addAdditionalDictionaries : function(opt) {

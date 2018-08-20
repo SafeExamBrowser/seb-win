@@ -55,20 +55,20 @@
 	<audio xmlns="http://www.w3.org/1999/xhtml" id="seb.snapshot" src="chrome://seb/content/sounds/snapshot.ogg" preload="auto"></audio>
 	<!-- keysets -->
 	<keyset id="sebKeySet">
+        <key id="seb.reload" keycode="VK_F5" modifiers="" command="sebCmdReload"/>
+        <!--
 		<key id="seb.quit" keycode="VK_F4" modifiers="control shift" command="sebCmdQuit"/>
-		<key id="seb.reload" keycode="VK_F5" modifiers="" command="sebCmdReload"/>
 		<key id="seb.restart" keycode="VK_F9" modifiers="control shift" command="sebCmdRestart"/>
 		<key id="seb.back" keycode="VK_LEFT" modifiers="control shift" command="sebCmdBack"/>
 		<key id="seb.forward" keycode="VK_RIGHT" modifiers="control shift" command="sebCmdForward"/>
 		<key id="sebLockScreen.reload" key="1" modifiers="control" command="sebLockScreenReload"/>
-		<!--
 		<key id="seb.showall" keycode="VK_F1" command="sebCmdShowAll"/>
 		<key id="seb.showcontent" key="1" modifiers="control" command="sebCmdShowContent"/>
 		<key id="seb.showserver" key="2" modifiers="control" command="sebCmdShowServer"/>
 		<key id="seb.showmessage" key="3" modifiers="control" command="sebCmdShowMessage"/>
-		-->
 		<key id="seb.reboot" keycode="VK_F10" modifiers="control alt shift" command="sebCmdReboot"/>
 		<key id="seb.shutdown" keycode="VK_F12" modifiers="control alt shift" command="sebCmdShutdown"/>
+        -->
 	</keyset>
 	<menupopup id="spellCheckMenu" onpopuphiding="if (event.target != this) { return }; sb.spellCheckClosed();">
 		<menuitem id="spell-no-suggestions"

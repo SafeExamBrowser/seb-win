@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using Microsoft.Win32;
 using SebWindowsServiceWCF.ServiceImplementations;
 
@@ -53,6 +54,11 @@ namespace SebWindowsServiceWCF.RegistryHandler
                     //Returns null if the key is inexistent
                     return Registry.GetValue(this.RegistryPath, this.DataItemName, null);
                 }
+				catch (IOException)
+				{
+					Logger.Log(String.Format("Registry key '{0}\\{1}' is marked for deletion.", this.RegistryPath, this.DataItemName));
+					return null;
+				}
                 catch (Exception ex)
                 {
                     Logger.Log(ex, String.Format("Unable to get registry entry for key: {0} and value {1}",this.RegistryPath, this.DataItemName));

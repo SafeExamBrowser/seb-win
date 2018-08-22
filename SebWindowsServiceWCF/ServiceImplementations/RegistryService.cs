@@ -86,7 +86,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 							//If there is nothing to change, then do not change anything
 							if (object.Equals(registryValue.Value, regEntry.DataValue))
 							{
-								Logger.Log(String.Format("Registry key '{0}' already has value '{1}', skipping it.", registryValue.Key, registryValue.Value ?? "<NULL>"));
+								Logger.Log(String.Format("Registry key '{0}\\{1}' already has value '{2}', skipping it.", regEntry.RegistryPath, regEntry.DataItemName, registryValue.Value ?? "<NULL>"));
 
 								continue;
 							}
@@ -103,13 +103,12 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 							
 							if (!object.Equals(regEntry.DataValue,registryValue.Value))
 							{
-								Logger.Log(String.Format("Registry Key {0} could not have been set to {1}",
-									registryValue.Key, registryValue.Value ?? "<NULL>"));
+								Logger.Log(String.Format("Registry Key '{0}\\{1}' could not have been set to {2}", regEntry.RegistryPath, regEntry.DataItemName, registryValue.Value ?? "<NULL>"));
 							}
 						}
 						catch (Exception ex)
 						{
-							Logger.Log(ex, String.Format("Unable to set the registry value for {0}: {1}: {2}", registryValue.Key, ex.Message, ex.StackTrace));
+							Logger.Log(ex, String.Format("Unable to set the registry value for '{0}\\{1}': {2}: {3}", regEntry.RegistryPath, regEntry.DataItemName, ex.Message, ex.StackTrace));
 							res = false;
 						}
 					}

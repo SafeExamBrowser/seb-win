@@ -77,7 +77,7 @@ namespace SebWindowsServiceWCF.RegistryHandler
                             if (regKey != null)
 							{
                                 regKey.DeleteValue(this.DataItemName);
-								Logger.Log(String.Format("Deleted registry key '{0}'", DataItemName));
+								Logger.Log(String.Format("Deleted registry key '{0}\\{1}'", RegistryPath, DataItemName));
 							}
                         }
                         catch (Exception ex)
@@ -91,7 +91,7 @@ namespace SebWindowsServiceWCF.RegistryHandler
                     else if (value != null && value.GetType() == this.DataType)
                     {
                         Registry.SetValue(this.RegistryPath, this.DataItemName, value);
-						Logger.Log(String.Format("Set registry key '{0}' to '{1}'", DataItemName, value ?? "<NULL>"));
+						Logger.Log(String.Format("Set registry key '{0}\\{1}' to '{2}'", RegistryPath, DataItemName, value ?? "<NULL>"));
 					}
                     else
                     {

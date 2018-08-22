@@ -84,7 +84,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 						try
 						{
 							//If there is nothing to change, then do not change anything
-							if (object.Equals(registryValue.Value, regEntry.DataValue))
+							if (object.Equals(registryValue.Value, regEntry.GetValue()))
 							{
 								Logger.Log(String.Format("Registry key '{0}\\{1}' already has value '{2}', skipping it.", regEntry.RegistryPath, regEntry.DataItemName, registryValue.Value ?? "<NULL>"));
 
@@ -94,16 +94,21 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 							//Only store the entry in the persistent file if not already existing
 							if (!persistentRegistryFile.FileContent.RegistryValues.ContainsKey(registryValue.Key))
 							{
-								persistentRegistryFile.FileContent.RegistryValues.Add(registryValue.Key, regEntry.DataValue);
+								persistentRegistryFile.FileContent.RegistryValues.Add(registryValue.Key, regEntry.GetValue());
 								//Save after every change
 								persistentRegistryFile.Save();
 							}
+
 							//Change the registry value if all operations succeeded until here
-							regEntry.DataValue = registryValue.Value;
-							
-							if (!object.Equals(regEntry.DataValue,registryValue.Value))
+							if (registryValue.Value is null)
 							{
-								Logger.Log(String.Format("Registry Key '{0}\\{1}' could not have been set to {2}", regEntry.RegistryPath, regEntry.DataItemName, registryValue.Value ?? "<NULL>"));
+								regEntry.Delete();
+								Logger.Log($"Deleted registry key '{regEntry.RegistryPath}\\{regEntry.DataItemName}'.");
+							}
+							else
+							{
+								regEntry.SetValue(registryValue.Value);
+								Logger.Log($"Set registry key '{regEntry.RegistryPath}\\{regEntry.DataItemName}' to '{registryValue.Value}'.");
 							}
 						}
 						catch (Exception ex)

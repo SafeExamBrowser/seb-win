@@ -58,6 +58,7 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="RegistryHandler\RegistryEntry.cs" />
+    <Compile Include="RegistryHandler\RegistryEntryExtensions.cs" />
     <Compile Include="SebWindowsServiceWCF.cs">
       <SubType>Component</SubType>
     </Compile>

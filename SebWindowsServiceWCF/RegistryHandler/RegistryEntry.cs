@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
-using Microsoft.Win32;
-using SebWindowsServiceWCF.ServiceImplementations;
 
 namespace SebWindowsServiceWCF.RegistryHandler
 {
@@ -39,78 +35,6 @@ namespace SebWindowsServiceWCF.RegistryHandler
         protected RegistryEntry(string SID)
         {
             this.SID = SID;
-        }
-
-        /// <summary>
-        /// The Value of the registryentry
-        /// Throws an Exception if something does not work
-        /// </summary>
-        public object DataValue
-        {
-            get
-            {
-                try
-                {
-                    //Returns null if the key is inexistent
-                    return Registry.GetValue(this.RegistryPath, this.DataItemName, null);
-                }
-				catch (IOException)
-				{
-					Logger.Log(String.Format("Registry key '{0}\\{1}' is marked for deletion.", this.RegistryPath, this.DataItemName));
-					return null;
-				}
-                catch (Exception ex)
-                {
-                    Logger.Log(ex, String.Format("Unable to get registry entry for key: {0} and value {1}",this.RegistryPath, this.DataItemName));
-                    throw;
-                }
-            }
-
-            set
-            {
-                try
-                {
-                    //If the value to be set is null (which means: delete the value) and the key exists -> delete it
-                    if (value == null && DataValue != null)
-                    {
-                        try
-                        {
-                            //Get the Root Key (either HKEY_USERS or HKEY_LOCAL_MACHINE
-                            var regKey = this.RegistryPath.StartsWith("HKEY_USERS") ? Registry.Users : Registry.LocalMachine;
-                            //Load the subkey
-                            regKey = regKey.OpenSubKey(RegistryPath.Substring(this.RegistryPath.IndexOf('\\') + 1), true);
-                            //If the subkey exists, delete the value
-                            if (regKey != null)
-							{
-                                regKey.DeleteValue(this.DataItemName);
-								Logger.Log(String.Format("Deleted registry key '{0}\\{1}'", RegistryPath, DataItemName));
-							}
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Log(ex, String.Format("Unable to delete the registry value {0} in the registry key {1}",this.DataItemName,this.RegistryPath));
-                            throw;
-                        }
-                        
-                    }
-                    //Set the value if it is of the correct type and is not null
-                    else if (value != null && value.GetType() == this.DataType)
-                    {
-                        Registry.SetValue(this.RegistryPath, this.DataItemName, value);
-						Logger.Log(String.Format("Set registry key '{0}\\{1}' to '{2}'", RegistryPath, DataItemName, value ?? "<NULL>"));
-					}
-                    else
-                    {
-                        Logger.Log(String.Format("Unable to set the value {2}:{0} for the registrykey {1}, because the value is of the wrong type", value, this.RegistryPath, this.DataItemName));
-                        throw new SettingsPropertyWrongTypeException("The value is of the wrong type");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log(ex, String.Format("Unable to set the value {2}:{0} (null means delete) for the registrykey {1}", value, this.RegistryPath, this.DataItemName));
-                    throw;
-                }
-            }
         }
 	}
 

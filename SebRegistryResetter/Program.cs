@@ -218,8 +218,8 @@ namespace SebRegistryResetter
 				Reset(entry, 1);
 			}
 
-			ResetEaseOfAccess(sid);
-			ResetShadeHorizon(sid);
+			Reset(new RegEaseOfAccess(sid), string.Empty);
+			Reset(new RegEnableShadeHorizon(sid), "True");
 		}
 
 		private static void UpdateGroupPolicies()
@@ -233,71 +233,15 @@ namespace SebRegistryResetter
 		{
 			try
 			{
-				if (entry.DataValue != null)
-				{
-					OutputAndLog($@"Trying to change '{GetFullPath(entry)}' from {entry.DataValue} to {value}");
-					entry.DataValue = value;
-					OutputAndLog($@"Successfully set '{GetFullPath(entry)}' to {entry.DataValue}");
-				}
-				else
-				{
-					OutputAndLog($@"Key '{GetFullPath(entry)}' does not exist in the registry, skipping it...");
-				}
+				entry.SetValue(value);
+				OutputAndLog($@"Successfully set '{entry.RegistryPath}\{entry.DataItemName}' to '{value}'");
 			}
 			catch (Exception e)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				OutputAndLog($@"Failed to set '{GetFullPath(entry)}' to {value}");
+				OutputAndLog($@"Failed to set '{entry.RegistryPath}\{entry.DataItemName}' to '{value}'");
 				Log(e);
 			}
-		}
-
-		private static void ResetEaseOfAccess(string sid)
-		{
-			var easeOfAccess = new RegEaseOfAccess(sid);
-
-			try
-			{
-				if (easeOfAccess.DataValue != null && easeOfAccess.DataValue.ToString() == "SebDummy.exe")
-				{
-					OutputAndLog($@"Trying to change '{GetFullPath(easeOfAccess)}' from {easeOfAccess.DataValue} to empty string");
-					easeOfAccess.DataValue = string.Empty;
-					OutputAndLog($@"Successfully set '{GetFullPath(easeOfAccess)}' to {easeOfAccess.DataValue}");
-				}
-
-			}
-			catch (Exception e)
-			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				OutputAndLog($@"Failed to set '{GetFullPath(easeOfAccess)}' to empty string");
-				Log(e);
-			}
-		}
-
-		private static void ResetShadeHorizon(string sid)
-		{
-			var shadeHorizon = new RegEnableShadeHorizon(sid);
-
-			try
-			{
-				if (shadeHorizon.DataValue != null && shadeHorizon.DataValue.ToString() == "False")
-				{
-					OutputAndLog($@"Trying to change '{GetFullPath(shadeHorizon)}' from {shadeHorizon.DataValue} to True");
-					shadeHorizon.DataValue = "True";
-					OutputAndLog($@"Successfully set '{GetFullPath(shadeHorizon)}' to {shadeHorizon.DataValue}");
-				}
-			}
-			catch (Exception e)
-			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				OutputAndLog($@"Failed to set '{GetFullPath(shadeHorizon)}' to True");
-				Log(e);
-			}
-		}
-
-		private static string GetFullPath(RegistryEntry entry)
-		{
-			return $@"{entry.RegistryPath}\{entry.DataItemName}";
 		}
 
 		private static void OutputAndLog(string message)

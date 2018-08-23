@@ -110,8 +110,6 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 			FileStream stream = null;
 			try
 			{
-				Logger.Log("Saving registry settings to backup file.");
-
 				stream = File.OpenWrite(_backupFilePath);
 				var serializer = new BinaryFormatter();
 				serializer.Serialize(stream, FileContent);
@@ -120,11 +118,10 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 				if (File.Exists(_filePath))
 				{
 					File.Delete(_filePath);
-					Logger.Log("Deleted default settings file.");
 				}
 
 				File.Move(_backupFilePath, _filePath);
-				Logger.Log("Renamed backup file to default file.");
+				Logger.Log("Saved settings to default file.");
 			}
 			catch (Exception ex)
 			{

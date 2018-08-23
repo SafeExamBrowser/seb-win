@@ -50,7 +50,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 					}
 					else
 					{
-						Logger.Log("SID from Username: " + (sid ?? "<NULL>"));
+						Logger.Log("SID from username: " + (sid ?? "<NULL>"));
 					}
 				}
 
@@ -134,7 +134,8 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 		/// <returns></returns>
 		public bool Reset()
 		{
-			bool res = true;
+			var success = true;
+
 			try
 			{
 				Logger.Log("Attempting to reset registry values...");
@@ -143,24 +144,27 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 				{
 					if (persistentRegistryFile.FileContent.Username != null)
 					{
-						//Reset the registry values
-						res = this.SetRegistryEntries(persistentRegistryFile.FileContent.RegistryValues,
-							persistentRegistryFile.FileContent.SID, persistentRegistryFile.FileContent.Username);
-						//Enable the windows Service if necessary
-						if (persistentRegistryFile.FileContent.EnableWindowsUpdate)
-							SetWindowsUpdate(true);
+						success = ResetRegistryEntries(persistentRegistryFile);
 
-						if (res)
+						if (persistentRegistryFile.FileContent.EnableWindowsUpdate)
+						{
+							SetWindowsUpdate(true);
+						}
+
+						if (success)
+						{
 							persistentRegistryFile.Delete();
+						}
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Logger.Log(ex, string.Format("Unable to Reset Registrysettings: {0} : {1}", ex.Message, ex.StackTrace));
-				res = false;
+				Logger.Log(ex, string.Format("Unable to reset registry values: {0} : {1}", ex.Message, ex.StackTrace));
+				success = false;
 			}
-			return res;
+
+			return success;
 		}
 
 		/// <summary>
@@ -178,6 +182,98 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 				return true;
 			}
 			return false;
+		}
+
+		private bool ResetRegistryEntries(PersistentRegistryFile persistentRegistryFile)
+		{
+			var success = true;
+			var sid = persistentRegistryFile.FileContent.SID;
+			var username = persistentRegistryFile.FileContent.Username;
+			var originalValues = new Dictionary<RegistryIdentifiers, object>(persistentRegistryFile.FileContent.RegistryValues);
+
+			try
+			{
+				Logger.Log("SID: " + (sid ?? "<NULL>"));
+				Logger.Log("Username: " + (username ?? "<NULL>"));
+
+				if (String.IsNullOrEmpty(sid) && String.IsNullOrEmpty(username))
+				{
+					Logger.Log("Cannot reset registry entries without SID or username information!");
+
+					return false;
+				}
+
+				if (String.IsNullOrEmpty(sid))
+				{
+					sid = SIDHandler.GetSIDFromUsername(username);
+
+					if (String.IsNullOrWhiteSpace(sid))
+					{
+						Logger.Log($"Failed to reset registry entries because SID could not be determined for user '{username}''!");
+
+						return false;
+					}
+					else
+					{
+						Logger.Log("SID from username: " + (sid ?? "<NULL>"));
+					}
+				}
+
+				foreach (var originalValue in originalValues)
+				{
+					RegistryEntry entry;
+
+					try
+					{
+						var type = Type.GetType(String.Format("SebWindowsServiceWCF.RegistryHandler.Reg{0}", originalValue.Key));
+
+						entry = (RegistryEntry) Activator.CreateInstance(type, sid);
+					}
+					catch (Exception ex)
+					{
+						Logger.Log(ex, String.Format("Unable to instantiate registryclass: {0}", originalValue.Key));
+						success = false;
+
+						continue;
+					}
+
+					try
+					{
+						if (object.Equals(originalValue.Value, entry.GetValue()))
+						{
+							Logger.Log(String.Format("Registry key '{0}\\{1}' already has original value '{2}', skipping it.", entry.RegistryPath, entry.DataItemName, originalValue.Value ?? "<NULL>"));
+						}
+						else if (originalValue.Value is null)
+						{
+							entry.Delete();
+							Logger.Log($"Deleted registry key '{entry.RegistryPath}\\{entry.DataItemName}'.");
+						}
+						else
+						{
+							entry.SetValue(originalValue.Value);
+							Logger.Log($"Set registry key '{entry.RegistryPath}\\{entry.DataItemName}' to '{originalValue.Value}'.");
+						}
+
+						persistentRegistryFile.FileContent.RegistryValues.Remove(originalValue.Key);
+						persistentRegistryFile.Save();
+					}
+					catch (Exception ex)
+					{
+						Logger.Log(ex, String.Format("Unable to reset the registry value for '{0}\\{1}': {2}: {3}", entry.RegistryPath, entry.DataItemName, ex.Message, ex.StackTrace));
+						success = false;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.Log(ex, string.Format("Unable to reset registry value: {0}: {1}", ex.Message, ex.StackTrace));
+				success = false;
+			}
+
+			Logger.Log("Initiating group policy update...");
+			new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
+
+			return success;
 		}
 
 		private bool SetWindowsUpdate(bool enable)

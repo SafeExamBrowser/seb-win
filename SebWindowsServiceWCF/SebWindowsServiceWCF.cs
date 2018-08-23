@@ -11,11 +11,11 @@ namespace SebWindowsServiceWCF
 	public partial class SebWindowsServiceWCF : ServiceBase
 	{
 		private ServiceHost host;
+
 		public SebWindowsServiceWCF()
 		{
 			InitializeComponent();
-
-			this.ServiceName = "SebWindowsService";
+			ServiceName = "SebWindowsService";
 		}
 
 		private void InitializeHost()
@@ -26,17 +26,16 @@ namespace SebWindowsServiceWCF
 
 				try
 				{
-					host = new ServiceHost(
-					typeof(RegistryService));
-					host.AddServiceEndpoint(typeof(IRegistryServiceContract),
-						new NetNamedPipeBinding(NetNamedPipeSecurityMode.Transport),
-						"net.pipe://localhost/SebWindowsServiceWCF/service");
+					var address = "net.pipe://localhost/SebWindowsServiceWCF/service";
+					var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.Transport);
+
+					host = new ServiceHost(typeof(RegistryService));
+					host.AddServiceEndpoint(typeof(IRegistryServiceContract), binding, address);
 				}
 				catch (Exception ex)
 				{
 					Logger.Log(ex,"Unable to initialize service host!");
 				}
-				
 			}
 		}
 
@@ -49,7 +48,7 @@ namespace SebWindowsServiceWCF
 			try
 			{
 				host.Open();
-				Task.Delay(2000).ContinueWith(_ => Reset());
+				Task.Delay(5000).ContinueWith(_ => Reset());
 			}
 			catch (Exception ex)
 			{
@@ -87,7 +86,7 @@ namespace SebWindowsServiceWCF
 
 			while (!service.Reset())
 			{
-				Logger.Log("Trying to reset registry settings...");
+				Logger.Log("Resetting registry values failed! Trying again...");
 				Thread.Sleep(1000);
 			}
 

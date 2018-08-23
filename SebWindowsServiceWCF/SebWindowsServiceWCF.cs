@@ -48,7 +48,7 @@ namespace SebWindowsServiceWCF
 			try
 			{
 				host.Open();
-				Task.Delay(2500).ContinueWith(_ => Reset());
+				Task.Run(new Action(Reset));
 			}
 			catch (Exception ex)
 			{

@@ -1,20 +1,28 @@
 ﻿using System;
+using System.Security.AccessControl;
 using Microsoft.Win32;
 
 namespace SebWindowsServiceWCF.RegistryHandler
 {
 	public static class RegistryEntryExtensions
 	{
-		public static void Delete(this RegistryEntry entry)
+		public static bool TryDelete(this RegistryEntry entry)
 		{
-			var key = entry.RegistryPath.StartsWith("HKEY_USERS") ? Registry.Users : Registry.LocalMachine;
+			var root = entry.RegistryPath.StartsWith("HKEY_USERS") ? Registry.Users : Registry.LocalMachine;
+			var subkey = entry.RegistryPath.Substring(entry.RegistryPath.IndexOf('\\') + 1);
 
-			key = key.OpenSubKey(entry.RegistryPath.Substring(entry.RegistryPath.IndexOf('\\') + 1), true);
-
-			if (key != null)
+			using (var key = root.OpenSubKey(subkey, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl))
 			{
-				key.DeleteValue(entry.DataItemName);
+				if (key != null)
+				{
+					key.DeleteValue(entry.DataItemName);
+					key.Flush();
+
+					return true;
+				}
 			}
+
+			return false;
 		}
 
 		public static object GetValue(this RegistryEntry entry)

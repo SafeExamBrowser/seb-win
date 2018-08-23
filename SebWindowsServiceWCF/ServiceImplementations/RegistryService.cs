@@ -7,7 +7,7 @@ using WUApiLib;
 
 namespace SebWindowsServiceWCF.ServiceImplementations
 {
-	public class RegistryService : IRegistryServiceContract, IDisposable
+	public class RegistryService : IRegistryServiceContract
 	{
 		//Simply returns true
 		public bool TestServiceConnetcion()
@@ -239,11 +239,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 					try
 					{
-						if (object.Equals(originalValue.Value, entry.GetValue()))
-						{
-							Logger.Log(String.Format("Registry key '{0}\\{1}' already has original value '{2}', skipping it.", entry.RegistryPath, entry.DataItemName, originalValue.Value ?? "<NULL>"));
-						}
-						else if (originalValue.Value is null)
+						if (originalValue.Value is null)
 						{
 							entry.Delete();
 							Logger.Log($"Deleted registry key '{entry.RegistryPath}\\{entry.DataItemName}'.");
@@ -342,11 +338,6 @@ namespace SebWindowsServiceWCF.ServiceImplementations
                 Logger.Log(string.Format("Unable to disable Windows Update: {0} : ", ex.Message, ex.StackTrace));
                 return false;
 			}            
-		}
-
-
-		public void Dispose()
-		{
 		}
 	}
 }

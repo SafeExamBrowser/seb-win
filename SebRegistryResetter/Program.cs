@@ -234,6 +234,7 @@ namespace SebRegistryResetter
 			try
 			{
 				entry.SetValue(value);
+				Console.ForegroundColor = ConsoleColor.Green;
 				OutputAndLog($@"Successfully set '{entry.RegistryPath}\{entry.DataItemName}' to '{value}'");
 			}
 			catch (Exception e)

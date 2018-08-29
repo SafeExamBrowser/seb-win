@@ -666,11 +666,13 @@ this.seb =  {
 				return;
 			}
 		}
-        ss.sendLock();
 		base.isLocked = true;
         if (!fromSocket) {
             base.setUnconnectedMessage();
             sh.reconnect();
+        }
+        else {
+             ss.sendLock();
         }
 	},
 	

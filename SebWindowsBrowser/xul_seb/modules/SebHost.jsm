@@ -102,8 +102,8 @@ this.SebHost = {
 			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered,
 			"FullScreenChanged" : base.sendFullScreenChanged
 		};
-		base.reconnectInterval = su.getConfig("lockOnMessageSocketCloseTriesIntervallMSec","number",5);
-		base.reconnectMaxTries = su.getConfig("lockOnMessageSocketCloseTries","number",1000);
+		base.reconnectInterval = su.getConfig("lockOnMessageSocketCloseTriesIntervallMSec","number",1000);
+		base.reconnectMaxTries = su.getConfig("lockOnMessageSocketCloseTries","number",5);
 		
 		sl.out("SebHost initialized: " + seb);
 	},

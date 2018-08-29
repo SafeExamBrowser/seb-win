@@ -6,23 +6,22 @@ namespace SebWindowsServiceWCF.RegistryHandler
 {
 	public static class RegistryEntryExtensions
 	{
-		public static bool TryDelete(this RegistryEntry entry)
+		public static bool IsHiveAvailable(this RegistryEntry entry)
 		{
-			var root = entry.RegistryPath.StartsWith("HKEY_USERS") ? Registry.Users : Registry.LocalMachine;
-			var subkey = entry.RegistryPath.Substring(entry.RegistryPath.IndexOf('\\') + 1);
-
-			using (var key = root.OpenSubKey(subkey, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl))
+			if (entry.IsUserSpecific())
 			{
-				if (key != null)
+				using (var key = Registry.Users.OpenSubKey(entry.SID))
 				{
-					key.DeleteValue(entry.DataItemName);
-					key.Flush();
-
-					return true;
+					return key != null;
 				}
 			}
 
-			return false;
+			return true;
+		}
+
+		public static bool IsUserSpecific(this RegistryEntry entry)
+		{
+			return entry.RegistryPath.StartsWith("HKEY_USERS");
 		}
 
 		public static object GetValue(this RegistryEntry entry)
@@ -40,6 +39,25 @@ namespace SebWindowsServiceWCF.RegistryHandler
 			{
 				throw new ArgumentException($"Can't set registry key '{entry.RegistryPath}\\{entry.DataItemName}' to '{value ?? "<NULL>"}' ({value?.GetType()})!");
 			}
+		}
+
+		public static bool TryDelete(this RegistryEntry entry)
+		{
+			var root = entry.IsUserSpecific() ? Registry.Users : Registry.LocalMachine;
+			var subkey = entry.RegistryPath.Substring(entry.RegistryPath.IndexOf('\\') + 1);
+
+			using (var key = root.OpenSubKey(subkey, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl))
+			{
+				if (key != null)
+				{
+					key.DeleteValue(entry.DataItemName);
+					key.Flush();
+
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

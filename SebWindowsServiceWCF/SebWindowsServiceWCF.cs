@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceProcess;
-using System.Threading;
-using System.Threading.Tasks;
 using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.ServiceImplementations;
 
@@ -48,7 +46,7 @@ namespace SebWindowsServiceWCF
 			try
 			{
 				host.Open();
-				Task.Run(new Action(Reset));
+				Reset();
 			}
 			catch (Exception ex)
 			{
@@ -62,15 +60,8 @@ namespace SebWindowsServiceWCF
 
 			try
 			{
-				if (host != null)
-				{
-					host.Close();
-				}
-
-				var service = new RegistryService();
-				var success = service.Reset();
-
-				Logger.Log(success ? "Attempt to reset registry was successful." : "Failed to reset registry settings!");
+				host?.Close();
+				Reset();
 			}
 			catch (Exception ex)
 			{
@@ -83,14 +74,9 @@ namespace SebWindowsServiceWCF
 		private void Reset()
 		{
 			var service = new RegistryService();
+			var success = service.Reset();
 
-			while (!service.Reset())
-			{
-				Logger.Log("Resetting registry values failed! Trying again...");
-				Thread.Sleep(1000);
-			}
-
-			Logger.Log("Attempt to reset registry was successful.");
+			Logger.Log(success ? "Attempt to reset registry was successful." : "Failed to reset all registry changes!");
 		}
 	}
 }

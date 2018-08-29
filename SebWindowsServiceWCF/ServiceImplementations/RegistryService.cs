@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.ServiceProcess;
 using SEBWindowsServiceContracts;
 using SebWindowsServiceWCF.RegistryHandler;
@@ -60,21 +61,14 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 					foreach (var newValue in newValues)
 					{
-						RegistryEntry regEntry;
+						var regEntry = TryCreateEntry(newValue.Key, sid);
 						
 						//If the class could not be instantiated it means either reflection did not work properly or the registry-class does not exists
 						//don't interrupt the whole process but set the return value to false to indicate a possible error
-						try
+						if (regEntry is null)
 						{
-							//Use Reflection
-							var type = Type.GetType(String.Format("SebWindowsServiceWCF.RegistryHandler.Reg{0}", newValue.Key));
-							if (type == null) continue;
-							regEntry = (RegistryEntry)Activator.CreateInstance(type, sid);
-						}
-						catch (Exception ex)
-						{
-							Logger.Log(ex, String.Format("Unable to instantiate registryclass: {0}", newValue.Key));
 							res = false;
+
 							continue;
 						}
 
@@ -86,7 +80,7 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 							//If there is nothing to change, then do not change anything
 							if (object.Equals(newValue.Value, regEntry.GetValue()))
 							{
-								Logger.Log(String.Format("Registry key '{0}\\{1}' already has value '{2}', skipping it.", regEntry.RegistryPath, regEntry.DataItemName, newValue.Value ?? "<NULL>"));
+								Logger.Log(String.Format("Registry key '{0}' already has value '{1}', skipping it.", regEntry, newValue.Value ?? "<NULL>"));
 
 								continue;
 							}
@@ -106,23 +100,23 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 								if (!deleted && regEntry.GetValue() != null)
 								{
-									Logger.Log($"Failed to delete registry key '{regEntry.RegistryPath}\\{regEntry.DataItemName}'!");
+									Logger.Log($"Failed to delete registry key '{regEntry}'!");
 									res = false;
 
 									continue;
 								}
 
-								Logger.Log($"Deleted registry key '{regEntry.RegistryPath}\\{regEntry.DataItemName}'.");
+								Logger.Log($"Deleted registry key '{regEntry}'.");
 							}
 							else
 							{
 								regEntry.SetValue(newValue.Value);
-								Logger.Log($"Set registry key '{regEntry.RegistryPath}\\{regEntry.DataItemName}' to '{newValue.Value}'.");
+								Logger.Log($"Set registry key '{regEntry}' to '{newValue.Value}'.");
 							}
 						}
 						catch (Exception ex)
 						{
-							Logger.Log(ex, String.Format("Unable to set the registry value for '{0}\\{1}': {2}: {3}", regEntry.RegistryPath, regEntry.DataItemName, ex.Message, ex.StackTrace));
+							Logger.Log(ex, String.Format("Unable to set the registry value for '{0}': {1}: {2}", regEntry, ex.Message, ex.StackTrace));
 							res = false;
 						}
 					}
@@ -222,25 +216,16 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 						return false;
 					}
-					else
-					{
-						Logger.Log("SID from username: " + (sid ?? "<NULL>"));
-					}
+
+					Logger.Log($"SID from username: {sid}");
 				}
 
 				foreach (var originalValue in originalValues)
 				{
-					RegistryEntry entry;
+					var entry = TryCreateEntry(originalValue.Key, sid);
 
-					try
+					if (!CanReset(entry))
 					{
-						var type = Type.GetType(String.Format("SebWindowsServiceWCF.RegistryHandler.Reg{0}", originalValue.Key));
-
-						entry = (RegistryEntry) Activator.CreateInstance(type, sid);
-					}
-					catch (Exception ex)
-					{
-						Logger.Log(ex, String.Format("Unable to instantiate registryclass: {0}", originalValue.Key));
 						success = false;
 
 						continue;
@@ -248,32 +233,14 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 
 					try
 					{
-						if (originalValue.Value is null)
-						{
-							var deleted = entry.TryDelete();
-
-							if (!deleted && entry.GetValue() != null)
-							{
-								Logger.Log($"Failed to delete registry key '{entry.RegistryPath}\\{entry.DataItemName}'!");
-								success = false;
-
-								continue;
-							}
-
-							Logger.Log($"Deleted registry key '{entry.RegistryPath}\\{entry.DataItemName}'.");
-						}
-						else
-						{
-							entry.SetValue(originalValue.Value);
-							Logger.Log($"Set registry key '{entry.RegistryPath}\\{entry.DataItemName}' to '{originalValue.Value}'.");
-						}
+						Reset(entry, originalValue.Value);
 
 						persistentRegistryFile.FileContent.RegistryValues.Remove(originalValue.Key);
 						persistentRegistryFile.Save();
 					}
 					catch (Exception ex)
 					{
-						Logger.Log(ex, String.Format("Unable to reset the registry value for '{0}\\{1}': {2}: {3}", entry.RegistryPath, entry.DataItemName, ex.Message, ex.StackTrace));
+						Logger.Log(ex, String.Format("Unable to reset the registry value for '{0}': {1}: {2}", entry, ex.Message, ex.StackTrace));
 						success = false;
 					}
 				}
@@ -288,6 +255,60 @@ namespace SebWindowsServiceWCF.ServiceImplementations
 			new CommandExecutor.CommandExecutor().ExecuteCommandAsync("gpupdate /force");
 
 			return success;
+		}
+
+		private RegistryEntry TryCreateEntry(RegistryIdentifiers identifier, string sid)
+		{
+			try
+			{
+				var type = Type.GetType(String.Format("SebWindowsServiceWCF.RegistryHandler.Reg{0}", identifier));
+				var entry = (RegistryEntry) Activator.CreateInstance(type, sid);
+
+				return entry;
+			}
+			catch (Exception ex)
+			{
+				Logger.Log(ex, String.Format("Unable to instantiate registryclass: {0}", identifier));
+			}
+
+			return null;
+		}
+
+		private bool CanReset(RegistryEntry entry)
+		{
+			if (entry is null)
+			{
+				return false;
+			}
+
+			if (entry.IsUserSpecific() && !entry.IsHiveAvailable())
+			{
+				Logger.Log($"User hive is not available, cannot reset registry key '{entry}'!");
+
+				return false;
+			}
+
+			return true;
+		}
+
+		private void Reset(RegistryEntry entry, object value)
+		{
+			if (value is null)
+			{
+				var deleted = entry.TryDelete();
+
+				if (!deleted && entry.GetValue() != null)
+				{
+					throw new IOException($"Failed to delete registry key '{entry}'!");
+				}
+
+				Logger.Log($"Deleted registry key '{entry}'.");
+			}
+			else
+			{
+				entry.SetValue(value);
+				Logger.Log($"Set registry key '{entry}' to '{value}'.");
+			}
 		}
 
 		private bool SetWindowsUpdate(bool enable)

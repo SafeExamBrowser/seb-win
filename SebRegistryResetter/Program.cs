@@ -103,6 +103,12 @@ namespace SebRegistryResetter
 
 				Log("User claims the application is running as administrator, continuing...");
 			}
+
+			Console.WriteLine("Please note:");
+			Console.WriteLine("In order to be able to successfully reset all registry changes, the same user under which " +
+				"SEB was last running needs to be logged in. Otherwise, all user-specific values cannot be reset. Furthermore, please " +
+				"restart the computer after executing the Registry Resetter to ensure that the changes take effect.");
+			Console.WriteLine();
 		}
 
 		private static void TryResetUsingBackupFile()
@@ -119,16 +125,19 @@ namespace SebRegistryResetter
 					OutputAndLog("Resetting Registry keys...");
 
 					var service = new RegistryService();
+					var success = service.Reset();
 
-					if (service.Reset())
+					UpdateGroupPolicies();
+
+					if (success)
 					{
-						UpdateGroupPolicies();
 						Console.ForegroundColor = ConsoleColor.Green;
-						OutputAndLog("Registry keys resetted successfully!");
+						OutputAndLog("Registry keys were successfully reset!");
 					}
 					else
 					{
-						OutputAndLog("Unable to reset registry keys!");
+						Console.ForegroundColor = ConsoleColor.Red;
+						OutputAndLog("Unable to reset all registry keys!");
 					}
 				}
 				else
@@ -233,14 +242,21 @@ namespace SebRegistryResetter
 		{
 			try
 			{
-				entry.SetValue(value);
-				Console.ForegroundColor = ConsoleColor.Green;
-				OutputAndLog($@"Successfully set '{entry.RegistryPath}\{entry.DataItemName}' to '{value}'");
+				if (entry.IsUserSpecific() && !entry.IsHiveAvailable())
+				{
+					OutputAndLog($"User hive is not available, cannot reset registry key '{entry}'!");
+				}
+				else
+				{
+					entry.SetValue(value);
+					Console.ForegroundColor = ConsoleColor.Green;
+					OutputAndLog($@"Successfully set '{entry}' to '{value}'");
+				}
 			}
 			catch (Exception e)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				OutputAndLog($@"Failed to set '{entry.RegistryPath}\{entry.DataItemName}' to '{value}'");
+				OutputAndLog($@"Failed to set '{entry}' to '{value}'");
 				Log(e);
 			}
 		}

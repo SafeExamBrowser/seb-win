@@ -25,7 +25,7 @@ namespace SebWindowsServiceWCF.RegistryHandler
         /// <summary>
         /// The SID of the user for which the registry entries should be changed (SubKey of HK_USERS)
         /// </summary>
-        protected string SID;
+        public string SID { get; protected set; }
         //protected RegistryKey RegistryKey;
 
         /// <summary>
@@ -36,6 +36,11 @@ namespace SebWindowsServiceWCF.RegistryHandler
         {
             this.SID = SID;
         }
+
+		public override string ToString()
+		{
+			return $@"{RegistryPath}\{DataItemName}";
+		}
 	}
 
 	/// <remarks>

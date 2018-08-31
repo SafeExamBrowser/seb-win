@@ -779,12 +779,14 @@ this.seb =  {
 				imageBox.classList.remove("hidden2");
 			}
 		}
-        ss.sendUnlock();
 		base.isLocked = false;
         if (!fromSocket) {
             if (sh.messageServer) {
                 base.deleteUnconnectedMessage();
             }
+        }
+        else {
+            ss.sendUnlock();
         }
 	},
 	

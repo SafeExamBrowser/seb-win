@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE764AD0-A80F-479C-93A8-7EE1901E7C6A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SebWindowsConfig", "SebWindowsConfig\SebWindowsConfig.csproj", "{BEF73897-0D04-4F40-AD89-62E24D260CD0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SebWindowsClient", "SebWindowsClient\SebWindowsClient\SebWindowsClient.csproj", "{EFF410A4-2656-4426-8489-89B1232EA0F0}"
@@ -21,11 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFramework", "SebWindow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEBWindowsServiceContracts", "SEBWindowsServiceContracts\SEBWindowsServiceContracts.csproj", "{5B604609-4125-4704-BE64-D1DDACF252A0}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstaller\WixInstaller.wixproj", "{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudio", "SebWindowsClient\SebWindowsClient\NAudio\NAudio.csproj", "{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}"
-EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Bundle", "Bundle\Bundle.wixproj", "{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,22 +151,6 @@ Global
 		{5B604609-4125-4704-BE64-D1DDACF252A0}.Release|Win32.ActiveCfg = Release|Any CPU
 		{5B604609-4125-4704-BE64-D1DDACF252A0}.Release|x64.ActiveCfg = Release|Any CPU
 		{5B604609-4125-4704-BE64-D1DDACF252A0}.Release|x86.ActiveCfg = Release|Any CPU
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|Win32.ActiveCfg = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|Win32.Build.0 = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|x64.ActiveCfg = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|x86.ActiveCfg = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Debug|x86.Build.0 = Debug|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|Any CPU.ActiveCfg = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|Mixed Platforms.Build.0 = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|Win32.ActiveCfg = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|Win32.Build.0 = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|x64.ActiveCfg = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|x86.ActiveCfg = Release|x86
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8}.Release|x86.Build.0 = Release|x86
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -187,28 +165,8 @@ Global
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Release|Win32.ActiveCfg = Release|Any CPU
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Release|x64.ActiveCfg = Release|Any CPU
 		{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}.Release|x86.ActiveCfg = Release|Any CPU
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|Win32.ActiveCfg = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|Win32.Build.0 = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|x64.ActiveCfg = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|x86.ActiveCfg = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Debug|x86.Build.0 = Debug|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|Any CPU.ActiveCfg = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|Mixed Platforms.Build.0 = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|Win32.ActiveCfg = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|Win32.Build.0 = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|x64.ActiveCfg = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|x86.ActiveCfg = Release|x86
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{2D4C29E3-29C0-4B0A-BB7B-8D361D1FBAD8} = {DE764AD0-A80F-479C-93A8-7EE1901E7C6A}
-		{B8C4F205-E6A5-4E2C-8DE3-69B19961E5E3} = {DE764AD0-A80F-479C-93A8-7EE1901E7C6A}
 	EndGlobalSection
 EndGlobal

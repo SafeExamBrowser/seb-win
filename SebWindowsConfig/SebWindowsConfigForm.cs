@@ -182,6 +182,10 @@ namespace SebWindowsConfig
             // Check if default permitted processes should be removed from settings
             CheckAndOptionallyRemoveDefaultProhibitedProcesses();
 
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
             // GUI-related part: Update the widgets
             currentDireSebConfigFile = Path.GetDirectoryName(fileName);
 			currentFileSebConfigFile = Path.GetFileName     (fileName);

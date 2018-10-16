@@ -113,7 +113,10 @@ namespace SebWindowsConfig
 			{
 				// If this didn't work, then there are no local client settings and we set the current settings title to "Default Settings"
 				currentPathSebConfigFile = SEBUIStrings.settingsTitleDefaultSettings;
-				UpdateAllWidgetsOfProgram();
+                // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+                // which are necessary for compatibility to SEB 2.1.x
+                urlFilter.UpdateFilterRules();
+                UpdateAllWidgetsOfProgram();
 			}
 
 			// Update Browser Exam Key
@@ -1302,8 +1305,12 @@ namespace SebWindowsConfig
 			// If the user clicked "OK"    , write the settings to the configuration file
 			if (fileDialogResult.Equals(DialogResult.Cancel)) return;
 
-			// Generate Browser Exam Key and its salt, if settings changed
-			string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
+            // Generate Browser Exam Key and its salt, if settings changed
+            string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			// Save current Browser Exam Key salt in case saving fails
 			byte[] currentExamKeySalt = (byte[])SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt];
 
@@ -1373,7 +1380,11 @@ namespace SebWindowsConfig
 				SEBSettings.settingsCurrent[SEBSettings.KeySebConfigPurpose] = 0;
 			}
 
-			UpdateAllWidgetsOfProgram();
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
+            UpdateAllWidgetsOfProgram();
 			// Generate Browser Exam Key of default settings
 			string currentBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			lastSettingsPassword = textBoxSettingsPassword.Text;
@@ -1412,7 +1423,10 @@ namespace SebWindowsConfig
 					SEBSettings.RestoreDefaultAndCurrentSettings();
 					SEBSettings.PermitXulRunnerProcess();
 					currentPathSebConfigFile = SEBUIStrings.settingsTitleDefaultSettings;
-					UpdateAllWidgetsOfProgram();
+                // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+                // which are necessary for compatibility to SEB 2.1.x
+                urlFilter.UpdateFilterRules();
+                UpdateAllWidgetsOfProgram();
 				}
 				// Generate Browser Exam Key of this new settings
 				lastBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
@@ -1527,8 +1541,12 @@ namespace SebWindowsConfig
 			StringBuilder sebClientSettingsAppDataBuilder = new StringBuilder(SEBClientInfo.SebClientSettingsAppDataDirectory).Append(SEBClientInfo.SEB_CLIENT_CONFIG);
 			string filename = sebClientSettingsAppDataBuilder.ToString();
 
-			// Generate Browser Exam Key and its salt, if settings changed
-			string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
+            // Generate Browser Exam Key and its salt, if settings changed
+            string newBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			// Save current Browser Exam Key salt in case saving fails
 			byte[] currentExamKeySalt = (byte[])SEBSettings.settingsCurrent[SEBSettings.KeyExamKeySalt];
 
@@ -1561,9 +1579,13 @@ namespace SebWindowsConfig
 			// Check if there are unconfirmed passwords, if yes show an alert and abort saving
 			if (ArePasswordsUnconfirmed()) return;
 
-			// Check if settings changed and save them if yes
-			// Generate current Browser Exam Key
-			string currentBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
+            // Update URL filter rules, also the seb-Browser white/blacklist keys, 
+            // which are necessary for compatibility to SEB 2.1.x
+            urlFilter.UpdateFilterRules();
+
+            // Check if settings changed and save them if yes
+            // Generate current Browser Exam Key
+            string currentBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			if (!lastBrowserExamKey.Equals(currentBrowserExamKey) || !lastSettingsPassword.Equals(textBoxSettingsPassword.Text) || !String.IsNullOrEmpty(lastPathSebConfigFile))
 			{
 				if (!saveCurrentSettings()) return;

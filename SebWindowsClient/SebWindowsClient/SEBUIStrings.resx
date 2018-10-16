@@ -471,4 +471,10 @@
   <data name="AdditionalResourceConfirmTitle" xml:space="preserve">
     <value>Open Resource?</value>
   </data>
+  <data name="spareBrowserFileNamesFound" xml:space="preserve">
+    <value>SEB installation is corrupted </value>
+  </data>
+  <data name="spareBrowserFileNamesFoundText" xml:space="preserve">
+    <value>SEB found irregular files in its program directory. These might have been left from an older SEB version if an update failed. Uninstall SEB using the Windows Control Panel, afterwards delete the SafeExamBrowser subdirectory from the Program Files (x86) directory and re-install this SEB version freshly. List of spare files:</value>
+  </data>
 </root>

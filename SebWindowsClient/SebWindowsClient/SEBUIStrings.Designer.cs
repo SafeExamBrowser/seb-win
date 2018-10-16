@@ -907,6 +907,24 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SEB installation is corrupted .
+        /// </summary>
+        public static string spareBrowserFileNamesFound {
+            get {
+                return ResourceManager.GetString("spareBrowserFileNamesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEB found irregular files in its program directory. These might have been left from an older SEB version if an update failed. Uninstall SEB using the Windows Control Panel, afterwards delete the SafeExamBrowser subdirectory from the Program Files (x86) directory and re-install this SEB version freshly. List of spare files:.
+        /// </summary>
+        public static string spareBrowserFileNamesFoundText {
+            get {
+                return ResourceManager.GetString("spareBrowserFileNamesFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enable Windows Tablet Mode and start SEB again..
         /// </summary>
         public static string tableModeNotEnabledWarningText {

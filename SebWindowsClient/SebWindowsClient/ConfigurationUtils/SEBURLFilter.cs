@@ -38,10 +38,11 @@ namespace SebWindowsClient.ConfigurationUtils
             ListObj additionalResources = (ListObj)SEBSettings.settingsCurrent[SEBSettings.KeyAdditionalResources];
             ReadFilterRulesFromAdditionalResources(additionalResources);
 
-            // Check if Start URL gets allowed by current filter rules and if not add a rule for the Start URL
+            // If URL filtering is enabled, then
+            // check if Start URL gets allowed by current filter rules and if not add a rule for the Start URL
             string startURLString = (string)SEBSettings.settingsCurrent[SEBSettings.KeyStartURL];
 
-            if (Uri.TryCreate(startURLString, UriKind.Absolute, out Uri startURL))
+            if (enableURLFilter && Uri.TryCreate(startURLString, UriKind.Absolute, out Uri startURL))
             {
                 if (TestURLAllowed(startURL) != URLFilterRuleActions.allow)
                 {
@@ -56,6 +57,8 @@ namespace SebWindowsClient.ConfigurationUtils
                         Logger.AddError("Could not create SEBURLFilterRegexExpression: ", this, ex, ex.Message);
                         prohibitedList.Clear();
                         permittedList.Clear();
+                        // Convert these rules and add them to the XULRunner seb keys
+                        CreateSebRuleLists();
                         return;
                     }
 

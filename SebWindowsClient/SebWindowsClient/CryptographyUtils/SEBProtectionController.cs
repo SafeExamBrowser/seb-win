@@ -635,17 +635,34 @@ namespace SebWindowsClient.CryptographyUtils
 
                 if (spareFileNames.Count > 0)
                 {
-                    SEBMessageBox.Show(SEBUIStrings.spareBrowserFileNamesFound, SEBUIStrings.spareBrowserFileNamesFoundText + Environment.NewLine + string.Join(Environment.NewLine, spareFileNames.ToArray()), MessageBoxIcon.Error, MessageBoxButtons.OK);
+                    Logger.AddInformation(SEBUIStrings.spareBrowserFileNamesFoundText + Environment.NewLine + string.Join(Environment.NewLine, spareFileNames.ToArray()));
+                    ShowSpareFilesErrorMessage(spareFileNames);
                 }
 
                 fileNames.AddRange(browserFiles);
 			}
  
-            {
-
-            }
             Logger.AddInformation("All SEB files: " + Environment.NewLine + string.Join(Environment.NewLine, fileNames.ToArray()));
             return ComputeHashForFiles(fileNames);
+        }
+
+        private static void ShowSpareFilesErrorMessage(List<string> spareFileNames)
+        {
+            try
+            {
+                if (SEBClientInfo.SebWindowsClientForm.InvokeRequired)
+                {
+                    SEBClientInfo.SebWindowsClientForm.Invoke((MethodInvoker)delegate { ShowSpareFilesErrorMessage(spareFileNames); });
+                    return;
+                }
+                // this code will run on main (UI) thread 
+
+                SEBMessageBox.Show(SEBUIStrings.spareBrowserFileNamesFound, SEBUIStrings.spareBrowserFileNamesFoundText + Environment.NewLine + string.Join(Environment.NewLine, spareFileNames.ToArray()), MessageBoxIcon.Error, MessageBoxButtons.OK);
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         public static string ComputeHashForFiles(IEnumerable<string> fileNames)

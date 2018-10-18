@@ -270,7 +270,7 @@ namespace SebWindowsConfig
             StringWindowPositioning[1] = "Center";
             StringWindowPositioning[2] = "Right";
 
-            // Define the strings for the Task Bar Height
+            // Define the strings for the taskbar Height
             StringTaskBarHeight[0] = "40";
             StringTaskBarHeight[1] = "60";
             StringTaskBarHeight[2] = "80";

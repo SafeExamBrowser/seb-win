@@ -191,7 +191,7 @@ namespace SebWindowsClient.ConfigurationUtils
                 xulRunnerSettings[SEBSettings.KeyNewBrowserWindowShowReloadWarning] = false;
 
 
-                // Set correct task bar height according to display dpi
+                // Set correct taskbar height according to display dpi
                 xulRunnerSettings[SEBSettings.KeyTaskBarHeight] = (int)Math.Round((int)xulRunnerSettings[SEBSettings.KeyTaskBarHeight] * 1.7);
 			}
 

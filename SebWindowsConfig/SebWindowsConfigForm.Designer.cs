@@ -30,8 +30,8 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -823,6 +823,8 @@ namespace SebWindowsConfig
             this.checkBoxEnableRightMouse.Size = new System.Drawing.Size(122, 17);
             this.checkBoxEnableRightMouse.TabIndex = 6;
             this.checkBoxEnableRightMouse.Text = "Enable Right Mouse";
+            this.toolTip1.SetToolTip(this.checkBoxEnableRightMouse, "The right mouse button has to be enabled for users to be able to use the context " +
+        "menu for spell checking.");
             this.checkBoxEnableRightMouse.UseVisualStyleBackColor = true;
             this.checkBoxEnableRightMouse.CheckedChanged += new System.EventHandler(this.checkBoxEnableRightMouse_CheckedChanged);
             // 
@@ -1084,12 +1086,12 @@ namespace SebWindowsConfig
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(46, 107);
+            this.label4.Location = new System.Drawing.Point(40, 107);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(115, 13);
+            this.label4.Size = new System.Drawing.Size(126, 13);
             this.label4.TabIndex = 83;
-            this.label4.Text = "Log file directory OS X:";
+            this.label4.Text = "Log file directory on Mac:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // checkBoxUseStandardDirectory
@@ -1294,7 +1296,7 @@ namespace SebWindowsConfig
             this.tabPageUrlFilter.Controls.Add(this.checkBoxEnableURLContentFilter);
             this.tabPageUrlFilter.Location = new System.Drawing.Point(4, 22);
             this.tabPageUrlFilter.Name = "tabPageUrlFilter";
-            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageUrlFilter.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageUrlFilter.Size = new System.Drawing.Size(698, 462);
             this.tabPageUrlFilter.TabIndex = 3;
             this.tabPageUrlFilter.Text = "Filter";
@@ -1318,6 +1320,8 @@ namespace SebWindowsConfig
             this.checkBoxEnableURLFilter.Size = new System.Drawing.Size(126, 17);
             this.checkBoxEnableURLFilter.TabIndex = 22;
             this.checkBoxEnableURLFilter.Text = "Activate URL filtering";
+            this.toolTip1.SetToolTip(this.checkBoxEnableURLFilter, "Filter URLs when loading web pages using the filter set defined below and in addi" +
+        "tional resources.");
             this.checkBoxEnableURLFilter.UseVisualStyleBackColor = true;
             this.checkBoxEnableURLFilter.CheckedChanged += new System.EventHandler(this.checkBoxEnableURLFilter_CheckedChanged);
             // 
@@ -1331,6 +1335,7 @@ namespace SebWindowsConfig
             this.checkBoxEnableURLContentFilter.Size = new System.Drawing.Size(162, 17);
             this.checkBoxEnableURLContentFilter.TabIndex = 2;
             this.checkBoxEnableURLContentFilter.Text = "Filter also embedded content";
+            this.toolTip1.SetToolTip(this.checkBoxEnableURLContentFilter, "If selected, also all embedded resources will be filtered using the filter set.");
             this.checkBoxEnableURLContentFilter.UseVisualStyleBackColor = true;
             this.checkBoxEnableURLContentFilter.CheckedChanged += new System.EventHandler(this.checkBoxEnableURLContentFilter_CheckedChanged);
             // 
@@ -1380,6 +1385,9 @@ namespace SebWindowsConfig
             this.checkBoxPinEmbeddedCertificates.Size = new System.Drawing.Size(148, 17);
             this.checkBoxPinEmbeddedCertificates.TabIndex = 100;
             this.checkBoxPinEmbeddedCertificates.Text = "Pin embedded certificates";
+            this.toolTip1.SetToolTip(this.checkBoxPinEmbeddedCertificates, "Bypasses the browser\'s built-in certificate store, you have to embed TLS or CA ce" +
+        "rtificates into SEB settings which establish trust for the secure servers you wa" +
+        "nt SEB to connect to.");
             this.checkBoxPinEmbeddedCertificates.UseVisualStyleBackColor = true;
             this.checkBoxPinEmbeddedCertificates.CheckedChanged += new System.EventHandler(this.checkBoxPinEmbeddedCertificates_CheckedChanged);
             // 
@@ -1402,8 +1410,8 @@ namespace SebWindowsConfig
             this.comboBoxChooseCACertificate.Name = "comboBoxChooseCACertificate";
             this.comboBoxChooseCACertificate.Size = new System.Drawing.Size(491, 21);
             this.comboBoxChooseCACertificate.TabIndex = 98;
-            this.toolTip1.SetToolTip(this.comboBoxChooseCACertificate, "SSL/TLS certificates from the Windows Certificate Store\r\n. This allows to distrib" +
-        "ute self-signed certificates to exam clients.");
+            this.toolTip1.SetToolTip(this.comboBoxChooseCACertificate, "Certificate Authority certificates from the Windows Certificate Store. This allow" +
+        "s to distribute self-signed certificates to exam clients.");
             this.comboBoxChooseCACertificate.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseCACertificate_SelectedIndexChanged);
             // 
             // labelChooseIdentityToEmbed
@@ -1445,8 +1453,8 @@ namespace SebWindowsConfig
             this.comboBoxChooseSSLServerCertificate.Name = "comboBoxChooseSSLServerCertificate";
             this.comboBoxChooseSSLServerCertificate.Size = new System.Drawing.Size(491, 21);
             this.comboBoxChooseSSLServerCertificate.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.comboBoxChooseSSLServerCertificate, "SSL/TLS certificates from the Windows Certificate Store\r\n. This allows to distrib" +
-        "ute self-signed certificates to exam clients.");
+            this.toolTip1.SetToolTip(this.comboBoxChooseSSLServerCertificate, "SSL/TLS certificates from the Windows Certificate Store. This allows to distribut" +
+        "e self-signed certificates to exam clients.");
             this.comboBoxChooseSSLServerCertificate.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseSSLServerCertificate_SelectedIndexChanged);
             // 
             // buttonRemoveCertificate
@@ -1481,8 +1489,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -1901,6 +1909,7 @@ namespace SebWindowsConfig
             this.buttonChoosePermittedApplication.Size = new System.Drawing.Size(125, 25);
             this.buttonChoosePermittedApplication.TabIndex = 5;
             this.buttonChoosePermittedApplication.Text = "Choose Application...";
+            this.toolTip1.SetToolTip(this.buttonChoosePermittedApplication, resources.GetString("buttonChoosePermittedApplication.ToolTip"));
             this.buttonChoosePermittedApplication.UseVisualStyleBackColor = true;
             this.buttonChoosePermittedApplication.Click += new System.EventHandler(this.buttonChoosePermittedApplication_Click);
             // 
@@ -1972,10 +1981,12 @@ namespace SebWindowsConfig
             // textBoxPermittedProcessOriginalName
             // 
             this.textBoxPermittedProcessOriginalName.Location = new System.Drawing.Point(199, 109);
-            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxPermittedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPermittedProcessOriginalName.Name = "textBoxPermittedProcessOriginalName";
             this.textBoxPermittedProcessOriginalName.Size = new System.Drawing.Size(565, 20);
             this.textBoxPermittedProcessOriginalName.TabIndex = 95;
+            this.toolTip1.SetToolTip(this.textBoxPermittedProcessOriginalName, "If the Original Name file metadata is available, SEB will prioritize this string " +
+        "over the executable file name string.");
             this.textBoxPermittedProcessOriginalName.TextChanged += new System.EventHandler(this.textBoxPermittedProcessOriginalName_TextChanged);
             // 
             // PermittedProcessOriginalNameLabel
@@ -1994,11 +2005,11 @@ namespace SebWindowsConfig
             this.checkBoxPermittedProcessIconInTaskbar.Location = new System.Drawing.Point(781, 26);
             this.checkBoxPermittedProcessIconInTaskbar.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxPermittedProcessIconInTaskbar.Name = "checkBoxPermittedProcessIconInTaskbar";
-            this.checkBoxPermittedProcessIconInTaskbar.Size = new System.Drawing.Size(99, 17);
+            this.checkBoxPermittedProcessIconInTaskbar.Size = new System.Drawing.Size(96, 17);
             this.checkBoxPermittedProcessIconInTaskbar.TabIndex = 93;
-            this.checkBoxPermittedProcessIconInTaskbar.Text = "Icon in task bar";
-            this.toolTip1.SetToolTip(this.checkBoxPermittedProcessIconInTaskbar, "Show icon of permitted application in task bar (not possible when \'run in backgro" +
-        "und\' is enabled).");
+            this.checkBoxPermittedProcessIconInTaskbar.Text = "Icon in taskbar";
+            this.toolTip1.SetToolTip(this.checkBoxPermittedProcessIconInTaskbar, "Show icon of permitted application in taskbar (not possible when \'run in backgrou" +
+        "nd\' is enabled).");
             this.checkBoxPermittedProcessIconInTaskbar.UseVisualStyleBackColor = true;
             this.checkBoxPermittedProcessIconInTaskbar.CheckedChanged += new System.EventHandler(this.checkBoxPermittedProcessIconInTaskbar_CheckedChanged);
             // 
@@ -2041,8 +2052,8 @@ namespace SebWindowsConfig
             this.checkBoxPermittedProcessStrongKill.Size = new System.Drawing.Size(155, 17);
             this.checkBoxPermittedProcessStrongKill.TabIndex = 13;
             this.checkBoxPermittedProcessStrongKill.Text = "Force quit (risk of data loss)";
-            this.toolTip1.SetToolTip(this.checkBoxPermittedProcessStrongKill, "Terminate process in a not-nice way, which may cause data loss if the application" +
-        " had unsaved data");
+            this.toolTip1.SetToolTip(this.checkBoxPermittedProcessStrongKill, "Force terminate process, which may cause data loss if the application had unsaved" +
+        " data.");
             this.checkBoxPermittedProcessStrongKill.UseVisualStyleBackColor = true;
             this.checkBoxPermittedProcessStrongKill.CheckedChanged += new System.EventHandler(this.checkBoxPermittedProcessStrongKill_CheckedChanged);
             // 
@@ -2108,8 +2119,8 @@ namespace SebWindowsConfig
             this.textBoxPermittedProcessIdentifier.Size = new System.Drawing.Size(517, 20);
             this.textBoxPermittedProcessIdentifier.TabIndex = 9;
             this.toolTip1.SetToolTip(this.textBoxPermittedProcessIdentifier, "(Sub) string in the title of the main window of a tricky third party application " +
-        "(Java, Acrobat etc.). Mac OS X: Bundle identifier of the process in reverse doma" +
-        "in notation.");
+        "(Java, Acrobat etc.). Mac: Bundle identifier of the process in reverse domain no" +
+        "tation.");
             this.textBoxPermittedProcessIdentifier.TextChanged += new System.EventHandler(this.textBoxPermittedProcessIdentifier_TextChanged);
             // 
             // buttonPermittedProcessRemoveArgument
@@ -2273,7 +2284,7 @@ namespace SebWindowsConfig
             this.checkBoxPermittedProcessAutohide.Text = "Allow running in background";
             this.checkBoxPermittedProcessAutohide.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.toolTip1.SetToolTip(this.checkBoxPermittedProcessAutohide, "Allow the permitted process to already be running when SEB starts. Such a process" +
-        " can\'t have an icon in the task bar.");
+        " can\'t have an icon in the taskbar.");
             this.checkBoxPermittedProcessAutohide.UseVisualStyleBackColor = true;
             this.checkBoxPermittedProcessAutohide.CheckedChanged += new System.EventHandler(this.checkBoxPermittedProcessAutohide_CheckedChanged);
             // 
@@ -2379,7 +2390,7 @@ namespace SebWindowsConfig
             // textBoxProhibitedProcessOriginalName
             // 
             this.textBoxProhibitedProcessOriginalName.Location = new System.Drawing.Point(178, 55);
-            this.textBoxProhibitedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxProhibitedProcessOriginalName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxProhibitedProcessOriginalName.Name = "textBoxProhibitedProcessOriginalName";
             this.textBoxProhibitedProcessOriginalName.Size = new System.Drawing.Size(338, 20);
             this.textBoxProhibitedProcessOriginalName.TabIndex = 15;
@@ -2728,11 +2739,11 @@ namespace SebWindowsConfig
             this.checkBoxRestartExamPasswordProtected.Location = new System.Drawing.Point(14, 152);
             this.checkBoxRestartExamPasswordProtected.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxRestartExamPasswordProtected.Name = "checkBoxRestartExamPasswordProtected";
-            this.checkBoxRestartExamPasswordProtected.Size = new System.Drawing.Size(297, 17);
+            this.checkBoxRestartExamPasswordProtected.Size = new System.Drawing.Size(300, 17);
             this.checkBoxRestartExamPasswordProtected.TabIndex = 115;
-            this.checkBoxRestartExamPasswordProtected.Text = "Protect back to start button with the quit/restart password";
-            this.toolTip1.SetToolTip(this.checkBoxRestartExamPasswordProtected, "The quit/restart password (if set) must be entered when the back to start button " +
-        "was clicked.");
+            this.checkBoxRestartExamPasswordProtected.Text = "Protect back to start button with the quit/unlock password";
+            this.toolTip1.SetToolTip(this.checkBoxRestartExamPasswordProtected, "The quit/unlock password (if set) must be entered when the back to start button i" +
+        "s clicked.");
             this.checkBoxRestartExamPasswordProtected.UseVisualStyleBackColor = true;
             this.checkBoxRestartExamPasswordProtected.CheckedChanged += new System.EventHandler(this.checkBoxRestartExamPasswordProtected_CheckedChanged);
             // 
@@ -2773,10 +2784,10 @@ namespace SebWindowsConfig
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(394, 19);
+            this.textBox3.Size = new System.Drawing.Size(525, 19);
             this.textBox3.TabIndex = 118;
             this.textBox3.Text = "Enter custom URL or select \"Use Start URL\" to display the back to start button in" +
-    " the SEB task bar.";
+    " the SEB taskbar.";
             // 
             // groupBox8
             // 
@@ -2871,8 +2882,8 @@ namespace SebWindowsConfig
             this.checkBoxSendBrowserExamKey.Size = new System.Drawing.Size(247, 17);
             this.checkBoxSendBrowserExamKey.TabIndex = 2;
             this.checkBoxSendBrowserExamKey.Text = "Use Browser Exam Key (send in HTTP header)";
-            this.toolTip1.SetToolTip(this.checkBoxSendBrowserExamKey, "Browser Exam Key is send in an HTTP header to authenticate the SEB client and its" +
-        " settings to a compatible exam system.");
+            this.toolTip1.SetToolTip(this.checkBoxSendBrowserExamKey, "Send Browser Exam Key in an HTTP header to authenticate the SEB client and its se" +
+        "ttings to a compatible exam system.");
             this.checkBoxSendBrowserExamKey.UseVisualStyleBackColor = true;
             this.checkBoxSendBrowserExamKey.CheckedChanged += new System.EventHandler(this.checkBoxSendBrowserExamKey_CheckedChanged);
             // 
@@ -2973,9 +2984,9 @@ namespace SebWindowsConfig
             this.label5.Location = new System.Drawing.Point(131, 88);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(126, 13);
+            this.label5.Size = new System.Drawing.Size(137, 13);
             this.label5.TabIndex = 85;
-            this.label5.Text = "Download directory OS X";
+            this.label5.Text = "Download directory on Mac";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxDownloadDirectoryOSX
@@ -3750,9 +3761,9 @@ namespace SebWindowsConfig
             this.spellCheckerGroupBox.Controls.Add(this.spellCheckerDataGridView);
             this.spellCheckerGroupBox.Controls.Add(this.checkBoxAllowSpellCheck);
             this.spellCheckerGroupBox.Location = new System.Drawing.Point(527, 118);
-            this.spellCheckerGroupBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.spellCheckerGroupBox.Margin = new System.Windows.Forms.Padding(2);
             this.spellCheckerGroupBox.Name = "spellCheckerGroupBox";
-            this.spellCheckerGroupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.spellCheckerGroupBox.Padding = new System.Windows.Forms.Padding(2);
             this.spellCheckerGroupBox.Size = new System.Drawing.Size(691, 389);
             this.spellCheckerGroupBox.TabIndex = 87;
             this.spellCheckerGroupBox.TabStop = false;
@@ -3766,8 +3777,8 @@ namespace SebWindowsConfig
             this.dictionariesDescriptionLabel.Size = new System.Drawing.Size(675, 29);
             this.dictionariesDescriptionLabel.TabIndex = 3;
             this.dictionariesDescriptionLabel.Text = "It is possible to embed additional dictionaries to be used for spell checking. Pl" +
-    "ease make sure to use the correct file formats, namely a .aff and a .dic file pe" +
-    "r language.";
+    "ease make sure to use the correct file formats, namely an .aff and a .dic file p" +
+    "er language.";
             // 
             // spellCheckerDescriptionLabel
             // 
@@ -3796,7 +3807,7 @@ namespace SebWindowsConfig
             // removeDictionaryButton
             // 
             this.removeDictionaryButton.Location = new System.Drawing.Point(117, 357);
-            this.removeDictionaryButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.removeDictionaryButton.Margin = new System.Windows.Forms.Padding(2);
             this.removeDictionaryButton.Name = "removeDictionaryButton";
             this.removeDictionaryButton.Size = new System.Drawing.Size(113, 23);
             this.removeDictionaryButton.TabIndex = 1;
@@ -3807,11 +3818,13 @@ namespace SebWindowsConfig
             // addDictionaryButton
             // 
             this.addDictionaryButton.Location = new System.Drawing.Point(8, 357);
-            this.addDictionaryButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.addDictionaryButton.Margin = new System.Windows.Forms.Padding(2);
             this.addDictionaryButton.Name = "addDictionaryButton";
             this.addDictionaryButton.Size = new System.Drawing.Size(105, 23);
             this.addDictionaryButton.TabIndex = 1;
             this.addDictionaryButton.Text = "Add Dictionary...";
+            this.toolTip1.SetToolTip(this.addDictionaryButton, "SEB containts dictionaries with a compatible license, others can be embedded to c" +
+        "onfig files.");
             this.addDictionaryButton.UseVisualStyleBackColor = true;
             this.addDictionaryButton.Click += new System.EventHandler(this.addDictionaryButton_Click);
             // 
@@ -3827,7 +3840,7 @@ namespace SebWindowsConfig
             this.spellCheckerDictionaryLocaleColumn,
             this.spellCheckerDictionaryFilesColumn});
             this.spellCheckerDataGridView.Location = new System.Drawing.Point(11, 78);
-            this.spellCheckerDataGridView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.spellCheckerDataGridView.Margin = new System.Windows.Forms.Padding(2);
             this.spellCheckerDataGridView.Name = "spellCheckerDataGridView";
             this.spellCheckerDataGridView.RowTemplate.Height = 28;
             this.spellCheckerDataGridView.Size = new System.Drawing.Size(668, 237);
@@ -3857,8 +3870,8 @@ namespace SebWindowsConfig
             // spellCheckerDictionaryFilesColumn
             // 
             this.spellCheckerDictionaryFilesColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.spellCheckerDictionaryFilesColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.spellCheckerDictionaryFilesColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.spellCheckerDictionaryFilesColumn.HeaderText = "Files";
             this.spellCheckerDictionaryFilesColumn.Name = "spellCheckerDictionaryFilesColumn";
             this.spellCheckerDictionaryFilesColumn.ReadOnly = true;
@@ -3875,7 +3888,9 @@ namespace SebWindowsConfig
             this.checkBoxAllowSpellCheck.Size = new System.Drawing.Size(122, 17);
             this.checkBoxAllowSpellCheck.TabIndex = 67;
             this.checkBoxAllowSpellCheck.Text = "Allow spell checking";
-            this.toolTip1.SetToolTip(this.checkBoxAllowSpellCheck, "Allow to use \"Check spelling\" in the SEB browser");
+            this.toolTip1.SetToolTip(this.checkBoxAllowSpellCheck, "Spell checking in the SEB browser underlines incorrectly spelled words and displa" +
+        "ys word suggestions (right mouse button needs to be enabled in Hooked Keys tab)." +
+        "");
             this.checkBoxAllowSpellCheck.UseVisualStyleBackColor = true;
             this.checkBoxAllowSpellCheck.CheckedChanged += new System.EventHandler(this.checkBoxAllowSpellCheck_CheckedChanged);
             // 
@@ -3913,6 +3928,7 @@ namespace SebWindowsConfig
             this.checkBoxEnableAudioControl.Size = new System.Drawing.Size(128, 17);
             this.checkBoxEnableAudioControl.TabIndex = 86;
             this.checkBoxEnableAudioControl.Text = "Enable audio controls";
+            this.toolTip1.SetToolTip(this.checkBoxEnableAudioControl, "Displays an audio control in the SEB taskbar");
             this.checkBoxEnableAudioControl.UseVisualStyleBackColor = true;
             this.checkBoxEnableAudioControl.CheckedChanged += new System.EventHandler(this.checkBoxEnableAudioControl_CheckedChanged);
             // 
@@ -3925,6 +3941,7 @@ namespace SebWindowsConfig
             this.checkBoxSetVolumeLevel.Size = new System.Drawing.Size(130, 17);
             this.checkBoxSetVolumeLevel.TabIndex = 88;
             this.checkBoxSetVolumeLevel.Text = "Set initial volume level";
+            this.toolTip1.SetToolTip(this.checkBoxSetVolumeLevel, "Volume level after starting SEB/the exam");
             this.checkBoxSetVolumeLevel.UseVisualStyleBackColor = true;
             this.checkBoxSetVolumeLevel.CheckedChanged += new System.EventHandler(this.checkBoxSetVolumeLevel_CheckedChanged);
             // 
@@ -3937,6 +3954,7 @@ namespace SebWindowsConfig
             this.checkBoxMuteAudio.Size = new System.Drawing.Size(129, 17);
             this.checkBoxMuteAudio.TabIndex = 87;
             this.checkBoxMuteAudio.Text = "Mute audio on startup";
+            this.toolTip1.SetToolTip(this.checkBoxMuteAudio, "When SEB/the exam starts, audio is muted");
             this.checkBoxMuteAudio.UseVisualStyleBackColor = true;
             this.checkBoxMuteAudio.CheckedChanged += new System.EventHandler(this.checkBoxMuteAudio_CheckedChanged);
             // 
@@ -3950,7 +3968,7 @@ namespace SebWindowsConfig
             this.groupBox6.Size = new System.Drawing.Size(500, 69);
             this.groupBox6.TabIndex = 83;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Mac specific";
+            this.groupBox6.Text = "Browser Window Toolbar";
             // 
             // checkBoxEnableBrowserWindowToolbar
             // 
@@ -3958,11 +3976,11 @@ namespace SebWindowsConfig
             this.checkBoxEnableBrowserWindowToolbar.Location = new System.Drawing.Point(10, 19);
             this.checkBoxEnableBrowserWindowToolbar.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxEnableBrowserWindowToolbar.Name = "checkBoxEnableBrowserWindowToolbar";
-            this.checkBoxEnableBrowserWindowToolbar.Size = new System.Drawing.Size(203, 17);
+            this.checkBoxEnableBrowserWindowToolbar.Size = new System.Drawing.Size(173, 17);
             this.checkBoxEnableBrowserWindowToolbar.TabIndex = 2;
-            this.checkBoxEnableBrowserWindowToolbar.Text = "Enable browser window toolbar (Mac)";
-            this.toolTip1.SetToolTip(this.checkBoxEnableBrowserWindowToolbar, "Displays a toolbar on top of the browser window which can also be hidden by the u" +
-        "ser.");
+            this.checkBoxEnableBrowserWindowToolbar.Text = "Enable browser window toolbar";
+            this.toolTip1.SetToolTip(this.checkBoxEnableBrowserWindowToolbar, "Displays a toolbar with reload and navigation buttons (if enabled) on top of the " +
+        "browser window.");
             this.checkBoxEnableBrowserWindowToolbar.UseVisualStyleBackColor = true;
             this.checkBoxEnableBrowserWindowToolbar.CheckedChanged += new System.EventHandler(this.checkBoxEnableBrowserWindowToolbar_CheckedChanged);
             // 
@@ -4008,7 +4026,7 @@ namespace SebWindowsConfig
             this.groupBox5.Size = new System.Drawing.Size(500, 131);
             this.groupBox5.TabIndex = 82;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "SEB task bar/dock";
+            this.groupBox5.Text = "SEB taskbar/dock";
             // 
             // checkBoxShowTaskBar
             // 
@@ -4016,11 +4034,11 @@ namespace SebWindowsConfig
             this.checkBoxShowTaskBar.Location = new System.Drawing.Point(10, 19);
             this.checkBoxShowTaskBar.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxShowTaskBar.Name = "checkBoxShowTaskBar";
-            this.checkBoxShowTaskBar.Size = new System.Drawing.Size(118, 17);
+            this.checkBoxShowTaskBar.Size = new System.Drawing.Size(115, 17);
             this.checkBoxShowTaskBar.TabIndex = 5;
-            this.checkBoxShowTaskBar.Text = "Show SEB task bar";
-            this.toolTip1.SetToolTip(this.checkBoxShowTaskBar, "The SEB task bar shows and switches between open browser windows, allowed resourc" +
-        "es and applications and displays additional controls");
+            this.checkBoxShowTaskBar.Text = "Show SEB taskbar";
+            this.toolTip1.SetToolTip(this.checkBoxShowTaskBar, "The SEB taskbar shows and switches between open browser windows, allowed resource" +
+        "s and applications and displays additional controls");
             this.checkBoxShowTaskBar.UseVisualStyleBackColor = true;
             this.checkBoxShowTaskBar.CheckedChanged += new System.EventHandler(this.checkBoxShowTaskBar_CheckedChanged);
             // 
@@ -4046,7 +4064,7 @@ namespace SebWindowsConfig
             this.comboBoxTaskBarHeight.Name = "comboBoxTaskBarHeight";
             this.comboBoxTaskBarHeight.Size = new System.Drawing.Size(92, 21);
             this.comboBoxTaskBarHeight.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.comboBoxTaskBarHeight, "Height of SEB dock/task bar in points/pixels");
+            this.toolTip1.SetToolTip(this.comboBoxTaskBarHeight, "Height of SEB dock/taskbar in points/pixels");
             this.comboBoxTaskBarHeight.SelectedIndexChanged += new System.EventHandler(this.comboBoxTaskBarHeight_SelectedIndexChanged);
             this.comboBoxTaskBarHeight.TextUpdate += new System.EventHandler(this.comboBoxTaskBarHeight_TextUpdate);
             // 
@@ -4071,9 +4089,9 @@ namespace SebWindowsConfig
             this.labelTaskBarHeight.Location = new System.Drawing.Point(266, 20);
             this.labelTaskBarHeight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTaskBarHeight.Name = "labelTaskBarHeight";
-            this.labelTaskBarHeight.Size = new System.Drawing.Size(110, 13);
+            this.labelTaskBarHeight.Size = new System.Drawing.Size(107, 13);
             this.labelTaskBarHeight.TabIndex = 63;
-            this.labelTaskBarHeight.Text = "Task bar/dock height";
+            this.labelTaskBarHeight.Text = "Taskbar/dock height";
             this.labelTaskBarHeight.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // checkBoxShowTime
@@ -4238,8 +4256,7 @@ namespace SebWindowsConfig
             this.radioButtonTouchOptimized.Size = new System.Drawing.Size(103, 17);
             this.radioButtonTouchOptimized.TabIndex = 64;
             this.radioButtonTouchOptimized.Text = "Touch optimized";
-            this.toolTip1.SetToolTip(this.radioButtonTouchOptimized, "Mainly to be used on Windows tablets. Not working with the Create New Desktop kio" +
-        "sk mode");
+            this.toolTip1.SetToolTip(this.radioButtonTouchOptimized, resources.GetString("radioButtonTouchOptimized.ToolTip"));
             this.radioButtonTouchOptimized.UseVisualStyleBackColor = true;
             this.radioButtonTouchOptimized.CheckedChanged += new System.EventHandler(this.radioButtonTouchOptimized_CheckedChanged);
             // 

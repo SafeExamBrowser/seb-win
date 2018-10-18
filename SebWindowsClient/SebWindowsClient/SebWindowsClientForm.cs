@@ -731,7 +731,7 @@ namespace SebWindowsClient
 
 		/// ----------------------------------------------------------------------------------------
 		/// <summary>
-		/// Add permitted process names and icons to the SEB task bar (ToolStrip control) 
+		/// Add permitted process names and icons to the SEB taskbar (ToolStrip control) 
 		/// and start permitted processes which have the autostart option set 
 		/// </summary>
 		/// ----------------------------------------------------------------------------------------
@@ -926,7 +926,7 @@ namespace SebWindowsClient
 				}
 			}            
 
-			// So if there are any permitted processes, we add them to the SEB task bar
+			// So if there are any permitted processes, we add them to the SEB taskbar
 			if (permittedProcessList.Count > 0)
 			{
 				for (int i = start; i < permittedProcessList.Count; i++)
@@ -1497,7 +1497,7 @@ namespace SebWindowsClient
 				this.taskbarToolStrip.ImageScalingSize = new Size(taskbarHeight - 8, taskbarHeight -8);
 			}
 
-			Logger.AddInformation("Taskbarheight from settings: " +sebTaskBarHeight.ToString() + " Current taskbar height: " + taskbarHeight.ToString());
+			Logger.AddInformation("Taskbar height from settings: " +sebTaskBarHeight.ToString() + " Current taskbar height: " + taskbarHeight.ToString());
 
 			//Modify Working Area
 			SEBWorkingAreaHandler.SetTaskBarSpaceHeight(taskbarHeight);

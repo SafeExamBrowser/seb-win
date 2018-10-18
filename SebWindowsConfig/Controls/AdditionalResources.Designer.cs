@@ -28,6 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdditionalResources));
             this.buttonAdditionalResourcesAddSubResource = new System.Windows.Forms.Button();
             this.buttonAdditionalResourcesMoveDown = new System.Windows.Forms.Button();
             this.buttonAdditionalResourcesMoveUp = new System.Windows.Forms.Button();
@@ -71,6 +73,7 @@
             this.pictureBoxAdditionalResourceIcon = new System.Windows.Forms.PictureBox();
             this.checkBoxAdditionalResourceActive = new System.Windows.Forms.CheckBox();
             this.treeViewAdditionalResources = new System.Windows.Forms.TreeView();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBoxAdditionalResourceDetails.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -85,6 +88,7 @@
             this.buttonAdditionalResourcesAddSubResource.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesAddSubResource.TabIndex = 14;
             this.buttonAdditionalResourcesAddSubResource.Text = "(+)";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesAddSubResource, "Create a submenu");
             this.buttonAdditionalResourcesAddSubResource.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesAddSubResource.Click += new System.EventHandler(this.buttonAdditionalResourcesAddSubResource_Click);
             // 
@@ -95,6 +99,7 @@
             this.buttonAdditionalResourcesMoveDown.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesMoveDown.TabIndex = 13;
             this.buttonAdditionalResourcesMoveDown.Text = "v";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesMoveDown, "Move resource down in the list");
             this.buttonAdditionalResourcesMoveDown.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesMoveDown.Click += new System.EventHandler(this.buttonAdditionalResourcesMoveDown_Click);
             // 
@@ -105,6 +110,7 @@
             this.buttonAdditionalResourcesMoveUp.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesMoveUp.TabIndex = 12;
             this.buttonAdditionalResourcesMoveUp.Text = "^";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesMoveUp, "Move resource up in the list");
             this.buttonAdditionalResourcesMoveUp.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesMoveUp.Click += new System.EventHandler(this.buttonAdditionalResourcesMoveUp_Click);
             // 
@@ -115,6 +121,7 @@
             this.buttonAdditionalResourcesAdd.Size = new System.Drawing.Size(26, 26);
             this.buttonAdditionalResourcesAdd.TabIndex = 11;
             this.buttonAdditionalResourcesAdd.Text = "+";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesAdd, "Add resource");
             this.buttonAdditionalResourcesAdd.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesAdd.Click += new System.EventHandler(this.buttonAdditionalResourcesAdd_Click);
             // 
@@ -125,6 +132,7 @@
             this.buttonadditionalResourcesRemove.Size = new System.Drawing.Size(26, 26);
             this.buttonadditionalResourcesRemove.TabIndex = 10;
             this.buttonadditionalResourcesRemove.Text = "-";
+            this.toolTip1.SetToolTip(this.buttonadditionalResourcesRemove, "Remove resource");
             this.buttonadditionalResourcesRemove.UseVisualStyleBackColor = true;
             this.buttonadditionalResourcesRemove.Click += new System.EventHandler(this.buttonadditionalResourcesRemove_Click);
             // 
@@ -145,9 +153,9 @@
             // UrlFilterGroupBox
             // 
             this.UrlFilterGroupBox.Location = new System.Drawing.Point(9, 337);
-            this.UrlFilterGroupBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UrlFilterGroupBox.Margin = new System.Windows.Forms.Padding(2);
             this.UrlFilterGroupBox.Name = "UrlFilterGroupBox";
-            this.UrlFilterGroupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UrlFilterGroupBox.Padding = new System.Windows.Forms.Padding(2);
             this.UrlFilterGroupBox.Size = new System.Drawing.Size(918, 249);
             this.UrlFilterGroupBox.TabIndex = 34;
             this.UrlFilterGroupBox.TabStop = false;
@@ -183,6 +191,9 @@
             this.checkBoxShowButton.Size = new System.Drawing.Size(102, 17);
             this.checkBoxShowButton.TabIndex = 21;
             this.checkBoxShowButton.Text = "Show button (B)";
+            this.toolTip1.SetToolTip(this.checkBoxShowButton, "Shows the icon for the resource or its pop-up menu entry. If you\'re using a link " +
+        "URL to open the resource, you might not want users to be able to manually open t" +
+        "he resource.");
             this.checkBoxShowButton.UseVisualStyleBackColor = true;
             this.checkBoxShowButton.CheckedChanged += new System.EventHandler(this.checkBoxShowButton_CheckedChanged);
             // 
@@ -195,6 +206,7 @@
             this.checkBoxAdditionalResourceAutoOpen.Size = new System.Drawing.Size(91, 17);
             this.checkBoxAdditionalResourceAutoOpen.TabIndex = 5;
             this.checkBoxAdditionalResourceAutoOpen.Text = "Auto open (A)";
+            this.toolTip1.SetToolTip(this.checkBoxAdditionalResourceAutoOpen, "SEB opens the resource after starting automatically.");
             this.checkBoxAdditionalResourceAutoOpen.UseVisualStyleBackColor = true;
             this.checkBoxAdditionalResourceAutoOpen.CheckedChanged += new System.EventHandler(this.checkBoxAdditionalResourceAutoOpen_CheckedChanged);
             // 
@@ -227,6 +239,7 @@
             this.comboBoxModifiers.Name = "comboBoxModifiers";
             this.comboBoxModifiers.Size = new System.Drawing.Size(92, 21);
             this.comboBoxModifiers.TabIndex = 27;
+            this.toolTip1.SetToolTip(this.comboBoxModifiers, "This modifier key has to be pressed together with the key.");
             this.comboBoxModifiers.SelectedIndexChanged += new System.EventHandler(this.comboBoxModifiers_SelectedIndexChanged);
             // 
             // textBoxKey
@@ -236,6 +249,7 @@
             this.textBoxKey.Name = "textBoxKey";
             this.textBoxKey.Size = new System.Drawing.Size(23, 20);
             this.textBoxKey.TabIndex = 25;
+            this.toolTip1.SetToolTip(this.textBoxKey, "This key shortcut can be used to open the resource.");
             this.textBoxKey.TextChanged += new System.EventHandler(this.textBoxKey_TextChanged);
             // 
             // label7
@@ -252,9 +266,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(5, 65);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 13);
+            this.label6.Size = new System.Drawing.Size(67, 13);
             this.label6.TabIndex = 23;
-            this.label6.Text = "Referer filter";
+            this.label6.Text = "Referrer filter";
             // 
             // label8
             // 
@@ -271,6 +285,8 @@
             this.textBoxRefererFilter.Name = "textBoxRefererFilter";
             this.textBoxRefererFilter.Size = new System.Drawing.Size(403, 20);
             this.textBoxRefererFilter.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.textBoxRefererFilter, "The activation link URL works only on a web page with this referrer filter URL. Y" +
+        "ou can also use the \'*\' wildcard character in this referrer filter.");
             this.textBoxRefererFilter.TextChanged += new System.EventHandler(this.textBoxRefererFilter_TextChanged);
             // 
             // groupBox2
@@ -306,6 +322,7 @@
             this.textBoxConfirmBoxText.Name = "textBoxConfirmBoxText";
             this.textBoxConfirmBoxText.Size = new System.Drawing.Size(301, 20);
             this.textBoxConfirmBoxText.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.textBoxConfirmBoxText, "Optional custom confirm text");
             this.textBoxConfirmBoxText.TextChanged += new System.EventHandler(this.textBoxConfirmBoxText_TextChanged);
             // 
             // checkBoxConfirm
@@ -317,6 +334,7 @@
             this.checkBoxConfirm.Size = new System.Drawing.Size(110, 17);
             this.checkBoxConfirm.TabIndex = 28;
             this.checkBoxConfirm.Text = "Show confirm box";
+            this.toolTip1.SetToolTip(this.checkBoxConfirm, "Before opening the resource, the user has to confirm this in a message box.");
             this.checkBoxConfirm.UseVisualStyleBackColor = true;
             this.checkBoxConfirm.CheckedChanged += new System.EventHandler(this.checkBoxConfirm_CheckedChanged);
             // 
@@ -328,6 +346,7 @@
             this.label10.Size = new System.Drawing.Size(82, 13);
             this.label10.TabIndex = 30;
             this.label10.Text = "Confirm box text";
+            this.toolTip1.SetToolTip(this.label10, "Custom text for the confirm message box.");
             // 
             // labelAdditionalResourcesFilename
             // 
@@ -347,6 +366,8 @@
             this.checkBoxResetSession.Size = new System.Drawing.Size(132, 17);
             this.checkBoxResetSession.TabIndex = 24;
             this.checkBoxResetSession.Text = "Reset browser session";
+            this.toolTip1.SetToolTip(this.checkBoxResetSession, "When opening the resource, the browser session is reset, which for example logs o" +
+        "ur users.");
             this.checkBoxResetSession.UseVisualStyleBackColor = true;
             this.checkBoxResetSession.CheckedChanged += new System.EventHandler(this.checkBoxResetSession_CheckedChanged);
             // 
@@ -358,6 +379,7 @@
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Name = "comboBoxAdditionalResourcesChooseFileToLaunch";
             this.comboBoxAdditionalResourcesChooseFileToLaunch.Size = new System.Drawing.Size(331, 21);
             this.comboBoxAdditionalResourcesChooseFileToLaunch.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.comboBoxAdditionalResourcesChooseFileToLaunch, resources.GetString("comboBoxAdditionalResourcesChooseFileToLaunch.ToolTip"));
             this.comboBoxAdditionalResourcesChooseFileToLaunch.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesChooseFileToLaunch_SelectedIndexChanged);
             // 
             // buttonAdditionalResourcesChooseEmbeddedFolder
@@ -368,6 +390,7 @@
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseEmbeddedFolder.TabIndex = 16;
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Text = "Choose Folder";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesChooseEmbeddedFolder, resources.GetString("buttonAdditionalResourcesChooseEmbeddedFolder.ToolTip"));
             this.buttonAdditionalResourcesChooseEmbeddedFolder.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesChooseEmbeddedFolder.Click += new System.EventHandler(this.buttonAdditionalResourcesChooseEmbeddedFolder_Click);
             // 
@@ -395,6 +418,8 @@
             this.textBoxAdditionalResourceUrl.Name = "textBoxAdditionalResourceUrl";
             this.textBoxAdditionalResourceUrl.Size = new System.Drawing.Size(343, 20);
             this.textBoxAdditionalResourceUrl.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.textBoxAdditionalResourceUrl, "Enter the URL of an external resource here. SEB will create a matching URL filter" +
+        " rule (see below) and activate URL filtering in the Network / Filter Pane.");
             this.textBoxAdditionalResourceUrl.TextChanged += new System.EventHandler(this.textBoxAdditionalResourceUrl_TextChanged);
             this.textBoxAdditionalResourceUrl.Leave += new System.EventHandler(this.textBoxAdditionalResourceUrl_Leave);
             // 
@@ -406,6 +431,7 @@
             this.comboBoxAdditionalResourcesResourceDataLauncher.Name = "comboBoxAdditionalResourcesResourceDataLauncher";
             this.comboBoxAdditionalResourcesResourceDataLauncher.Size = new System.Drawing.Size(331, 21);
             this.comboBoxAdditionalResourcesResourceDataLauncher.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.comboBoxAdditionalResourcesResourceDataLauncher, resources.GetString("comboBoxAdditionalResourcesResourceDataLauncher.ToolTip"));
             this.comboBoxAdditionalResourcesResourceDataLauncher.SelectedIndexChanged += new System.EventHandler(this.comboBoxAdditionalResourcesResourceDataLauncher_SelectedIndexChanged);
             // 
             // buttonAdditionalResourceRemoveResourceData
@@ -458,6 +484,8 @@
             this.buttonAdditionalResourceChooseEmbededResource.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourceChooseEmbededResource.TabIndex = 8;
             this.buttonAdditionalResourceChooseEmbededResource.Text = "Choose File";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourceChooseEmbededResource, "Select a single file to embed into the SEB Config File. After choosing a file, th" +
+        "e filename and the setting Lauch with is displayed.");
             this.buttonAdditionalResourceChooseEmbededResource.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourceChooseEmbededResource.Click += new System.EventHandler(this.buttonAdditionalResourceChooseEmbededResource_Click);
             // 
@@ -483,6 +511,7 @@
             this.textBoxAdditionalResourcesTitle.Name = "textBoxAdditionalResourcesTitle";
             this.textBoxAdditionalResourcesTitle.Size = new System.Drawing.Size(378, 20);
             this.textBoxAdditionalResourcesTitle.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.textBoxAdditionalResourcesTitle, resources.GetString("textBoxAdditionalResourcesTitle.ToolTip"));
             this.textBoxAdditionalResourcesTitle.TextChanged += new System.EventHandler(this.textBoxAdditionalResourcesTitle_TextChanged);
             // 
             // label9
@@ -502,6 +531,7 @@
             this.buttonAdditionalResourcesChooseIcon.Size = new System.Drawing.Size(100, 25);
             this.buttonAdditionalResourcesChooseIcon.TabIndex = 14;
             this.buttonAdditionalResourcesChooseIcon.Text = "Choose...";
+            this.toolTip1.SetToolTip(this.buttonAdditionalResourcesChooseIcon, resources.GetString("buttonAdditionalResourcesChooseIcon.ToolTip"));
             this.buttonAdditionalResourcesChooseIcon.UseVisualStyleBackColor = true;
             this.buttonAdditionalResourcesChooseIcon.Click += new System.EventHandler(this.buttonAdditionalResourcesChooseIcon_Click);
             // 
@@ -534,6 +564,9 @@
             this.checkBoxAdditionalResourceActive.Size = new System.Drawing.Size(56, 17);
             this.checkBoxAdditionalResourceActive.TabIndex = 2;
             this.checkBoxAdditionalResourceActive.Text = "Active";
+            this.toolTip1.SetToolTip(this.checkBoxAdditionalResourceActive, "By deactivating a resource, it won\'t be displayed, also its child resources (if s" +
+        "ome exist) won\'t be visible. URL filter rules (see below) defined for the deacti" +
+        "vated resource also won\'t be active.");
             this.checkBoxAdditionalResourceActive.UseVisualStyleBackColor = true;
             this.checkBoxAdditionalResourceActive.CheckedChanged += new System.EventHandler(this.checkBoxAdditionalResourceActive_CheckedChanged);
             // 
@@ -544,6 +577,12 @@
             this.treeViewAdditionalResources.Size = new System.Drawing.Size(276, 559);
             this.treeViewAdditionalResources.TabIndex = 8;
             this.treeViewAdditionalResources.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAdditionalResources_AfterSelect);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 15000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
             // 
             // AdditionalResources
             // 
@@ -617,5 +656,6 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.GroupBox UrlFilterGroupBox;
-	}
+        private System.Windows.Forms.ToolTip toolTip1;
+    }
 }

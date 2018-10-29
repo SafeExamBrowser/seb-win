@@ -3829,7 +3829,7 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyAllowWLAN] = checkboxAllowWlan.Checked;
 		}
 
-		private void checkBoxAllowUserSwitching_CheckedChanged(object sender, EventArgs e)
+		private void checkBoxAllowSiri_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching] = checkBoxAllowUserSwitching.Checked;
 		}

@@ -30,8 +30,8 @@ namespace SebWindowsConfig
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SebWindowsConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialogSebConfigFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSebConfigFile = new System.Windows.Forms.SaveFileDialog();
             this.imageListTabIcons = new System.Windows.Forms.ImageList(this.components);
@@ -404,6 +404,7 @@ namespace SebWindowsConfig
             this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageHookedKeys.SuspendLayout();
             this.groupBoxFunctionKeys.SuspendLayout();
             this.groupBoxSpecialKeys.SuspendLayout();
@@ -455,6 +456,7 @@ namespace SebWindowsConfig
             this.groupBoxExitSequence.SuspendLayout();
             this.tabControlSebWindowsConfig.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialogSebConfigFile
@@ -1006,12 +1008,10 @@ namespace SebWindowsConfig
             // 
             // tabPageSecurity
             // 
+            this.tabPageSecurity.Controls.Add(this.groupBox1);
             this.tabPageSecurity.Controls.Add(this.groupBox10);
-            this.tabPageSecurity.Controls.Add(this.checkBoxEnableAppSwitcherCheck);
-            this.tabPageSecurity.Controls.Add(this.checkBoxForceAppFolderInstall);
             this.tabPageSecurity.Controls.Add(this.checkBoxEnableScreenCapture);
             this.tabPageSecurity.Controls.Add(this.groupBox3);
-            this.tabPageSecurity.Controls.Add(this.checkBoxAllowUserSwitching);
             this.tabPageSecurity.Controls.Add(this.labelSebServicePolicy);
             this.tabPageSecurity.Controls.Add(this.listBoxSebServicePolicy);
             this.tabPageSecurity.Controls.Add(this.checkBoxAllowVirtualMachine);
@@ -1112,7 +1112,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxEnableAppSwitcherCheck.AutoSize = true;
             this.checkBoxEnableAppSwitcherCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxEnableAppSwitcherCheck.Location = new System.Drawing.Point(343, 129);
+            this.checkBoxEnableAppSwitcherCheck.Location = new System.Drawing.Point(15, 43);
             this.checkBoxEnableAppSwitcherCheck.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxEnableAppSwitcherCheck.Name = "checkBoxEnableAppSwitcherCheck";
             this.checkBoxEnableAppSwitcherCheck.Size = new System.Drawing.Size(220, 17);
@@ -1127,7 +1127,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxForceAppFolderInstall.AutoSize = true;
             this.checkBoxForceAppFolderInstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxForceAppFolderInstall.Location = new System.Drawing.Point(343, 150);
+            this.checkBoxForceAppFolderInstall.Location = new System.Drawing.Point(15, 64);
             this.checkBoxForceAppFolderInstall.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxForceAppFolderInstall.Name = "checkBoxForceAppFolderInstall";
             this.checkBoxForceAppFolderInstall.Size = new System.Drawing.Size(235, 17);
@@ -1217,7 +1217,7 @@ namespace SebWindowsConfig
             // 
             this.checkBoxAllowUserSwitching.AutoSize = true;
             this.checkBoxAllowUserSwitching.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAllowUserSwitching.Location = new System.Drawing.Point(23, 170);
+            this.checkBoxAllowUserSwitching.Location = new System.Drawing.Point(15, 83);
             this.checkBoxAllowUserSwitching.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.checkBoxAllowUserSwitching.Name = "checkBoxAllowUserSwitching";
             this.checkBoxAllowUserSwitching.Size = new System.Drawing.Size(151, 17);
@@ -1226,7 +1226,7 @@ namespace SebWindowsConfig
             this.toolTip1.SetToolTip(this.checkBoxAllowUserSwitching, "Usually Fast User Switching shouldn\'t be allowed on BYOD exam clients");
             this.checkBoxAllowUserSwitching.UseVisualStyleBackColor = true;
             this.checkBoxAllowUserSwitching.Visible = false;
-            this.checkBoxAllowUserSwitching.CheckedChanged += new System.EventHandler(this.checkBoxAllowUserSwitching_CheckedChanged);
+            this.checkBoxAllowUserSwitching.CheckedChanged += new System.EventHandler(this.checkBoxAllowSiri_CheckedChanged);
             // 
             // labelSebServicePolicy
             // 
@@ -1489,8 +1489,8 @@ namespace SebWindowsConfig
             // 
             // Type
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
+            this.Type.DefaultCellStyle = dataGridViewCellStyle3;
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
@@ -3870,8 +3870,8 @@ namespace SebWindowsConfig
             // spellCheckerDictionaryFilesColumn
             // 
             this.spellCheckerDictionaryFilesColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.spellCheckerDictionaryFilesColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.spellCheckerDictionaryFilesColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.spellCheckerDictionaryFilesColumn.HeaderText = "Files";
             this.spellCheckerDictionaryFilesColumn.Name = "spellCheckerDictionaryFilesColumn";
             this.spellCheckerDictionaryFilesColumn.ReadOnly = true;
@@ -5198,6 +5198,18 @@ namespace SebWindowsConfig
             this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
             this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBoxAllowUserSwitching);
+            this.groupBox1.Controls.Add(this.checkBoxForceAppFolderInstall);
+            this.groupBox1.Controls.Add(this.checkBoxEnableAppSwitcherCheck);
+            this.groupBox1.Location = new System.Drawing.Point(583, 27);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(635, 313);
+            this.groupBox1.TabIndex = 96;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "macOS specific settings";
+            // 
             // SebWindowsConfigForm
             // 
             this.AllowDrop = true;
@@ -5308,6 +5320,8 @@ namespace SebWindowsConfig
             this.tabControlSebWindowsConfig.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5688,6 +5702,7 @@ namespace SebWindowsConfig
 		private System.Windows.Forms.DataGridViewCheckBoxColumn spellCheckerDictionaryEnabledColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn spellCheckerDictionaryLocaleColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn spellCheckerDictionaryFilesColumn;
-	}
+        private System.Windows.Forms.GroupBox groupBox1;
+    }
 }
 

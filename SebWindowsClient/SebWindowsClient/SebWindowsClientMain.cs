@@ -441,7 +441,7 @@ namespace SebWindowsClient
 
 		public static void CheckIfRunViaRemoteConnection()
 		{
-			if(System.Windows.Forms.SystemInformation.TerminalServerSession)
+			if(System.Windows.Forms.SystemInformation.TerminalServerSession && !(bool)SEBSettings.valueForDictionaryKey(SEBSettings.settingsCurrent, SEBSettings.KeyAllowScreenSharing))
 			{
 				SEBMessageBox.Show(SEBUIStrings.detectedRemoteConnection, SEBUIStrings.detectedRemoteConnectionMessage, MessageBoxIcon.Error, MessageBoxButtons.OK);
 				Logger.AddError("Forbidden to run SEB via Terminal Session!", null, null);

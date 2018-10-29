@@ -334,19 +334,30 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyRTSPUsername = "RTSPUsername";
 		public const String KeyRTSPPassword = "RTSPPassword";
 
-		// Group "Security"
+		// Tab "Security"
 		public const String KeySebServicePolicy    = "sebServicePolicy";
-		public const String KeyAllowVirtualMachine = "allowVirtualMachine";
-		public const String KeyCreateNewDesktop    = "createNewDesktop";
+        public const String KeyAllowVirtualMachine = "allowVirtualMachine";
+        public const String KeyAllowScreenSharing = "allowScreenSharing";
+
+        public const String KeyCreateNewDesktop    = "createNewDesktop";
 		public const String KeyKillExplorerShell   = "killExplorerShell";
 		public const String KeyAllowUserSwitching = "allowUserSwitching";
-		public const String KeyEnableAppSwitcherCheck = "enableAppSwitcherCheck";
-		public const String KeyForceAppFolderInstall = "forceAppFolderInstall";
 		public const String KeyEnableLogging       = "enableLogging";
 		public const String KeyLogDirectoryOSX     = "logDirectoryOSX";
 		public const String KeyLogDirectoryWin     = "logDirectoryWin";
         public const String KeyAllowWLAN = "allowWlan";
         public const String KeyLockOnMessageSocketClose = "lockOnMessageSocketClose";
+        // Group "macOS specific settings"
+        public const String KeyMinMacOSVersion = "minMacOSVersion";
+        public const String KeyEnableAppSwitcherCheck = "enableAppSwitcherCheck";
+        public const String KeyForceAppFolderInstall = "forceAppFolderInstall";
+        public const String KeyAllowUserAppFolderInstall = "allowUserAppFolderInstall";
+        public const String KeyAllowSiri = "allowSiri";
+        public const String KeyAllowDictation = "allowDictation";
+        public const String KeyDetectStoppedProcess = "detectStoppedProcess";
+        public const String KeyAllowDisplayMirroring = "allowDisplayMirroring";
+        public const String KeyAllowedDisplaysMaxNumber = "allowedDisplaysMaxNumber";
+        public const String KeyAllowedDisplayBuiltin = "allowedDisplayBuiltin";
 
 
         // Group "Registry"
@@ -873,18 +884,27 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVirtualMachine, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyKillExplorerShell  , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowUserSwitching, true);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAppSwitcherCheck, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyForceAppFolderInstall, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableLogging, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryOSX    , "~/Documents");
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryWin    , "");
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowWLAN, false);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyLockOnMessageSocketClose, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyMinMacOSVersion, 4);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableAppSwitcherCheck, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyForceAppFolderInstall, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowUserAppFolderInstall, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowSiri, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowDictation, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyDetectStoppedProcess, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowDisplayMirroring, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplaysMaxNumber, 1);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplayBuiltin, true);
 
 
-            // Default settings for group "Inside SEB"
-            SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
+
+        // Default settings for group "Inside SEB"
+        SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableLockThisComputer , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableChangeAPassword  , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableStartTaskManager , false);

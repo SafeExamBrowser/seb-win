@@ -884,7 +884,6 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVirtualMachine, false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyKillExplorerShell  , false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyForceAppFolderInstall, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableLogging, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryOSX    , "~/Documents");
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryWin    , "");

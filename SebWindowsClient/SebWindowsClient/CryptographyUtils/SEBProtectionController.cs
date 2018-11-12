@@ -611,7 +611,7 @@ namespace SebWindowsClient.CryptographyUtils
 			{
                 List<string> browserFiles = new List<string>(Directory.GetFiles(SEBBrowserDirectory, "*.*", SearchOption.AllDirectories));
                 browserFiles = browserFiles.Where(x => !x.EndsWith(".gitignore") && !x.EndsWith(".DS_Store")).ToList();
-                browserFiles.Sort();
+                browserFiles.Sort(StringComparer.InvariantCulture);
 
                 int fileCounter = 0;
                 int pathBrowserDirectoryLength = SEBBrowserDirectory.Length + 1;

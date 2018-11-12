@@ -740,12 +740,11 @@ namespace SebWindowsConfig
 			// Group "Security"
 			 listBoxSebServicePolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeySebServicePolicy];
 			checkBoxAllowVirtualMachine.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowVirtualMachine];
-			radioCreateNewDesktop.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
+            checkBoxAllowScreenSharing.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowScreenSharing];
+            checkBoxEnablePrivateClipboard.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnablePrivateClipboard];
+            radioCreateNewDesktop.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
 			radioKillExplorerShell.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell];
 			radioNoKiosMode.Checked = !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyKillExplorerShell] && !(Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop];
-			checkBoxAllowUserSwitching.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching];
-			checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
-			checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
 			checkBoxEnableLogging.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableLogging];
 			textBoxLogDirectoryWin.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyLogDirectoryWin];
 			if (String.IsNullOrEmpty(textBoxLogDirectoryWin.Text))
@@ -760,8 +759,20 @@ namespace SebWindowsConfig
 			checkboxAllowWlan.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowWLAN];
 			checkBoxEnableScreenCapture.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnablePrintScreen];
 
-			// Group "Registry"
-			checkBoxInsideSebEnableSwitchUser       .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableSwitchUser];
+            comboBoxMinMacOSVersion.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion];
+            checkBoxEnableAppSwitcherCheck.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyEnableAppSwitcherCheck];
+            checkBoxForceAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyForceAppFolderInstall];
+            checkBoxAllowUserAppFolderInstall.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserAppFolderInstall];
+            checkBoxAllowSiri.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowSiri];
+            checkBoxAllowDictation.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictation];
+            checkBoxDetectStoppedProcess.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDetectStoppedProcess];
+            checkBoxAllowDisplayMirroring.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowDisplayMirroring];
+            comboBoxAllowedDisplaysMaxNumber.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber].ToString();
+            checkBoxAllowedDisplayBuiltin.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplayBuiltin];
+
+
+            // Group "Registry"
+            checkBoxInsideSebEnableSwitchUser.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableSwitchUser];
 			checkBoxInsideSebEnableLockThisComputer .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableLockThisComputer];
 			checkBoxInsideSebEnableChangeAPassword  .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableChangeAPassword];
 			checkBoxInsideSebEnableStartTaskManager .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableStartTaskManager];
@@ -3799,7 +3810,17 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyAllowVirtualMachine] = checkBoxAllowVirtualMachine.Checked;
 		}
 
-		private void radioCreateNewDesktop_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxAllowScreenSharing_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowScreenSharing] = checkBoxAllowScreenSharing.Checked;
+        }
+
+        private void checkBoxEnablePrivateClipboard_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyEnablePrivateClipboard] = checkBoxEnablePrivateClipboard.Checked;
+        }
+
+        private void radioCreateNewDesktop_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyCreateNewDesktop] = radioCreateNewDesktop.Checked;
 			checkBoxMonitorProcesses.Enabled = !radioCreateNewDesktop.Checked;
@@ -3831,7 +3852,7 @@ namespace SebWindowsConfig
 
 		private void checkBoxAllowSiri_CheckedChanged(object sender, EventArgs e)
 		{
-			SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserSwitching] = checkBoxAllowUserSwitching.Checked;
+			SEBSettings.settingsCurrent[SEBSettings.KeyAllowSiri] = checkBoxAllowSiri.Checked;
 		}
 
 		private void checkBoxEnableAppSwitcherCheck_CheckedChanged(object sender, EventArgs e)
@@ -3907,17 +3928,74 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyLogDirectoryOSX] = path;
 		}
 
+        private void checkBoxAllowDictation_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowDictation] = checkBoxAllowDictation.Checked;
+        }
 
-		// ****************
-		// Group "Registry"
-		// ****************
+        private void checkBoxDetectStoppedProcess_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyDetectStoppedProcess] = checkBoxDetectStoppedProcess.Checked;
+        }
+
+        private void checkBoxAllowDisplayMirroring_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowDisplayMirroring] = checkBoxAllowDisplayMirroring.Checked;
+        }
+
+        private void checkBoxAllowUserAppFolderInstall_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowUserAppFolderInstall] = checkBoxAllowUserAppFolderInstall.Checked;
+        }
+
+        private void checkBoxAllowedDisplayBuiltin_CheckedChanged(object sender, EventArgs e)
+        {
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplayBuiltin] = checkBoxAllowedDisplayBuiltin.Checked;
+        }
+
+        private void comboBoxMinMacOSVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SEBSettings.intArrayCurrent[SEBSettings.ValMinMacOSVersion] = comboBoxMinMacOSVersion.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValMinMacOSVersion] = comboBoxMinMacOSVersion.Text;
+            SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = comboBoxMinMacOSVersion.SelectedIndex;
+        }
+
+        private void comboBoxMinMacOSVersion_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.intArrayCurrent[SEBSettings.ValMinMacOSVersion] = comboBoxMinMacOSVersion.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValMinMacOSVersion] = comboBoxMinMacOSVersion.Text;
+            SEBSettings.settingsCurrent[SEBSettings.KeyMinMacOSVersion] = comboBoxMinMacOSVersion.SelectedIndex;
+        }
+
+        private void comboBoxAllowedDisplaysMaxNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SEBSettings.intArrayCurrent[SEBSettings.ValAllowedDisplaysMaxNumber] = comboBoxAllowedDisplaysMaxNumber.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValAllowedDisplaysMaxNumber] = comboBoxAllowedDisplaysMaxNumber.Text;
+            int allowedDisplaysMaxNumber = 1;
+            int.TryParse(comboBoxAllowedDisplaysMaxNumber.Text, out allowedDisplaysMaxNumber);
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber] = allowedDisplaysMaxNumber;
+        }
+
+        private void comboBoxAllowedDisplaysMaxNumber_TextChanged(object sender, EventArgs e)
+        {
+            SEBSettings.intArrayCurrent[SEBSettings.ValAllowedDisplaysMaxNumber] = comboBoxAllowedDisplaysMaxNumber.SelectedIndex;
+            SEBSettings.strArrayCurrent[SEBSettings.ValAllowedDisplaysMaxNumber] = comboBoxAllowedDisplaysMaxNumber.Text;
+            int allowedDisplaysMaxNumber = 1;
+            int.TryParse(comboBoxAllowedDisplaysMaxNumber.Text, out allowedDisplaysMaxNumber);
+            SEBSettings.settingsCurrent[SEBSettings.KeyAllowedDisplaysMaxNumber] = allowedDisplaysMaxNumber;
+        }
+
+
+        // ****************
+        // Group "Registry"
+        // ****************
 
 
 
-		// ******************
-		// Group "Inside SEB"
-		// ******************
-		private void checkBoxInsideSebEnableSwitchUser_CheckedChanged(object sender, EventArgs e)
+        // ******************
+        // Group "Inside SEB"
+        // ******************
+        private void checkBoxInsideSebEnableSwitchUser_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableSwitchUser] = checkBoxInsideSebEnableSwitchUser.Checked;
 		}
@@ -4377,5 +4455,6 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
+
     }
 }

@@ -216,6 +216,9 @@ namespace SebWindowsConfig
         static  String[]  KeyProxyProtocolAttribute = new  String[7];
         static  String[]  KeyProxyProtocolEnable    = new  String[7];
 
+        static String[] StringMinMacOSVersion = new String[8];
+        static String[] StringAllowedDisplaysMaxNumber = new String[3];
+
         // ***********************
         // Methods for GUI widgets
         // ***********************
@@ -369,6 +372,22 @@ namespace SebWindowsConfig
             KeyProxyProtocolEnable[4] = SEBSettings.KeyFTPEnable;
             KeyProxyProtocolEnable[5] = SEBSettings.KeySOCKSEnable;
             KeyProxyProtocolEnable[6] = SEBSettings.KeyRTSPEnable;
+
+            // Define the strings for the Min Mac OS Version
+            StringMinMacOSVersion[0] = "OS X 10.7 Lion";
+            StringMinMacOSVersion[1] = "OS X 10.8 Mountain Lion";
+            StringMinMacOSVersion[2] = "OS X 10.9 Mavericks";
+            StringMinMacOSVersion[3] = "OS X 10.10 Yosemite";
+            StringMinMacOSVersion[4] = "OS X 10.11 El Capitan";
+            StringMinMacOSVersion[5] = "macOS 10.12 Sierra";
+            StringMinMacOSVersion[6] = "macOS 10.13 High Sierra";
+            StringMinMacOSVersion[7] = "macOS 10.14 Mojave";
+
+            // Define the strings for the Min Mac OS Version
+            StringAllowedDisplaysMaxNumber[0] = "1";
+            StringAllowedDisplaysMaxNumber[1] = "2";
+            StringAllowedDisplaysMaxNumber[2] = "3";
+
         }
 
 
@@ -427,6 +446,9 @@ namespace SebWindowsConfig
 
              listBoxChooseFileToUploadPolicy.Items.AddRange(StringPolicyFileUpload);
              listBoxSebServicePolicy        .Items.AddRange(StringPolicySebService);
+            comboBoxMinMacOSVersion.Items.AddRange(StringMinMacOSVersion);
+            comboBoxAllowedDisplaysMaxNumber.Items.AddRange(StringAllowedDisplaysMaxNumber);
+
 
             // Initialise the DataGridViews:
             // Set "AllowUserToAddRows" to false, to avoid an initial empty first row

@@ -69,7 +69,9 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const int ValNewBrowserWindowByLinkWidth  = 4;
 		public const int ValNewBrowserWindowByLinkHeight = 5;
 		public const int ValTaskBarHeight                = 6;
-		public const int ValNum = 6;
+        public const int ValMinMacOSVersion = 7;
+        public const int ValAllowedDisplaysMaxNumber = 8;
+        public const int ValNum = 8;
 
 		// Keys not belonging to any group
 		public const String KeyOriginatorVersion = "originatorVersion";
@@ -338,6 +340,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeySebServicePolicy    = "sebServicePolicy";
         public const String KeyAllowVirtualMachine = "allowVirtualMachine";
         public const String KeyAllowScreenSharing = "allowScreenSharing";
+        public const String KeyEnablePrivateClipboard = "enablePrivateClipboard";
 
         public const String KeyCreateNewDesktop    = "createNewDesktop";
 		public const String KeyKillExplorerShell   = "killExplorerShell";
@@ -485,18 +488,20 @@ namespace SebWindowsClient.ConfigurationUtils
 		public static int     bypassedProxyIndex;
 		public static ListObj bypassedProxyList        = new ListObj();
 		public static String  bypassedProxyData        = "";
-		public static String  bypassedProxyDataDefault = ""; 
+		public static String  bypassedProxyDataDefault = "";
+
+        public static object SebWindowsConfigForm { get; private set; }
 
 
-		// ************************
-		// Methods for SEB settings
-		// ************************
+        // ************************
+        // Methods for SEB settings
+        // ************************
 
 
-		// ********************************************************************
-		// Set all the default values for the Plist structure "settingsDefault"
-		// ********************************************************************
-		public static void CreateDefaultAndCurrentSettingsFromScratch()
+        // ********************************************************************
+        // Set all the default values for the Plist structure "settingsDefault"
+        // ********************************************************************
+        public static void CreateDefaultAndCurrentSettingsFromScratch()
 		{
 			// Destroy all default lists and dictionaries
 			SEBSettings.settingsDefault = new DictObj();
@@ -881,8 +886,10 @@ namespace SebWindowsClient.ConfigurationUtils
 
 			// Default settings for group "Security"
 			SEBSettings.settingsDefault.Add(SEBSettings.KeySebServicePolicy   , 1);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVirtualMachine, false);
-			SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowVirtualMachine, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowScreenSharing, false);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyEnablePrivateClipboard, true);
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyCreateNewDesktop   , true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyKillExplorerShell  , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyEnableLogging, true);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyLogDirectoryOSX    , "~/Documents");
@@ -900,10 +907,16 @@ namespace SebWindowsClient.ConfigurationUtils
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplaysMaxNumber, 1);
             SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowedDisplayBuiltin, true);
 
+            // Default selected index and string in combo box for minMacOSVersion 
+            SEBSettings.intArrayDefault[SEBSettings.ValMinMacOSVersion] = 4;
+            SEBSettings.strArrayDefault[SEBSettings.ValMinMacOSVersion] = "OS X 10.11 El Capitan";
 
+            // Default selected index and string in combo box for allowedDisplaysMaxNumber
+            SEBSettings.intArrayDefault[SEBSettings.ValAllowedDisplaysMaxNumber] = 0;
+            SEBSettings.strArrayDefault[SEBSettings.ValAllowedDisplaysMaxNumber] = "1";
 
-        // Default settings for group "Inside SEB"
-        SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
+            // Default settings for group "Inside SEB"
+            SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableSwitchUser       , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableLockThisComputer , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableChangeAPassword  , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyInsideSebEnableStartTaskManager , false);

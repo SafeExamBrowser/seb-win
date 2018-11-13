@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?define ProductName = "SafeExamBrowser" ?>
+  <?define ProductDisplayName = "Safe Exam Browser" ?>
+  <?define ProductNameAbbreviation = "SEB" ?>
+  <?define ProductUpgradeCode = "97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB" ?>
+  <?define Manufacturer = "ETH Zuerich" ?>
+  <?define LicenseFile = "$(var.SolutionDir)\SebWindowsInstallLicence.rtf" ?>
+  <?define Version = "2.2.2" ?>
+
+  <!-- SEB configuration file icon - will be renamed to SEBDocumentIcon.ico -->
+  <?define SEBDocumentIconFile = "$(var.SolutionDir)\SEBDocumentIcon.ico" ?>
+  <!-- SEB application icon - Will be renamed to SEBIcon.ico -->
+  <?define SEBIconFile = "$(var.SolutionDir)\SEBIcon.ico" ?>
+  <!-- SEB installer icon -->
+  <?define SEBInstallIconFile = "$(var.SEBIconFile)" ?>
+  <!-- SEB installer banner -->
+  <?define SEBInstallBannerFile = "$(var.SolutionDir)\SebGlobalDialogBanner.bmp" ?>
+  <!-- SEB installer dialog image -->
+  <?define SEBInstallDialogFile = "$(var.SolutionDir)\SebGlobalDialogImage.bmp" ?>
+
+  <!-- Name of the configuration tool, if installing it. -->
+  <?define ConfigShortcutName = "$(var.ProductNameAbbreviation) Config Tool" ?>
+
+  <!-- Name of the registry reset tool. -->
+  <?define RegistryResetShortcutName = "$(var.ProductNameAbbreviation) Registry Resetter" ?>
+
+  <!-- Define this to include an html file in the resource directory -->
+  <!-- ?define ResourceLocalIndexHtmlFile = ".\Resources\index.html" ? -->
+  <!-- Will be renamed to index.html -->
+
+  <!-- Define this to install a default client configuration on a per-machine basis.  Leave undefined to not have
+       default configuration.  This will be renamed to SebClientSettings.seb -->
+  <!-- ?define DefaultSebClientSettingsFile = ".\Resources\DefaultSebSettings.seb" ? -->
+</Include>

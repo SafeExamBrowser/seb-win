@@ -1,67 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <?include Variables.wxi ?>
 
-  <?define ProductName = "SafeExamBrowser" ?>
-  <?define ProductNameAbbreviation = "SEB" ?>
-  <?define Manufacturer = "ETH Zuerich" ?>
-  <?define BrowserShortcutName = "$(var.ProductName)" ?>
-  <?define LicenseFile = "$(var.SolutionDir)SebWindowsInstallLicence.rtf" ?>
-
-  <!-- SEB configuration file icon - will be renamed to SEBDocumentIcon.ico -->
-  <?define SEBDocumentIconFile = "$(var.SolutionDir)SEBDocumentIcon.ico" ?>
-  <!-- SEB application icon - Will be renamed to SEBIcon.ico -->
-  <?define SEBIconFile = "$(var.SebWindowsClient.ProjectDir)SEBIcon.ico" ?>
-  <!-- SEB installer icon -->
-  <?define SEBInstallIconFile = "$(var.SEBIconFile)" ?>
-  <!-- SEB installer banner -->
-  <?define SEBInstallBannerFile = "$(var.SebWindowsClient.ProjectDir)Resources/SebGlobalDialogImage.bmp" ?>
-  <!-- SEB installer dialog image -->
-  <?define SEBInstallDialogFile = "$(var.SEBInstallBannerFile)" ?>
-
-  <!-- Define this to install the configuration tool -->
-  <?define InstallConfigTool ?>
-  <!-- Name of the configuration tool, if installing it. -->
-  <?define ConfigShortcutName = "$(var.ProductNameAbbreviation) Config Tool" ?>
-
-  <!-- Define this to include an html file in the resource directory -->
-  <!-- ?define ResourceLocalIndexHtmlFile = ".\Resources\index.html" ? -->
-  <!-- Will be renamed to index.html -->
-
-  <!-- Define this to install a default client configuration on a per-machine basis.  Leave undefined to not have
-       default configuration.  This will be renamed to SebClientSettings.seb -->
-  <!-- ?define DefaultSebClientSettingsFile = ".\Resources\DefaultSebSettings.seb" ? -->
-
-  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="2.2.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+  <Product Id="*" Name="$(var.ProductDisplayName)" Language="1033" Version="$(var.Version)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.ProductUpgradeCode)">
+    <Package InstallerVersion="400" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" Manufacturer="$(var.Manufacturer)" />
 
     <MediaTemplate EmbedCab="yes" />
-
-    <Feature Id="ProductFeature" Title="SebInstaller" Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="GermanLocalisationComponent" />
-      <ComponentGroupRef Id="SebWindowsResourcesComponent" />
-      <ComponentGroupRef Id="SebWindowsServiceWCFComponent" />
-      <ComponentGroupRef Id="StartMenuShortcutComponents" />
-      <!--<ComponentGroupRef Id="DesktopShortcutComponents" />-->
-      <ComponentGroupRef Id="ProgramDataComponents" />
-
-      <!-- The xul components were auto generated via heat:
-        In the solution directory:
-          "%WIX%\bin\heat" dir SebWindowsBrowser\xul_seb -out WixInstaller\XulSeb.wxs -gg -cg XulSebComponentGroup -template fragment -sfrag -dr XubSebInstallFolder
-          "%WIX%\bin\heat" dir SebWindowsBrowser\xulrunner -out WixInstaller\XulRunner.wxs -gg -cg XulRunnerComponentGroup -template fragment -sfrag -dr XulRunnerInstallFolder
-          
-          The two .wxs files are produced pre-build. 
-          1. Build the installer with error 
-          2. ADD THE TWO .wxs FILES TO THE PROJECT 
-          3. Rebuild the installer
-          
-          Two expected warnings/errors:
-          * SelfReg DLL on breakpadinjector.dll (error 1114) and wow_helper.exe (error 193)
-      -->
-      <ComponentGroupRef Id="XulSebComponentGroup" />
-      <ComponentGroupRef Id="XulRunnerComponentGroup" />
-    </Feature>
 
     <!-- Verifies that .NET 4.5 is installed prior to this installation -->
     <PropertyRef Id="NETFRAMEWORK45" />
@@ -71,49 +15,75 @@
 
     <!-- Adds a license file to the UI -->
     <?ifdef LicenseFile ?>
-    <UIRef Id="WixUI_Minimal" />
     <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
     <?endif?>
+
+    <UIRef Id="WixUI_Mondo" />
 
     <WixVariable Id="WixUIBannerBmp" Value="$(var.SEBInstallBannerFile)" />
     <WixVariable Id="WixUIDialogBmp" Value="$(var.SEBInstallDialogFile)" />
 
     <!-- This is the icon that appears in the Install/Uninstall/Programs and Features list -->
-    <Icon Id="InstallerIcon" SourceFile="$(var.SEBInstallIconFile)" />
-    <Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
+    <Icon Id="ApplicationIcon" SourceFile="$(var.SEBInstallIconFile)" />
+    <Icon Id="SebDocumentIcon" SourceFile="$(var.SEBDocumentIconFile)" />
   
-    <Property Id='PREVIOUSVERSIONSINSTALLED' Secure='yes' />
-    <Upgrade Id='97A8B13E-48FB-4BE1-A7C2-DD1863F95CCB'>  
-      <UpgradeVersion Minimum='2.2.0.0'
-                      Maximum='99.0.0.0'
-                      Property='PREVIOUSVERSIONSINSTALLED'
-                      IncludeMinimum='yes'
-                      IncludeMaximum='no' />
-    </Upgrade>
-    
-    <InstallExecuteSequence>
-      <RemoveExistingProducts Before='InstallInitialize' />
-    </InstallExecuteSequence>
-  
-  </Product>
+    <Property Id="ARPPRODUCTICON" Value="ApplicationIcon" />
+    <Property Id="ARPURLINFOABOUT" Value="www.safeexambrowser.org" />
+    <Property Id="ARPURLUPDATEINFO" Value="www.safeexambrowser.org/download" />
+    <Property Id="ARPHELPLINK" Value="www.safeexambrowser.org/support" />
 
-  <Fragment>
+    <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
+
+    <Feature Id="AlwaysInstall" Title="$(var.ProductDisplayName)" Level="1" Description="$(var.ProductDisplayName)" InstallDefault="local" Absent="disallow" Display="expand" AllowAdvertise="no">
+      <ComponentGroupRef Id="Application" />
+      <ComponentGroupRef Id="Resources" />
+      <ComponentGroupRef Id="WindowsServiceWCF" />
+      <ComponentGroupRef Id="ProgramData" />
+      <!-- The xul components were auto generated via heat:
+        In the solution directory:
+          "%WIX%\bin\heat" dir "SebWindowsBrowser" -out "WixInstaller\SebWindowsBrowser.wxs" -ag -cg Browser -template fragment -sfrag -suid -srd -sreg -scom -dr SebWindowsBrowserFolder -sw5150
+  
+          The .wxs file is produced pre-build. 
+          1. Build the installer with error 
+          2. ADD THE .wxs FILE TO THE PROJECT 
+          3. Rebuild the installer
+          
+          Two expected warnings/errors:
+          * SelfReg DLL on breakpadinjector.dll (error 1114) and wow_helper.exe (error 193) - warnings surpressed via flag -sw5150
+      -->
+      <ComponentGroupRef Id="Browser" />
+      <Feature Id="Config" Title="Configuration Editor" Level="1" AllowAdvertise="no" InstallDefault="local">
+        <ComponentRef Id="SEBConfigTool.exe" />
+      </Feature>
+
+      <Feature Id="Localization" Title="Localization" Level="1" AllowAdvertise="no" InstallDefault="local">
+        <ComponentGroupRef Id="GermanLocalization" />
+      </Feature>
+
+      <Feature Id="StartMenu" Title="Start Menu Shortcuts" Level="1" AllowAdvertise="no" InstallDefault="local">
+        <ComponentRef Id="StartMenuShortcuts" />
+      </Feature>
+
+      <Feature Id="Desktop" Title="Desktop Shortcuts" Level="1000" AllowAdvertise="no" InstallDefault="local">
+        <ComponentRef Id="DesktopShortcuts" />
+      </Feature>
+    </Feature>
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Reference to the user's desktop -->
       <Directory Id="DesktopFolder" Name="Desktop" />
 
       <!-- Reference to the start menu -->
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="StartMenuSebFolder" Name="$(var.ProductName)" />
+        <Directory Id="ApplicationMenuFolder" Name="$(var.ProductDisplayName)" />
       </Directory>
 
       <!-- Reference to the ProgramData directory -->
       <Directory Id="CommonAppDataFolder">
         <!-- Hard coded to SafeExamBrowser, because that's what the binary looks for.
-             If the name gets changed as part of the customisation, then this will also
-             need to be changed.
-        -->
-        <Directory Id="ProgramDataFolder" Name="SafeExamBrowser" />
+             If the name gets changed as part of the customization, then this will also
+             need to be changed. -->
+        <Directory Id="ProgramDataFolder" Name="$(var.ProductName)" />
       </Directory>
 
       <!-- Directory structure looks like:
@@ -127,151 +97,135 @@
           + SebWindowsServiceWCF
       -->
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALL_FOLDER" Name="$(var.ProductName)">
-          <Directory Id="InstallDeFolder" Name="de" />
-          <Directory Id="XubSebInstallFolder" Name="SebWindowsBrowser" />
-          <Directory Id="XulRunnerInstallFolder" Name="SebWindowsBrowser" />
-          <Directory Id="InstallSebWindowsResourcesFolder" Name="SebWindowsResources" />
-          <Directory Id="InstallSebWindowsServiceWcfFolder" Name="SebWindowsServiceWCF" />
+        <Directory Id="INSTALLDIR" Name="$(var.ProductName)">
+          <Directory Id="GermanLocalizationFolder" Name="de" />
+          <Directory Id="SebWindowsBrowserFolder" Name="SebWindowsBrowser" />
+          <Directory Id="SebWindowsResourcesFolder" Name="SebWindowsResources" />
+          <Directory Id="SebWindowsServiceWCFFolder" Name="SebWindowsServiceWCF" />
         </Directory>
       </Directory>
     </Directory>
-  </Fragment>
 
-  <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALL_FOLDER">
-      <Component Id="ClientExecutableComponent" Guid="{4687F0C3-5206-4B90-B2C6-9C027218EFBB}">
-        <File Id="ClientExecutable" Source="$(var.SebWindowsClient.TargetPath)" />
-        <ProgId Id="SebShellExtension" Description="SEB Configuration" Advertise="no" Icon="SebDocumentIcon">
-          <Extension Id="seb" ContentType="seb/configuration" Advertise="no">
-            <Verb Id="sebopen" Command="Open" TargetFile="ClientExecutable" Argument='"%1"'/>
+    <ComponentGroup Id="Application" Directory="INSTALLDIR">
+      <Component Id="SafeExamBrowser.exe">
+        <File Id="SafeExamBrowser.exe" Source="$(var.SebWindowsClient.TargetPath)" Checksum="yes" KeyPath="yes" />
+        <ProgId Id="org.safeexambrowser.SafeExamBrowser" Description="Safe Exam Browser settings" Advertise="yes" Icon="SebDocumentIcon">
+          <Extension Id="seb" Advertise="yes">
+            <Verb Id="Open" Command="&amp;Open with Safe Exam Browser" Argument="&quot;%1&quot;" />
+            <MIME ContentType="application/seb" Default="yes"/>
           </Extension>
         </ProgId>
-        <File Id="SebDocumentIcon" Source="$(var.SEBDocumentIconFile)" Name="SEBDocumentIcon.ico" />
-        
         <RegistryKey Root="HKCR" Key="seb">
           <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-          <RegistryValue Type="string" Value="URL:Safe Exam Browser"/>
-          <RegistryKey Key="DefaultIcon">
-            <RegistryValue Type="string" Value="[INSTALL_FOLDER]SafeExamBrowser.exe,6" />
-          </RegistryKey>
+          <RegistryValue Type="string" Value="URL:Safe Exam Browser protocol" />
           <RegistryKey Key="shell\open\command">
-            <RegistryValue Type="string" Value="&quot;[INSTALL_FOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
+            <RegistryValue Type="string" Value="&quot;[INSTALLDIR]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
           </RegistryKey>
         </RegistryKey>
-          
         <RegistryKey Root="HKCR" Key="sebs">
           <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-          <RegistryValue Type="string" Value="URL:Safe Exam Browser Secure"/>
-          <RegistryKey Key="DefaultIcon">
-	          <RegistryValue Type="string" Value="[INSTALL_FOLDER]SafeExamBrowser.exe,6" />
-          </RegistryKey>
+          <RegistryValue Type="string" Value="URL:Safe Exam Browser protocol" />
           <RegistryKey Key="shell\open\command">
-	          <RegistryValue Type="string" Value="&quot;[INSTALL_FOLDER]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
+            <RegistryValue Type="string" Value="&quot;[INSTALLDIR]SafeExamBrowser.exe&quot; &quot;%1&quot;" />
           </RegistryKey>
         </RegistryKey>
-				 
       </Component>
-      <?ifdef InstallConfigTool ?>
-      <Component Id="SebConfigComponent" Guid="{CB8E7910-9172-4605-9104-B5FE12D7CCE4}">
-        <File Source="$(var.SebWindowsConfig.TargetPath)" />
+      <Component Id="Fleck.dll">
+        <File Id="Fleck.dll" Source="$(var.Fleck.TargetPath)" KeyPath="yes" />
       </Component>
-      <?endif?>
-      <Component Id="FleckDLL" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4742}">
-        <File Source="$(var.Fleck.TargetPath)" />
+      <Component Id="IconLib.dll">
+        <File Id="IconLib.dll" Source="$(var.IconLib.TargetPath)" KeyPath="yes" />
       </Component>
-      <Component Id="IconLibDLL" Guid="{F797C5AE-87C5-455E-9A32-C6B4BB181FDF}">
-        <File Source="$(var.IconLib.TargetPath)" />
+      <Component Id="Ionic.zip.dll">
+        <File Id="Ionic.zip.dll" Source="$(var.SebWindowsClient.TargetDir)\Ionic.zip.dll" KeyPath="yes" />
       </Component>
-      <Component Id="MetroFramework" Guid="{1565CAB5-6C9B-4503-ABE9-7A922C92B5E2}">
-        <File Source="$(var.MetroFramework.TargetPath)" />
+      <Component Id="Application_SebWindowsServiceContracts.dll">
+        <File Id="Application_SebWindowsServiceContracts.dll" Source="$(var.SEBWindowsServiceContracts.TargetPath)" KeyPath="yes" />
       </Component>
-      <Component Id="SEBWindowsServiceContractsDLL" Guid="{89b3249d-6ff3-4e9e-b305-5dc1c5df4b94}">
-        <File Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
+      <Component Id="MetroFramework.dll">
+        <File Id="MetroFramework.dll" Source="$(var.SebWindowsClient.TargetDir)\MetroFramework.dll" KeyPath="yes" />
       </Component>
-      <Component Id="NAudioDLL" Guid="{97686074-6AD1-4771-9268-E89984D73993}">
-        <File Source="$(var.NAudio.TargetPath)" />
+      <Component Id="NAudio.dll">
+        <File Id="NAudio.dll" Source="$(var.SebWindowsClient.TargetDir)\NAudio.dll" KeyPath="yes" />
       </Component>
-      <Component Id="Ionic.Zip" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4743}">
-        <File Source="$(var.SebWindowsClient.TargetDir)\Ionic.Zip.dll" Name="Ionic.Zip.dll" />
-      </Component>
-        <Component Id="Newtonsoft.Json" Guid="{3C70BDC8-2276-4630-A57E-E077B82E4744}">
-        <File Source="$(var.SebWindowsClient.TargetDir)\Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" />
+      <Component Id="Newtonsoft.Json.dll">
+        <File Id="Newtonsoft.Json.dll" Source="$(var.SebWindowsClient.TargetDir)\Newtonsoft.Json.dll" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
-    <ComponentGroup Id="GermanLocalisationComponent" Directory="InstallDeFolder">
-      <Component Id="ProductNameDeDLL" Guid="{43A60EB2-34F2-4131-B9EC-F17F9CD9525D}">
-        <File Source="$(var.SebWindowsClient.TargetDir)/de/$(var.SebWindowsClient.TargetName).resources.dll" />
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="SEBConfigTool.exe">
+        <File Id ="SEBConfigTool.exe" Source="$(var.SebWindowsConfig.TargetPath)" Checksum="yes" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="GermanLocalization" Directory="GermanLocalizationFolder">
+      <Component Id="SafeExamBrowser.resources.dll">
+        <File Id="SafeExamBrowser.resources.dll" Source="$(var.SebWindowsClient.TargetDir)\de\$(var.SebWindowsClient.TargetName).resources.dll" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
-    <ComponentGroup Id="SebWindowsResourcesComponent" Directory="InstallSebWindowsResourcesFolder">
-      <Component Id="SebIconComponent" Guid="{80C81B98-2D28-453F-BDDE-6C006C650F39}">
-        <File Id="SebIcon" Source="$(var.SEBIconFile)" Name="SEBIcon.ico" />
+    <ComponentGroup Id="Resources" Directory="SebWindowsResourcesFolder">
+      <Component Id="SEBIcon.ico">
+        <File Id="SEBIcon.ico" Source="$(var.SEBIconFile)" KeyPath="yes" />
+      </Component>
+      <Component Id="SebDocumentIcon.ico">
+        <File Id="SebDocumentIcon.ico" Source="$(var.SEBDocumentIconFile)" KeyPath="yes" />
       </Component>
       <?ifdef ResourceLocalIndexHtmlFile ?>
-      <Component Id="ResourceLocalIndexHtmlComponent" Guid="{E1B4C385-B7BA-4410-A7AF-13DC03B664BA}">
-        <File Id="ResourceLocalIndexHtml" Source="$(var.ResourceLocalIndexHtmlFile)" Name="index.html" />
+      <Component Id="index.html">
+        <File Id="index.html" Source="$(var.ResourceLocalIndexHtmlFile)" KeyPath="yes" />
+      </Component>
+      <?endif ?>
+    </ComponentGroup>
+
+    <ComponentGroup Id="WindowsServiceWCF" Directory="SebWindowsServiceWCFFolder">
+      <Component Id="SebRegistryResetter.exe">
+        <File Id="SebRegistryResetter.exe" Source="$(var.SebRegistryResetter.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="SebWindowsServiceWCF.exe">
+        <File Id="SebWindowsServiceWCF.exe" Source="$(var.SebWindowsServiceWCF.TargetPath)" KeyPath="yes" Checksum="yes" />
+        <ServiceInstall Id="ServiceInstaller" Type="ownProcess"
+                        Name="SebWindowsServiceWCF" DisplayName="$(var.ProductNameAbbreviation) Windows Service" 
+                        Description="$(var.ProductNameAbbreviation) Windows Service which needs to be running when using $(var.ProductDisplayName)"
+                        Start="auto" ErrorControl="ignore" Interactive="no" Account="LocalSystem" Vital="yes" />
+        <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="SebWindowsServiceWCF" />
+      </Component>
+      <Component Id="SebWindowsServiceWCF.exe.config">
+        <File Id="SebWindowsServiceWCF.exe.config" Source="$(var.SebWindowsServiceWCF.TargetPath).config" KeyPath="yes" />
+      </Component>
+      <Component Id="Service_SebWindowsServiceContracts.dll">
+        <File Id="Service_SebWindowsServiceContracts.dll" Source="$(var.SEBWindowsServiceContracts.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <DirectoryRef Id="ApplicationMenuFolder">
+      <Component Id="StartMenuShortcuts" Guid="{FC422793-C9FC-4216-BE97-902DB0845B7A}">
+        <Shortcut Id="SebStartMenuShortcut" Name="$(var.ProductDisplayName)" Description="Launches the Safe Exam Browser (SEB)" 
+                  Target="[INSTALLDIR]$(var.SebWindowsClient.TargetFileName)" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="RegistryResetStartMenuShortcut" Name="$(var.RegistryResetShortcutName)" Description="$(var.RegistryResetShortcutName)"
+                  Target="[INSTALLDIR]SebWindowsServiceWCF\$(var.SebRegistryResetter.TargetFileName)" Icon="ApplicationIcon" />
+        <Shortcut Id="ConfigStartMenuShortcut" Name="$(var.ConfigShortcutName)" Description="$(var.ConfigShortcutName)"
+                  Target="[INSTALLDIR]$(var.SebWindowsConfig.TargetFileName)" />
+        <RemoveFolder Id="ApplicationMenuFolder" On="uninstall"/>
+        <RegistryValue Root="HKMU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes" Name="StartMenuShortcuts"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="DesktopShortcuts" Guid="{BC5B24FB-3036-4C55-83EB-27098D9E7C1E}">
+        <Shortcut Id="SebDesktopShortcut" Name="$(var.ProductDisplayName)" Description="Launches the Safe Exam Browser (SEB)"
+                  Target="[INSTALLDIR]$(var.SebWindowsClient.TargetFileName)" WorkingDirectory="INSTALLDIR" />
+        <RegistryValue Root="HKMU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes" Name="DesktopShortcuts"/>
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="ProgramData" Directory="ProgramDataFolder">
+      <?ifdef DefaultSettingsFile?>
+      <Component Id="SebClientSettings.seb">
+        <File Id="SebClientSettings.seb" Source="$(var.DefaultSebClientSettingsFile)" KeyPath="yes" />
       </Component>
       <?endif?>
     </ComponentGroup>
-
-    <ComponentGroup Id="SebWindowsServiceWCFComponent" Directory="InstallSebWindowsServiceWcfFolder">
-      <Component Id="SEBWindowsServiceContractsDLL_1" Guid="{A567EC1B-D703-47BA-8E32-FCA19E131C24}">
-        <File Id="SEBWindowsServiceContractsDLL_1" Source="$(var.SEBWindowsServiceContracts.TargetPath)" />
-      </Component>
-      <Component Id="SebRegistryResetterExecutable" Guid="{A5D12BC8-8B36-4B9C-AB53-338B6AC37F4F}">
-        <File Source="$(var.SebRegistryResetter.TargetPath)" />
-      </Component>
-      <Component Id="SebWindowsServiceWCFExecutable" Guid="{FDCE5852-0974-4E8B-B1F2-A0DDAE3AE35E}">
-        <File Source="$(var.SebWindowsServiceWCF.TargetPath)" />
-        <ServiceInstall Id="SebWindowsServiceWCFServiceInstall" Type="ownProcess"
-                        Name="SebWindowsServiceWCF" DisplayName="$(var.ProductNameAbbreviation) Windows Service" Description="$(var.ProductNameAbbreviation) Windows Service which needs to be running"
-                        Start="auto" ErrorControl="ignore" Interactive="no" Account="LocalSystem" />
-        <ServiceControl Id="SebWindowsServiceWCFServiceControl" Start="install" Stop="both" Remove="uninstall"
-                        Name="SebWindowsServiceWCF" Wait="yes" />
-      </Component>
-      <Component Id="SebWindowsServiceWCFExeConfig" Guid="{25BEB96C-08AD-4C63-9C4A-8B2A961C7627}">
-        <File Source="$(var.SebWindowsServiceWCF.TargetPath).config" />
-      </Component>
-    </ComponentGroup>
-
-    <ComponentGroup Id="StartMenuShortcutComponents" Directory="StartMenuSebFolder">
-      <Component Id="SebStartMenuShortcutComponent" Guid="{A6EEB406-4A88-4D73-8B1B-A2CFBDCA5B43}">
-        <Shortcut Id="SebStartMenuShortcut" Name="$(var.BrowserShortcutName)" Description="$(var.ProductName)"
-                  Target="[INSTALL_FOLDER]/$(var.SebWindowsClient.TargetFileName)" WorkingDirectory="INSTALL_FOLDER" />
-        <Shortcut Id="SebUninstallShortcut" Name="Uninstall $(var.ProductName)" Description="Uninstalls $(var.ProductName)"
-                  Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
-        <RemoveFolder Id="SebStartMenuSebFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-
-      <?ifdef InstallConfigTool ?>
-      <Component Id="ConfigStartMenuShortcutComponent" Guid="{467D9252-1CDF-4B6C-B9FF-4AFBBB7C892F}">
-        <Shortcut Id="ConfigStartMenuShortcut" Name="$(var.ConfigShortcutName)" Description="$(var.ProductName) Configuration Tool"
-                  Target="[INSTALL_FOLDER]/$(var.SebWindowsConfig.TargetFileName)" WorkingDirectory="INSTALL_FOLDER" />
-        <RemoveFolder Id="ConfigStartMenuSebFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-      <?endif?>
-    </ComponentGroup>
-
-    <!--<ComponentGroup Id="DesktopShortcutComponents" Directory="DesktopFolder">
-      <Component Id="SebDesktopShortcutComponent" Guid="{BD3857EC-64AC-4923-BB56-A5E1E0420D22}">
-        <Shortcut Id="SebDesktopShortcut" Name="$(var.BrowserShortcutName)" Description="$(var.ProductName)"
-                  Target="[INSTALL_FOLDER]/$(var.SebWindowsClient.TargetFileName)" WorkingDirectory="INSTALL_FOLDER" />
-        <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-    </ComponentGroup>-->
-
-    <ComponentGroup Id="ProgramDataComponents" Directory="ProgramDataFolder">
-      <?ifdef DefaultSebClientSettingsFile?>
-      <Component Id="DefaultSebClientSettingsComponent" Guid="{150F40C6-DE08-44E7-A6E7-58CAFC996D77}">
-        <File Source="$(var.DefaultSebClientSettingsFile)" Name="SebClientSettings.seb" />
-      </Component>
-      <?endif?>
-    </ComponentGroup>
-
-  </Fragment>
+  </Product>
 </Wix>

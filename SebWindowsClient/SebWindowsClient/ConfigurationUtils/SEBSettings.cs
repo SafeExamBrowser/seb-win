@@ -176,6 +176,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		public const String KeyDownloadPDFFiles         = "downloadPDFFiles";
 		public const String KeyAllowPDFPlugIn           = "allowPDFPlugIn";
 		public const String KeyDownloadAndOpenSebConfig = "downloadAndOpenSebConfig";
+	    public const String KeyBackgroundOpenSebConfig  = "backgroundOpenSebConfig";
 
 		// Group "Exam"
 		public const String KeyExamKeySalt        = "examKeySalt";
@@ -676,6 +677,7 @@ namespace SebWindowsClient.ConfigurationUtils
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadPDFFiles        , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyAllowPDFPlugIn          , false);
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyDownloadAndOpenSebConfig, true);
+		    SEBSettings.settingsDefault.Add(SEBSettings.KeyBackgroundOpenSebConfig , false);
 
 			// Default settings for group "Exam"
 			SEBSettings.settingsDefault.Add(SEBSettings.KeyExamKeySalt       , new Byte[] {});

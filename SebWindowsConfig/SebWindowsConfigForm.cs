@@ -519,6 +519,8 @@ namespace SebWindowsConfig
 			textBoxDownloadDirectoryOSX.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadDirectoryOSX];
 			listBoxChooseFileToUploadPolicy.SelectedIndex = (int)SEBSettings.settingsCurrent[SEBSettings.KeyChooseFileToUploadPolicy];
 			checkBoxDownloadOpenSEBFiles.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig];
+		    checkBoxBackgroundOpenSEBFiles.Enabled = checkBoxDownloadOpenSEBFiles.Checked;
+		    checkBoxBackgroundOpenSEBFiles.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyBackgroundOpenSebConfig];
 
 			// Group "Exam"
 			checkBoxSendBrowserExamKey.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey];
@@ -2269,7 +2271,13 @@ namespace SebWindowsConfig
 		private void checkBoxDownloadOpenSEBFiles_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyDownloadAndOpenSebConfig] = checkBoxDownloadOpenSEBFiles.Checked;
+		    checkBoxBackgroundOpenSEBFiles.Enabled = checkBoxDownloadOpenSEBFiles.Checked;
 		}
+
+	    private void checkBoxBackgroundOpenSEBFiles_CheckedChanged(object sender, EventArgs e)
+	    {
+	        SEBSettings.settingsCurrent[SEBSettings.KeyBackgroundOpenSebConfig] = checkBoxBackgroundOpenSEBFiles.Checked;
+	    }
 
 		private void checkBoxOpenDownloads_CheckedChanged(object sender, EventArgs e)
 		{
@@ -4455,6 +4463,5 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
-
     }
 }

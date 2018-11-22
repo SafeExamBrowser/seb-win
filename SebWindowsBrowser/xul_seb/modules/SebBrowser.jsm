@@ -880,10 +880,15 @@ this.SebBrowser = {
 	},
 	
 	abortReconf : function(win) {
-		sl.debug("reconfigure aborted");
-		seb.reconfState = RECONF_ABORTED;
-		sh.sendReconfigureAborted();
-		win.close();
+		if (seb.reconfState == RECONF_PROCESSING) {
+			sl.debug("reconfigure abort ignored - processing seb file");
+			base.dialogHandler("Waiting to finish SEB reconfiguration");
+		} else {
+			sl.debug("reconfigure aborted");
+			seb.reconfState = RECONF_ABORTED;
+			sh.sendReconfigureAborted();
+			win.close();
+		}
 	},
 	
 	resetReconf : function() {

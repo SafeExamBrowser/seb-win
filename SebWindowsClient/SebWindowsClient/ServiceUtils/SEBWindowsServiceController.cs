@@ -119,7 +119,7 @@ namespace SebWindowsClient.ServiceUtils
                 {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? "" : "SebDummy.exe"},
                 {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1},
 				{RegistryIdentifiers.NoAutoRebootWithLoggedOnUsers, 1},
-                {RegistryIdentifiers.fDenyTSConnections, 1}
+                {RegistryIdentifiers.fDenyTSConnections, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyAllowScreenSharing)[SEBSettings.KeyAllowScreenSharing] ? 0 : 1}
             };
 
             return SetRegistryAccordingToConfiguration(valuesToSet);

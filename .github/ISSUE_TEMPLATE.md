@@ -1,5 +1,9 @@
 # ~ISSUE TITLE HERE~
 
+**IMPORTANT**
+Please _always_ consult the documentation first before creating a bug report!
+https://safeexambrowser.org/windows/win_usermanual_en.html
+
 ### Description
 
 ~YOUR ISSUE DESCRIPTION HERE...~

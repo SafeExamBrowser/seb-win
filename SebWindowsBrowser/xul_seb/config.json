@@ -15,7 +15,12 @@
 	"spellchecker.dictionary": "en-US",
 	"extensions.ui.dictionary.hidden": false,
 	"media.navigator.video.enabled" : false,
-	"media.getusermedia.audiocapture.enabled" : false
+	"media.getusermedia.audiocapture.enabled" : false,	
+    "browser.urlbar.autoFill":false,
+	"browser.urlbar.autoFill.typed":false,
+	"signon.autofillForms":false,
+	"signon.autofillForms.http":false,
+	"browser.formfill.enable":false
 },
 "sebPrefsMap": {
 	"browser.download.dir" 		: "downloadDirectoryWin",

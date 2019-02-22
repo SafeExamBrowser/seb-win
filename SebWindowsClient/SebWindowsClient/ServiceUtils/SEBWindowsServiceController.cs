@@ -116,7 +116,7 @@ namespace SebWindowsClient.ServiceUtils
 				{RegistryIdentifiers.NoCloseWin7, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableShutDown         )[SEBSettings.KeyInsideSebEnableShutDown         ] ? 0 : 1},
 				{RegistryIdentifiers.EnableShade, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? 1 : 0},
                 {RegistryIdentifiers.EnableShadeHorizon, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? "True" : "False"},
-                {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? "" : "SebDummy.exe"},
+                {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? 0 : 1},
                 {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1},
 				{RegistryIdentifiers.NoAutoRebootWithLoggedOnUsers, 1},
                 {RegistryIdentifiers.fDenyTSConnections, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyAllowScreenSharing)[SEBSettings.KeyAllowScreenSharing] ? 0 : 1}

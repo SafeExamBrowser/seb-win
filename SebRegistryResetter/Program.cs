@@ -208,7 +208,8 @@ namespace SebRegistryResetter
 				new RegNoCloseWin7(sid),
 				new RegNoLogoff(sid),
 				new RegDontDisplayNetworkSelectionUI(sid),
-				new RegNoAutoRebootWithLoggedOnUsers(sid)
+				new RegNoAutoRebootWithLoggedOnUsers(sid),
+				new RegEaseOfAccess(sid)
 			};
 			var entriesToBeSetToOne = new List<RegistryEntry>
 			{
@@ -227,7 +228,6 @@ namespace SebRegistryResetter
 				Reset(entry, 1);
 			}
 
-			Reset(new RegEaseOfAccess(sid), string.Empty);
 			Reset(new RegEnableShadeHorizon(sid), "True");
 		}
 

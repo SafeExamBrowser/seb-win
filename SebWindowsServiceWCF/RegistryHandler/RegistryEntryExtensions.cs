@@ -31,7 +31,11 @@ namespace SebWindowsServiceWCF.RegistryHandler
 
 		public static void SetValue(this RegistryEntry entry, object value)
 		{
-			if (value != null && value.GetType() == entry.DataType)
+			if (value != null && entry is RegEaseOfAccess)
+			{
+				Registry.SetValue(entry.RegistryPath, entry.DataItemName, value as int? == 1 ? "SebDummy.exe" : string.Empty);
+			}
+			else if (value != null && value.GetType() == entry.DataType)
 			{
 				Registry.SetValue(entry.RegistryPath, entry.DataItemName, value);
 			}

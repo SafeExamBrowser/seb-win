@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ETH Zurich")]
 [assembly: AssemblyProduct("SEB Windows Service WCF")]
-[assembly: AssemblyCopyright("Copyright © 2010-2018 ETH Zurich, Educational Development and Technology (LET)")]
+[assembly: AssemblyCopyright("Copyright © 2010-2019 ETH Zurich, Educational Development and Technology (LET)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

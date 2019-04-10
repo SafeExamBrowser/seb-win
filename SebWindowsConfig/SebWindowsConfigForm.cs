@@ -207,10 +207,16 @@ namespace SebWindowsConfig
             {
                 if (SEBSettings.CheckForDefaultProhibitedProcesses(false))
                 {
-                    var messageBoxResult = SEBMessageBox.Show("Default Prohibited Processes Found", "Settings contain at least one of the default prohibited processes (mostly web browsers), " +
+                    var messageBoxResult = MessageBox.Show(
+						this,
+						"Settings contain at least one of the default prohibited processes (mostly web browsers), " +
                         "which should not run when SEB is used with the Disable Explorer Shell kiosk mode. " +
                         "As your settings are not using Disable Explorer Shell, " +
-                        "do you want to remove those default prohibited processes from the configuration?", MessageBoxIcon.Question, MessageBoxButtons.YesNo, neverShowTouchOptimized: true);
+                        "do you want to remove those default prohibited processes from the configuration?",
+						"Default Prohibited Processes Found",
+						MessageBoxButtons.YesNo,
+						MessageBoxIcon.Question);
+
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         SEBSettings.CheckForDefaultProhibitedProcesses(true);

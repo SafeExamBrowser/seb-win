@@ -295,5 +295,10 @@ namespace SebWindowsClient.XULRunnerCommunication
         {
             SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.Reload));
         }
+
+		public static void SendUserSwitchLockScreen()
+		{
+			SendMessage(new SEBXULMessage(SEBXULMessage.SEBXULHandler.UserSwitchLockScreen));
+		}
     }
 }

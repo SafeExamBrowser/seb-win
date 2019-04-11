@@ -23,7 +23,8 @@ namespace SebWindowsClient.XULRunnerCommunication
             ReconfigureAborted,
             FullScreenChanged,
             ReconfigureSuccess,
-			ClearClipboard
+			ClearClipboard,
+			UserSwitchLockScreen
 		}
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)

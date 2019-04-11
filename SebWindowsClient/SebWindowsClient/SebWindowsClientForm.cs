@@ -109,6 +109,7 @@ namespace SebWindowsClient
 			SEBXULRunnerWebSocketServer.OnXulRunnerCloseRequested += OnXULRunnerShutdDownRequested;
 			SEBXULRunnerWebSocketServer.OnXulRunnerQuitLinkClicked += OnXulRunnerQuitLinkPressed;
 			Microsoft.Win32.SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+			Microsoft.Win32.SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
 
 			try
 			{
@@ -123,6 +124,12 @@ namespace SebWindowsClient
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
 		{
 			PlaceFormOnDesktop(TapTipHandler.IsKeyboardVisible());
+		}
+
+		private void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
+		{
+			Logger.AddWarning($"Detected session switch event: {e.Reason}");
+			SEBXULRunnerWebSocketServer.SendUserSwitchLockScreen();
 		}
 
 		private void OnXulRunnerClearClipboard(object sender, EventArgs e)
@@ -2136,6 +2143,7 @@ namespace SebWindowsClient
 			if (!reconfiguring)
 			{
 				Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+				Microsoft.Win32.SystemEvents.SessionSwitch -= SystemEvents_SessionSwitch;
 			}
 
 			Logger.AddInformation("returning from closesebform");

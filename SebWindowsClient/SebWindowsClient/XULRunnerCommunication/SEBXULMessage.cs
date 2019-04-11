@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 
 namespace SebWindowsClient.XULRunnerCommunication
 {
-    public class SEBXULMessage
+	public class SEBXULMessage
     {
         public enum SEBXULHandler
         {
@@ -22,8 +22,9 @@ namespace SebWindowsClient.XULRunnerCommunication
             AdditionalRessourceTriggered,
             ReconfigureAborted,
             FullScreenChanged,
-            ReconfigureSuccess
-        }
+            ReconfigureSuccess,
+			ClearClipboard
+		}
 
         public SEBXULMessage(SEBXULHandler handler, dynamic opts = null)
         {

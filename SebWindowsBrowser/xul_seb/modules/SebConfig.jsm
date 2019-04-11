@@ -69,6 +69,7 @@ this.SebConfig =  {
 		base.prefsMap["pluginEnableFlash"] = base.pluginEnableFlash;
 		base.prefsMap["pluginEnableJava"] = base.pluginEnableJava;
 		base.prefsMap["spellcheckDefault"] = base.spellcheckDefault;
+        base.prefsMap["openDownloads"] = base.openDownloads;
 		sl.out("SebConfig initialized: " + seb);
 	},
 
@@ -253,5 +254,9 @@ this.SebConfig =  {
 	spellcheckDefault : function(param) {
 		var ret = (seb.config["allowSpellCheck"] == true) ? 2 : 0;
 		return ret;
+	},
+    
+    openDownloads : function(param) {
+		return !su.getConfig("openDownloads","boolean",false);
 	}
 }

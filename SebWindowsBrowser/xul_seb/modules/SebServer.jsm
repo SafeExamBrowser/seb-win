@@ -41,6 +41,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 /* SebGlobals */
 scriptloader.loadSubScript("resource://globals/prototypes.js");
+scriptloader.loadSubScript("resource://globals/const.js");
 
 /* SebModules */
 XPCOMUtils.defineLazyModuleGetter(this,"sl","resource://modules/SebLog.jsm","SebLog");
@@ -150,12 +151,12 @@ this.SebServer = {
 
     lock : function(_seb) {
             sl.debug("socket client: lock: " + _seb.id);
-            seb.lock(true);
+            seb.lock(MODE_LOCKED);
     },
     
     unlock : function(_seb) {
             sl.debug("socket client: unlock: " + _seb.id);
-            seb.unlockAll(true);
+            seb.unlockAll(MODE_LOCKED);
     },
     
     sendLock : function() {

@@ -58,6 +58,7 @@ namespace SebWindowsClient.XULRunnerCommunication
 
         public static bool HasBeenReconfiguredByMessage = false;
 
+		public static event EventHandler OnXulRunnerClearClipboard;
         public static event EventHandler OnXulRunnerCloseRequested;
         public static event EventHandler OnXulRunnerQuitLinkClicked;
         public static event EventHandler OnXulRunnerTextFocus;
@@ -237,6 +238,10 @@ namespace SebWindowsClient.XULRunnerCommunication
                     case SEBXULMessage.SEBXULHandler.ReconfigureSuccess:
                         SEBClientInfo.SebWindowsClientForm.ClosePreviousMainWindow();
                         break;
+					case SEBXULMessage.SEBXULHandler.ClearClipboard:
+						OnXulRunnerClearClipboard?.Invoke(null, EventArgs.Empty);
+						break;
+
                 }
             }
             //Fallback to old message format

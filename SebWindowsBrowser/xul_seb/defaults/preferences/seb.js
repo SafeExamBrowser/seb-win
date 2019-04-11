@@ -68,4 +68,5 @@ pref("signon.rememberSignons.visibilityToggle", false);
 pref("signon.autofillForms", false);
 pref("signon.autofillForms.http", false);
 pref("services.sync.prefs.sync.signon.rememberSignons", false);
+pref("extensions.blocklist.enabled", false);
 //see also: https://www.ghacks.net/2015/08/18/a-comprehensive-list-of-firefox-privacy-and-security-settings/

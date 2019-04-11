@@ -152,13 +152,8 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			}
 			*/ 
 			
-			if (su.getConfig("backgroundOpenSEBConfig", "boolean", false)) {
-				sl.debug("opening seb settings in the background");
-				seb.reconfState = RECONF_START;
-			} else {
-				subject.cancel( this.aborted );
-				sb.openSebFileDialog(url2);
-			}
+			subject.cancel( this.aborted );
+			sb.openSebFileDialog(url2);
 			//seb.reconfState = RECONF_NO;
 			//w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
 			return;
@@ -194,7 +189,7 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			subject.setRequestHeader(reqHeader, k, false);
 			sl.info("request header:");
 			sl.info("*****************");
-			aVisitor2 = new requestHeaderVisitor();
+			let aVisitor2 = new requestHeaderVisitor();
 			subject.visitRequestHeaders(aVisitor2);
 			sl.info("");
 		}

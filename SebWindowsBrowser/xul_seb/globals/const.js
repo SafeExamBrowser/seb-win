@@ -14,6 +14,7 @@ const 	DEBUG_LEVEL = 1,
 	LOCK_URL = "chrome://seb/content/lockscreen.xul",
     MODE_RECONNECT = 0,
     MODE_LOCKED = 1,
+    MODE_USERSWITCH = 2,
 	SEB_FEATURES = "chrome,dialog=no,resizable=yes,scrollbars=yes",
 	HIDDEN_URL= "chrome://seb/content/hidden.xul",
 	HIDDEN_FEATURES = "chrome,modal=no,dialog,resizable=no,width=1,height=1",
@@ -21,7 +22,6 @@ const 	DEBUG_LEVEL = 1,
 	RECONF_START = 1,
 	RECONF_SUCCESS = 2,
 	RECONF_ABORTED = 3,
-	RECONF_PROCESSING = 4,
 	RECONFIG_URL = "chrome://seb/content/reconf.xul",
 	RECONFIG_TYPE = "reconf",
 	RECONFIG_FEATURES = "chrome,dialog,modal,resizable=yes,width=800,height=600,scrollbars=yes",
@@ -44,8 +44,7 @@ const 	DEBUG_LEVEL = 1,
 	STATUS_LOAD_AR = {status:5, message:"STATUS_LOAD_AR"},
 	STATUS_INVALID_URL = {status:6, message:"STATUS_INVALID_URL"},
 	STATUS_BLOCK_HTTP = {status:7, message:"STATUS_BLOCK_HTTP"},
-	STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG = {status:8, message:"STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG"},
-	STATUS_SEB_FILE_DOWNLOAD = {status:8, message:"STATUS_SEB_FILE_DOWNLOAD"};
+    STATUS_CLEAR_CLIPBOARD_URL_STOP = {status:8, message:"STATUS_CLEAR_CLIPBOARD_URL_STOP"};
 	
 	
 

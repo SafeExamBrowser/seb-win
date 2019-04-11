@@ -93,17 +93,19 @@ this.SebHost = {
 			"ClearSession" : base.handleClearSession,
 			"AdditionalDictionaries" : base.handleAdditionalDictionaries,
             "LockSeb" : base.handleLockSeb,
-            "UnlockSeb" : base.handleUnlockSeb
+            "UnlockSeb" : base.handleUnlockSeb,
+            "UserSwitchLockScreen" : base.handleUserSwitchLockScreen
 		};
 		base.sendHandler = {
 			"SebFile" : base.sendSebFile,
 			"ReconfigureAborted" : base.sendReconfigureAborted,
 			"ReconfigureSuccess" : base.sendReconfigureSuccess,
 			"AdditionalRessourceTriggered" : base.sendAdditionalRessourceTriggered,
-			"FullScreenChanged" : base.sendFullScreenChanged
+			"FullScreenChanged" : base.sendFullScreenChanged,
+            "ClearClipboard" : base.sendClearClipboard
 		};
 		base.reconnectInterval = su.getConfig("lockOnMessageSocketCloseTriesIntervallMSec","number",1000);
-		base.reconnectMaxTries = su.getConfig("lockOnMessageSocketCloseTries","number",5);
+		base.reconnectMaxTries = su.getConfig("lockOnMessageSocketCloseTries","number",10);
 		
 		sl.out("SebHost initialized: " + seb);
 	},
@@ -370,12 +372,12 @@ this.SebHost = {
 	},
 	
 	handleSebFileTransfer : function (opts) {
-		sl.debug("handleSebFileTransfer handled: " + opts);
 		if (opts) {
+			sl.debug("handleSebFileTransfer handled: " + opts);
 			sb.dialogHandler("SEB Config File transfer succeeded. Waiting for new SEB settings...");
 		}
-		if (seb.reconfState == RECONF_START) {
-			seb.reconfState = RECONF_PROCESSING;
+		else {
+			sl.debug("handleSebFileTransfer handled: " + opts);
 		}
 	},
 	
@@ -403,12 +405,17 @@ this.SebHost = {
 	
     handleLockSeb : function() {
         sl.debug("handleLockSeb");
-        seb.lock();
+        seb.lock(MODE_RECONNECT);
     },
     
     handleUnlockSeb : function() {
         sl.debug("handleUnlockSeb");
         seb.unlockAll();
+    },
+    
+    handleUserSwitchLockScreen: function() {
+        sl.debug("handleUserSwitchLockScreen");
+        seb.lock(MODE_USERSWITCH);
     },
     
 	sendSebFile : function (base64) {
@@ -439,6 +446,11 @@ this.SebHost = {
 		base.sendMessage(JSON.stringify(msg));
 	},
 	
+    sendClearClipboard : function() {
+		let msg = {Handler:"ClearClipboard",Opts:{}};
+		base.sendMessage(JSON.stringify(msg));
+	},
+    
 	quitFromHost : function () {
 		seb.hostForceQuit = true;
 		seb.quitIgnoreWarning = true;

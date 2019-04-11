@@ -238,13 +238,8 @@ nsBrowserStatusHandler.prototype = {
 
 this.SebBrowser = {
 	//lastDocumentUrl : null,
+	dialogHandler : null,
 	quitURLRefererFilter : "",
-	dialog : null,
-	dialogHandler : function(message) {
-		if (this.dialog) {
-			this.dialog(message);
-		}
-	},
 	init : function(obj) {
 		base = this;
 		seb = obj;
@@ -313,6 +308,12 @@ this.SebBrowser = {
 						this.onStatusChange(progress, request, STATUS_QUIT_URL_STOP.status, STATUS_QUIT_URL_STOP.message);
 						return;
 					}
+                    
+                    //if (seb.clearClipboardUrl == uri) {
+                    if (seb.clearClipboardUrlRegex.test(uri)) {
+                        this.onStatusChange(progress, request, STATUS_CLEAR_CLIPBOARD_URL_STOP.status, STATUS_CLEAR_CLIPBOARD_URL_STOP.message);
+						return;
+                    }
 					
 					for (var key in seb.ars) {
 						if (seb.ars[key].checkTrigger(uri,progress.DOMWindow.document.URL)) {
@@ -422,7 +423,8 @@ this.SebBrowser = {
 						case STATUS_QUIT_URL_WRONG_REFERRER.status :
 						case STATUS_BLOCK_HTTP.status :
 						case STATUS_INVALID_URL.status :
-						case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG :
+						case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status :
+                        case STATUS_CLEAR_CLIPBOARD_URL_STOP.status :
 							sl.debug("custom request stop: " + uri + " status: " + request.status);
 						return;
 					}
@@ -643,14 +645,12 @@ this.SebBrowser = {
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
 					prompt.alert(seb.mainWin, su.getLocStr("seb.title"), su.getLocStr("seb.url.blocked"));
 					break;
-				/*
-				case STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status :
-					request.cancel(status);
+                case STATUS_CLEAR_CLIPBOARD_URL_STOP.status :
+                    request.cancel(status);
 					this.mainPageURI = null;
 					base.stopLoading(sw.getChromeWin(progress.DOMWindow));
-					base.openSebFileDialog(uri);
-					break;
-				*/	
+                    seb.clearClipboard();
+                    break;
 			}
 		}
 	},
@@ -874,21 +874,16 @@ this.SebBrowser = {
 		sl.debug("reconfigure started");
 		base.initBrowser(win);
 		//seb.reconfState = RECONF_START;
-		base.dialog = handler;
+		base.dialogHandler = handler;
 		//base.setBrowserHandler(win);
 		base.loadPage(win,url);
 	},
 	
 	abortReconf : function(win) {
-		if (seb.reconfState == RECONF_PROCESSING) {
-			sl.debug("reconfigure abort ignored - processing seb file");
-			base.dialogHandler("Waiting to finish SEB reconfiguration");
-		} else {
-			sl.debug("reconfigure aborted");
-			seb.reconfState = RECONF_ABORTED;
-			sh.sendReconfigureAborted();
-			win.close();
-		}
+		sl.debug("reconfigure aborted");
+		seb.reconfState = RECONF_ABORTED;
+		sh.sendReconfigureAborted();
+		win.close();
 	},
 	
 	resetReconf : function() {
@@ -1180,7 +1175,7 @@ this.SebBrowser = {
 		sl.debug("toggleSpellCheckEnabled");
 		InlineSpellCheckerContent._spellChecker.toggleEnabled(win); // using private variable directly instead of messages
 	},
-	
+    
 	createDictionaryList : function (menu) {
 		sl.debug("createDictionaryList");
 		InlineSpellCheckerContent._spellChecker.addDictionaryListToMenu(menu,null);
@@ -1198,5 +1193,174 @@ this.SebBrowser = {
 	clearDictionaryList : function (menu) {
 		sl.debug("clearDictionaryList");
 		InlineSpellCheckerContent._spellChecker.clearDictionaryListFromMenu();
-	}
+	},
+    
+    createClipboardController : function (win) {
+        if (!su.getConfig("enablePrivateClipboard","boolean",false)) {
+            return;
+        }
+        sl.debug("createClipboardController");
+        win.document.addEventListener("copy",onCopy,true);
+        win.document.addEventListener("cut",onCut,true);
+        win.document.addEventListener("paste",onPaste,true);
+        function getData(evt) {
+            if (evt.target.contentEditable && evt.target.setRangeText) { // Textarea, Input, Isindex: only text data
+                seb.privateClipboard.text = evt.target.value.substring(evt.target.selectionStart, evt.target.selectionEnd);
+                seb.privateClipboard.ranges = [];
+            }
+            else { // all other
+                let w = evt.target.ownerDocument.defaultView;
+                let sel = w.getSelection();
+                let text = "";
+                for (let i = 0; i < sel.rangeCount; i++) {
+                    seb.privateClipboard.ranges[i] = sel.getRangeAt(i).cloneContents();
+                    text += seb.privateClipboard.ranges[i].textContent;
+                }
+                seb.privateClipboard.text = text;
+            }
+        }
+        
+        function onCopy(evt) {
+            sl.debug("captured copy:" + evt);
+            try {
+                getData(evt);
+            }
+            catch (e) {
+                sl.debug(e);
+            }
+            finally {
+                evt.preventDefault();
+                evt.returnValue = false;
+                return false;
+            }
+        }
+        
+        function onCut(evt) {
+            sl.debug("captured cut:" + evt);
+            try {
+                getData(evt);
+                
+                if (evt.target.contentEditable && evt.target.setRangeText) { // Textarea, Input
+                    evt.target.setRangeText("",evt.target.selectionStart,evt.target.selectionEnd,'select');
+                }
+                else { // all other (check designMode and contenteditable!)
+                    let w = evt.target.ownerDocument.defaultView;
+                    let designMode = evt.target.ownerDocument.designMode;
+                    sl.debug("document.designMode: " + designMode);
+                    let contentEditables = evt.target.ownerDocument.querySelectorAll('*[contenteditable]');
+                    sl.debug("elements with contenteditable attribute: " + contentEditables.length);
+                    let sel = w.getSelection();
+                    let ranges = [];
+                    for (let i = 0; i < sel.rangeCount; i++) {
+                        let r = sel.getRangeAt(i);
+                        if (designMode === 'on') {
+                            r.deleteContents();
+                        }
+                        else {
+                            if (contentEditables.length) {
+                                contentEditables.forEach( node => {
+                                    if (node.contains(r.commonAncestorContainer)) {
+                                        r.deleteContents();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (e) {
+                sl.debug(e);
+            }
+            finally {
+                evt.preventDefault();
+                evt.returnValue = false;
+                return false;
+            }
+        }
+        
+        function onPaste(evt) { 
+            //sl.debug("captured paste for text length:" + seb.privateClipboard.data.length);
+            try {
+                if (evt.target.contentEditable && evt.target.setRangeText) { // Textarea, Input
+                    evt.target.setRangeText("",evt.target.selectionStart,evt.target.selectionEnd,'select'); // delete selection if any
+                    evt.target.setRangeText(seb.privateClipboard.text,evt.target.selectionStart,evt.target.selectionStart+seb.privateClipboard.text.length,'end');
+                }
+                else { // all other (check designMode and contenteditable!)
+                    let w = evt.target.ownerDocument.defaultView;
+                    let designMode = evt.target.ownerDocument.designMode;
+                    sl.debug("document.designMode: " + designMode);
+                    let contentEditables = evt.target.ownerDocument.querySelectorAll('*[contenteditable]');
+                    sl.debug("elements with contenteditable attribute: " + contentEditables.length);
+                    let sel = w.getSelection();
+                    let ranges = [];
+                    
+                    for (let i = 0; i < sel.rangeCount; i++) {
+                        let r = sel.getRangeAt(i);
+                        if (designMode === 'on') {
+                            r.deleteContents();
+                        }
+                        else {
+                            if (contentEditables.length) {
+                                contentEditables.forEach( node => {
+                                    if (node.contains(r.commonAncestorContainer)) {
+                                        r.deleteContents();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                     
+                    if (designMode === 'on') {
+                        let range = w.getSelection().getRangeAt(0);
+                        if (seb.privateClipboard.ranges.length > 0) {
+                            seb.privateClipboard.ranges.map(r => {
+                                range = w.getSelection().getRangeAt(0);
+                                range.collapse();
+                                const newNode = r.cloneNode(true);
+                                range.insertNode(newNode);
+                                range.collapse();
+                            });
+                        }
+                        else {
+                            range.collapse();
+                            range.insertNode(w.document.createTextNode(seb.privateClipboard.text));
+                            range.collapse();
+                        }
+                    }
+                    else {
+                        if (contentEditables.length) {
+                            contentEditables.forEach( node => {
+                                let range = w.getSelection().getRangeAt(0);
+                                if (node.contains(range.commonAncestorContainer)) {
+                                    if (seb.privateClipboard.ranges.length > 0) {
+                                        seb.privateClipboard.ranges.map(r => {
+                                            range = w.getSelection().getRangeAt(0);
+                                            range.collapse();
+                                            const newNode = r.cloneNode(true);
+                                            range.insertNode(newNode);
+                                            range.collapse();
+                                        });
+                                    }
+                                    else {
+                                        range = w.getSelection().getRangeAt(0);
+                                        range.collapse();
+                                        range.insertNode(w.document.createTextNode(seb.privateClipboard.text));
+                                        range.collapse();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            catch(e) {
+                sl.debug(e);
+            }
+            finally {
+                evt.preventDefault();
+                evt.returnValue = false;
+                return false;
+            }
+        }
+    }
 }

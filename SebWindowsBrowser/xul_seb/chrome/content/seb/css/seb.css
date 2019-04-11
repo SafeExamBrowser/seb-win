@@ -22,17 +22,21 @@
 	color: white;
 }
 
-#sebLockScreenHeader, #sebLocked {
-	font-size: 1.8em;
+.lockHeader {
+    font-size: 1.8em;
 	font-weight: bold;
 	margin-bottom: 30px;
 }
 
-#sebLockScreenText, #sebLockScreenUnlock, sebLockPassword {
-	font-size: 1.6em;
+.lockText {
+    font-size: 1.6em;
 }
 
-#sebLockPassword {
+.lockSmall {
+    font-size: 1.3em;
+}
+
+.lockPassword {
 	margin-top: 30px;
 }
 

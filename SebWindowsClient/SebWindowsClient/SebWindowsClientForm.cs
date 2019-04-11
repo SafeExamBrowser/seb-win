@@ -105,6 +105,7 @@ namespace SebWindowsClient
 		{
 			InitializeComponent();
 
+			SEBXULRunnerWebSocketServer.OnXulRunnerClearClipboard += OnXulRunnerClearClipboard;
 			SEBXULRunnerWebSocketServer.OnXulRunnerCloseRequested += OnXULRunnerShutdDownRequested;
 			SEBXULRunnerWebSocketServer.OnXulRunnerQuitLinkClicked += OnXulRunnerQuitLinkPressed;
 			Microsoft.Win32.SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
@@ -122,6 +123,11 @@ namespace SebWindowsClient
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
 		{
 			PlaceFormOnDesktop(TapTipHandler.IsKeyboardVisible());
+		}
+
+		private void OnXulRunnerClearClipboard(object sender, EventArgs e)
+		{
+			SEBClipboard.CleanClipboard();
 		}
 
 		private void OnXULRunnerShutdDownRequested(object sender, EventArgs e)

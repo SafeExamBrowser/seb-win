@@ -87,6 +87,7 @@ this.seb =  {
 	arsKeys : {},
 	isLocked : false,
     lockMode : MODE_RECONNECT,
+    privateClipboard : {},
 
 	toString : function() {
 		return appinfo.name;
@@ -160,6 +161,7 @@ this.seb =  {
 		base.initLocale();
 		base.initAdditionalResources();
 		base.getArsLinksAndKeys();
+        base.initPrivateClipboard();
 		sn.init(base); // needs config on init for compiled RegEx
 		sn.initProxies();
 		sh.init(base);
@@ -254,7 +256,9 @@ this.seb =  {
 		sl.debug("initMain");
 		base.url = su.getUrl();
 		base.allowQuit = su.getConfig("allowQuit","boolean",false);
-		base.quitURL =su.getConfig("quitURL","string","").replace(/\/$/,"");
+		base.quitURL = su.getConfig("quitURL","string","").replace(/\/$/,"");
+        base.clearClipboardUrl = su.getConfig("clearClipboardUrl","string","").replace(/\/$/,"");
+        base.clearClipboardUrlRegex = new RegExp(sn.getRegex(base.clearClipboardUrl));
 		base.initArsKeys(win);
 		sb.setEmbeddedCerts();
 		base.setQuitHandler(win);
@@ -263,6 +267,7 @@ this.seb =  {
 		sh.createFullscreenController(win);
 		ss.setSebserverSocketHandler(win);
 		sb.createSpellCheckController(win);
+        sb.createClipboardController(win);
 		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
 		sw.setMainNavigation(win);
@@ -286,6 +291,7 @@ this.seb =  {
 		sh.createScreenKeyboardController(win);
 		sh.createFullscreenController(win);
 		sb.createSpellCheckController(win);
+        sb.createClipboardController(win);
 	},
 
 	initAdditionalResources : function (obj) {
@@ -382,6 +388,11 @@ this.seb =  {
 		keySet.parentNode.appendChild(keySet);
 	},
 	
+    initPrivateClipboard : function() {
+        base.privateClipboard['text'] = "";
+        base.privateClipboard['ranges'] = [];
+    },
+    
 	/* handler */
 	setQuitHandler : function(win) {
 		sl.debug("setQuitHandler");
@@ -492,7 +503,7 @@ this.seb =  {
 			//sb.dialogHandler(msg);
 			return;
 		}
-		if (base.reconfState == RECONF_START || base.reconfState == RECONF_PROCESSING) { // started by link and dialog
+		if (base.reconfState == RECONF_START) { // started by link and dialog
 			sb.resetReconf();
 		}
 		base.reset();
@@ -626,14 +637,36 @@ this.seb =  {
 		sl.debug("initLockScreen");
 		sl.out("Lock Screen!");
         let sebLocked = win.document.getElementById("sebLocked");
+        let sebLockedUserSwitch = win.document.getElementById("sebLockedUserSwitch");
         let sebReconnect = win.document.getElementById("sebReconnect");
-        if (base.lockMode === MODE_LOCKED) {
-            sebLocked.classList.remove("hidden");
-            sebReconnect.classList.add("hidden");
-        }
-        else {
-            sebLocked.classList.add("hidden");
-            sebReconnect.classList.remove("hidden");
+        switch (base.lockMode) {
+            case MODE_LOCKED :
+                sebLocked.classList.remove("hidden");
+                sebLockedUserSwitch.classList.add("hidden");
+                sebReconnect.classList.add("hidden");
+                break;
+            case MODE_USERSWITCH :
+                sebLocked.classList.add("hidden");
+                sebLockedUserSwitch.classList.remove("hidden");
+                sebReconnect.classList.add("hidden");
+                let unlockKeySet = win.document.getElementById("unlockKeySet");
+                unlockKeySet.setAttribute("disabled",false);
+                try {
+                    win.document.getElementById("sebUserSwitchPasswordInput").value = "";
+                    win.document.getElementById("sebLockUnlockMessageUserSwitch").value = " ";
+                }
+                catch(e) {}
+                break;
+            case MODE_RECONNECT :
+                sebLocked.classList.add("hidden");
+                sebLockedUserSwitch.classList.add("hidden");
+                sebReconnect.classList.remove("hidden");
+                try {
+                    win.document.getElementById("sebLockPasswordInput").value = "";
+                    win.document.getElementById("sebLockUnlockMessage").value = " ";
+                }
+                catch(e) {}
+                break;
         }
 	},
 	
@@ -644,18 +677,24 @@ this.seb =  {
 		}
 	},
 	
-	lock : function(fromSocket=false) { // fromSocket = lock and unlock system per websocket command not if messageServer is unconnected
-		sl.debug("seb lock (fromSocket: " + fromSocket + ")");
-        base.lockMode = (fromSocket) ? MODE_LOCKED : MODE_RECONNECT;
+	lock : function(lockMode=MODE_RECONNECT) {
+		sl.debug("seb lock " + lockMode);
+        base.lockMode = lockMode;
         if (base.isLocked) {
             sl.debug("seb already locked...");
             return;
         }
+        
 		for (var i=0;i<sw.wins.length;i++) {
 			try {
                 let lockBrowser = sw.wins[i].document.getElementById("seb.lockscreen");
                 let imageBox = sw.wins[i].document.getElementById("imageBox");
-                lockBrowser.setAttribute("src",LOCK_URL);
+                if (lockBrowser.getAttribute('src') !== LOCK_URL) {
+                    lockBrowser.setAttribute("src",LOCK_URL);
+                }
+                else {
+                    lockBrowser.reload();
+                }
                 sw.showLock(sw.wins[i]);
                 if (imageBox) {
                     imageBox.classList.add("hidden2");
@@ -667,15 +706,17 @@ this.seb =  {
 			}
 		}
 		base.isLocked = true;
-        if (!fromSocket) {
-            base.setUnconnectedMessage();
-            sh.reconnect();
-        }
-        else {
-             ss.sendLock();
+        switch (lockMode) {
+            case MODE_RECONNECT :
+                base.setUnconnectedMessage();
+                sh.reconnect();
+                break;
+            case MODE_LOCKED :
+                ss.sendLock();
+                break;
         }
 	},
-	
+    
 	setUnconnectedMessage : function() {
 		sl.debug("setUnconnectedMessage");
 		for (var i=0;i<sw.wins.length;i++) {
@@ -740,23 +781,31 @@ this.seb =  {
 	
 	unlock : function(win) {
 		sl.debug("try unlock...");
-		let password = win.document.getElementById("sebLockPasswordInput");
-		let unlockMessage = win.document.getElementById("sebLockUnlockMessage");
-		unlockMessage.value = "";
-		let passwd = su.getConfig("hashedQuitPassword","string","");
+        let passwd = su.getConfig("hashedQuitPassword","string","");
+        let password = null;
+        let unlockMessage = null;
 		if (passwd === "") {
 			password.value = "";
 			unlockMessage.value = su.getLocStr("seb.unlock.failed.no.password");
 			return;
 		}
-		
-		pwd = password.value;
+        switch (base.lockMode) {
+            case MODE_USERSWITCH :
+                password = win.document.getElementById("sebUserSwitchPasswordInput");
+                unlockMessage = win.document.getElementById("sebLockUnlockMessageUserSwitch");
+                break;
+            case MODE_RECONNECT :
+                password = win.document.getElementById("sebLockPasswordInput");
+                unlockMessage = win.document.getElementById("sebLockUnlockMessage");
+                break;
+        }
+		unlockMessage.value = "";
+		let pwd = password.value;
 		if (pwd === "") {
 			unlockMessage.value = su.getLocStr("seb.unlock.failed.empty.password");
 			return;
 		}
 		let check = su.getHash(pwd);
-		//sl.debug(check.toLowerCase() + ":" + passwd.toLowerCase());
 		if (check.toLowerCase() != passwd.toLowerCase()) {
 			unlockMessage.value = su.getLocStr("seb.unlock.failed.wrong.password");
 			return;
@@ -764,11 +813,11 @@ this.seb =  {
 		else {
 			base.unlockAll();
 		}
-		//base.setReconnectScreen();
 	},
 	
-	unlockAll : function(fromSocket=false) {
-        base.lockMode = (fromSocket) ? MODE_LOCKED : MODE_RECONNECT;
+	unlockAll : function(lockMode=MODE_RECONNECT) {
+        sl.debug("unlockAll");
+        base.lockMode = lockMode;
         if (!base.isLocked) {
             return;
         }
@@ -780,13 +829,15 @@ this.seb =  {
 			}
 		}
 		base.isLocked = false;
-        if (!fromSocket) {
-            if (sh.messageServer) {
-                base.deleteUnconnectedMessage();
-            }
-        }
-        else {
-            ss.sendUnlock();
+        switch (lockMode) {
+            case MODE_RECONNECT :
+                if (sh.messageServer) {
+                    base.deleteUnconnectedMessage();
+                }
+                break;
+            case MODE_LOCKED :
+                ss.sendUnlock();
+                break;
         }
 	},
 	
@@ -899,5 +950,12 @@ this.seb =  {
 			sw.closeAllWin();
 			sl.debug("quit");
 		}
-	}
+	},
+    
+    clearClipboard : function() {
+        sl.debug("clearClipboard");
+        base.privateClipboard.ranges = [];
+        base.privateClipboard.text = "";
+        sh.sendClearClipboard();
+    }
 }

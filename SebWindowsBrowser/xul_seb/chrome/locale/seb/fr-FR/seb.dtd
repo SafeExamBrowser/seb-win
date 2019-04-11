@@ -13,6 +13,8 @@
 <!ENTITY spellDictionaries.label "Languages">
 <!ENTITY spellDictionaries.accesskey "l">
 <!ENTITY seb.lock.header "Lost Connection to SEB Kiosk Application!">
+<!ENTITY seb.lock.userswitch.header "User Switch Locked SEB!">
+<!ENTITY seb.lock.userswitch.text "SEB is locked because it was attempted to switch the user.">
 <!ENTITY seb.lock.text "The SEB browser can only be unlocked by entering the quit/unlock password, which usually exam supervision/support knows.">
 <!ENTITY seb.lock.unlock "After unlocking, make sure exam answers are saved, quit the browser and restart SEB.">
 <!ENTITY seb.lock.unlock.button "Unlock">

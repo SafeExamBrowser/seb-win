@@ -30,6 +30,8 @@
 	see: https://developer.mozilla.org/en/Components.utils.import 
 */
 
+// http://kb.mozillazine.org/Chrome_URLs
+
 this.EXPORTED_SYMBOLS = ["SebWin"];
 
 /* Modules */
@@ -67,6 +69,7 @@ const	xulFrame = "seb.iframe",
 	xulBrowser = "seb.browser",
 	xulErr = "chrome://seb/content/err.xul",
 	xulLoad	= "chrome://seb/content/load.xul",
+    unknownContent = "chrome://mozapps/content/downloads/unknownContentType.xul",
 	contentDeck = 0,
 	serverDeck = 1,
 	messageDeck = 2,
@@ -88,9 +91,29 @@ this.SebWin = {
 		errorViewer : /^.*?error\.xhtml\?req\=.*/
 	},
 	
+    windowListener : {
+        //https://stackoverflow.com/questions/24560243/intercept-handle-mime-type-file?lq=1
+        //https://mike.kaply.com/2013/05/15/setting-default-application-handlers/
+        onOpenWindow: function (aWindow) {},
+        onCloseWindow: function (aWindow) {},
+        onWindowTitleChange: function (aWindow, aTitle) {
+            if (su.getConfig("allowDownUploads","boolean",true)) {
+                return;
+            }
+            let domWin = aWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindowInternal || Ci.nsIDOMWindow);
+            //let win = base.getChromeWin(domWin);
+            sl.debug(domWin.location);
+            if (domWin.location.href === unknownContent) {
+                sl.debug("close unknownContent dialog");
+                domWin.close();
+            }
+        }
+    },
+    
 	init : function(obj) {
 		base = this;
 		seb = obj;
+        wm.addListener(base.windowListener);
 		sl.out("SebWin initialized: " + seb);
 	},
 	

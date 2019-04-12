@@ -3233,9 +3233,9 @@ namespace SebWindowsConfig
 			this.checkBoxOpenDownloads.Location = new System.Drawing.Point(171, 175);
 			this.checkBoxOpenDownloads.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.checkBoxOpenDownloads.Name = "checkBoxOpenDownloads";
-			this.checkBoxOpenDownloads.Size = new System.Drawing.Size(280, 24);
+			this.checkBoxOpenDownloads.Size = new System.Drawing.Size(236, 24);
 			this.checkBoxOpenDownloads.TabIndex = 1;
-			this.checkBoxOpenDownloads.Text = "Open files after downloading (Mac)";
+			this.checkBoxOpenDownloads.Text = "Open files after downloading";
 			this.toolTip1.SetToolTip(this.checkBoxOpenDownloads, "Downloaded files will be opened with the according application, which has to be s" +
         "et correctly in the system for each used file type. ");
 			this.checkBoxOpenDownloads.UseVisualStyleBackColor = true;
@@ -3248,9 +3248,9 @@ namespace SebWindowsConfig
 			this.checkBoxAllowDownUploads.Location = new System.Drawing.Point(38, 40);
 			this.checkBoxAllowDownUploads.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.checkBoxAllowDownUploads.Name = "checkBoxAllowDownUploads";
-			this.checkBoxAllowDownUploads.Size = new System.Drawing.Size(345, 24);
+			this.checkBoxAllowDownUploads.Size = new System.Drawing.Size(301, 24);
 			this.checkBoxAllowDownUploads.TabIndex = 71;
-			this.checkBoxAllowDownUploads.Text = "Allow downloading and uploading files (Mac)";
+			this.checkBoxAllowDownUploads.Text = "Allow downloading and uploading files";
 			this.toolTip1.SetToolTip(this.checkBoxAllowDownUploads, "Usually to be used with permitted third party applications for which you want to " +
         "provide files to be downloaded.");
 			this.checkBoxAllowDownUploads.UseVisualStyleBackColor = true;

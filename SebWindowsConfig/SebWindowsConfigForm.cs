@@ -15,6 +15,7 @@ using SebWindowsClient.CryptographyUtils;
 using SebWindowsClient.DiagnosticsUtils;
 using SebWindowsConfig.Controls;
 using SebWindowsConfig.Entities;
+using SebWindowsConfig.Utilities;
 using DictObj = System.Collections.Generic.Dictionary<string, object>;
 using ListObj = System.Collections.Generic.List<object>;
 
@@ -38,7 +39,7 @@ namespace SebWindowsConfig
 		private string lastSettingsPassword = "";
 		private int lastCryptoIdentityIndex = 0;
 
-		private const string SEB_CONFIG_LOG = "SebConfig.log";
+		internal const string SEB_CONFIG_LOG = "SebConfig.log";
 
 		//X509Certificate2 fileCertificateRef = null;
 
@@ -4462,5 +4463,9 @@ namespace SebWindowsConfig
 			SEBSettings.settingsCurrent[SEBSettings.KeyAudioVolumeLevel] = trackBarVolumeLevel.Value;
 		}
 
-    }
+		private void collectLogFilesToolStripMenuItem_Click(object sender, EventArgs args)
+		{
+			new LogCollector(this).Run();
+		}
+	}
 }

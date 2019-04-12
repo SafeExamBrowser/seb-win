@@ -55,10 +55,14 @@
     <ApplicationIcon>SEBConfigToolIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.3.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.3\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -89,6 +93,7 @@
     <Compile Include="Controls\AdditionalResources.Designer.cs">
       <DependentUpon>AdditionalResources.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\LogCollector.cs" />
     <EmbeddedResource Include="Controls\FilterRuleControl.resx">
       <DependentUpon>FilterRuleControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +115,7 @@
       <DependentUpon>AdditionalResources.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -416,6 +416,7 @@ namespace SebWindowsConfig
 			this.editDuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.configureClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.applyAndStartSEBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.collectLogFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabPageHookedKeys.SuspendLayout();
 			this.groupBoxFunctionKeys.SuspendLayout();
 			this.groupBoxSpecialKeys.SuspendLayout();
@@ -5264,6 +5265,7 @@ namespace SebWindowsConfig
             this.openSettingsToolStripMenuItem,
             this.saveSettingsToolStripMenuItem,
             this.saveSettingsAsToolStripMenuItem,
+            this.collectLogFilesToolStripMenuItem,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
@@ -5365,6 +5367,13 @@ namespace SebWindowsConfig
 			this.applyAndStartSEBToolStripMenuItem.Size = new System.Drawing.Size(284, 30);
 			this.applyAndStartSEBToolStripMenuItem.Text = "Apply and Start SEB";
 			this.applyAndStartSEBToolStripMenuItem.Click += new System.EventHandler(this.applyAndStartSEBToolStripMenuItem_Click);
+			// 
+			// collectLogFilesToolStripMenuItem
+			// 
+			this.collectLogFilesToolStripMenuItem.Name = "collectLogFilesToolStripMenuItem";
+			this.collectLogFilesToolStripMenuItem.Size = new System.Drawing.Size(286, 30);
+			this.collectLogFilesToolStripMenuItem.Text = "Collect Log Files...";
+			this.collectLogFilesToolStripMenuItem.Click += new System.EventHandler(this.collectLogFilesToolStripMenuItem_Click);
 			// 
 			// SebWindowsConfigForm
 			// 
@@ -5870,6 +5879,7 @@ namespace SebWindowsConfig
         private System.Windows.Forms.ComboBox comboBoxMinMacOSVersion;
         private System.Windows.Forms.CheckBox checkBoxAllowScreenSharing;
         private System.Windows.Forms.CheckBox checkBoxEnablePrivateClipboard;
-    }
+		private System.Windows.Forms.ToolStripMenuItem collectLogFilesToolStripMenuItem;
+	}
 }
 

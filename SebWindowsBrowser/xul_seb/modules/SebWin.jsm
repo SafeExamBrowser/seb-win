@@ -36,7 +36,7 @@ this.EXPORTED_SYMBOLS = ["SebWin"];
 
 /* Modules */
 const 	{ classes: Cc, interfaces: Ci, results: Cr, utils: Cu } = Components,
-	{ scriptloader } = Cu.import("resource://gre/modules/Services.jsm").Services;
+	{ scriptloader, prompt } = Cu.import("resource://gre/modules/Services.jsm").Services;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
@@ -70,6 +70,7 @@ const	xulFrame = "seb.iframe",
 	xulErr = "chrome://seb/content/err.xul",
 	xulLoad	= "chrome://seb/content/load.xul",
     unknownContent = "chrome://mozapps/content/downloads/unknownContentType.xul",
+    commonDialog = "chrome://global/content/commonDialog.xul",
 	contentDeck = 0,
 	serverDeck = 1,
 	messageDeck = 2,
@@ -90,22 +91,46 @@ this.SebWin = {
 		pdfViewer : /^.*?\/pdfjs\/.*?viewer\.html\?file\=/,
 		errorViewer : /^.*?error\.xhtml\?req\=.*/
 	},
-	
+	urlInRef : /(w+\.w+)/,
     windowListener : {
         //https://stackoverflow.com/questions/24560243/intercept-handle-mime-type-file?lq=1
         //https://mike.kaply.com/2013/05/15/setting-default-application-handlers/
         onOpenWindow: function (aWindow) {},
         onCloseWindow: function (aWindow) {},
         onWindowTitleChange: function (aWindow, aTitle) {
-            if (su.getConfig("allowDownUploads","boolean",true)) {
-                return;
-            }
             let domWin = aWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindowInternal || Ci.nsIDOMWindow);
-            //let win = base.getChromeWin(domWin);
-            sl.debug(domWin.location);
-            if (domWin.location.href === unknownContent) {
-                sl.debug("close unknownContent dialog");
-                domWin.close();
+            sl.debug(domWin.location.href);
+            switch (domWin.location.href) {
+                case unknownContent :
+                    if (!su.getConfig("allowDownUploads","boolean",true)) { // close dialog
+                        sl.debug("close unknownContent dialog");
+                        domWin.close();
+                        prompt.alert(seb.mainWin, su.getLocStr("seb.download.blocked.title"), su.getLocStr("seb.download.blocked.text"));
+                    }
+                    else { // show dialog but look at urls
+                        sl.debug("parse commonDialog for unallowed url");
+                        if (!su.getConfig("allowUrlInCommonDialog","boolean",false)) {
+                            try {
+                                domWin.document.getElementById("from").parentElement.style.display = "none";
+                            }
+                            catch(e) { sl.debug(e); }
+                        }
+                    }
+                break;
+                case commonDialog :
+                   if (!su.getConfig("allowUrlInCommonDialog","boolean",false)) {
+                        sl.debug("parse commonDialog for unallowed url");
+                        try {
+                            let infoElement = domWin.document.getElementById("info.body");
+                            let infoHtml = infoElement.innerHTML;
+                            let newInfoHtml = infoHtml.replace(/\w*?\.\w+/g,"*");
+                            infoElement.innerHTML = newInfoHtml;
+                        }
+                        catch (e) { sl.debug(e); }
+                    }
+                break;
+                default :
+                    return
             }
         }
     },

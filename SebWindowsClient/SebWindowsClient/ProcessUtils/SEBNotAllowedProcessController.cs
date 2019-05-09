@@ -4,20 +4,14 @@
 //     Biel, 2012
 // -------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 using System.Collections;
+using System.Diagnostics;
 using System.Management;
-using System.Threading;
 using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.ConfigurationUtils;
-using SebWindowsClient.XULRunnerCommunication;
 
 namespace SebWindowsClient.ProcessUtils
 {
-    public class SEBNotAllowedProcessController
+	public class SEBNotAllowedProcessController
     {
         /// <summary>
         /// Check if a process is running
@@ -67,12 +61,6 @@ namespace SebWindowsClient.ProcessUtils
                     string name = "processHasExitedTrue";
                     name = processToClose.ProcessName;
                     Logger.AddInformation("Closing " + name);
-                    if (processToClose.ProcessName.Contains("firefox"))
-                    {
-                        Logger.AddInformation("Closing seb2 Firefox over Socket");
-                        SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();
-                        Thread.Sleep(500);
-                    }
 
                     // Try to close process nicely with CloseMainWindow
                     try

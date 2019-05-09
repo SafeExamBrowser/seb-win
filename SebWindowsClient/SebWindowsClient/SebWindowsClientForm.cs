@@ -2058,37 +2058,27 @@ namespace SebWindowsClient
 
 			Logger.AddInformation("closing processes that where started by seb");
 
-			for(int i = 0; i < permittedProcessesReferences.Count; i++)
+			for (int i = 0; i < permittedProcessesReferences.Count; i++)
 			{
 				try
 				{
 					var proc = permittedProcessesReferences[i];
 
-					//if (proc != null && !proc.HasExited && proc.MainWindowHandle == IntPtr.Zero)
-					//{
-					//	//Get Process from WindowHandle by Name
-					//	var permittedProcessSettings = (List<object>)SEBClientInfo.getSebSetting(SEBSettings.KeyPermittedProcesses)[SEBSettings.KeyPermittedProcesses];
-     //                   string executable = proc.GetExecutableName();
-     //                   string title = null;
-     //                   foreach (DictObj permittedProcessDict in permittedProcessSettings)
-     //                   {
-     //                       if (((string)permittedProcessDict[SEBSettings.KeyExecutable]).Contains(executable))
-     //                       {
-     //                           title = (string)permittedProcessDict[SEBSettings.KeyIdentifier];
-     //                       }
-     //                   }
-     //                   if (title != null)
-     //                   {
-     //                       proc = SEBWindowHandler.GetWindowHandleByTitle(title).GetProcess();
-     //                   }
-     //               }
 					if (proc != null && !proc.HasExited)
 					{
 						if (reconfiguring && proc.ProcessName.Contains("firefox"))
 						{
 							continue;
 						}
-						Logger.AddInformation("attempting to close " + proc.ProcessName);
+
+						if (xulRunner?.Id == proc.Id || proc.ProcessName.Contains("firefox"))
+						{
+							Logger.AddInformation("Allowing seb2 Firefox to close...");
+							SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();
+							Thread.Sleep(500);
+						}
+
+						Logger.AddInformation("Attempting to close " + proc.ProcessName);
 						SEBNotAllowedProcessController.CloseProcess(proc);   
 					}
 				}

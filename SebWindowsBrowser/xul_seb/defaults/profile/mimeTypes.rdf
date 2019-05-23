@@ -79,4 +79,21 @@
     	<NC:handlerProp RDF:resource="urn:mimetype:handler:application/attemptdata"/>
   </RDF:Description>
 
+  <RDF:Seq RDF:about="urn:mimetypes:root">
+    	<RDF:li RDF:resource="urn:mimetype:application/seb"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mimetype:handler:application/seb"
+                   NC:alwaysAsk="false"
+				   NC:useSystemDefault="true"
+                   NC:saveToDisk="false">
+  	<NC:externalApplication RDF:resource="urn:mimetype:externalApplication:application/seb"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mimetype:application/seb"
+                   NC:value="application/seb"
+                   NC:editable="true"
+                   NC:fileExtensions="seb"
+                   NC:description="Safe Exam Browser Configuration File">
+    	<NC:handlerProp RDF:resource="urn:mimetype:handler:application/seb"/>
+  </RDF:Description>
+
 </RDF:RDF>

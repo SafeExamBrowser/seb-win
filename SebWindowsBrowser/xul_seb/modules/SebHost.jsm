@@ -372,12 +372,12 @@ this.SebHost = {
 	},
 	
 	handleSebFileTransfer : function (opts) {
+        sl.debug("handleSebFileTransfer handled: " + opts);
 		if (opts) {
-			sl.debug("handleSebFileTransfer handled: " + opts);
 			sb.dialogHandler("SEB Config File transfer succeeded. Waiting for new SEB settings...");
 		}
-		else {
-			sl.debug("handleSebFileTransfer handled: " + opts);
+        if (seb.reconfState == RECONF_START) {
+            seb.reconfState = RECONF_PROCESSING;
 		}
 	},
 	

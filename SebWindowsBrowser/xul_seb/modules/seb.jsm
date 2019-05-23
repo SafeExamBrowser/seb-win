@@ -503,7 +503,7 @@ this.seb =  {
 			//sb.dialogHandler(msg);
 			return;
 		}
-		if (base.reconfState == RECONF_START) { // started by link and dialog
+        if (base.reconfState == RECONF_START || base.reconfState == RECONF_PROCESSING) { // started by link and dialog
 			sb.resetReconf();
 		}
 		base.reset();

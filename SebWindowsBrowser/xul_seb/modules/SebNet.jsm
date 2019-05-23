@@ -152,8 +152,13 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			}
 			*/ 
 			
-			subject.cancel( this.aborted );
-			sb.openSebFileDialog(url2);
+            if (su.getConfig("backgroundOpenSEBConfig", "boolean", false)) {
+                sl.debug("opening seb settings in the background");
+                seb.reconfState = RECONF_START;
+            } else {
+                subject.cancel( this.aborted );
+                sb.openSebFileDialog(url2);
+            }
 			//seb.reconfState = RECONF_NO;
 			//w.XULBrowserWindow.onStatusChange(w.XULBrowserWindow.progress, w.XULBrowserWindow.request, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.status, STATUS_REDIRECT_TO_SEB_FILE_DOWNLOAD_DIALOG.message);
 			return;

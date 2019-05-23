@@ -238,8 +238,13 @@ nsBrowserStatusHandler.prototype = {
 
 this.SebBrowser = {
 	//lastDocumentUrl : null,
-	dialogHandler : null,
 	quitURLRefererFilter : "",
+    dialog : null,
+    dialogHandler : function(message) {
+        if (this.dialog) {
+            this.dialog(message);
+        }
+    },
 	init : function(obj) {
 		base = this;
 		seb = obj;
@@ -874,16 +879,21 @@ this.SebBrowser = {
 		sl.debug("reconfigure started");
 		base.initBrowser(win);
 		//seb.reconfState = RECONF_START;
-		base.dialogHandler = handler;
+        base.dialog = handler;
 		//base.setBrowserHandler(win);
 		base.loadPage(win,url);
 	},
 	
 	abortReconf : function(win) {
-		sl.debug("reconfigure aborted");
-		seb.reconfState = RECONF_ABORTED;
-		sh.sendReconfigureAborted();
-		win.close();
+        if (seb.reconfState == RECONF_PROCESSING) {
+            sl.debug("reconfigure abort ignored - processing seb file");
+            base.dialogHandler("Waiting to finish SEB reconfiguration");
+        } else {
+            sl.debug("reconfigure aborted");
+            seb.reconfState = RECONF_ABORTED;
+            sh.sendReconfigureAborted();
+            win.close();
+        }
 	},
 	
 	resetReconf : function() {

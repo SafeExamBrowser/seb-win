@@ -54,6 +54,7 @@ pref("browser.cache.disk.capacity", 512000);
 pref("dom.push.enabled", true);
 pref("browser.cache.disk.enable", true);
 pref("media.navigator.permission.disabled", true);
+pref("media.webspeech.synth.enabled", true);
 pref("datareporting.healthreport.uploadEnabled", false);
 pref("datareporting.healthreport.documentServerURI", "");
 pref("datareporting.healthreport.service.enabled", false);

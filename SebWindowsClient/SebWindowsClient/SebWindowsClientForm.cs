@@ -1077,11 +1077,6 @@ namespace SebWindowsClient
 								SEBMessageBox.Show(SEBUIStrings.permittedApplicationNotFound, SEBUIStrings.permittedApplicationNotFoundMessage.Replace("%s", title), MessageBoxIcon.Error, MessageBoxButtons.OK);
 							}
 						}
-						else
-						{
-							// Permitted application is Firefox: Set its call entry to null
-							permittedProcessesCalls.Add(null);
-						}
 					}
 				}
 			}
@@ -2066,12 +2061,15 @@ namespace SebWindowsClient
 
 					if (proc != null && !proc.HasExited)
 					{
+						var hasKey = SEBSettings.settingsCurrent.TryGetValue(SEBSettings.KeyEnableSebBrowser, out var value);
+						var browserEnabled = hasKey && value is bool enabled && enabled;
+
 						if (reconfiguring && proc.ProcessName.Contains("firefox"))
 						{
 							continue;
 						}
 
-						if (xulRunner?.Id == proc.Id || proc.ProcessName.Contains("firefox"))
+						if (browserEnabled && (xulRunner?.Id == proc.Id || proc.ProcessName.Contains("firefox")))
 						{
 							Logger.AddInformation("Allowing seb2 Firefox to close...");
 							SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();

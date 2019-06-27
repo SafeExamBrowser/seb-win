@@ -322,10 +322,15 @@ this.SebHost = {
 				sb.clearSession();
 			}
 			if (/\.pdf$/i.test(url)) {
-				sw.openPdfViewer(url);
+				sw.openPdfViewer(url,ar["newWindow"]);
 			}
 			else { // ToDo: mimetype handling
-				sw.openDistinctWin(url);
+                if (ar["newWindow"] === false) {
+                    sb.loadPage(seb.mainWin,url);
+                }
+                else {
+                    sw.openDistinctWin(url);
+                }
 			}
 		}
 		catch(e) {

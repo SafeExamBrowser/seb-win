@@ -119,7 +119,8 @@ function nsBrowserStatusHandler() {};
 nsBrowserStatusHandler.prototype = {
 	browser : null,
 	originRequestURI : null,
-	mainPageURI : null,	
+	mainPageURI : null,
+    redirecting : false,
 	baseurl : null,
 	lastSuccess : null,
 	referrer : null,
@@ -323,7 +324,6 @@ this.SebBrowser = {
 					for (var key in seb.ars) {
 						if (seb.ars[key].checkTrigger(uri,progress.DOMWindow.document.URL)) {
 							if (seb.ars[key].isLink) {
-								
 								this.onStatusChange(progress, request, STATUS_LOAD_AR.status, key);
 								return;
 							}
@@ -1371,6 +1371,29 @@ this.SebBrowser = {
                 evt.returnValue = false;
                 return false;
             }
+        }
+    },
+    
+    createUploadController : function (win) {
+        if (su.getConfig("allowDownUploads","boolean",true)) {
+            return;
+        }
+        sl.debug("createUploadController");
+        win.document.addEventListener("click",onDocumentClick,false);
+		function onDocumentClick(evt) {
+            var el = evt.target;
+            if (el.tagName == "INPUT") {
+                if (el.getAttribute("type") == "file") {
+                    cancelClick(evt);
+                }
+            }
+		}
+        function cancelClick(evt) {
+            sl.debug("input type=file click");
+            evt.stopPropagation();
+            evt.preventDefault();
+            prompt.alert(seb.mainWin, su.getLocStr("seb.download.blocked.title"), su.getLocStr("seb.download.blocked.text"));
+            evt.returnValue = false;
         }
     }
 }

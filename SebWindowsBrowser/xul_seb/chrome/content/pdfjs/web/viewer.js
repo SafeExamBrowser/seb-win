@@ -1205,7 +1205,8 @@ var PDFViewerApplication = {
     return !!this.printService;
   },
   get supportsPrinting() {
-    return PDFPrintServiceFactory.instance.supportsPrinting;
+    return false;
+    //return PDFPrintServiceFactory.instance.supportsPrinting;
   },
   get supportsFullscreen() {
     var support = void 0;
@@ -1217,6 +1218,7 @@ var PDFViewerApplication = {
     if (support && _pdfjsLib.PDFJS.disableFullscreen === true) {
       support = false;
     }
+    support = false;
     return (0, _pdfjsLib.shadow)(this, 'supportsFullscreen', support);
   },
   get supportsIntegratedFind() {

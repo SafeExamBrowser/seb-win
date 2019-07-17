@@ -20,7 +20,8 @@
 	"browser.urlbar.autoFill.typed":false,
 	"signon.autofillForms":false,
 	"signon.autofillForms.http":false,
-	"browser.formfill.enable":false
+	"browser.formfill.enable":false,
+    "network.protocol-handler.external.mailto":false
 },
 "sebPrefsMap": {
 	"browser.download.dir" 		: "downloadDirectoryWin",

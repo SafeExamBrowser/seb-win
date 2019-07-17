@@ -268,6 +268,7 @@ this.seb =  {
 		ss.setSebserverSocketHandler(win);
 		sb.createSpellCheckController(win);
         sb.createClipboardController(win);
+        sb.createUploadController(win);
 		base.locs = win.document.getElementById("locale");
 		base.consts = win.document.getElementById("const");
 		sw.setMainNavigation(win);
@@ -292,6 +293,7 @@ this.seb =  {
 		sh.createFullscreenController(win);
 		sb.createSpellCheckController(win);
         sb.createClipboardController(win);
+        sb.createUploadController(win);
 	},
 
 	initAdditionalResources : function (obj) {
@@ -352,7 +354,6 @@ this.seb =  {
 						return this.linkURLRegex.test(url);
 					}
 					if (this.refererOnly) {
-						
 						return this.refererFilterRegex.test(referer);
 					}
 					return (this.linkURLRegex.test(url) && this.refererFilterRegex.test(referer));
@@ -625,12 +626,17 @@ this.seb =  {
 		if (reset) {
 			sb.clearSession();
 		}
-		if (ar["newWindow"] === false) { // explicit exists and false, null ignored
-			sb.loadPage(base.mainWin,url);
-		}
-		else { // default even if no newWindow parameter exists
-			sw.openDistinctWin(url);
-		}
+        if (/\.pdf$/i.test(url)) {
+            sw.openPdfViewer(url,ar["newWindow"]);
+        }
+        else { // ToDo: mimetype handling
+            if (ar["newWindow"] === false) {
+                sb.loadPage(base.mainWin,url);
+            }
+            else {
+                sw.openDistinctWin(url);
+            }
+        }
 	},
 	
 	initLockScreen : function(win) {
@@ -957,5 +963,17 @@ this.seb =  {
         base.privateClipboard.ranges = [];
         base.privateClipboard.text = "";
         sh.sendClearClipboard();
+    },
+    
+    zoomIn : function(win) {
+        win.ZoomManager.enlarge();
+    },
+    
+    zoomOut : function(win) {
+         win.ZoomManager.reduce();
+    },
+    
+    zoomReset : function(win) {
+        win.ZoomManager.reset();
     }
 }

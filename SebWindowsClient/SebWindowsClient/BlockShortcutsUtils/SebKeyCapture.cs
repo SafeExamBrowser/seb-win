@@ -34,33 +34,25 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using SebWindowsClient.ConfigurationUtils;
 using SebWindowsClient.DiagnosticsUtils;
-using SebWindowsClient.ProcessUtils;
-using SebWindowsClient.XULRunnerCommunication;
-using MessageBox = System.Windows.Forms.MessageBox;
 using Point = System.Drawing.Point;
 
 namespace SebWindowsClient.BlockShortcutsUtils
 {
-    /// <summary>
-    /// Allows filtering of any keys, including special
-    /// keys like CTRL, ALT, and Windows keys,
-    /// Win32 windows hooks.
-    /// </summary>
-    /// <remarks>
-    /// Original code example from:
-    /// http://geekswithblogs.net/aghausman/archive/
-    /// </remarks>
-    public class SebKeyCapture
+	/// <summary>
+	/// Allows filtering of any keys, including special
+	/// keys like CTRL, ALT, and Windows keys,
+	/// Win32 windows hooks.
+	/// </summary>
+	/// <remarks>
+	/// Original code example from:
+	/// http://geekswithblogs.net/aghausman/archive/
+	/// </remarks>
+	public class SebKeyCapture
     {
         #region Imports
 
@@ -231,7 +223,7 @@ namespace SebWindowsClient.BlockShortcutsUtils
                 }
                 if (!(Boolean) SEBClientInfo.getSebSetting(SEBSettings.KeyEnableCtrlEsc)[SEBSettings.KeyEnableCtrlEsc])
                 {
-                    if ((KeyInfo.flags == 0) && (KeyInfo.key == Keys.Escape))
+                    if ((Control.ModifierKeys & Keys.Control) != 0 && (KeyInfo.key == Keys.Escape))
                         return true;
 
                 }

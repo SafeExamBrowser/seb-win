@@ -2069,11 +2069,18 @@ namespace SebWindowsClient
 							continue;
 						}
 
-						if (browserEnabled && (xulRunner?.Id == proc.Id || proc.ProcessName.Contains("firefox")))
+						try
 						{
-							Logger.AddInformation("Allowing seb2 Firefox to close...");
-							SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();
-							Thread.Sleep(500);
+							if (browserEnabled && (xulRunner?.Id == proc.Id || proc.ProcessName.Contains("firefox")))
+							{
+								Logger.AddInformation("Allowing seb2 Firefox to close...");
+								SEBXULRunnerWebSocketServer.SendAllowCloseToXulRunner();
+								Thread.Sleep(500);
+							}
+						}
+						catch (InvalidOperationException)
+						{
+							// "xulRunner" is not null, even when the browser is not running! Thus, "xulRunner?.Id" throws an InvalidOperationException...
 						}
 
 						Logger.AddInformation("Attempting to close " + proc.ProcessName);

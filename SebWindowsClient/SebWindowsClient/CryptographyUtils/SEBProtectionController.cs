@@ -148,10 +148,10 @@ namespace SebWindowsClient.CryptographyUtils
 
             X509Store store = new X509Store(StoreName.CertificateAuthority);
             store.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection certsCollection = store.Certificates.Find(X509FindType.FindByTimeValid, (DateTime.Now), false);
+            X509Certificate2Collection certsCollection = store.Certificates.Find(X509FindType.FindByKeyUsage, X509KeyUsageFlags.DigitalSignature, false);
             store = new X509Store(StoreName.AddressBook);
             store.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection certsCollection2 = store.Certificates.Find(X509FindType.FindByTimeValid, (DateTime.Now), false);
+            X509Certificate2Collection certsCollection2 = store.Certificates.Find(X509FindType.FindByKeyUsage, X509KeyUsageFlags.DigitalSignature, false);
             certsCollection.AddRange(certsCollection2);
 
             foreach (X509Certificate2 x509Certificate in certsCollection)

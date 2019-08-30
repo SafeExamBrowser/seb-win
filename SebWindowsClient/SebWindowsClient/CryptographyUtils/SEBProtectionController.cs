@@ -145,11 +145,15 @@ namespace SebWindowsClient.CryptographyUtils
 
             X509Store store = new X509Store(StoreName.CertificateAuthority);
             store.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection certsCollection = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment), false);
+            X509Certificate2Collection certsCollection = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.DigitalSignature), false);
+            X509Certificate2Collection certsCollection2 = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.KeyEncipherment), false);
             store = new X509Store(StoreName.AddressBook);
             store.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection certsCollection2 = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment), false);
+            X509Certificate2Collection certsCollection3 = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.DigitalSignature), false);
+            X509Certificate2Collection certsCollection4 = store.Certificates.Find(X509FindType.FindByKeyUsage, (X509KeyUsageFlags.KeyEncipherment), false);
             certsCollection.AddRange(certsCollection2);
+            certsCollection.AddRange(certsCollection3);
+            certsCollection.AddRange(certsCollection4);
 
             foreach (X509Certificate2 x509Certificate in certsCollection)
             {

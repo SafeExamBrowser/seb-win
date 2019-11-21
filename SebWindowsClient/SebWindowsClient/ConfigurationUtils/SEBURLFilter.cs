@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using ListObj = System.Collections.Generic.List<object>;
-using DictObj = System.Collections.Generic.Dictionary<string, object>;
 using SebWindowsClient.DiagnosticsUtils;
+using DictObj = System.Collections.Generic.Dictionary<string, object>;
+using ListObj = System.Collections.Generic.List<object>;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public class SEBURLFilter
+	public class SEBURLFilter
     {
         public bool enableURLFilter;
         public bool enableContentFilter;
@@ -301,15 +301,14 @@ namespace SebWindowsClient.ConfigurationUtils
                 return false;
             }
 
-            if (filterExpression.port != null && URLToFilter.Port != -1 &&
-                URLToFilter.Port != filterExpression.port)
+            if (filterExpression.port != null && URLToFilter.Port != filterExpression.port)
             {
                 return false;
             }
 
             filterComponent = filterExpression.path;
             if (filterComponent != null && 
-                !Regex.IsMatch(URLToFilter.AbsolutePath.Trim(new char[] { '/' }), filterComponent.ToString(), RegexOptions.IgnoreCase))
+                !Regex.IsMatch(URLToFilter.AbsolutePath.TrimEnd(new char[] { '/' }), filterComponent.ToString(), RegexOptions.IgnoreCase))
             {
                 return false;
             }

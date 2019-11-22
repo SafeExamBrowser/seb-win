@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SebWindowsClient.ConfigurationUtils
 {
-    public class SEBURLFilterRegexExpression
+	public class SEBURLFilterRegexExpression
     {
         public Regex scheme;
         public Regex user;
@@ -77,7 +77,7 @@ namespace SebWindowsClient.ConfigurationUtils
                     if (filterString.Length > 1 && filterString.StartsWith("."))
                     {
                         // Get host string without the "." prefix
-                        filterString = filterString.Substring(1, filterString.Length);
+                        filterString = filterString.Substring(1);
                         // Get regex for host <*://example.com> (without possible subdomains)
                         return RegexForFilterString(filterString);
                     }

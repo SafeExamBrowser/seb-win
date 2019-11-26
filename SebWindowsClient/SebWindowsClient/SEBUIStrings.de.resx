@@ -450,4 +450,10 @@
   <data name="spareBrowserFileNamesFoundText" xml:space="preserve">
     <value>SEB hat irreguläre Dateien in seinem Programmverzeichnis gefunden. Diese könnten von einer älteren Version stammen, falls ein Fehler bei einem SEB-Update aufgetreten ist. Deinstallieren Sie SEB mittels des Windows Kontrollzentrums, danach löschen Sie das SafeExamBrowser-Unterverzeichnis aus dem Program Files (x86) Verzeichnis und installieren Sie diese SEB-Version neu. Liste der überzähligen Dateien:</value>
   </data>
+  <data name="ServiceFailed" xml:space="preserve">
+    <value>Die vollständige Absicherung des Computers ist fehlgeschlagen.</value>
+  </data>
+  <data name="ServiceFailedTitle" xml:space="preserve">
+    <value>Service-Fehler</value>
+  </data>
 </root>

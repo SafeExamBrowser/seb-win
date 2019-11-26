@@ -1802,16 +1802,38 @@ namespace SebWindowsClient
                 SebWindowsClientMain.CheckIfRunViaRemoteConnection();
                 SebWindowsClientMain.CheckServicePolicy(SebWindowsServiceHandler.IsServiceAvailable);
 
-                //Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)
+                // Set Registry Values to lock down CTRL+ALT+DELETE Menu (with SEBWindowsServiceWCF)
                 try
                 {
-                    Logger.AddInformation("setting registry values");
-                    if (SebWindowsServiceHandler.IsServiceAvailable &&
-                        !SebWindowsServiceHandler.SetRegistryAccordingToConfiguration())
+                    if (SebWindowsServiceHandler.IsServiceAvailable)
                     {
-                        Logger.AddError("Unable to set Registry values", this, null);
-                        SebWindowsClientMain.CheckServicePolicy(false);
+						var policy = (int) SEBClientInfo.getSebSetting(SEBSettings.KeySebServicePolicy)[SEBSettings.KeySebServicePolicy];
+						var forceService = policy == (int) sebServicePolicies.forceSebService;
+
+						Logger.AddInformation("Setting registry values...");
+
+						var success = SebWindowsServiceHandler.SetRegistryAccordingToConfiguration();
+
+						if (success)
+						{
+							Logger.AddInformation("Successfully set registry values.");
+						}
+						else if (forceService)
+						{
+							Logger.AddError("Failed to set registry values!", this, null);
+							SEBMessageBox.Show(SEBUIStrings.ServiceFailedTitle, SEBUIStrings.ServiceFailed, MessageBoxIcon.Error, MessageBoxButtons.OK);
+							throw new SEBNotAllowedToRunEception("SEB Windows service failed to set registry values!");
+						}
+						else
+						{
+							Logger.AddWarning("Failed to set registry values!", this, null);
+							SEBMessageBox.Show(SEBUIStrings.ServiceFailedTitle, SEBUIStrings.ServiceFailed, MessageBoxIcon.Warning, MessageBoxButtons.OK);
+						}
                     }
+					else
+					{
+                        SebWindowsClientMain.CheckServicePolicy(false);
+					}
                 }
                 catch (SEBNotAllowedToRunEception ex)
                 {

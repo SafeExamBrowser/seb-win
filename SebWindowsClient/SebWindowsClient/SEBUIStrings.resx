@@ -477,4 +477,10 @@
   <data name="spareBrowserFileNamesFoundText" xml:space="preserve">
     <value>SEB found irregular files in its program directory. These might have been left from an older SEB version if an update failed. Uninstall SEB using the Windows Control Panel, afterwards delete the SafeExamBrowser subdirectory from the Program Files (x86) directory and re-install this SEB version freshly. List of spare files:</value>
   </data>
+  <data name="ServiceFailed" xml:space="preserve">
+    <value>Failed to completely lockdown the computer.</value>
+  </data>
+  <data name="ServiceFailedTitle" xml:space="preserve">
+    <value>Service Error</value>
+  </data>
 </root>

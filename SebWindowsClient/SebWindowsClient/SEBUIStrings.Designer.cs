@@ -826,6 +826,24 @@ namespace SebWindowsClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to completely lockdown the computer..
+        /// </summary>
+        public static string ServiceFailed {
+            get {
+                return ResourceManager.GetString("ServiceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Error.
+        /// </summary>
+        public static string ServiceFailedTitle {
+            get {
+                return ResourceManager.GetString("ServiceFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  copy.
         /// </summary>
         public static string settingsDuplicateSuffix {

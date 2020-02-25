@@ -108,10 +108,14 @@ namespace SebWindowsClient.AdditionalResourcesUtils
                 try
                 {
                     Process process = SEBClientInfo.SebWindowsClientForm.CreateProcessWithExitHandler(string.Join(" ", fullPath, "\"" + path + filename + "\""));
-                    if (SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] == null)
+                    if (SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences.Count > launcher)
                     {
                         SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences[launcher] = process;
                     }
+					else
+					{
+						SEBClientInfo.SebWindowsClientForm.permittedProcessesReferences.Add(process);
+					}
                 }
                 catch (Exception ex)
                 {

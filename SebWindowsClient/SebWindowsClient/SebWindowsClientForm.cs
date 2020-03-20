@@ -226,7 +226,8 @@ namespace SebWindowsClient
 					{
 						try
 						{
-							WebClient myWebClient = new WebClient();
+                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                            WebClient myWebClient = new WebClient();
 
 							if (uri.Scheme == "seb")
 							{

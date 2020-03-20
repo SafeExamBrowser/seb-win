@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ETH Zurich")]
 [assembly: AssemblyProduct("Safe Exam Browser")]
-[assembly: AssemblyCopyright("Copyright © 2010-2019 ETH Zurich, Educational Development and Technology (LET)")]
+[assembly: AssemblyCopyright("Copyright © 2010-2020 ETH Zurich, Educational Development and Technology (LET)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.3.*")]
-[assembly: AssemblyInformationalVersion("2.3")]
+[assembly: AssemblyVersion("2.4.*")]
+[assembly: AssemblyInformationalVersion("2.4pre1")]

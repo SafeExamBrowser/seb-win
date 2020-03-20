@@ -72,6 +72,8 @@ let 	seb = null,
 	sendBrowserExamKey = null,
 	reqHeader = "",
 	reqKey = null,
+	reqConfigHeader = "",
+	reqConfigKey = null,
 	reqSalt = null,
 	urlTrusted = true,
 	pdfJsEnabled = false;
@@ -185,13 +187,20 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
 			var k;
 			if (reqSalt) {								
 				k = base.getRequestValue(rawUrl, reqKey);
+				k2 = base.getRequestValue(rawUrl, reqConfigKey);
 				sl.info("send request key with salt: " + rawUrl + " : " + reqKey + " = " + k);
+				sl.info("send new config key with salt: " + rawUrl + " : " + reqConfigKey + " = " + k2);
 			}
 			else {
 				k = reqKey;
+				k2 = reqConfigKey;
 				sl.info("send request key: " + rawUrl + " : " + reqKey + " = " + k);
+				sl.info("send new config key: " + rawUrl + " : " + reqConfigKey + " = " + k2);
 			}
 			subject.setRequestHeader(reqHeader, k, false);
+			sl.info("send RequestHeader: " + reqHeader + ":" + k);
+			subject.setRequestHeader(reqConfigHeader, k2, false);
+			sl.info("send new ConfigHeader: " + reqConfigHeader + ":" + k2);
 			sl.info("request header:");
 			sl.info("*****************");
 			let aVisitor2 = new requestHeaderVisitor();
@@ -360,6 +369,7 @@ this.SebNet = {
 		seb = obj;
 		base.setListRegex();
 		base.setReqHeader();
+		base.setReqConfigHeader();
 		base.setSSLSecurity();
 		base.blockObs = false;
 		pdfJsEnabled = su.getConfig("sebPdfJsEnabled","boolean", true);
@@ -459,10 +469,12 @@ this.SebNet = {
 		if (p === 0) {
 			return 5;
 		}
-		// http(s) proxy
+		// all *Enabled settings need proxy_type 1
 		p = proxies["HTTPEnable"];
 		let p2 = proxies["HTTPSEnable"];
-		if ( (typeof p === "boolean" && p) || (typeof p2 === "boolean" && p2) ) {
+        let p3 = proxies["SOCKSEnable"];
+        let p4 = proxies["FTPEnable"];
+		if ( (typeof p === "boolean" && p) || (typeof p2 === "boolean" && p2) || (typeof p3 === "boolean" && p3) || (typeof p4 === "boolean" && p4)) {
 			return 1;
 		}
 		return null;
@@ -596,12 +608,25 @@ this.SebNet = {
 		let rh = su.getConfig("sebBrowserRequestHeader","string","");
 		let rk = su.getConfig("browserExamKey","string","");
 		let rs = su.getConfig("browserURLSalt","boolean",true);
-		
 		if (rh != "" && rk != "") {
 			reqHeader = rh;
 			reqKey = rk;
-			reqSalt = rs;
 		}
+		reqSalt = rs;
+	},
+	
+	setReqConfigHeader : function() {
+		sl.debug("setReqConfigHeader");
+		sendBrowserExamKey = su.getConfig("sendBrowserExamKey","boolean",false);
+		if (!sendBrowserExamKey) { return; }
+		let rch = su.getConfig("sebConfigRequestHeader","string","");
+		let rck = su.getConfig("configKey","string","");
+		let rs = su.getConfig("browserURLSalt","boolean",true);
+		if (rch != "" && rck != "") {
+			reqConfigHeader = rch;
+			reqConfigKey = rck;
+		}
+		reqSalt = rs;
 	},
 	
 	getRequestValue : function (url,key) {
@@ -647,12 +672,18 @@ this.SebNet = {
 			var k;
 			if (reqSalt) {								
 				k = base.getRequestValue(url, reqKey);
+				k2 = base.getRequestValue(url, reqConfigKey);
 				sl.info("seb file download: get req value: " + url + " : " + reqKey + " = " + k);
+				sl.info("seb file download: get new config value: " + url + " : " + reqConfigKey + " = " + k2);
 			}
 			else {
 				k = reqKey;
+				k2 = reqConfigKey;
 			}
 			xhr.setRequestHeader(reqHeader, k);
+			sl.info("send RequestHeader: " + reqHeader + ":" + k);
+			xhr.setRequestHeader(reqConfigHeader, k2);
+			sl.info("send new ConfigHeader: " + reqConfigHeader + ":" + k2);
 		}
 		base.blockObs = true;
 		xhr.send(null);

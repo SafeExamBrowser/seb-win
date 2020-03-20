@@ -836,6 +836,13 @@ this.SebBrowser = {
         }
 	},
 	
+	initSessionCookies : function () {
+		if (su.getConfig("examSessionClearCookiesOnStart","boolean",true)) {
+			sl.debug("examSessionClearCookiesOnStart = true");
+			base.clearSession();
+		}
+	},
+
 	addAdditionalDictionaries : function(opt) {
 		sl.debug("addDictionaries: " + opt.path);
 		// if allowSpellCheck false, abort
@@ -1232,6 +1239,7 @@ this.SebBrowser = {
         
         function onCopy(evt) {
             sl.debug("captured copy:" + evt);
+            seb.clearClipboard();
             try {
                 getData(evt);
             }
@@ -1247,6 +1255,7 @@ this.SebBrowser = {
         
         function onCut(evt) {
             sl.debug("captured cut:" + evt);
+            seb.clearClipboard();
             try {
                 getData(evt);
                 

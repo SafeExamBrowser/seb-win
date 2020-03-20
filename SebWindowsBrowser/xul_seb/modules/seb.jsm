@@ -167,6 +167,7 @@ this.seb =  {
 		sh.init(base);
 		sb.initSecurity();
 		sb.initSpellChecker();
+		sb.initSessionCookies();
 	},
 
 	initProfile : function() {
@@ -437,6 +438,10 @@ this.seb =  {
 		if (sw.getWinType(win) == "main") {
 			sl.debug("close message socket");
 			//base.removeBrowserProfileFiles();
+			if (su.getConfig("examSessionClearCookiesOnEnd","boolean",true)) {
+				sl.debug("examSessionClearCookiesOnEnd = true");
+				sb.clearSession();
+			}
 			sh.closeMessageSocket();
 		}
 		else {

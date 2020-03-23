@@ -66,6 +66,7 @@ namespace SebWindowsConfig
 				lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 				// Display the new Browser Exam Key in Exam pane
 				textBoxBrowserExamKey.Text = lastBrowserExamKey;
+				textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 			}
 		}
 
@@ -126,6 +127,7 @@ namespace SebWindowsConfig
 			lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = lastBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 
 		} // end of contructor   SebWindowsConfigForm()
 
@@ -530,6 +532,9 @@ namespace SebWindowsConfig
 			// Group "Exam"
 			checkBoxSendBrowserExamKey.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey];
 			textBoxBrowserExamKey.Enabled = checkBoxSendBrowserExamKey.Checked;
+			textBoxConfigurationKey.Enabled = checkBoxSendBrowserExamKey.Checked;
+			checkBoxClearSessionOnEnd.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyExamSessionClearCookiesOnEnd];
+			checkBoxClearSessionOnStart.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyExamSessionClearCookiesOnStart];
 			textBoxQuitURL.Text = (String)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURL];
 			checkBoxQuitURLConfirm.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyQuitURLConfirm];
 			checkBoxUseStartURL.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyRestartExamUseStartURL];
@@ -1206,6 +1211,7 @@ namespace SebWindowsConfig
 				lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 				// Display the new Browser Exam Key in Exam pane
 				textBoxBrowserExamKey.Text = lastBrowserExamKey;
+				textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 				// Reset the path of the last saved file which is used in case "Edit duplicate" was used
 				lastPathSebConfigFile = null;
 			}
@@ -1241,6 +1247,7 @@ namespace SebWindowsConfig
 			lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = lastBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 			// Reset the path of the last saved file which is used in case "Edit duplicate" was used
 			lastPathSebConfigFile = null;
 		}
@@ -1298,6 +1305,7 @@ namespace SebWindowsConfig
 			lastBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = lastBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 			// Save the current settings password so it can be used for comparing later if it changed
 			lastSettingsPassword = textBoxSettingsPassword.Text;
 			// Reset the path of the last saved file which is used in case "Edit duplicate" was used
@@ -1361,6 +1369,7 @@ namespace SebWindowsConfig
 				lastBrowserExamKey = SEBProtectionController.ComputeBrowserExamKey();
 				// Display the new Browser Exam Key in Exam pane
 				textBoxBrowserExamKey.Text = lastBrowserExamKey;
+				textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 				// Save the current settings password so it can be used for comparing later if it changed
 				lastSettingsPassword = textBoxSettingsPassword.Text;
 				lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
@@ -1409,6 +1418,7 @@ namespace SebWindowsConfig
 			lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = currentBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 		}
 
 
@@ -1452,6 +1462,7 @@ namespace SebWindowsConfig
 				lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 				// Display the new Browser Exam Key in Exam pane
 				textBoxBrowserExamKey.Text = lastBrowserExamKey;
+				textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 		}
 
 
@@ -1479,6 +1490,7 @@ namespace SebWindowsConfig
 			lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = lastBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 		}
 
 
@@ -1589,6 +1601,7 @@ namespace SebWindowsConfig
 			lastCryptoIdentityIndex = comboBoxCryptoIdentity.SelectedIndex;
 			// Display the new Browser Exam Key in Exam pane
 			textBoxBrowserExamKey.Text = lastBrowserExamKey;
+			textBoxConfigurationKey.Text = SEBProtectionController.ComputeConfigurationKey();
 		}
 
 
@@ -2315,6 +2328,7 @@ namespace SebWindowsConfig
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeySendBrowserExamKey] = checkBoxSendBrowserExamKey.Checked;
 			textBoxBrowserExamKey.Enabled = checkBoxSendBrowserExamKey.Checked;
+			textBoxConfigurationKey.Enabled = checkBoxSendBrowserExamKey.Checked;
 		}
 
 		private void textBoxQuitURL_TextChanged(object sender, EventArgs e)
@@ -4466,6 +4480,16 @@ namespace SebWindowsConfig
 		private void collectLogFilesToolStripMenuItem_Click(object sender, EventArgs args)
 		{
 			new LogCollector(this).Run();
+		}
+
+		private void checkBoxClearSessionOnStart_CheckedChanged(object sender, EventArgs e)
+		{
+			SEBSettings.settingsCurrent[SEBSettings.KeyExamSessionClearCookiesOnStart] = checkBoxClearSessionOnStart.Checked;
+		}
+
+		private void checkBoxClearSessionOnEnd_CheckedChanged(object sender, EventArgs e)
+		{
+			SEBSettings.settingsCurrent[SEBSettings.KeyExamSessionClearCookiesOnEnd] = checkBoxClearSessionOnEnd.Checked;
 		}
 	}
 }

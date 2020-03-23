@@ -143,8 +143,11 @@ namespace SebWindowsClient.ConfigurationUtils
 			if ((bool)xulRunnerSettings[SEBSettings.KeySendBrowserExamKey])
 			{
 				string browserExamKey = SEBProtectionController.ComputeBrowserExamKey();
+				string configurationKey = SEBProtectionController.ComputeConfigurationKey();
+
 				xulRunnerSettings[SEBSettings.KeyBrowserExamKey] = browserExamKey;
 				xulRunnerSettings[SEBSettings.KeyBrowserURLSalt] = true;
+				xulRunnerSettings[SEBSettings.KeyConfigurationKey] = configurationKey;
 			}
 
 			//If necessary replace the starturl with the path to the startResource

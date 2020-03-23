@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -592,7 +593,117 @@ namespace SebWindowsClient.CryptographyUtils
             return browserExamKeyString.Replace("-", "").ToLower();
         }
 
-        private static string ComputeSEBComponentsHash()
+		/// ----------------------------------------------------------------------------------------
+		/// <summary>
+		/// Compute a Configuration Key SHA256 hash base16 string.
+		/// </summary>
+		/// ----------------------------------------------------------------------------------------
+		public static string ComputeConfigurationKey()
+		{
+			using (var algorithm = new SHA256Managed())
+			using (var stream = new MemoryStream())
+			using (var writer = new StreamWriter(stream))
+			{
+				Serialize(SEBSettings.settingsCurrent, writer);
+
+				writer.Flush();
+				stream.Seek(0, SeekOrigin.Begin);
+
+				var hash = algorithm.ComputeHash(stream);
+				var key = BitConverter.ToString(hash).ToLower().Replace("-", string.Empty);
+
+				return key;
+			}
+		}
+
+		private static void Serialize(IDictionary<string, object> dictionary, StreamWriter stream)
+		{
+			var orderedByKey = dictionary.OrderBy(d => d.Key, StringComparer.InvariantCulture).ToList();
+
+			stream.Write('{');
+
+			foreach (var kvp in orderedByKey)
+			{
+				var process = true;
+
+				process &= !kvp.Key.Equals(SEBSettings.KeyOriginatorVersion, StringComparison.OrdinalIgnoreCase);
+				process &= !(kvp.Value is IDictionary<string, object> d) || d.Any();
+
+				if (process)
+				{
+					stream.Write('"');
+					stream.Write(kvp.Key);
+					stream.Write('"');
+					stream.Write(':');
+					Serialize(kvp.Value, stream);
+
+					if (kvp.Key != orderedByKey.Last().Key)
+					{
+						stream.Write(',');
+					}
+				}
+			}
+
+			stream.Write('}');
+		}
+
+		private static void Serialize(IList<object> list, StreamWriter stream)
+		{
+			stream.Write('[');
+
+			foreach (var item in list)
+			{
+				Serialize(item, stream);
+
+				if (item != list.Last())
+				{
+					stream.Write(',');
+				}
+			}
+
+			stream.Write(']');
+		}
+
+		private static void Serialize(object value, StreamWriter stream)
+		{
+			switch (value)
+			{
+				case IDictionary<string, object> dictionary:
+					Serialize(dictionary, stream);
+					break;
+				case IList<object> list:
+					Serialize(list, stream);
+					break;
+				case byte[] data:
+					stream.Write('"');
+					stream.Write(Convert.ToBase64String(data));
+					stream.Write('"');
+					break;
+				case DateTime date:
+					stream.Write(date.ToString("o"));
+					break;
+				case bool boolean:
+					stream.Write(boolean.ToString().ToLower());
+					break;
+				case int integer:
+					stream.Write(integer.ToString(NumberFormatInfo.InvariantInfo));
+					break;
+				case double number:
+					stream.Write(number.ToString(NumberFormatInfo.InvariantInfo));
+					break;
+				case string text:
+					stream.Write('"');
+					stream.Write(text);
+					stream.Write('"');
+					break;
+				case null:
+					stream.Write('"');
+					stream.Write('"');
+					break;
+			}
+		}
+
+		private static string ComputeSEBComponentsHash()
         {
             string SEBDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 			var fileNames = new List<string>

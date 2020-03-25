@@ -439,6 +439,7 @@ namespace SebWindowsClient.ConfigurationUtils
 		// from/to a human-readable .xml and an encrypted.seb file format.
 		public static DictObj settingsDefault = new DictObj();
 		public static DictObj settingsCurrent = new DictObj();
+		public static DictObj settingsCurrentOriginal = new DictObj();
 
 		public static int     permittedProcessIndex;
 		public static ListObj permittedProcessList          = new ListObj();

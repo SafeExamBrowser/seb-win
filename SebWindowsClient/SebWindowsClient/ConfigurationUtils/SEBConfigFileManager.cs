@@ -155,19 +155,25 @@ namespace SebWindowsClient.ConfigurationUtils
                 /// If these SEB settings are ment to configure a client
 
                 // Check if we have embedded identities and import them into the Windows Certifcate Store
-                ListObj embeddedCertificates = (ListObj)sebPreferencesDict[SEBSettings.KeyEmbeddedCertificates];
-                for (int i = embeddedCertificates.Count - 1; i >= 0; i--)
+                try
                 {
-                    // Get the Embedded Certificate
-                    DictObj embeddedCertificate = (DictObj)embeddedCertificates[i];
-                    // Is it an identity?
-                    if ((int)embeddedCertificate[SEBSettings.KeyType] == 1)
+                    ListObj embeddedCertificates = (ListObj)sebPreferencesDict[SEBSettings.KeyEmbeddedCertificates];
+                    for (int i = embeddedCertificates.Count - 1; i >= 0; i--)
                     {
-                        // Store the identity into the Windows Certificate Store
-                        SEBProtectionController.StoreCertificateIntoStore((byte[])embeddedCertificate[SEBSettings.KeyCertificateData]);
+                        // Get the Embedded Certificate
+                        DictObj embeddedCertificate = (DictObj)embeddedCertificates[i];
+                        // Is it an identity?
+                        if ((int)embeddedCertificate[SEBSettings.KeyType] == 1)
+                        {
+                            // Store the identity into the Windows Certificate Store
+                            SEBProtectionController.StoreCertificateIntoStore((byte[])embeddedCertificate[SEBSettings.KeyCertificateData]);
+                        }
+                        // Remove the identity from settings, as it should be only stored in the Certificate Store and not in the locally stored settings file
+                        embeddedCertificates.RemoveAt(i);
                     }
-                    // Remove the identity from settings, as it should be only stored in the Certificate Store and not in the locally stored settings file
-                    embeddedCertificates.RemoveAt(i);
+                }
+                catch (Exception)
+                {
                 }
 
                 // Store decrypted settings
@@ -407,18 +413,14 @@ namespace SebWindowsClient.ConfigurationUtils
 
             // Get preferences dictionary from decrypted data
             DictObj sebPreferencesDict = GetPreferencesDictFromConfigData(sebData, forEditing);
-			DictObj sebPreferencesDictOriginal = GetPreferencesDictFromConfigData(sebData, false);
-			// If we didn't get a preferences dict back, we abort reading settings
-			if (sebPreferencesDict == null) return null;
+            // If we didn't get a preferences dict back, we abort reading settings
+            if (sebPreferencesDict == null) return null;
 
             // We need to set the right value for the key sebConfigPurpose to know later where to store the new settings
             sebPreferencesDict[SEBSettings.KeySebConfigPurpose] = (int)SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam;
-			sebPreferencesDictOriginal[SEBSettings.KeySebConfigPurpose] = (int)SEBSettings.sebConfigPurposes.sebConfigPurposeStartingExam;
 
-			SEBSettings.settingsCurrentOriginal = sebPreferencesDictOriginal;
-
-			// Reading preferences was successful!
-			return sebPreferencesDict;
+            // Reading preferences was successful!
+            return sebPreferencesDict;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -443,8 +445,7 @@ namespace SebWindowsClient.ConfigurationUtils
             // We use always uppercase letters in the base16 hashed admin password used for encrypting
             hashedAdminPassword = hashedAdminPassword.ToUpper();
             DictObj sebPreferencesDict = null;
-			DictObj sebPreferencesDictOriginal = null;
-			byte[] decryptedSebData = SEBProtectionController.DecryptDataWithPassword(sebData, hashedAdminPassword);
+            byte[] decryptedSebData = SEBProtectionController.DecryptDataWithPassword(sebData, hashedAdminPassword);
             if (decryptedSebData == null)
             {
                 // If decryption with admin password didn't work, try it with an empty password
@@ -499,8 +500,7 @@ namespace SebWindowsClient.ConfigurationUtils
             try
             {
                 sebPreferencesDict = (DictObj)Plist.readPlist(decryptedSebData);
-				sebPreferencesDictOriginal = (DictObj)Plist.readPlist(decryptedSebData);
-			}
+            }
             catch (Exception readPlistException)
             {
                 // Error when deserializing the decrypted configuration data
@@ -575,12 +575,9 @@ namespace SebWindowsClient.ConfigurationUtils
 
             // We need to set the right value for the key sebConfigPurpose to know later where to store the new settings
             sebPreferencesDict[SEBSettings.KeySebConfigPurpose] = (int)SEBSettings.sebConfigPurposes.sebConfigPurposeConfiguringClient;
-			sebPreferencesDictOriginal[SEBSettings.KeySebConfigPurpose] = (int)SEBSettings.sebConfigPurposes.sebConfigPurposeConfiguringClient;
 
-			SEBSettings.settingsCurrentOriginal = sebPreferencesDictOriginal;
-
-			// Reading preferences was successful!
-			return sebPreferencesDict;
+            // Reading preferences was successful!
+            return sebPreferencesDict;
         }
 
 
@@ -809,10 +806,8 @@ namespace SebWindowsClient.ConfigurationUtils
 
         public static byte[] EncryptSEBSettingsWithCredentials(string settingsPassword, bool passwordIsHash, X509Certificate2 certificateRef, bool useAsymmetricOnlyEncryption, SEBSettings.sebConfigPurposes configPurpose, bool forEditing)
         {
-			// Get current settings dictionary and clean it from empty arrays and dictionaries
-			//DictObj cleanedCurrentSettings = SEBSettings.CleanSettingsDictionary();
-
-			SEBSettings.settingsCurrentOriginal = SEBSettings.settingsCurrent;
+            // Get current settings dictionary and clean it from empty arrays and dictionaries
+            //DictObj cleanedCurrentSettings = SEBSettings.CleanSettingsDictionary();
 
             // Serialize preferences dictionary to an XML string
             string sebXML = Plist.writeXml(SEBSettings.settingsCurrent);

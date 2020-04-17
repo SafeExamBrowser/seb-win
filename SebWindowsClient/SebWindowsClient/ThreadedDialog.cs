@@ -10,7 +10,7 @@ using SebWindowsClient.DesktopUtils;
 //  ThreadedDialog.cs
 //  SafeExamBrowser
 //
-//  Copyright (c) 2010-2019 Daniel R. Schneider, Pascal Wyss,
+//  Copyright (c) 2010-2020 Daniel R. Schneider, Pascal Wyss,
 //  ETH Zurich, Educational Development and Technology (LET),
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen
@@ -32,7 +32,7 @@ using SebWindowsClient.DesktopUtils;
 //
 //  The Initial Developers of the Original Code are Daniel R. Schneider, Pascal Wyss.
 //  Portions created by Daniel R. Schneider, Pascal Wyss
-//  are Copyright (c) 2010-2019 Daniel R. Schneider, Pascal Wyss, 
+//  are Copyright (c) 2010-2020 Daniel R. Schneider, Pascal Wyss, 
 //  ETH Zurich, Educational Development and Technology (LET), 
 //  based on the original idea of Safe Exam Browser
 //  by Stefan Schneider, University of Giessen. All Rights Reserved.

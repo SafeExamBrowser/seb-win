@@ -1324,9 +1324,10 @@ namespace SebWindowsClient
 			// There is a permittedProcess.path value
 			if (executablePath != "")
 			{
-				fullPath = executablePath + "\\" + executable;
-				// In case path to the executable's directory + the file name of the executable is already the correct file, we return this full path
-				if (File.Exists(fullPath)) return fullPath;
+                // The executable path could contain environment variables such as %AppData% which need to be expanded
+                fullPath = Environment.ExpandEnvironmentVariables(executablePath) + "\\" + executable;
+                // In case path to the executable's directory + the file name of the executable is already the correct file, we return this full path
+                if (File.Exists(fullPath)) return fullPath;
 			}
 			// Otherwise try to determine the applications full path
 			string path = GetApplicationPath(executable);
@@ -1340,10 +1341,6 @@ namespace SebWindowsClient
  
 				// But maybe the executable path is a relative path from the applications main directory to some subdirectory with the executable in it?
 				fullPath = path + executablePath + "\\" + executable;
-				if (File.Exists(fullPath)) return fullPath;
-
-				// Finally, the executable path could contain environment variables such as %AppData% which need to be expanded
-				fullPath = Environment.ExpandEnvironmentVariables(path) + "\\" + executable;
 				if (File.Exists(fullPath)) return fullPath;
 			}
 

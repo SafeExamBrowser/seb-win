@@ -791,6 +791,8 @@ namespace SebWindowsConfig
 			checkBoxInsideSebEnableLogOff           .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableLogOff];
 			checkBoxInsideSebEnableShutDown         .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableShutDown];
 			checkBoxInsideSebEnableEaseOfAccess     .Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableEaseOfAccess];
+			checkBoxSetVmwareConfiguration.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeySetVmwareConfiguration];
+			checkBoxInsideSebEnableVmWareClientShade.Enabled = checkBoxSetVmwareConfiguration.Checked;
 			checkBoxInsideSebEnableVmWareClientShade.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableVmWareClientShade];
 			checkBoxInsideSebEnableNetworkConnectionSelector.Checked = (Boolean)SEBSettings.settingsCurrent[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector];
 
@@ -4490,6 +4492,12 @@ namespace SebWindowsConfig
 		private void checkBoxClearSessionOnEnd_CheckedChanged(object sender, EventArgs e)
 		{
 			SEBSettings.settingsCurrent[SEBSettings.KeyExamSessionClearCookiesOnEnd] = checkBoxClearSessionOnEnd.Checked;
+		}
+
+		private void checkBoxSetVmwareConfiguration_CheckedChanged(object sender, EventArgs e)
+		{
+			SEBSettings.settingsCurrent[SEBSettings.KeySetVmwareConfiguration] = checkBoxSetVmwareConfiguration.Checked;
+			checkBoxInsideSebEnableVmWareClientShade.Enabled = checkBoxSetVmwareConfiguration.Checked;
 		}
 	}
 }

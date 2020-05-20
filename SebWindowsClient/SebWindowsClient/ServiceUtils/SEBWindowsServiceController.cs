@@ -114,13 +114,17 @@ namespace SebWindowsClient.ServiceUtils
                 {RegistryIdentifiers.NoLogoff, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableLogOff           )[SEBSettings.KeyInsideSebEnableLogOff           ] ? 0 : 1},
                 {RegistryIdentifiers.NoClose, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableShutDown         )[SEBSettings.KeyInsideSebEnableShutDown         ] ? 0 : 1},
 				{RegistryIdentifiers.NoCloseWin7, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableShutDown         )[SEBSettings.KeyInsideSebEnableShutDown         ] ? 0 : 1},
-				{RegistryIdentifiers.EnableShade, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? 1 : 0},
-                {RegistryIdentifiers.EnableShadeHorizon, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? "True" : "False"},
                 {RegistryIdentifiers.EaseOfAccess, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableEaseOfAccess     )[SEBSettings.KeyInsideSebEnableEaseOfAccess     ] ? 0 : 1},
                 {RegistryIdentifiers.DontDisplayNetworkSelectionUI, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableNetworkConnectionSelector)[SEBSettings.KeyInsideSebEnableNetworkConnectionSelector] ? 0 : 1},
 				{RegistryIdentifiers.NoAutoRebootWithLoggedOnUsers, 1},
                 {RegistryIdentifiers.fDenyTSConnections, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyAllowScreenSharing)[SEBSettings.KeyAllowScreenSharing] ? 0 : 1}
             };
+
+			if ((Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeySetVmwareConfiguration)[SEBSettings.KeySetVmwareConfiguration])
+			{
+				valuesToSet.Add(RegistryIdentifiers.EnableShade, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? 1 : 0);
+				valuesToSet.Add(RegistryIdentifiers.EnableShadeHorizon, (Boolean)SEBClientInfo.getSebSetting(SEBSettings.KeyInsideSebEnableVmWareClientShade)[SEBSettings.KeyInsideSebEnableVmWareClientShade] ? "True" : "False");
+			}
 
             return SetRegistryAccordingToConfiguration(valuesToSet);
         }

@@ -158,7 +158,11 @@ requestObserver.prototype.observe = function ( subject, topic, data ) {
                 sl.debug("opening seb settings in the background");
                 seb.reconfState = RECONF_START;
             } else {
-                subject.cancel( this.aborted );
+				subject.cancel( this.aborted );
+				if ( seb.reconfState == RECONF_START) {
+					sl.debug("RECONF already started");
+					return;
+				}
                 sb.openSebFileDialog(url2);
             }
 			//seb.reconfState = RECONF_NO;
